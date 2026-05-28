@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Untitled</title>
+    
+
+  </head>
+    
+  <body>
+  <!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المساعد الذكي</title>
+    <!-- استيراد خط تجوال -->
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- مكتبة أيقونات بسيطة -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #8e24aa;
+            --primary-light: #f3e5f5;
+            --primary-dark: #6a1b9a;
+            --bg-color: #f0f2f5;
+            --white: #ffffff;
+            --user-msg-bg: #8e24aa;
+            --user-msg-text: #ffffff;
+            --bot-msg-bg: #ffffff;
+            --bot-msg-text: #333333;
+            --gray-border: #ddd;
+            --shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Tajawal', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* رأس الدردشة */
+        .chat-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: var(--white);
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 10;
+        }
+
+        .chat-header-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .avatar {
+            width: 45px;
+            height: 45px;
+            background-color: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .status {
+            font-size: 0.8rem;
+            opacity: 0.8;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #4caf50;
+            border-radius: 50%;
+        }
+
+        /* منطقة المحادثة */
+        .chat-container {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            scroll-behavior: smooth;
+        }
+
+        .message-wrapper {
+            display: flex;
+            flex-direction: column;
+            max-width: 80%;
+            position: relative;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .message-wrapper.user {
+            align-self: flex-end;
+            align-items: flex-end;
+        }
+
+        .message-wrapper.bot {
+            align-self: flex-start;
+            align-items: flex-start;
+        }
+
+        .message-bubble {
+            padding: 12px 16px;
+            border-radius: 18px;
+            font-size: 1rem;
+            line-height: 1.5;
+            position: relative;
+            word-wrap: break-word;
+            box-shadow: var(--shadow);
+        }
+
+        .user .message-bubble {
+            background-color: var(--user-msg-bg);
+            color: var(--user-msg-text);
+            border-bottom-left-radius: 4px;
+        }
+
+        .bot .message-bubble {
+            background-color: var(--bot-msg-bg);
+            color: var(--bot-msg-text);
+            border-bottom-right-radius: 4px;
+        }
+
+        /* أدوات الرسالة (تعديل/حذف) */
+        .message-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 5px;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .message-wrapper:hover .message-actions {
+            opacity: 1;
+        }
+
+        /* على الجوال نظهر الأزرار دائماً للتسهيل */
+        @media (max-width: 768px) {
+            .message-actions {
+                opacity: 1;
+            }
+        }
+
+        .action-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 0.8rem;
+            color: #777;
+            padding: 2px 5px;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+
+        .action-btn:hover {
+            background-color: #e0e0e0;
+            color: #333;
+        }
+
+        .action-btn.delete:hover {
+            color: #d32f2f;
+            background-color: #ffebee;
+        }
+
+        /* صندوق الإدخال */
+        .input-area {
+            background-color: var(--white);
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-top: 1px solid var(--gray-border);
+        }
+
+        .message-input {
+            flex: 1;
+            padding: 12px 20px;
+            border-radius: 25px;
+            border: 1px solid var(--gray-border);
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .message-input:focus {
+            border-color: var(--primary-color);
+        }
+
+        .send-btn {
+            width: 45px;
+            height: 45px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: background 0.3s, transform 0.1s;
+        }
+
+        .send-btn:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .send-btn:active {
+            transform: scale(0.95);
+        }
+
+        .send-btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        /* مؤشر الكتابة */
+        .typing-indicator {
+            display: flex;
+            gap: 5px;
+            padding: 10px 15px;
+            background-color: var(--bot-msg-bg);
+            border-radius: 18px;
+            width: fit-content;
+            margin-bottom: 10px;
+            display: none; /* مخفي افتراضياً */
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            background-color: #bbb;
+            border-radius: 50%;
+            animation: bounce 1.4s infinite ease-in-out both;
+        }
+
+        .dot:nth-child(1) { animation-delay: -0.32s; }
+        .dot:nth-child(2) { animation-delay: -0.16s; }
+
+        @keyframes bounce {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
+        }
+
+        /* حقل التعديل داخل الفقاعة */
+        .edit-input {
+            width: 100%;
+            background: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.5);
+            color: inherit;
+            padding: 5px;
+            border-radius: 5px;
+            outline: none;
+            font-family: inherit;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- رأس الدردشة -->
+    <header class="chat-header">
+        <div class="chat-header-info">
+            <div class="avatar">
+                <i class="fas fa-robot"></i>
+            </div>
+            <div>
+                <h3>المساعد الذكي</h3>
+                <div class="status">
+                    <span class="status-dot"></span>
+                    <span>متصل الآن</span>
+                </div>
+            </div>
+        </div>
+        <div class="header-actions">
+            <i class="fas fa-ellipsis-v" style="cursor: pointer; opacity: 0.8;"></i>
+        </div>
+    </header>
+
+    <!-- منطقة الرسائل -->
+    <main class="chat-container" id="chatContainer">
+        <!-- رسالة ترحيب -->
+        <div class="message-wrapper bot">
+            <div class="message-bubble">
+                مرحباً بك! أنا مساعدك الذكي. كيف يمكنني مساعدتك اليوم؟
+            </div>
+        </div>
+    </main>
+
+    <!-- مؤشر الكتابة (يظهر عند انتظار الرد) -->
+    <div class="message-wrapper bot" id="typingIndicatorWrapper" style="display: none; align-self: flex-start; margin-bottom: 15px; margin-right: 20px;">
+        <div class="typing-indicator" style="display: flex;">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
+    </div>
+
+    <!-- منطقة الإدخال -->
+    <footer class="input-area">
+        <input type="text" class="message-input" id="messageInput" placeholder="اكتب رسالتك هنا..." autocomplete="off">
+        <button class="send-btn" id="sendBtn">
+            <i class="fas fa-paper-plane"></i>
+        </button>
+    </footer>
+
+    <script>
+        // المتغيرات الأساسية
+        const chatContainer = document.getElementById('chatContainer');
+        const messageInput = document.getElementById('messageInput');
+        const sendBtn = document.getElementById('sendBtn');
+        const typingIndicatorWrapper = document.getElementById('typingIndicatorWrapper');
+        
+        // رابط الويب هوك الخاص بـ n8n
+        const WEBHOOK_URL = 'https://tamim15.app.n8n.cloud/webhook-test/9470a5b3-f05a-4846-ae52-3b8d0a3d0c16';
+
+        // إدارة الجلسة (Session ID)
+        let sessionId = localStorage.getItem('n8n_chat_session_id');
+        if (!sessionId) {
+            sessionId = 'sess_' + Math.random().toString(36).substr(2, 9);
+            localStorage.setItem('n8n_chat_session_id', sessionId);
+        }
+
+        // دالة إنشاء معرف فريد للرسالة
+        function generateId() {
+            return Date.now().toString(36) + Math.random().toString(36).substr(2);
+        }
+
+        // دالة التمرير للأسفل
+        function scrollToBottom() {
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        // دالة إضافة رسالة للواجهة
+        function addMessageToUI(text, sender, id = null) {
+            const msgId = id || generateId();
+            const wrapper = document.createElement('div');
+            wrapper.className = `message-wrapper ${sender}`;
+            wrapper.id = `msg-${msgId}`;
+
+            // إنشاء الفقاعة
+            const bubble = document.createElement('div');
+            bubble.className = 'message-bubble';
+            bubble.textContent = text;
+
+            wrapper.appendChild(bubble);
+
+            // إذا كانت رسالة مستخدم، أضف أزرار التعديل والحذف
+            if (sender === 'user') {
+                const actionsDiv = document.createElement('div');
+                actionsDiv.className = 'message-actions';
+                
+                // زر التعديل
+                const editBtn = document.createElement('button');
+                editBtn.className = 'action-btn';
+                editBtn.innerHTML = '<i class="fas fa-pen"></i> تعديل';
+                editBtn.onclick = () => enableEditMode(msgId, bubble, text);
+                
+                // زر الحذف
+                const deleteBtn = document.createElement('button');
+                deleteBtn.className = 'action-btn delete';
+                deleteBtn.innerHTML = '<i class="fas fa-trash"></i> حذف';
+                deleteBtn.onclick = () => deleteMessage(msgId);
+
+                actionsDiv.appendChild(editBtn);
+                actionsDiv.appendChild(deleteBtn);
+                wrapper.appendChild(actionsDiv);
+            }
+
+            chatContainer.appendChild(wrapper);
+            scrollToBottom();
+            return msgId;
+        }
+
+        // تفعيل وضع التعديل
+        function enableEditMode(msgId, bubbleElement, currentText) {
+            // استبدال النص بحقل إدخال
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.value = currentText;
+            input.className = 'edit-input';
+            
+            // حفظ التعديل عند الضغط على Enter
+            input.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    saveEdit(msgId, input.value, bubbleElement, input);
+                }
+            });
+
+            // حفظ عند فقدان التركيز (اختياري، أو يمكن إضافة زر حفظ)
+            input.addEventListener('blur', () => {
+                 // تأخير بسيط للسماح بالنقر على أزرار أخرى إذا لزم الأمر
+                 // saveEdit(msgId, input.value, bubbleElement, input);
+            });
+
+            bubbleElement.textContent = ''; // مسح النص
+            bubbleElement.appendChild(input);
+            input.focus();
+        }
+
+        // حفظ التعديل
+        function saveEdit(msgId, newText, bubbleElement, inputElement) {
+            if (newText.trim() === "") return;
+            
+            bubbleElement.removeChild(inputElement);
+            bubbleElement.textContent = newText;
+            
+            // ملاحظة: هذا التعديل محلي فقط في الواجهة.
+            // إذا أردت إرسال التعديل للـ Bot مرة أخرى، يجب استدعاء دالة الإرسال هنا
+            // وحذف الرسائل القديمة، لكن سنكتفي بالتعديل البصري كما هو مطلوب غالباً في واجهات الدردشة البسيطة.
+        }
+
+        // حذف رسالة
+        function deleteMessage(msgId) {
+            const msgElement = document.getElementById(`msg-${msgId}`);
+            if (msgElement) {
+                msgElement.style.opacity = '0';
+                setTimeout(() => {
+                    msgElement.remove();
+                }, 300);
+            }
+        }
+
+        // دالة الإرسال الرئيسية
+        async function handleSend() {
+            const text = messageInput.value.trim();
+            if (!text) return;
+
+            // 1. إضافة رسالة المستخدم
+            addMessageToUI(text, 'user');
+            messageInput.value = '';
+            messageInput.focus();
+
+            // 2. إظهار مؤشر الكتابة
+            showTyping(true);
+
+            // 3. إرسال البيانات للويب هوك
+            try {
+                const payload = {
+                    message: text,
+                    sessionId: sessionId
+                };
+
+                const response = await fetch(WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                // 4. استقبال الرد ومعالجته
+                const data = await response.json();
+                
+                // افترض أن الرد في الحقل "reply" كما هو مطلوب
+                const botReply = data.reply || "عذراً، لم أستطع فهم الرد بشكل صحيح.";
+
+                showTyping(false);
+                addMessageToUI(botReply, 'bot');
+
+            } catch (error) {
+                console.error('Error:', error);
+                showTyping(false);
+                addMessageToUI("عذراً، حدث خطأ في الاتصال بالخادم.", 'bot');
+            }
+        }
+
+        // إظهار/إخفاء مؤشر الكتابة
+        function showTyping(show) {
+            if (show) {
+                typingIndicatorWrapper.style.display = 'block';
+                // نقل المؤشر لأسفل قليلاً
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            } else {
+                typingIndicatorWrapper.style.display = 'none';
+            }
+        }
+
+        // التعامل مع أحداث الإدخال
+        sendBtn.addEventListener('click', handleSend);
+
+        messageInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                handleSend();
+            }
+        });
+
+    </script>
+</body>
+</html>
+    
+  </body>
+  
+</html>
