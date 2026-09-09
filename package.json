@@ -8,7 +8,8 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "prebuild": "node scripts/clean.mjs"
+    "prebuild": "node scripts/clean.mjs",
+    "build:single": "npm run build && node scripts/inline.mjs"
   },
   "dependencies": {
     "framer-motion": "^11.11.17",
