@@ -39,7 +39,7 @@ export const Main: React.FC = () => {
   const bug = clamp((t - (INTRO.transition + 0.9)) / 0.4) * (1 - clamp((t - (s8 - 0.4)) / 0.3));
 
   return (
-    <AbsoluteFill style={{background: C.bg0}}>
+    <AbsoluteFill style={{background: '#F2F5F5'}}>
       {between(t, INTRO.transition, mapAEnd) && (
         <AbsoluteFill style={{opacity: 1 - mapAOut}}>
           <MapScene t={t} />
@@ -68,7 +68,7 @@ export const Main: React.FC = () => {
 
       {bug > 0 && (
         <div style={{position: 'absolute', top: isV ? 70 : 48, right: isV ? 56 : 60, opacity: bug * 0.95}}>
-          <BrandBug a={1} scale={isV ? 1.1 : 1} />
+          <BrandBug a={1} scale={isV ? 1.1 : 1} color={C.ink} />
         </div>
       )}
       <Audio src={staticFile('audio/mix.wav')} />

@@ -150,7 +150,7 @@ export const Counter: React.FC<{t: number}> = ({t}) => {
                   fontFamily: F.kufi,
                   fontWeight: 900,
                   fontSize: p(170, 150),
-                  color: C.text,
+                  color: C.ink,
                   lineHeight: 1.3,
                   transform: `translateX(${(1 - Math.min(1, m1)) * 700}px) skewX(${(1 - clamp(m1)) * -14}deg)`,
                   opacity: clamp(m1 * 3),
@@ -191,14 +191,14 @@ export const Counter: React.FC<{t: number}> = ({t}) => {
                 fontFamily: F.kufi,
                 fontWeight: 700,
                 fontSize: p(42, 44),
-                color: C.muted,
+                color: C.inkMuted,
                 direction: 'rtl',
                 marginTop: 14,
                 opacity: sub,
                 transform: `translateY(${(1 - sub) * 20}px)`,
               }}
             >
-              حالة واحدة <span style={{color: C.text}}>تنقض</span> التخمين
+              حالة واحدة <span style={{color: C.ink}}>تنقض</span> التخمين
             </div>
           </div>
         )}

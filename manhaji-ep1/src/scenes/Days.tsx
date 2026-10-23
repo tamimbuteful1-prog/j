@@ -128,13 +128,13 @@ export const Days: React.FC<{t: number}> = ({t}) => {
           fontFamily: F.kufi,
           fontWeight: 800,
           fontSize: p(44, 50),
-          color: C.muted,
+          color: C.inkMuted,
           direction: 'rtl',
           opacity: prog(t, start + 0.3, 0.4) * (1 - exit),
           transform: `translateY(${(1 - prog(t, start + 0.3, 0.5, easeOutExpo)) * 30}px)`,
         }}
       >
-        تجربة <span style={{color: C.yellow}}>الأيام</span>
+        تجربة <span style={{color: C.orange}}>الأيام</span>
       </div>
       {/* the school week; each day lights up when it is spoken */}
       <div style={{position: 'absolute', top: p(190, 255), left: 0, right: 0, display: 'flex', justifyContent: 'center', gap: p(18, 12), direction: 'rtl', opacity: 1 - exit}}>
@@ -150,9 +150,9 @@ export const Days: React.FC<{t: number}> = ({t}) => {
                 fontSize: p(36, 36),
                 padding: p('4px 30px 12px', '4px 20px 10px'),
                 borderRadius: 999,
-                color: on > 0.5 ? '#0B0E12' : C.muted,
-                background: on > 0 ? `rgba(34,211,197,${on})` : 'rgba(255,255,255,0.05)',
-                border: `2px solid ${on > 0 ? C.teal : '#2A323D'}`,
+                color: on > 0.5 ? '#0B0E12' : C.inkMuted,
+                background: on > 0 ? `rgba(34,211,197,${on})` : '#FFFFFF',
+                border: `2px solid ${on > 0 ? C.teal : '#D3DBDE'}`,
                 transform: `translateY(${(1 - Math.min(1, s)) * -40}px) scale(${1 + 0.15 * Math.exp(-Math.max(0, t - at[Math.min(i, 2)]) * 6) * (i < 3 && t > at[i] ? 1 : 0)})`,
                 opacity: clamp(s * 3) * (i < 3 ? 1 : 0.6),
               }}
@@ -220,7 +220,7 @@ export const Days: React.FC<{t: number}> = ({t}) => {
                 <path
                   d={`M 10 4 Q 10 22 40 22 L ${(3 * cw + 2 * gap) / 2 - 30} 22 Q ${(3 * cw + 2 * gap) / 2} 22 ${(3 * cw + 2 * gap) / 2} 38 Q ${(3 * cw + 2 * gap) / 2} 22 ${(3 * cw + 2 * gap) / 2 + 30} 22 L ${3 * cw + 2 * gap - 40} 22 Q ${3 * cw + 2 * gap - 10} 22 ${3 * cw + 2 * gap - 10} 4`}
                   fill="none"
-                  stroke={C.yellow}
+                  stroke={C.orange}
                   strokeWidth={5}
                   strokeLinecap="round"
                   pathLength={100}
@@ -231,10 +231,10 @@ export const Days: React.FC<{t: number}> = ({t}) => {
             )}
             <div style={{display: 'flex', alignItems: 'center', gap: 16, direction: 'rtl', marginTop: 8, transform: `scale(${0.8 + 0.2 * pk})`}}>
               <svg width={48} height={48} viewBox="0 0 48 48" style={{transform: `rotate(${t * 220}deg)`}}>
-                <path d="M 40 24 A 16 16 0 1 1 33 10.5" fill="none" stroke={C.yellow} strokeWidth={5} strokeLinecap="round" />
-                <path d="M 26 8 L 34 10 L 32 18" fill="none" stroke={C.yellow} strokeWidth={5} strokeLinecap="round" strokeLinejoin="round" />
+                <path d="M 40 24 A 16 16 0 1 1 33 10.5" fill="none" stroke={C.orange} strokeWidth={5} strokeLinecap="round" />
+                <path d="M 26 8 L 34 10 L 32 18" fill="none" stroke={C.orange} strokeWidth={5} strokeLinecap="round" strokeLinejoin="round" />
               </svg>
-              <div style={{fontFamily: F.kufi, fontWeight: 800, fontSize: 44, color: C.yellow}}>نمط يتكرر</div>
+              <div style={{fontFamily: F.kufi, fontWeight: 800, fontSize: 44, color: C.orange}}>نمط يتكرر</div>
             </div>
           </div>
         )}

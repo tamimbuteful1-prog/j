@@ -34,7 +34,7 @@ const Node: React.FC<{k: number; minutes: number; accent: string; label: string;
         <div style={{fontFamily: F.kufi, fontWeight: 800, fontSize: 40 * size, color: accent}}>{label}</div>
       </div>
       <Analog minutes={minutes} size={220 * size} accent={accent} />
-      <Clock minutes={minutes} size={84 * size} />
+      <Clock minutes={minutes} size={84 * size} color={C.ink} />
     </div>
   );
 };
@@ -98,7 +98,7 @@ export const Concept: React.FC<{t: number}> = ({t}) => {
         <AbsoluteFill style={{transform: `translateY(${groupY}px) scale(${groupS})`}}>
           {/* header «توقعي» */}
           <div style={{position: 'absolute', top: p(110, 260), left: 0, right: 0, display: 'flex', justifyContent: 'center', opacity: hdr * (1 - frame), transform: `translateY(${(1 - hdr) * -30 - frame * 40}px) scale(${1 + 0.4 * (1 - hdr)})`}}>
-            <Pill size={46} bg="rgba(255,255,255,0.1)" color={C.text}>
+            <Pill size={46} bg={C.ink} color={C.text}>
               توقّعي
             </Pill>
           </div>
@@ -123,7 +123,7 @@ export const Concept: React.FC<{t: number}> = ({t}) => {
                 height={cardH - 8}
                 rx={48}
                 fill={`rgba(255,200,69,${0.06 * frame + 0.1 * conjPulse})`}
-                stroke={C.yellow}
+                stroke={C.goldInk}
                 strokeWidth={6}
                 strokeDasharray="26 18"
                 strokeDashoffset={-t * 40}
@@ -147,12 +147,12 @@ export const Concept: React.FC<{t: number}> = ({t}) => {
               <div style={{position: 'relative', width: p(300, 60), height: p(80, 200), display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
                 {isV ? (
                   <svg width={60} height={200} viewBox="0 0 60 200">
-                    <Draw d="M 30 10 L 30 180" k={arrowK} color={C.text} w={8} len={100} />
-                    <Draw d="M 10 160 L 30 185 L 50 160" k={clamp((arrowK - 0.8) * 5)} color={C.text} w={8} len={100} />
+                    <Draw d="M 30 10 L 30 180" k={arrowK} color={C.ink} w={8} len={100} />
+                    <Draw d="M 10 160 L 30 185 L 50 160" k={clamp((arrowK - 0.8) * 5)} color={C.ink} w={8} len={100} />
                   </svg>
                 ) : (
                   <>
-                    <ArrowL w={300} k={arrowK} color={C.text} thick={8} />
+                    <ArrowL w={300} k={arrowK} color={C.ink} thick={8} />
                     <div style={{position: 'absolute', top: -46, right: 20 + 220 * arrowK, opacity: arrowK > 0 && arrowK < 1 ? 1 : 0, transform: 'scaleX(-1)'}}>
                       <CarIcon size={56} />
                     </div>
@@ -207,7 +207,7 @@ export const Concept: React.FC<{t: number}> = ({t}) => {
                   fontFamily: F.kufi,
                   fontWeight: 800,
                   fontSize: 48,
-                  color: C.teal,
+                  color: C.tealInk,
                   direction: 'rtl',
                   opacity: prog(t, k.days - 0.1, 0.4),
                   transform: `translateY(${(1 - prog(t, k.days - 0.1, 0.5, easeOutExpo)) * 20}px)`,
@@ -218,7 +218,7 @@ export const Concept: React.FC<{t: number}> = ({t}) => {
               <svg width={W} height={H} style={{position: 'absolute', inset: 0, overflow: 'visible'}}>
                 <defs>
                   <marker id="ah" markerWidth="5" markerHeight="5" refX="2.5" refY="2.5" orient="auto">
-                    <path d="M0,0 L5,2.5 L0,5 z" fill={C.teal} />
+                    <path d="M0,0 L5,2.5 L0,5 z" fill={C.tealInk} />
                   </marker>
                 </defs>
                 {DAYS.map((_, i) => {
@@ -244,13 +244,13 @@ export const Concept: React.FC<{t: number}> = ({t}) => {
                   return (
                     <g key={i}>
                       <path d={d} fill="none" stroke={C.teal} strokeWidth={20} opacity={0.15 * ak} />
-                      <path d={d} fill="none" stroke={C.teal} strokeWidth={7} strokeLinecap="round" pathLength={100} strokeDasharray={100} strokeDashoffset={100 * (1 - ak)} markerEnd={ak > 0.95 ? 'url(#ah)' : undefined} />
+                      <path d={d} fill="none" stroke={C.tealInk} strokeWidth={7} strokeLinecap="round" pathLength={100} strokeDasharray={100} strokeDashoffset={100 * (1 - ak)} markerEnd={ak > 0.95 ? 'url(#ah)' : undefined} />
                       {/* particles travelling to the conjecture */}
                       {ak >= 1 &&
                         [0, 1, 2].map((j) => {
                           const u = (t * 1.1 + j / 3 + i * 0.17) % 1;
                           const q = bez(u);
-                          return <circle key={j} cx={q.x} cy={q.y} r={7} fill={C.yellow} opacity={Math.sin(u * Math.PI)} />;
+                          return <circle key={j} cx={q.x} cy={q.y} r={7} fill={C.orange} opacity={Math.sin(u * Math.PI)} />;
                         })}
                     </g>
                   );
@@ -323,12 +323,12 @@ const InductiveTitle: React.FC<{t: number; k: number; W: number; H: number; isV:
       {/* geometric construction lines (compass arcs, triangle, ticks) */}
       <svg width={W} height={H} style={{position: 'absolute', inset: 0}}>
         <g transform={`translate(${W / 2} ${cy})`} opacity={0.9}>
-          <Draw d="M -620 0 L 620 0" k={g(0, 0.5)} color="rgba(255,255,255,0.25)" w={3} len={100} />
+          <Draw d="M -620 0 L 620 0" k={g(0, 0.5)} color="rgba(20,30,40,0.3)" w={3} len={100} />
           <Draw d={`M ${-480} 90 A 480 480 0 0 1 480 90`} k={g(0.1, 0.8)} color={C.teal} w={4} len={100} opacity={0.55} />
           <Draw d="M -360 110 L 0 -180 L 360 110 Z" k={g(0.2, 0.8)} color={C.yellow} w={4} len={100} opacity={0.5} />
           <Draw d={`M -170 110 A 170 170 0 0 1 170 110`} k={g(0.3, 0.7)} color={C.orange} w={4} len={100} opacity={0.55} />
           {Array.from({length: 13}).map((_, i) => (
-            <line key={i} x1={-600 + i * 100} y1={-12} x2={-600 + i * 100} y2={12} stroke="rgba(255,255,255,0.35)" strokeWidth={3} opacity={g(0.05 + i * 0.03, 0.2)} />
+            <line key={i} x1={-600 + i * 100} y1={-12} x2={-600 + i * 100} y2={12} stroke="rgba(20,30,40,0.4)" strokeWidth={3} opacity={g(0.05 + i * 0.03, 0.2)} />
           ))}
           <circle cx={0} cy={-180} r={10 * g(0.9, 0.3)} fill={C.yellow} />
           <circle cx={-360} cy={110} r={8 * g(0.95, 0.3)} fill={C.teal} />
@@ -352,17 +352,17 @@ const InductiveTitle: React.FC<{t: number; k: number; W: number; H: number; isV:
             fontWeight: 900,
             fontSize: isV ? 120 : 136,
             lineHeight: 1.35,
-            color: C.text,
+            color: C.ink,
             textAlign: 'center',
             transform: `scale(${0.55 + 0.45 * Math.min(1.04, easeOutBack(clamp(k), 1.4))})`,
             opacity: clamp(k * 3),
             filter: `blur(${(1 - clamp(k * 1.5)) * 10}px)`,
-            textShadow: '0 12px 50px rgba(0,0,0,0.7)',
+            textShadow: '0 12px 40px rgba(255,255,255,0.9)',
             whiteSpace: isV ? 'normal' : 'nowrap',
             width: isV ? 900 : undefined,
           }}
         >
-          التبرير <span style={{color: C.teal}}>الاستقرائي</span>
+          التبرير <span style={{color: C.tealInk}}>الاستقرائي</span>
         </div>
       </div>
     </AbsoluteFill>

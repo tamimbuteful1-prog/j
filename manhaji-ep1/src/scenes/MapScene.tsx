@@ -183,7 +183,7 @@ export const MapScene: React.FC<{t: number}> = ({t}) => {
   const qGrow = second ? prog(t, k.s5 - 0.22, 0.3, easeInCubic) : 0;
 
   return (
-    <AbsoluteFill style={{background: C.bg0, overflow: 'hidden'}}>
+    <AbsoluteFill style={{background: '#EAF3F4', overflow: 'hidden'}}>
       <AbsoluteFill
         style={{
           transform: `scale(${punch})`,
@@ -193,6 +193,9 @@ export const MapScene: React.FC<{t: number}> = ({t}) => {
         <World c={c} t={frozen ? k.freeze : t} s={s} />
       </AbsoluteFill>
 
+      {/* morning light: warm sun glow from the east + soft sky haze */}
+      <AbsoluteFill style={{background: `radial-gradient(ellipse at ${p(95, 80)}% ${p(-5, 0)}%, rgba(255,214,150,0.45), transparent 55%)`, mixBlendMode: 'soft-light'}} />
+      <AbsoluteFill style={{background: 'linear-gradient(to bottom, rgba(255,240,215,0.18), transparent 35%)'}} />
       {/* warm alarm tint during the accident */}
       {warm > 0 && <AbsoluteFill style={{background: `radial-gradient(ellipse at 50% 50%, transparent 40%, rgba(255,77,94,${0.22 * warm}) 100%)`}} />}
 

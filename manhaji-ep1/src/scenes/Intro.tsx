@@ -128,7 +128,9 @@ export const Intro: React.FC<{t: number; irisTo: {x: number; y: number}}> = ({t,
           WebkitMaskImage: isV ? 'linear-gradient(to bottom, transparent 0, #000 90px, #000 calc(100% - 90px), transparent 100%)' : undefined,
         }}
       >
-        <div style={{position: 'absolute', left: L.ox, top: L.oy, transform: `rotate(${cam.rot}deg)`, transformOrigin: `${-L.ox + panel.w / 2}px ${-L.oy + panel.h / 2}px`}}>{vid}</div>
+        <div style={{position: 'absolute', inset: 0, transform: `translate(${cx - face.x}px, ${cy - face.y}px) scale(${k2 > 0 ? r / 260 : 1})`, transformOrigin: `${face.x - panel.x}px ${face.y - panel.y}px`}}>
+          <div style={{position: 'absolute', left: L.ox, top: L.oy, transform: `rotate(${cam.rot}deg)`, transformOrigin: `${-L.ox + panel.w / 2}px ${-L.oy + panel.h / 2}px`}}>{vid}</div>
+        </div>
       </div>
 
       {/* subtle grade + vignette */}

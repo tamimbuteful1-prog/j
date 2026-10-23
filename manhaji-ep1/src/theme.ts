@@ -13,6 +13,10 @@ export const C = {
   yellow: '#FFC845',
   red: '#FF4D5E',
   green: '#4ADE80',
+  ink: '#151B23', // text on the light stage
+  inkMuted: '#5E6A78',
+  tealInk: '#0C8C83',
+  goldInk: '#D99A00',
 };
 
 export const F = {

@@ -189,10 +189,10 @@ export const Wordmark: React.FC<{size?: number; color?: string}> = ({size = 64, 
   <div style={{fontFamily: F.kufi, fontWeight: 900, fontSize: size, color, direction: 'rtl', lineHeight: 1.25, letterSpacing: 0}}>منهجي</div>
 );
 
-export const BrandBug: React.FC<{a: number; scale?: number}> = ({a, scale = 1}) => (
+export const BrandBug: React.FC<{a: number; scale?: number; color?: string}> = ({a, scale = 1, color = C.text}) => (
   <div style={{display: 'flex', alignItems: 'center', gap: 14 * scale, opacity: a, direction: 'rtl'}}>
     <LogoMark size={54 * scale} />
-    <Wordmark size={30 * scale} />
+    <Wordmark size={30 * scale} color={color} />
   </div>
 );
 

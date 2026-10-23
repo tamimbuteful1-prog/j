@@ -68,16 +68,20 @@ export const along = (d: number) => {
 export const distAtX = (X: number) => 62 + (1400 - X);
 
 type Bld = {x: number; y: number; w: number; l: number; h: number; col: string};
+const isPark = (bx: number, by: number) =>
+  (bx === 1200 && by === -1200) || (bx === -1600 && by === -1200) || (bx === 400 && by === -800) || (bx === -800 && by === 400) || (bx === 1600 && by === 400) || (bx === -2000 && by === -400);
+
 const BUILDINGS: Bld[] = (() => {
   const out: Bld[] = [];
   let id = 0;
-  for (let bx = -2600; bx < 2600; bx += STEP) {
-    for (let by = -1800; by < 1800; by += STEP) {
+  for (let bx = -3600; bx < 3600; bx += STEP) {
+    for (let by = -2600; by < 2600; by += STEP) {
       const cx = bx + STEP / 2;
       const cy = by + STEP / 2;
       id++;
       if (Math.abs(cx - HOUSE.x) < 10 && Math.abs(cy - -200) < 10) continue;
       if (Math.abs(cx - SCHOOL.x) < 10 && Math.abs(cy - -600) < 10) continue;
+      if (isPark(bx, by)) continue;
       const lowRow = cy === 200 || cy === -200 || cy === 600; // keep the view of the route clear
       const n = 1 + Math.floor(rand(id) * 3);
       const inner = STEP - ROAD - 40;
@@ -90,7 +94,7 @@ const BUILDINGS: Bld[] = (() => {
         const x = cx + (n === 1 ? 0 : (k - (n - 1) / 2) * (inner / n));
         const y = cy + (r3 - 0.5) * (inner - l) * 0.6;
         const tall = lowRow ? 12 + r3 * 16 : 22 + Math.pow(r1 * r2, 0.8) * 110;
-        const cols = ['#2A313B', '#303845', '#272D36', '#343C48', '#2D3540'];
+        const cols = ['#EEF1F2', '#E2E7EA', '#F3ECE1', '#DCE5E6', '#E9E3D7'];
         out.push({x, y, w: Math.min(w, inner / n), l, h: tall, col: cols[(id + k) % 5]});
       }
     }
@@ -105,7 +109,28 @@ const TREES: {x: number; y: number; r: number}[] = (() => {
   add(1300, -230, 26); add(1505, -250, 22); add(1290, -90, 18); add(1520, -95, 20);
   // school yard
   add(-1530, -690, 24); add(-1260, -700, 26); add(-1560, -480, 18); add(-1230, -470, 18);
-  // along the main street
+  // morning neighbourhood: trees on free spots of every block, never where they would hide the route
+  const hidesRoute = (x: number, y: number) =>
+    (x > -440 && x < 1440 && y > 0 && y < 110) || // just south of the main street (landscape camera)
+    (x > -1440 && x < -360 && y > -400 && y < -290) || // just south of the school street
+    (x > -400 && x < -290 && y > -440 && y < 40); // just east of the side street (vertical camera)
+  let id = 0;
+  for (let bx = -3600; bx < 3600; bx += STEP)
+    for (let by = -2600; by < 2600; by += STEP) {
+      const park = isPark(bx, by);
+      for (let gx = 0; gx < 4; gx++)
+        for (let gy = 0; gy < 4; gy++) {
+          id++;
+          const x = bx + ROAD / 2 + 34 + gx * ((STEP - ROAD - 68) / 3) + (rand(id * 3) - 0.5) * 30;
+          const y = by + ROAD / 2 + 34 + gy * ((STEP - ROAD - 68) / 3) + (rand(id * 5) - 0.5) * 30;
+          if (!park && rand(id * 11) > 0.42) continue;
+          if (hidesRoute(x, y)) continue;
+          if (Math.hypot(x - HOUSE.x, y - HOUSE.y) < 130 || Math.hypot(x - SCHOOL.x, y - SCHOOL.y) < 200) continue;
+          const r = park ? 20 + rand(id) * 12 : 15 + rand(id) * 9;
+          if (!park && BUILDINGS.some((b) => Math.abs(x - b.x) < b.w / 2 + r && Math.abs(y - b.y) < b.l / 2 + r)) continue;
+          add(x, y, r);
+        }
+    }
   return t;
 })();
 
@@ -167,6 +192,32 @@ const groundQuad = (x0: number, y0: number, x1: number, y1: number, z = 0): P3[]
   [x0, y1, z],
 ];
 
+/** morning sun low in the east: shadows fall west / slightly north */
+const SUN = {x: -0.85, y: -0.38};
+const shadowOf = (c: Cam, x: number, y: number, w: number, l: number, h: number) => {
+  const dx = SUN.x * h * 0.9;
+  const dy = SUN.y * h * 0.9;
+  const pts: [number, number][] = [];
+  for (const [u, v] of [[-1, -1], [1, -1], [1, 1], [-1, 1]]) {
+    pts.push([x + (u * w) / 2, y + (v * l) / 2]);
+    pts.push([x + (u * w) / 2 + dx, y + (v * l) / 2 + dy]);
+  }
+  // convex hull (monotone chain)
+  pts.sort((a, b) => a[0] - b[0] || a[1] - b[1]);
+  const cr = (o: number[], a: number[], b: number[]) => (a[0] - o[0]) * (b[1] - o[1]) - (a[1] - o[1]) * (b[0] - o[0]);
+  const lo: [number, number][] = [];
+  for (const p of pts) {
+    while (lo.length >= 2 && cr(lo[lo.length - 2], lo[lo.length - 1], p) <= 0) lo.pop();
+    lo.push(p);
+  }
+  const up: [number, number][] = [];
+  for (const p of [...pts].reverse()) {
+    while (up.length >= 2 && cr(up[up.length - 2], up[up.length - 1], p) <= 0) up.pop();
+    up.push(p);
+  }
+  return poly(c, [...lo.slice(0, -1), ...up.slice(0, -1)].map(([a, b]) => [a, b, 0.3] as P3));
+};
+
 /** bottom-centre of the avatar bubble while it sits by the house (beside the label pin) */
 export const avatarAtHouse = (c: Cam) => {
   const p = project(c, [HOUSE.x + 150, HOUSE.y, 120]);
@@ -175,6 +226,7 @@ export const avatarAtHouse = (c: Cam) => {
 
 export const World: React.FC<{c: Cam; t: number; s: WorldState}> = ({c, t, s}) => {
   const items: {d: number; faces?: Face[]; el?: React.ReactNode}[] = [];
+  const shadows: React.ReactNode[] = [];
   const onScreen = (x: number, y: number, m = 500) => {
     const p = project(c, [x, y, 0]);
     return p.x > -m && p.x < c.W + m && p.y > -m * 1.3 && p.y < c.H + m;
@@ -184,9 +236,10 @@ export const World: React.FC<{c: Cam; t: number; s: WorldState}> = ({c, t, s}) =
   for (let i = 0; i < BUILDINGS.length; i++) {
     const b = BUILDINGS[i];
     if (!onScreen(b.x, b.y)) continue;
-    const accent = i % 17 === 0 ? 'rgba(34,211,197,0.5)' : i % 23 === 0 ? 'rgba(255,138,61,0.45)' : 'rgba(255,255,255,0.07)';
-    const r = box(c, `B${i}`, b.x, b.y, b.w, b.l, b.h, b.col, {stroke: accent, sw: i % 17 === 0 || i % 23 === 0 ? 2 : 1});
+    const accent = 'rgba(40,50,60,0.10)';
+    const r = box(c, `B${i}`, b.x, b.y, b.w, b.l, b.h, b.col, {stroke: accent, sw: 1, top: i % 9 === 0 ? '#9FE3DA' : i % 7 === 0 ? '#FFC9A3' : undefined});
     items.push({d: r.depth, faces: r.faces});
+    shadows.push(<polygon key={`sh${i}`} points={shadowOf(c, b.x, b.y, b.w, b.l, b.h)} fill="rgba(40,60,70,0.16)" />);
   }
 
   // house
@@ -239,10 +292,10 @@ export const World: React.FC<{c: Cam; t: number; s: WorldState}> = ({c, t, s}) =
       d: base.d,
       el: (
         <g key={`T${i}`} transform={`translate(${base.x} ${base.y}) scale(${near}) translate(${-base.x} ${-base.y})`}>
-          <ellipse cx={base.x} cy={base.y} rx={rr * 1.1} ry={rr * 0.45} fill="rgba(0,0,0,0.35)" />
-          <line x1={base.x} y1={base.y} x2={top.x} y2={top.y} stroke="#4A3A2C" strokeWidth={Math.max(1.5, rr * 0.22)} />
-          <circle cx={top.x} cy={top.y} r={rr} fill="#1F4A40" />
-          <circle cx={top.x - rr * 0.25} cy={top.y - rr * 0.3} r={rr * 0.55} fill="#2C6656" />
+          <ellipse cx={base.x - rr * 0.9} cy={base.y - rr * 0.15} rx={rr * 1.5} ry={rr * 0.5} fill="rgba(40,70,60,0.22)" />
+          <line x1={base.x} y1={base.y} x2={top.x} y2={top.y} stroke="#7A5A40" strokeWidth={Math.max(1.5, rr * 0.22)} />
+          <circle cx={top.x} cy={top.y} r={rr} fill={i % 3 ? '#4FA36C' : '#3E9462'} />
+          <circle cx={top.x + rr * 0.25} cy={top.y - rr * 0.3} r={rr * 0.55} fill="#7CC891" />
         </g>
       ),
     });
@@ -292,20 +345,20 @@ export const World: React.FC<{c: Cam; t: number; s: WorldState}> = ({c, t, s}) =
   items.sort((a, b) => b.d - a.d);
 
   // ground
-  const ground = poly(c, groundQuad(-3000, -2200, 3000, 2200));
+  const ground = poly(c, groundQuad(-4200, -3200, 4200, 3200));
   const blocks: React.ReactNode[] = [];
   let bi = 0;
-  for (let bx = -2600; bx < 2600; bx += STEP)
-    for (let by = -1800; by < 1800; by += STEP) {
+  for (let bx = -3600; bx < 3600; bx += STEP)
+    for (let by = -2600; by < 2600; by += STEP) {
       const x0 = bx + ROAD / 2;
       const y0 = by + ROAD / 2;
       const x1 = bx + STEP - ROAD / 2;
       const y1 = by + STEP - ROAD / 2;
       bi++;
       if (!onScreen((x0 + x1) / 2, (y0 + y1) / 2, 700)) continue;
-      const park = (bx === 1200 && by === -400) || (bx === -1600 && by === -800);
+      const park = isPark(bx, by);
       blocks.push(
-        <polygon key={`K${bi}`} points={poly(c, groundQuad(x0, y0, x1, y1, 0))} fill={park ? '#16241F' : '#1A2029'} stroke="#262E38" strokeWidth={1} />,
+        <polygon key={`K${bi}`} points={poly(c, groundQuad(x0, y0, x1, y1, 0))} fill={park ? '#A9D5A0' : '#DCE2DE'} stroke="#C5CDC9" strokeWidth={1} />,
       );
     }
 
@@ -313,7 +366,7 @@ export const World: React.FC<{c: Cam; t: number; s: WorldState}> = ({c, t, s}) =
   const dashes: React.ReactNode[] = [];
   for (let x = -2600; x <= 2600; x += 80) {
     if (!onScreen(x, 0, 300)) continue;
-    for (const Y of [0, -400, 400, -800]) dashes.push(<polygon key={`d${x}_${Y}`} points={poly(c, groundQuad(x, Y - 2, x + 36, Y + 2, 0.5))} fill="#2A323D" />);
+    for (const Y of [0, -400, 400, -800]) dashes.push(<polygon key={`d${x}_${Y}`} points={poly(c, groundQuad(x, Y - 2, x + 36, Y + 2, 0.5))} fill="#F2F4F2" />);
   }
 
   // route
@@ -364,16 +417,18 @@ export const World: React.FC<{c: Cam; t: number; s: WorldState}> = ({c, t, s}) =
             <feGaussianBlur stdDeviation={8} />
           </filter>
           <radialGradient id="fog" cx="50%" cy="45%" r="75%">
-            <stop offset="55%" stopColor={C.bg0} stopOpacity={0} />
-            <stop offset="100%" stopColor={C.bg0} stopOpacity={0.95} />
+            <stop offset="50%" stopColor="#EAF3F4" stopOpacity={0} />
+            <stop offset="100%" stopColor="#EAF3F4" stopOpacity={0.9} />
           </radialGradient>
         </defs>
-        <polygon points={ground} fill="#101419" />
+        <polygon points={ground} fill="#7D878E" />
         {blocks}
         {dashes}
+        {shadows}
         {s.routeAlpha > 0 && rp.length > 1 && (
           <g opacity={s.routeAlpha}>
             <polyline points={routeStr} fill="none" stroke={C.teal} strokeWidth={26 * sc} strokeLinecap="round" strokeLinejoin="round" opacity={0.35} filter="url(#glow)" />
+            <polyline points={routeStr} fill="none" stroke="#0B7F77" strokeWidth={17 * sc} strokeLinecap="round" strokeLinejoin="round" />
             <polyline points={routeStr} fill="none" stroke={C.teal} strokeWidth={12 * sc} strokeLinecap="round" strokeLinejoin="round" />
             <polyline
               points={routeStr}

@@ -61,7 +61,7 @@ export const Outro: React.FC<{t: number}> = ({t}) => {
         if (u >= 1 || t < st) return null;
         return (
           <div key={i} style={{position: 'absolute', left: x, top: y, transform: `translate(-50%,-50%) rotate(${(1 - u) * 400 * (i % 2 ? 1 : -1)}deg) scale(${sc})`}}>
-            <Glyph kind={g} s={70} color={[C.teal, C.yellow, C.orange, C.text][i % 4]} />
+            <Glyph kind={g} s={70} color={[C.teal, C.goldInk, C.orange, C.ink][i % 4]} />
           </div>
         );
       })}
@@ -76,13 +76,13 @@ export const Outro: React.FC<{t: number}> = ({t}) => {
             <LogoMark size={180} k={lk} />
           </div>
           <div style={{overflow: 'hidden', clipPath: `inset(0 0 0 ${(1 - word) * 100}%)`}}>
-            <div style={{fontFamily: F.kufi, fontWeight: 900, fontSize: 150, color: C.text, lineHeight: 1.3, position: 'relative', transform: `translateX(${(1 - word) * 80}px)`}}>
+            <div style={{fontFamily: F.kufi, fontWeight: 900, fontSize: 150, color: C.ink, lineHeight: 1.3, position: 'relative', transform: `translateX(${(1 - word) * 80}px)`}}>
               منهجي
               <div
                 style={{
                   position: 'absolute',
                   inset: 0,
-                  background: `linear-gradient(105deg, transparent ${sheen * 140 - 40}%, rgba(255,255,255,0.55) ${sheen * 140 - 25}%, transparent ${sheen * 140 - 10}%)`,
+                  background: `linear-gradient(105deg, transparent ${sheen * 140 - 40}%, rgba(255,255,255,0.85) ${sheen * 140 - 25}%, transparent ${sheen * 140 - 10}%)`,
                   WebkitBackgroundClip: 'text',
                   color: 'transparent',
                   opacity: sheen > 0 && sheen < 1 ? 1 : 0,
@@ -113,10 +113,10 @@ export const Outro: React.FC<{t: number}> = ({t}) => {
             lineHeight: 1.4,
           }}
         >
-          <div style={{color: C.text, opacity: clamp(t1 * 3), transform: `translateY(${(1 - Math.min(1, t1)) * 60}px)`, filter: `blur(${(1 - clamp(t1 * 1.4)) * 10}px)`}}>
+          <div style={{color: C.ink, opacity: clamp(t1 * 3), transform: `translateY(${(1 - Math.min(1, t1)) * 60}px)`, filter: `blur(${(1 - clamp(t1 * 1.4)) * 10}px)`}}>
             التبرير الاستقرائي
           </div>
-          <div style={{color: C.yellow, opacity: clamp(t2 * 3), transform: `translateY(${(1 - Math.min(1, t2)) * 60}px)`, filter: `blur(${(1 - clamp(t2 * 1.4)) * 10}px)`}}>
+          <div style={{color: C.orange, opacity: clamp(t2 * 3), transform: `translateY(${(1 - Math.min(1, t2)) * 60}px)`, filter: `blur(${(1 - clamp(t2 * 1.4)) * 10}px)`}}>
             والتخمين
           </div>
         </div>
@@ -140,10 +140,10 @@ export const Outro: React.FC<{t: number}> = ({t}) => {
         >
           <div style={{color: '#0B0E12', background: C.teal, padding: '2px 40px 12px', borderRadius: 999, transform: `scale(${Math.min(1.08, s1)})`, opacity: clamp(s1 * 3)}}>رياضيات</div>
           <div style={{width: 5, height: 64, borderRadius: 3, background: C.muted, transform: `scaleY(${clamp(s2)})`}} />
-          <div style={{color: C.text, border: `3px solid ${C.text}`, padding: '0 40px 10px', borderRadius: 999, transform: `scale(${Math.min(1.08, s2)})`, opacity: clamp(s2 * 3)}}>أول ثانوي</div>
+          <div style={{color: C.ink, border: `3px solid ${C.ink}`, padding: '0 40px 10px', borderRadius: 999, transform: `scale(${Math.min(1.08, s2)})`, opacity: clamp(s2 * 3)}}>أول ثانوي</div>
         </div>
       </AbsoluteFill>
-      <AbsoluteFill style={{background: '#000', opacity: end}} />
+      <AbsoluteFill style={{background: '#F2F5F5', opacity: end}} />
     </AbsoluteFill>
   );
 };
