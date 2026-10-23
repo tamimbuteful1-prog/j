@@ -1,0 +1,81 @@
+{
+  "_comment": "All cue times inside 'cues' are seconds in the ORIGINAL voice recording (voice_source.m4a). The edit keeps only 'segments' of the voice, placed back to back starting at 'voiceStart' on the output timeline; src/time.ts and scripts/mix.py convert voice time -> output time. Intro cues are in output seconds (= intro clip seconds).",
+  "fps": 30,
+  "introDuration": 3.708,
+  "voiceStart": 3.62,
+  "tail": 2.0,
+  "segments": [
+    [0.45, 9.80],
+    [10.10, 16.95],
+    [19.45, 23.98],
+    [25.35, 30.75],
+    [31.10, 37.82],
+    [39.30, 44.32],
+    [45.80, 51.75]
+  ],
+  "intro": {
+    "speech1": 0.33,
+    "handsTogether": 1.20,
+    "illaAlyoum": 2.13,
+    "illaEnd": 2.80,
+    "transition": 2.86
+  },
+  "cues": {
+    "s2_start": 0.45,
+    "s2_route": 0.62,
+    "s2_house": 1.12,
+    "s2_school": 1.45,
+    "s2_twenty": 2.40,
+    "s2_twentyEnd": 3.35,
+    "s2_leave": 3.93,
+    "s2_clock630": 6.05,
+    "s2_arrive": 7.07,
+    "s2_clock650": 7.95,
+
+    "s3_start": 9.05,
+    "s3_ahad": 10.85,
+    "s3_ithnain": 12.00,
+    "s3_thulatha": 13.25,
+    "s3_pattern": 14.41,
+    "s3_out": 14.44,
+    "s3_in": 15.72,
+
+    "s4_drive": 16.35,
+    "s4_freeze": 19.66,
+    "s4_text": 19.82,
+    "s4_release": 20.42,
+    "s4_jam": 20.55,
+    "s4_accident": 21.25,
+    "s4_stop": 21.75,
+    "s4_late": 22.40,
+    "s4_question": 23.10,
+
+    "s5_start": 25.38,
+    "s5_tabaan": 25.54,
+    "s5_late": 25.90,
+    "s5_x": 26.95,
+    "s5_mithal": 27.55,
+    "s5_mudad": 28.00,
+    "s5_takhmini": 28.85,
+
+    "s6_start": 31.12,
+    "s6_tawaqqu": 31.32,
+    "s6_c630": 33.20,
+    "s6_c650": 34.95,
+    "s6_takhmeen": 37.15,
+
+    "s7_start": 39.32,
+    "s7_days": 39.85,
+    "s7_arrows": 41.00,
+    "s7_conj": 41.75,
+    "s7_title": 42.72,
+
+    "s8_start": 45.82,
+    "s8_logo": 46.06,
+    "s8_title": 46.60,
+    "s8_title2": 47.92,
+    "s8_subject": 49.10,
+    "s8_grade": 49.85,
+    "s8_end": 51.41
+  }
+}
