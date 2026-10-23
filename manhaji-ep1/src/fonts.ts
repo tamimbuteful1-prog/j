@@ -23,19 +23,32 @@ const faces: [string, string, number, string][] = [
   ['Mono', 'jetbrains-mono-latin-800-normal.woff2', 800, LAT],
 ];
 
-const handle = delayRender('fonts', {timeoutInMilliseconds: 180000});
-Promise.all(
-  faces.map(([family, file, weight, range]) =>
-    new FontFace(family, `url(${staticFile(`fonts/${file}`)}) format('woff2')`, {
-      weight: String(weight),
-      unicodeRange: range,
-    })
-      .load()
-      .then((f) => document.fonts.add(f)),
-  ),
-)
-  .then(() => continueRender(handle))
-  .catch((e) => {
-    console.error(e);
-    continueRender(handle);
-  });
+// Load once per page; never hold a frame for more than 10 s if a font request stalls.
+const w = window as unknown as {__manhajiFonts?: boolean};
+if (!w.__manhajiFonts) {
+  w.__manhajiFonts = true;
+  const handle = delayRender('fonts', {timeoutInMilliseconds: 60000});
+  let done = false;
+  const finish = () => {
+    if (!done) {
+      done = true;
+      continueRender(handle);
+    }
+  };
+  setTimeout(finish, 10000);
+  Promise.all(
+    faces.map(([family, file, weight, range]) =>
+      new FontFace(family, `url(${staticFile(`fonts/${file}`)}) format('woff2')`, {
+        weight: String(weight),
+        unicodeRange: range,
+      })
+        .load()
+        .then((f) => document.fonts.add(f)),
+    ),
+  )
+    .then(finish)
+    .catch((e) => {
+      console.error(e);
+      finish();
+    });
+}
