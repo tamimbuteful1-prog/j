@@ -2,7 +2,9 @@ import React from 'react';
 import {AbsoluteFill} from 'remotion';
 import {C, F, useLayout} from '../theme';
 import {clamp, cue, easeInOutCubic, easeInOutQuint, easeOutBack, easeOutExpo, lerp, prog, spr} from '../time';
-import {ArrowL, CarIcon, Clock, Draw, HouseIcon, Pill, SchoolIcon} from '../components/Kit';
+import {Img} from 'remotion';
+import {ArrowL, Clock, Draw, HouseIcon, Pill, SchoolIcon} from '../components/Kit';
+import {ASSET} from '../street/Props';
 import {Stage} from '../components/Background';
 import {DAYS, DayCard} from './Days';
 
@@ -153,8 +155,8 @@ export const Concept: React.FC<{t: number}> = ({t}) => {
                 ) : (
                   <>
                     <ArrowL w={300} k={arrowK} color={C.ink} thick={8} />
-                    <div style={{position: 'absolute', top: -46, right: 20 + 220 * arrowK, opacity: arrowK > 0 && arrowK < 1 ? 1 : 0, transform: 'scaleX(-1)'}}>
-                      <CarIcon size={56} />
+                    <div style={{position: 'absolute', top: -46, right: 20 + 220 * arrowK, opacity: arrowK > 0 && arrowK < 1 ? 1 : 0}}>
+                      <Img src={ASSET.side} style={{width: 96, display: 'block'}} />
                     </div>
                   </>
                 )}

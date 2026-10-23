@@ -2,7 +2,9 @@ import React from 'react';
 import {AbsoluteFill} from 'remotion';
 import {C, F, useLayout} from '../theme';
 import {clamp, cue, easeInOutCubic, easeInOutQuint, easeOutExpo, prog, spr} from '../time';
-import {ArrowL, CarIcon, CheckBadge, Clock, HouseIcon, SchoolIcon} from '../components/Kit';
+import {Img} from 'remotion';
+import {ArrowL, CheckBadge, Clock, SchoolIcon} from '../components/Kit';
+import {ASSET} from '../street/Props';
 import {Stage} from '../components/Background';
 import {MAP_B_START} from './MapScene';
 
@@ -44,14 +46,14 @@ export const DayCard: React.FC<{
         <SchoolIcon size={64 * sz} />
       </div>
       <div style={{position: 'absolute', right: 0, top: 6 * sz}}>
-        <HouseIcon size={64 * sz} />
+        <Img src={ASSET.house} style={{width: 92 * sz, marginTop: -10 * sz}} />
       </div>
       <svg style={{position: 'absolute', left: 70 * sz, right: 70 * sz, top: 40 * sz, width: `calc(100% - ${140 * sz}px)`, height: 8}} preserveAspectRatio="none" viewBox="0 0 100 8">
         <line x1={0} y1={4} x2={100} y2={4} stroke="#2E3744" strokeWidth={4} strokeDasharray="4 4" vectorEffect="non-scaling-stroke" />
         <line x1={100} y1={4} x2={100 - 100 * run} y2={4} stroke={C.teal} strokeWidth={5} vectorEffect="non-scaling-stroke" strokeLinecap="round" />
       </svg>
-      <div style={{position: 'absolute', top: 16 * sz, right: `calc(${70 * sz}px + (100% - ${140 * sz + 50 * sz}px) * ${run})`, transform: 'scaleX(-1)'}}>
-        <CarIcon size={50 * sz} />
+      <div style={{position: 'absolute', top: 16 * sz, right: `calc(${70 * sz}px + (100% - ${140 * sz + 50 * sz}px) * ${run})`, marginTop: 6 * sz}}>
+        <Img src={ASSET.side} style={{width: 74 * sz, display: 'block'}} />
       </div>
     </div>
   );
