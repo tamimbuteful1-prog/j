@@ -12,6 +12,6 @@ const composition = await selectComposition({serveUrl, id: 'Manhaji', browserExe
 for (const s of process.argv.slice(2)) {
   const frame = Math.round(parseFloat(s) * composition.fps);
   const output = path.join(outDir, `t${String(s).padStart(5, '0')}.jpg`);
-  await renderStill({serveUrl, composition, frame, output, imageFormat: 'jpeg', jpegQuality: 80, browserExecutable, chromiumOptions: {gl: process.env.GL || 'swangle'}});
+  await renderStill({serveUrl, composition, frame, output, imageFormat: 'jpeg', jpegQuality: 80, browserExecutable, chromiumOptions: {gl: process.env.GL || 'angle'}});
   console.log('wrote', output);
 }

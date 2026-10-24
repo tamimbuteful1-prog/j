@@ -9,8 +9,9 @@ Final render: `out/manhaji_short.mp4`
 npm install
 python3 scripts/build_voice.py      # cuts the raw narration (source/voice_raw.flac) using scripts/edl.json
 python3 scripts/build_audio.py 75   # synthesises all SFX + the original score, ducked under the voice
+python3 scripts/mix_audio.py        # final soundtrack (mirrors src/audio/SoundTrack.tsx)
 npm run studio                      # live preview / edit
-npx remotion render src/index.ts Manhaji out/manhaji_short.mp4 --gl=swangle
+scripts/render_chunks.sh                 # resumable render (450-frame chunks) + audio mix + final encode
 node scripts/stills.mjs 9.6 25 54.4 # quick preview stills (seconds)
 ```
 
@@ -60,3 +61,5 @@ Removed: false starts of «طيب وش الفرق…» (×4), the first take whe
 - `source/` — the original uploaded files
 
 All music and sound effects are original, synthesised in `scripts/build_audio.py` (no third-party samples).
+
+> Render with `--gl=angle`: the `swangle` backend produced white-tile artifacts on some scenes.

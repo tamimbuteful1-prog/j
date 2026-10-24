@@ -6,4 +6,4 @@ Config.setCodec('h264');
 Config.setCrf(16);
 Config.setPixelFormat('yuv420p');
 Config.setConcurrency(4);
-Config.setChromiumOpenGlRenderer('swangle');
+Config.setChromiumOpenGlRenderer('angle');
