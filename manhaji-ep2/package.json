@@ -1,0 +1,24 @@
+{
+  "name": "manhaji-ep2",
+  "version": "1.0.0",
+  "private": true,
+  "description": "منهجي — الحلقة 2: العبارات الشرطية (Remotion project)",
+  "scripts": {
+    "studio": "remotion studio",
+    
+    "render": "scripts/render.sh Short out/manhaji-ep2-1080x1920.mp4"
+  },
+  "dependencies": {
+    "@fontsource/ibm-plex-sans-arabic": "5.3.0",
+    "@fontsource/jetbrains-mono": "5.3.0",
+    "@fontsource/noto-kufi-arabic": "5.3.0",
+    "@remotion/bundler": "4.0.290",
+    "@remotion/cli": "4.0.290",
+    "@remotion/renderer": "4.0.290",
+    "@types/react": "18.3.12",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "remotion": "4.0.290",
+    "typescript": "5.6.3"
+  }
+}
