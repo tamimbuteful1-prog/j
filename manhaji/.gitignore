@@ -1,3 +1,6 @@
 node_modules
 out/*.mp4
+out/chunks
+out/audio.wav
+out/list.txt
 !out/manhaji_short.mp4
