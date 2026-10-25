@@ -116,7 +116,7 @@ export const BellScene: React.FC<{t: number}> = ({t}) => {
           </div>
         </div>
         {/* series tag */}
-        <div style={{position: 'absolute', top: 150, left: 0, right: 0, display: 'flex', justifyContent: 'center', opacity: prog(t, 3.9, 0.4)}}>
+        <div style={{position: 'absolute', top: 150, left: 0, right: 0, display: 'flex', justifyContent: 'center', opacity: prog(t, 3.9, 0.4) * (1 - clamp((cs - 1.08) * 4))}}>
           <div style={{display: 'flex', alignItems: 'center', gap: 12, direction: 'rtl', background: 'rgba(255,255,255,0.85)', borderRadius: 999, padding: '6px 24px 6px 10px', boxShadow: '0 10px 30px rgba(60,45,20,0.12)'}}>
             <LogoMark size={46} />
             <span style={{fontFamily: F.kufi, fontWeight: 900, fontSize: 32, color: P.ink}}>منهجي</span>
