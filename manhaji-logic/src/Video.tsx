@@ -56,7 +56,7 @@ export const ManhajiLogic: React.FC<VideoProps> = ({hookClipSec}) => {
       })}
       {/* hook last → it sits on top while it flies away over Scene A */}
       <Sequence from={0} durationInFrames={tl.hookFrames} name="Hook · تصوير حقيقي">
-        <HookScene hookFrames={tl.hookFrames} exitFrames={exitFrames} />
+        <HookScene hookFrames={tl.hookFrames} clipFrames={sec(hookClipSec)} exitFrames={exitFrames} />
       </Sequence>
 
       {SHOW_CAPTIONS && <Captions captions={captions} />}

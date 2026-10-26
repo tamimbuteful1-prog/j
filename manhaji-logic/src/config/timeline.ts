@@ -264,14 +264,14 @@ export type PlacedScene = {
 };
 
 export type Timeline = {
-  hookFrames: number; // includes the «أو» hold
+  hookFrames: number; // includes the «أو» hold + tail hold
   scenes: PlacedScene[];
   total: number;
 };
 
 /** Lays the scenes end-to-end (minus overlaps) after the hook. */
 export const buildTimeline = (hookClipSec: number): Timeline => {
-  const hookFrames = sec(hookClipSec) + (HOOK.freezeFrames ?? 0);
+  const hookFrames = sec(hookClipSec) + (HOOK.freezeFrames ?? 0) + sec(HOOK.tailHoldSec);
   let cursor = hookFrames;
   const scenes: PlacedScene[] = SCENES.map((def) => {
     const from = cursor - sec(def.overlapSec);
@@ -284,6 +284,6 @@ export const buildTimeline = (hookClipSec: number): Timeline => {
 
 /** Hook captions — seconds inside the ORIGINAL clip (the «أو» hold is added automatically). */
 export const HOOK_CAPTIONS: Caption[] = [
-  {from: 0.1, to: 3.1, text: 'أبوي قال لي أجيب عيش وصامولي…', highlight: [{word: 'وصامولي…', color: 'and'}]},
-  {from: 3.25, to: 5.6, text: 'ولا قال عيش أو صامولي؟!', highlight: [{word: 'أو', color: 'or'}]},
+  {from: 0.4, to: 3.45, text: 'أبوي قال لي أجيب عيش وصامولي…', highlight: [{word: 'وصامولي…', color: 'and'}]},
+  {from: 3.6, to: 5.9, text: 'ولا قال عيش أو صامولي؟!', highlight: [{word: 'أو', color: 'or'}]},
 ];

@@ -12,7 +12,7 @@ import {Extruded} from '../components/Extruded';
  * • exit: the footage becomes a physical card in 3D space and the camera flies past it
  *   into the mini-market (Scene A is already rendering underneath).
  */
-export const HookScene: React.FC<{hookFrames: number; exitFrames: number}> = ({hookFrames, exitFrames}) => {
+export const HookScene: React.FC<{hookFrames: number; clipFrames: number; exitFrames: number}> = ({hookFrames, clipFrames, exitFrames}) => {
   const frame = useCurrentFrame();
   const orF = f(HOOK.orWordSec);
   const hold = HOOK.freezeFrames;
@@ -21,7 +21,7 @@ export const HookScene: React.FC<{hookFrames: number; exitFrames: number}> = ({h
 
   // slow push-in across the clip + a small punch on «أو»
   const push = interpolate(frame, [0, hookFrames], [1, HOOK.pushIn], {extrapolateRight: 'clamp'});
-  const punch = frame >= orF ? interpolate(frame, [orF, orF + 4, orF + hold + 10], [0, 0.045, 0.02], {extrapolateRight: 'clamp'}) : 0;
+  const punch = frame >= orF ? interpolate(frame, [orF, orF + 4, orF + hold + 10], [0, 1, 0.45], {extrapolateRight: 'clamp'}) * HOOK.orPunch : 0;
 
   // exit transition
   const exitStart = hookFrames - exitFrames;
@@ -52,7 +52,7 @@ export const HookScene: React.FC<{hookFrames: number; exitFrames: number}> = ({h
             filter: inHold ? `saturate(${1 - 0.6 * Math.sin(holdP * Math.PI)}) contrast(1.08)` : undefined,
           }}
         >
-          {HOOK.enabled ? <HookFootage orF={orF} hold={hold} /> : <HookPlaceholder />}
+          {HOOK.enabled ? <HookFootage orF={orF} hold={hold} clipFrames={clipFrames} /> : <HookPlaceholder />}
         </AbsoluteFill>
         <OrBeat frame={frame} orF={orF} hold={hold} />
       </AbsoluteFill>
@@ -60,24 +60,72 @@ export const HookScene: React.FC<{hookFrames: number; exitFrames: number}> = ({h
   );
 };
 
-const HookFootage: React.FC<{orF: number; hold: number}> = ({orF, hold}) => {
+/**
+ * The clip as timed segments: play → hold on «أو» (silent) → play → hold last frame (silent).
+ * Rendered twice in 'fit' mode: a blurred ambient fill + the untouched full shot.
+ */
+const ClipTimeline: React.FC<{orF: number; hold: number; clipFrames: number; style: React.CSSProperties; muted?: boolean}> = ({
+  orF,
+  hold,
+  clipFrames,
+  style,
+  muted,
+}) => {
   const src = staticFile(HOOK.src);
-  const style: React.CSSProperties = {width: '100%', height: '100%', objectFit: 'cover'};
-  if (hold <= 0) return <OffthreadVideo src={src} style={style} volume={HOOK.volume} />;
+  const vol = muted ? 0 : HOOK.volume;
+  const last = clipFrames - 1;
+  const afterOr = hold > 0 ? orF : clipFrames;
   return (
     <>
-      <Sequence durationInFrames={orF} layout="none">
-        <OffthreadVideo src={src} style={style} volume={HOOK.volume} />
+      <Sequence durationInFrames={afterOr} layout="none">
+        <OffthreadVideo src={src} style={style} volume={vol} />
       </Sequence>
-      <Sequence from={orF} durationInFrames={hold} layout="none">
-        <Freeze frame={orF}>
+      {hold > 0 && (
+        <>
+          <Sequence from={orF} durationInFrames={hold} layout="none">
+            <Freeze frame={orF}>
+              <OffthreadVideo src={src} style={style} muted />
+            </Freeze>
+          </Sequence>
+          <Sequence from={orF + hold} durationInFrames={clipFrames - orF} layout="none">
+            <OffthreadVideo src={src} style={style} volume={vol} trimBefore={orF} />
+          </Sequence>
+        </>
+      )}
+      <Sequence from={clipFrames + hold} layout="none">
+        <Freeze frame={last}>
           <OffthreadVideo src={src} style={style} muted />
         </Freeze>
       </Sequence>
-      <Sequence from={orF + hold} layout="none">
-        <OffthreadVideo src={src} style={style} volume={HOOK.volume} trimBefore={orF} />
-      </Sequence>
     </>
+  );
+};
+
+const HookFootage: React.FC<{orF: number; hold: number; clipFrames: number}> = (p) => {
+  if (HOOK.framing === 'fill') {
+    return <ClipTimeline {...p} style={{width: '100%', height: '100%', objectFit: 'cover'}} />;
+  }
+  // 'fit': the full landscape shot — no crop, no zoom — on a soft ambient fill of itself
+  const h = Math.round((1080 * 9) / 16);
+  return (
+    <AbsoluteFill style={{background: COLORS.ink}}>
+      <AbsoluteFill style={{filter: 'blur(46px) brightness(0.42) saturate(1.15)', transform: 'scale(1.15)'}}>
+        <ClipTimeline {...p} muted style={{width: '100%', height: '100%', objectFit: 'cover'}} />
+      </AbsoluteFill>
+      <div
+        style={{
+          position: 'absolute',
+          left: 0,
+          top: HOOK.fitTop,
+          width: 1080,
+          height: h,
+          overflow: 'hidden',
+          boxShadow: '0 40px 120px rgba(0,0,0,0.55)',
+        }}
+      >
+        <ClipTimeline {...p} style={{width: '100%', height: '100%', objectFit: 'cover'}} />
+      </div>
+    </AbsoluteFill>
   );
 };
 
@@ -93,7 +141,7 @@ const OrBeat: React.FC<{frame: number; orF: number; hold: number}> = ({frame, or
     <div
       style={{
         position: 'absolute',
-        top: 1170,
+        top: HOOK.framing === 'fit' ? HOOK.fitTop + 640 : 1170,
         left: 540 + dx - 120,
         width: 240,
         display: 'flex',
@@ -113,7 +161,7 @@ const OrBeat: React.FC<{frame: number; orF: number; hold: number}> = ({frame, or
       <div
         style={{
           position: 'absolute',
-          top: 1260,
+          top: HOOK.framing === 'fit' ? HOOK.fitTop + 730 : 1260,
           left: 0,
           right: 0,
           textAlign: 'center',

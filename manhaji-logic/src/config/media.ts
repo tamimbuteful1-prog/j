@@ -15,13 +15,23 @@ export const HOOK = {
    * Fallback length when the real clip is off. When enabled, the real clip
    * duration is read automatically (calculateMetadata) and the whole film re-flows.
    */
-  placeholderDurationSec: 5.7,
-  /** Second (inside the clip) where Tamim says the 2nd «أو» — the dramatic beat. */
-  orWordSec: 4.2,
+  placeholderDurationSec: 6.03,
+  /** Second (inside the clip) right after Tamim says the 2nd «أو» — the dramatic beat. */
+  orWordSec: 5.24,
   /** Hold-frame length at «أو» (frame + audio pause). 0 disables the stop. */
   freezeFrames: 12,
-  /** Push-in during the clip (1 = none). Keep subtle. */
-  pushIn: 1.04,
+  /** Hold the last frame this long so the 3D exit never cuts into speech. */
+  tailHoldSec: 0.7,
+  /**
+   * 'fit'  → the whole landscape shot, no crop / no zoom, over a soft blurred fill (natural).
+   * 'fill' → crop to fill 9:16 (use with a vertical master).
+   */
+  framing: 'fit' as 'fit' | 'fill',
+  /** Top of the shot on the 9:16 canvas in 'fit' mode. */
+  fitTop: 560,
+  /** Push-in during the clip (1 = none) and the small punch on «أو» (0 = none). */
+  pushIn: 1,
+  orPunch: 0,
   volume: 1,
 } as const;
 
