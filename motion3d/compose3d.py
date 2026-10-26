@@ -4,7 +4,9 @@ Takes the rendered 3D frames (scene.html via render3d.js), adds the Arabic
 overlays and sound, then appends Tamim's filmed hook and the motion-graphics
 lesson (director scene onward).
 
-Usage: python3 compose3d.py <frames_dir> <out.mp4> [--hook clip.mp4] [--mg-speed 1.8]
+Usage: python3 compose3d.py <frames_dir> <out.mp4> [--intro clip.mp4] [--hook clip.mp4] [--mg-speed 1.8]
+
+--intro plays a filmed clip first and replaces the 3D intro card.
 """
 import argparse
 import json
@@ -169,7 +171,7 @@ def scratch():
     return 0.25 * (s + noise) * np.minimum(1, t / 0.005) * np.exp(-t / 0.18)
 
 
-def build_audio(total, t_hook, hook_audio, t_mg, mg_len, path, mg_speed=1.0):
+def build_audio(total, t_hook, hook_audio, t_mg, mg_len, path, mg_speed=1.0, lead=None, skip=0.0):
     n = int(total * SR)
     mix = np.zeros(n)
 
@@ -219,6 +221,10 @@ def build_audio(total, t_hook, hook_audio, t_mg, mg_len, path, mg_speed=1.0):
     for t, kind in R.SFX:
         if t >= R.S2:
             put(R.synth(kind), t_mg + (t - R.S2) / mg_speed)
+    if lead is not None:  # filmed intro replaces the first `skip` seconds of the 3D timeline
+        audio, dur = lead
+        n_lead = int(dur * SR)
+        mix = np.concatenate([np.pad(audio, (0, max(0, n_lead - len(audio))))[:n_lead], mix[int(skip * SR):]])
     mix /= max(1.0, np.abs(mix).max() / 0.95)
     with wave.open(path, "wb") as w:
         w.setnchannels(2)
@@ -244,6 +250,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("frames_dir")
     ap.add_argument("out")
+    ap.add_argument("--intro", help="filmed clip to open with, instead of the 3D intro card")
     ap.add_argument("--hook", help="filmed hook clip to play between the story and the lesson")
     ap.add_argument("--mg-speed", type=float, default=1.0, help="speed-up factor for the motion-graphics lesson")
     a = ap.parse_args()
@@ -260,7 +267,13 @@ def main():
     enc = subprocess.Popen(["ffmpeg", "-v", "error", "-y", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}",
                             "-r", str(FPS), "-i", "-", "-c:v", "libx264", "-crf", "17", "-preset", "medium",
                             "-pix_fmt", "yuv420p", tmp_v], stdin=subprocess.PIPE)
+    skip = SHOTS["father"][0] if a.intro else 0.0
+    if a.intro:
+        for buf in clip_frames(a.intro):
+            enc.stdin.write(buf)
     for i, m in enumerate(meta):
+        if m["t"] < skip:
+            continue
         cv = Image.open(os.path.join(frames_dir, f"f_{i:05d}.jpg")).convert("RGBA")
         overlay(cv, m["t"], m)
         enc.stdin.write(cv.convert("RGB").tobytes())
@@ -279,7 +292,14 @@ def main():
         raw = subprocess.check_output(["ffmpeg", "-v", "error", "-i", hook, "-ac", "1", "-ar", str(SR), "-f", "s16le", "-"])
         hook_audio = np.frombuffer(raw, np.int16).astype(float) / 32768
     wav = out + ".audio.wav"
-    build_audio(total, t_hook, hook_audio, t_mg, mg_len, wav, speed)
+    lead = None
+    if a.intro:
+        raw = subprocess.check_output(["ffmpeg", "-v", "error", "-i", a.intro, "-ac", "1", "-ar", str(SR), "-f", "s16le", "-"])
+        intro_dur = float(subprocess.check_output(["ffprobe", "-v", "error", "-show_entries", "format=duration",
+                                                   "-of", "csv=p=0", a.intro]))
+        lead = (np.frombuffer(raw, np.int16).astype(float) / 32768, intro_dur)
+        total += intro_dur - skip
+    build_audio(total + skip - (lead[1] if lead else 0), t_hook, hook_audio, t_mg, mg_len, wav, speed, lead, skip)
     subprocess.check_call(["ffmpeg", "-v", "error", "-y", "-i", tmp_v, "-i", wav, "-map", "0:v", "-map", "1:a",
                            "-c:v", "copy", "-c:a", "aac", "-b:a", "192k", "-movflags", "+faststart", "-shortest", out])
     os.remove(tmp_v)
