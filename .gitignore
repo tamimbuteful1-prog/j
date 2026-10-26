@@ -7,3 +7,4 @@ motion3d/.render.log
 *.audio.wav
 motion2d/.frames/
 motion2d/.render.log
+motion2d/.frames/
