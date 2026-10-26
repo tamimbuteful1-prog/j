@@ -1,5 +1,5 @@
 // Render scene.html frame by frame with headless Chromium.
-// usage: node render3d.js <outdir> [fps] [--only t1,t2,...]
+// usage: node render3d.js <outdir> [fps] [--only t1,t2,...] [--speed k]
 const { chromium } = require('playwright');
 const fs = require('fs');
 const path = require('path');
@@ -10,6 +10,8 @@ const out = path.resolve(process.argv[2] || 'frames');
 const fps = Number(process.argv[3] || 30);
 const onlyIdx = process.argv.indexOf('--only');
 const only = onlyIdx > 0 ? process.argv[onlyIdx + 1].split(',').map(Number) : null;
+const speedIdx = process.argv.indexOf('--speed');
+const speed = speedIdx > 0 ? Number(process.argv[speedIdx + 1]) : 1;
 fs.mkdirSync(out, { recursive: true });
 
 const types = { '.html': 'text/html', '.js': 'text/javascript', '.ttf': 'font/ttf' };
@@ -30,7 +32,7 @@ const server = http.createServer((req, res) => {
   await page.goto(`http://127.0.0.1:${port}/motion3d/scene.html`);
   await page.waitForFunction(() => window.ready === true, null, { timeout: 120000 });
   const end = await page.evaluate(() => window.END);
-  const times = only || Array.from({ length: Math.round(end * fps) }, (_, i) => i / fps);
+  const times = only || Array.from({ length: Math.floor(end / speed * fps) }, (_, i) => i * speed / fps);
   const meta = [];
   const t0 = Date.now();
   for (let i = 0; i < times.length; i++) {
@@ -42,6 +44,6 @@ const server = http.createServer((req, res) => {
     meta.push({ t: times[i], ...r.m });
     if (i % 30 === 0) console.log(`frame ${i}/${times.length} ${((Date.now() - t0) / 1000).toFixed(0)}s`);
   }
-  fs.writeFileSync(path.join(out, 'meta.json'), JSON.stringify(meta));
+  fs.writeFileSync(path.join(out, 'meta.json'), JSON.stringify(speedIdx > 0 ? { speed, frames: meta } : meta));
   await browser.close(); server.close();
 })();

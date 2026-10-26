@@ -39,6 +39,15 @@ MUTED = (160, 190, 205)
 CARD = (255, 255, 255, 22)
 CARD_LINE = (120, 200, 220, 90)
 
+# Lesson theme: warm, light and clean
+CREAM = (255, 247, 236)
+CREAM_2 = (255, 234, 210)
+INK = (31, 27, 46)
+INK2 = (112, 104, 128)
+ACCENT = (255, 116, 26)
+TEAL2 = (18, 166, 156)
+OK_GREEN = (22, 163, 74)
+
 
 # ----------------------------------------------------------------- easing
 def clamp(x, a=0.0, b=1.0):
@@ -139,6 +148,16 @@ def card(w, h, fill=CARD, line=CARD_LINE, radius=36, width=3):
 
 
 @lru_cache(maxsize=None)
+def panel(w, h, radius=36, fill=(255, 255, 255, 255), shadow=60):
+    pad = 40
+    im = Image.new("RGBA", (w + 2 * pad, h + 2 * pad), (0, 0, 0, 0))
+    ImageDraw.Draw(im).rounded_rectangle((pad, pad + 12, pad + w, pad + h + 12), radius=radius, fill=(120, 70, 30, shadow))
+    im = im.filter(ImageFilter.GaussianBlur(16))
+    im.alpha_composite(card(w, h, fill=fill, line=(0, 0, 0, 0), radius=radius), (pad, pad))
+    return im
+
+
+@lru_cache(maxsize=None)
 def bubble(w, h, tail="up", fill=(255, 255, 255, 245)):
     th = 40
     im, d = ss(w, h + th)
@@ -179,12 +198,12 @@ def badge(ok, size, ring=True):
 @lru_cache(maxsize=None)
 def pill(label, ok, size=56):
     t = text(label, size, WHITE, "900")
-    b = badge(ok, int(size * 1.15), ring=False)
+    b = badge(ok, int(size * 1.15), ring=True)
     w = t.width + b.width + 70
     h = int(size * 1.75)
     im, d = ss(w, h)
     col = GREEN if ok else RED
-    d.rounded_rectangle((0, 0, 2 * w - 1, 2 * h - 1), radius=h, fill=col + (60,), outline=col + (255,), width=6)
+    d.rounded_rectangle((0, 0, 2 * w - 1, 2 * h - 1), radius=h, fill=col + (255,))
     im = down(im)
     im.alpha_composite(b, (w - b.width - 22, (h - b.height) // 2))
     im.alpha_composite(t, (24, (h - t.height) // 2))
@@ -257,7 +276,7 @@ def tamim(size):
     mask = Image.new("L", (size * 2, size * 2), 0)
     ImageDraw.Draw(mask).ellipse((0, 0, size * 2 - 1, size * 2 - 1), fill=255)
     im.paste(face, (0, 0), mask)
-    d.ellipse((2, 2, size * 2 - 3, size * 2 - 3), outline=YELLOW, width=12)
+    d.ellipse((2, 2, size * 2 - 3, size * 2 - 3), outline=ACCENT, width=12)
     return down(im)
 
 
@@ -304,12 +323,12 @@ def clapper(size):
 
 
 @lru_cache(maxsize=None)
-def op_circle(s, size, color=YELLOW):
+def op_circle(s, size, color=ACCENT):
     im, d = ss(size, size)
     d.ellipse((0, 0, 2 * size - 1, 2 * size - 1), fill=color)
     d.ellipse((10, 10, 2 * size - 11, 2 * size - 11), outline=(255, 255, 255, 120), width=8)
     im = down(im)
-    t = text(s, int(size * 0.55), NAVY, "900")
+    t = text(s, int(size * 0.55), WHITE, "900")
     im.alpha_composite(t, ((size - t.width) // 2, (size - t.height) // 2 + int(size * 0.02)))
     return im
 
@@ -349,42 +368,41 @@ def place(cv, im, cx, cy, scale=1.0, alpha=1.0, rot=0.0):
 
 
 def make_background():
-    y = np.linspace(0, 1, H + 120)[:, None]
-    x = np.linspace(0, 1, W)[None, :]
-    top, bot = np.array(NAVY, float), np.array((10, 48, 66), float)
-    g = top + (bot - top) * y[..., None]
-    r = np.sqrt((x - 0.5) ** 2 * 1.4 + (y - 0.45) ** 2)
-    g = g + (np.array(TEAL, float) * 0.55) * np.clip(1 - r * 1.8, 0, 1)[..., None] ** 2
-    img = Image.fromarray(np.clip(g, 0, 255).astype(np.uint8), "RGB").convert("RGBA")
+    y = np.linspace(0, 1, H)[:, None, None]
+    g = np.array(CREAM, float) * (1 - y) + np.array(CREAM_2, float) * y
+    img = Image.fromarray(np.repeat(g, W, 1).astype(np.uint8), "RGB").convert("RGBA")
     d = ImageDraw.Draw(img)
-    for gx in range(0, W, 60):
-        d.line([(gx, 0), (gx, H + 120)], fill=(255, 255, 255, 10))
-    for gy in range(0, H + 120, 60):
-        d.line([(0, gy), (W, gy)], fill=(255, 255, 255, 10))
-    over = Image.new("RGBA", img.size, (0, 0, 0, 0))
-    ImageDraw.Draw(over).rectangle((0, 0, W, H + 120), outline=(0, 0, 0, 0))
-    vign = Image.fromarray((np.clip(r * 1.25 - 0.35, 0, 1) * 150).astype(np.uint8), "L")
-    dark = Image.new("RGBA", img.size, (0, 0, 0, 255))
-    dark.putalpha(vign)
-    img.alpha_composite(dark)
+    for yy in range(40, H, 56):  # dotted paper
+        for xx in range(40 + (yy // 56 % 2) * 28, W, 56):
+            d.ellipse((xx - 2, yy - 2, xx + 2, yy + 2), fill=(225, 190, 150, 90))
     return img
 
 
 BG = None
-SYMBOLS = ["∧", "∨", "¬", "→", "↔", "T", "F", "∧", "∨", "p", "q"]
+BLOBS = [((255, 170, 90), 170, 260, 330, 0.0), ((80, 205, 190), 900, 520, 300, 1.7),
+         ((255, 214, 90), 860, 1580, 360, 3.1), ((255, 140, 120), 160, 1420, 280, 4.4)]
+SYMBOLS = ["∧", "∨", "¬", "→", "T", "F", "p", "q"]
 FLOATERS = [(np.random.default_rng(i).uniform(60, W - 60), np.random.default_rng(i + 50).uniform(200, H - 200),
-             SYMBOLS[i % len(SYMBOLS)], 60 + (i * 37) % 70, i * 0.7) for i in range(14)]
+             SYMBOLS[i % len(SYMBOLS)], 60 + (i * 37) % 70, i * 0.7) for i in range(12)]
+
+
+@lru_cache(maxsize=None)
+def blob(color, r):
+    im = Image.new("RGBA", (r * 4, r * 4), (0, 0, 0, 0))
+    ImageDraw.Draw(im).ellipse((r, r, 3 * r, 3 * r), fill=color + (110,))
+    return im.filter(ImageFilter.GaussianBlur(r * 0.45))
 
 
 def background(t):
     global BG
     if BG is None:
         BG = make_background()
-    off = int((t * 14) % 60)
-    cv = BG.crop((0, off, W, off + H)).copy()
+    cv = BG.copy()
+    for col, x, y, r, ph in BLOBS:
+        place(cv, blob(col, r), x + 60 * math.sin(t * 0.5 + ph), y + 50 * math.cos(t * 0.4 + ph))
     for x, y, s, size, ph in FLOATERS:
-        im = text(s, size, (150, 220, 235, 255), "sym")
-        place(cv, im, x + 20 * math.sin(t * 0.3 + ph), y - (t * 12 + ph * 40) % 260 + 130, alpha=0.07)
+        im = text(s, size, ACCENT + (255,), "sym")
+        place(cv, im, x + 20 * math.sin(t * 0.3 + ph), y - (t * 12 + ph * 40) % 260 + 130, alpha=0.12, rot=10 * math.sin(t + ph))
     return cv
 
 
@@ -398,16 +416,16 @@ def sfx(t, kind):
 
 def chip(cv, label, t, start, A, y=300, icon=None):
     s = pop(t, start, 0.4)
-    t_ = text(label, 54, NAVY, "900")
+    t_ = text(label, 54, WHITE, "900")
     w, h = t_.width + 80, 96
-    c = card(w, h, fill=YELLOW + (255,), line=(255, 255, 255, 0), radius=48)
+    c = card(w, h, fill=ACCENT + (255,), line=(255, 255, 255, 0), radius=48)
     c = c.copy()
     c.alpha_composite(t_, (40, (h - t_.height) // 2))
     place(cv, c, W / 2, y, s, A)
 
 
 def header(cv, t, A):
-    t_ = rich((("منهجي", YELLOW), ("|", MUTED), ("الحلقة الثانية: المنطق", WHITE)), 38, "700")
+    t_ = rich((("منهجي", ACCENT), ("|", INK2), ("الحلقة الثانية: المنطق", INK)), 38, "700")
     place(cv, t_, W / 2, 170, 1, A * 0.9)
 
 
@@ -458,19 +476,19 @@ sfx(4.1, "whoosh"); sfx(5.0, "pop"); sfx(5.4, "ding"); sfx(6.6, "buzz"); sfx(8.0
 def scene_director(cv, t, A):
     chip(cv, "المخرج", t, 0.0, A)
     place(cv, clapper(190), W / 2, 480, pop(t, 0.2), A, rot=8 * math.sin(min(t, 1.2) * 12) * (1 - prog(t, 0.2, 1.0)))
-    place(cv, text("طيب لو أبوك قال:", 60, MUTED, "700"), W / 2, 660, 1, A * fade(t, 0.7))
+    place(cv, text("طيب لو أبوك قال:", 60, INK2, "700"), W / 2, 660, 1, A * fade(t, 0.7))
     b = bubble(860, 170).copy()
     msg = rich((("جيب عيش", NAVY), ("أو", (214, 140, 0)), ("صامولي؟", NAVY)), 80)
     b.alpha_composite(msg, ((b.width - msg.width) // 2, 40 + (170 - msg.height) // 2))
     place(cv, b, W / 2, 800, pop(t, 1.2, 0.4), A)
     place(cv, tamim(190), W / 2, 1030, pop(t, 3.2), A)
-    b2 = bubble(900, 150, tail="up", fill=(255, 204, 0, 255)).copy()
-    m2 = rich((("هنا يكفي أجيب", NAVY), ("واحد", (180, 30, 30)), ("منهم!", NAVY)), 66)
+    b2 = bubble(900, 150, tail="up", fill=ACCENT + (255,)).copy()
+    m2 = rich((("هنا يكفي أجيب", WHITE), ("واحد", (255, 236, 140)), ("منهم!", WHITE)), 66)
     b2.alpha_composite(m2, ((b2.width - m2.width) // 2, 40 + (150 - m2.height) // 2))
     place(cv, b2, W / 2, 1225, pop(t, 3.6, 0.4), A)
     for x, st, im in ((680, 5.2, bread(150)), (400, 5.5, samoli(180))):
         place(cv, im, x, 1420, pop(t, st), A if x == 680 else A * 0.45)
-    place(cv, text("أو", 54, YELLOW, "900"), 540, 1420, pop(t, 5.35), A)
+    place(cv, text("أو", 54, ACCENT, "900"), 540, 1420, pop(t, 5.35), A)
     place(cv, badge(True, 80), 760, 1360, pop(t, 6.1), A)
     place(cv, pill("الطلب منفّذ", True, 46), W / 2, 1555, pop(t, 6.4), A)
 
@@ -480,12 +498,12 @@ sfx(S2 + 3.6, "pop"); sfx(S2 + 5.2, "pop"); sfx(S2 + 5.5, "pop"); sfx(S2 + 6.1, 
 
 
 def scene_title(cv, t, A):
-    place(cv, text("وهنا يجي", 84, MUTED, "700"), W / 2, 790, 1, A * fade(t, 0.1))
+    place(cv, text("وهنا يجي", 84, INK2, "700"), W / 2, 790, 1, A * fade(t, 0.1))
     s = pop(t, 0.4, 0.45)
-    t_ = rich((("درس", WHITE), ("المنطق!", YELLOW)), 150)
-    place(cv, glow(t_.width - 60, 60, (255, 204, 0)), W / 2, 990, s, A * 0.35)
+    t_ = rich((("درس", INK), ("المنطق!", ACCENT)), 150)
+    place(cv, glow(t_.width - 60, 60, ACCENT), W / 2, 990, s, A * 0.35)
     place(cv, t_, W / 2, 960, s, A)
-    for i, (op, col) in enumerate((("و", YELLOW), ("أو", (120, 200, 220)))):
+    for i, (op, col) in enumerate((("و", ACCENT), ("أو", TEAL2))):
         place(cv, op_circle(op, 160, col), W / 2 + (0.5 - i) * 240, 1230, pop(t, 1.0 + i * 0.2), A)
 
 
@@ -494,15 +512,15 @@ sfx(S3 + 0.0, "whoosh"); sfx(S3 + 0.4, "ding"); sfx(S3 + 1.0, "pop"); sfx(S3 + 1
 
 def scene_statements(cv, t, A):
     chip(cv, "العبارات", t, 0.0, A)
-    place(cv, text("عندنا عبارتان:", 80, WHITE, "900"), W / 2, 470, 1, A * fade(t, 0.3))
+    place(cv, text("عندنا عبارتان:", 80, INK, "900"), W / 2, 470, 1, A * fade(t, 0.3))
     for i, (lab, im, ok, st) in enumerate((("جبت العيش", bread(120), True, 0.9),
                                             ("جبت الصامولي", samoli(140), False, 2.6))):
         y = 680 + i * 250
         dx = 300 * (1 - ease_out(prog(t, st, 0.45)))
         a = A * fade(t, st, 0.35)
-        place(cv, card(920, 200), W / 2 + dx, y, 1, a)
+        place(cv, panel(920, 200), W / 2 + dx, y, 1, a)
         place(cv, im, 900 + dx, y, 1, a)
-        lt = text(lab, 66, WHITE, "900")
+        lt = text(lab, 66, INK, "900")
         place(cv, lt, 810 - lt.width / 2 + dx, y, 1, a)
         place(cv, pill("صحيحة" if ok else "خاطئة", ok, 50), 225, y, pop(t, st + 1.0), A)
     # the judgement is called the truth value
@@ -512,10 +530,10 @@ def scene_statements(cv, t, A):
         col = (255, 204, 0, int(255 * p * A))
         d.line([(110, 600), (70, 600), (70, 1010), (110, 1010)], fill=col, width=6)
         d.line([(70, 805), (40, 805)], fill=col, width=6)
-    place(cv, text("الحكم بصح أو خطأ نسميه", 62, MUTED, "700"), W / 2, 1180, 1, A * fade(t, 5.2))
+    place(cv, text("الحكم بصح أو خطأ نسميه", 62, INK2, "700"), W / 2, 1180, 1, A * fade(t, 5.2))
     s = pop(t, 5.9, 0.45)
-    q = text("قيمة الصواب", 130, YELLOW, "900")
-    place(cv, glow(q.width - 40, 70, (255, 204, 0)), W / 2, 1360, s, A * 0.3)
+    q = text("قيمة الصواب", 130, ACCENT, "900")
+    place(cv, glow(q.width - 40, 70, ACCENT), W / 2, 1360, s, A * 0.3)
     place(cv, q, W / 2, 1335, s, A)
 
 
@@ -529,15 +547,15 @@ def truth_table(cv, t, A, start, op, results, highlight=1, y0=1050):
     xs = (850, 600, 290)  # column centers right -> left
     rh = 112
     a = A * fade(t, start)
-    place(cv, card(920, rh * 5 + 30, fill=(255, 255, 255, 14)), W / 2, y0 + rh * 2.5, 1, a)
-    heads = (text("العيش", 48, WHITE, "900"), text("الصامولي", 48, WHITE, "900"),
-             rich((("العيش", WHITE), (op, YELLOW), ("الصامولي", WHITE)), 32, "900"))
+    place(cv, panel(920, rh * 5 + 30), W / 2, y0 + rh * 2.5, 1, a)
+    heads = (text("العيش", 48, INK, "900"), text("الصامولي", 48, INK, "900"),
+             rich((("العيش", INK), (op, ACCENT), ("الصامولي", INK)), 32, "900"))
     for x, hd in zip(xs, heads):
         place(cv, hd, x, y0 + rh * 0.5, 1, a)
     if a > 0:
         d = ImageDraw.Draw(cv)
-        d.line([(110, y0 + rh), (970, y0 + rh)], fill=(255, 255, 255, int(70 * a)), width=3)
-        d.line([(440, y0 + 10), (440, y0 + rh * 5)], fill=(255, 255, 255, int(70 * a)), width=3)
+        d.line([(110, y0 + rh), (970, y0 + rh)], fill=INK + (int(40 * a),), width=3)
+        d.line([(440, y0 + 10), (440, y0 + rh * 5)], fill=INK + (int(40 * a),), width=3)
     for i, (p, q) in enumerate(rows):
         y = y0 + rh * (i + 1.5)
         st = start + 0.5 + i * 0.45
@@ -547,8 +565,8 @@ def truth_table(cv, t, A, start, op, results, highlight=1, y0=1050):
                 pulse = 0.75 + 0.25 * math.sin((t - start) * 7)
                 place(cv, card(900, rh - 8, fill=(255, 204, 0, int(40 * hp)), line=(255, 204, 0, int(255 * hp * pulse)),
                                radius=28, width=5), W / 2, y, 1, A)
-                tag = card(150, 64, fill=YELLOW + (255,), line=(0, 0, 0, 0), radius=32).copy()
-                tt = text("حالتي", 38, NAVY, "900")
+                tag = card(150, 64, fill=ACCENT + (255,), line=(0, 0, 0, 0), radius=32).copy()
+                tt = text("حالتي", 38, WHITE, "900")
                 tag.alpha_composite(tt, ((150 - tt.width) // 2, (64 - tt.height) // 2))
                 place(cv, tag, 985, y - 50, pop(t, start + 4.7), A, rot=-8)
         place(cv, badge(p, 76), xs[0], y, pop(t, st), A)
@@ -558,10 +576,10 @@ def truth_table(cv, t, A, start, op, results, highlight=1, y0=1050):
 
 def scene_connective(cv, t, A, op, name, rule_lines, results, sfx_base=None):
     place(cv, op_circle(op, 170), W / 2, 420, pop(t, 0.1, 0.45), A)
-    place(cv, text(name, 96, WHITE, "900"), W / 2, 590, 1, A * fade(t, 0.5))
-    sent = card(860, 120).copy()
-    m = rich((("جبت العيش", WHITE), (op, YELLOW), ("الصامولي", WHITE)), 60)
-    sent.alpha_composite(m, ((860 - m.width) // 2, (120 - m.height) // 2))
+    place(cv, text(name, 96, INK, "900"), W / 2, 590, 1, A * fade(t, 0.5))
+    sent = panel(860, 120).copy()
+    m = rich((("جبت العيش", INK), (op, ACCENT), ("الصامولي", INK)), 60)
+    sent.alpha_composite(m, ((sent.width - m.width) // 2, (sent.height - 12 - m.height) // 2))
     place(cv, sent, W / 2, 730, pop(t, 1.0, 0.35), A)
     for i, ln in enumerate(rule_lines):
         place(cv, rich(ln, 50, "700"), W / 2, 850 + i * 72, 1, A * fade(t, 2.0 + i * 0.6))
@@ -571,15 +589,15 @@ def scene_connective(cv, t, A, op, name, rule_lines, results, sfx_base=None):
 def scene_and(cv, t, A):
     chip(cv, "الدرس", t, 0.0, A, y=270)
     scene_connective(cv, t, A, "و", "عبارة وصل",
-                     [(("لازم العبارتان تكونان", WHITE), ("صحيحتين", GREEN))],
+                     [(("لازم العبارتان تكونان", INK), ("صحيحتين", OK_GREEN))],
                      (True, False, False, False))
 
 
 def scene_or(cv, t, A):
     chip(cv, "الدرس", t, 0.0, A, y=270)
     scene_connective(cv, t, A, "أو", "عبارة فصل",
-                     [(("يكفي", WHITE), ("واحدة على الأقل", YELLOW), ("تكون صحيحة", GREEN)),
-                      (("أو حتى", WHITE), ("الاثنتان معًا", YELLOW))],
+                     [(("يكفي", INK), ("واحدة على الأقل", ACCENT), ("تكون صحيحة", OK_GREEN)),
+                      (("أو حتى", INK), ("الاثنتان معًا", ACCENT))],
                      (True, True, True, False))
 
 
@@ -593,16 +611,16 @@ for base in (S5, S6):
 
 
 def scene_outro(cv, t, A):
-    place(cv, text("وهذا درس", 80, MUTED, "700"), W / 2, 620, 1, A * fade(t, 0.1))
+    place(cv, text("وهذا درس", 80, INK2, "700"), W / 2, 620, 1, A * fade(t, 0.1))
     s = pop(t, 0.4, 0.45)
-    place(cv, text("المنطق", 170, YELLOW, "900"), W / 2, 790, s, A)
-    place(cv, text("من مادة الرياضيات", 70, WHITE, "900"), W / 2, 990, 1, A * fade(t, 1.1))
-    place(cv, text("للصف الأول الثانوي", 70, WHITE, "900"), W / 2, 1090, 1, A * fade(t, 1.5))
-    logo = card(420, 150, fill=YELLOW + (255,), line=(0, 0, 0, 0), radius=75).copy()
-    lt = text("منهجي", 92, NAVY, "900")
+    place(cv, text("المنطق", 170, ACCENT, "900"), W / 2, 790, s, A)
+    place(cv, text("من مادة الرياضيات", 70, INK, "900"), W / 2, 990, 1, A * fade(t, 1.1))
+    place(cv, text("للصف الأول الثانوي", 70, INK, "900"), W / 2, 1090, 1, A * fade(t, 1.5))
+    logo = card(420, 150, fill=ACCENT + (255,), line=(0, 0, 0, 0), radius=75).copy()
+    lt = text("منهجي", 92, WHITE, "900")
     logo.alpha_composite(lt, ((420 - lt.width) // 2, (150 - lt.height) // 2))
     place(cv, logo, W / 2, 1320, pop(t, 2.2, 0.45), A)
-    place(cv, text("الحلقة الثانية", 46, MUTED, "700"), W / 2, 1450, 1, A * fade(t, 2.6))
+    place(cv, text("الحلقة الثانية", 46, INK2, "700"), W / 2, 1450, 1, A * fade(t, 2.6))
 
 
 sfx(S7 + 0.0, "whoosh"); sfx(S7 + 0.4, "ding"); sfx(S7 + 2.2, "pop")
@@ -621,7 +639,7 @@ def frame(t):
             fn(cv, lt, A)
     if t > END - 0.6:  # fade to black at the very end
         k = prog(t, END - 0.6, 0.6)
-        cv.alpha_composite(Image.new("RGBA", (W, H), (0, 0, 0, int(255 * k))))
+        cv.alpha_composite(Image.new("RGBA", (W, H), CREAM + (int(255 * k),)))
     return cv.convert("RGB")
 
 
