@@ -1,2 +1,7 @@
 output/.work/
 __pycache__/
+node_modules/
+motion3d/.frames/
+motion3d/.render.log
+*.video.mp4
+*.audio.wav

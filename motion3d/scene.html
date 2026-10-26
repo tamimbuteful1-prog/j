@@ -1,0 +1,509 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Manhaji 3D</title>
+<style>
+  @font-face { font-family: Cairo; src: url(/motion/assets/CairoBlack.ttf); font-weight: 900; }
+  html, body { margin: 0; background: #000; }
+  canvas { display: block; }
+</style>
+<script type="importmap">
+{ "imports": {
+  "three": "/motion3d/node_modules/three/build/three.module.js",
+  "three/addons/": "/motion3d/node_modules/three/examples/jsm/"
+} }
+</script>
+</head>
+<body>
+<script type="module">
+import * as THREE from 'three';
+import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
+
+await document.fonts.load('900 100px Cairo');
+const W = 1080, H = 1920;
+const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+renderer.setPixelRatio(1);
+renderer.setSize(W, H);
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.05;
+document.body.appendChild(renderer.domElement);
+
+// ------------------------------------------------------------ helpers
+const clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
+const prog = (t, s, d) => clamp((t - s) / d);
+const easeOut = x => 1 - Math.pow(1 - x, 3);
+const easeInOut = x => x * x * (3 - 2 * x);
+const backOut = x => { const c1 = 1.70158, c3 = c1 + 1; return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2); };
+const lerp = (a, b, k) => a + (b - a) * k;
+
+// 3D-print layer lines: a fine stripe bump map
+function layerTex(rep) {
+  const c = document.createElement('canvas'); c.width = 8; c.height = 64;
+  const g = c.getContext('2d');
+  for (let y = 0; y < 64; y++) { const v = 150 + 70 * Math.sin(y / 64 * Math.PI * 2 * 8); g.fillStyle = `rgb(${v},${v},${v})`; g.fillRect(0, y, 8, 1); }
+  const t = new THREE.CanvasTexture(c); t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(1, rep);
+  return t;
+}
+const LT = {};
+function mat(color, { rep = 6, rough = 0.62, metal = 0, emissive = 0x000000, map = null, bump = 0.35 } = {}) {
+  LT[rep] = LT[rep] || layerTex(rep);
+  return new THREE.MeshStandardMaterial({ color, roughness: rough, metalness: metal, bumpMap: LT[rep], bumpScale: bump, emissive, map });
+}
+function mesh(geo, m, { x = 0, y = 0, z = 0, sx = 1, sy = 1, sz = 1, rx = 0, ry = 0, rz = 0, cast = true, recv = true } = {}) {
+  const o = new THREE.Mesh(geo, m);
+  o.position.set(x, y, z); o.scale.set(sx, sy, sz); o.rotation.set(rx, ry, rz);
+  o.castShadow = cast; o.receiveShadow = recv;
+  return o;
+}
+const sphere = (r, s = 32) => new THREE.SphereGeometry(r, s, Math.round(s * 0.75));
+const capsule = (r, l) => new THREE.CapsuleGeometry(r, l, 8, 20);
+const cyl = (rt, rb, h, s = 32) => new THREE.CylinderGeometry(rt, rb, h, s);
+const rbox = (w, h, d, r = 0.05) => new RoundedBoxGeometry(w, h, d, 4, r);
+
+function canvasTex(w, h, draw) {
+  const c = document.createElement('canvas'); c.width = w; c.height = h;
+  draw(c.getContext('2d'), w, h);
+  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 8;
+  return t;
+}
+
+// ------------------------------------------------------------ palette
+const C = {
+  skin: 0xc98d5f, skinDark: 0xb27448, hair: 0x1d1714, thobe: 0xf4f2ee, sandal: 0x5a3a24,
+  eye: 0x121212, beard: 0x231a15, red: 0xc8202c, black: 0x151515,
+  bread: 0xe0ad66, breadDark: 0xb87a36, samoli: 0xe9a24a,
+};
+
+// ------------------------------------------------------------ characters
+function person({ father = false } = {}) {
+  const root = new THREE.Group();
+  const body = new THREE.Group(); root.add(body);
+  const thobe = mat(C.thobe, { rep: 18 });
+  const skin = mat(C.skin, { rep: 14, rough: 0.55 });
+  const s = father ? 1.12 : 1.0;
+  body.scale.setScalar(s);
+
+  // torso + skirt
+  body.add(mesh(capsule(0.23, 0.42), thobe, { y: 0.95, sx: 1.05, sz: 0.85 }));
+  const skirt = mesh(cyl(0.24, 0.3, 0.62), thobe, { y: 0.42, sz: 0.85 });
+  body.add(skirt);
+  // collar + buttons
+  body.add(mesh(new THREE.TorusGeometry(0.1, 0.022, 10, 30), thobe, { y: 1.27, rx: Math.PI / 2 }));
+  body.add(mesh(sphere(0.015, 10), mat(0xdddddd), { y: 1.18, z: 0.2 }));
+  body.add(mesh(sphere(0.015, 10), mat(0xdddddd), { y: 1.1, z: 0.21 }));
+
+  // feet
+  const feet = [];
+  for (const x of [-0.1, 0.1]) {
+    const f = mesh(rbox(0.13, 0.07, 0.26, 0.03), mat(C.sandal, { rep: 4 }), { x, y: 0.035, z: 0.03 });
+    body.add(f); feet.push(f);
+  }
+
+  // head
+  const head = new THREE.Group(); head.position.y = 1.56; body.add(head);
+  head.add(mesh(cyl(0.08, 0.09, 0.14), skin, { y: -0.27 }));
+  head.add(mesh(sphere(0.29, 48), skin, { sy: 1.04 }));
+  for (const x of [-0.29, 0.29]) head.add(mesh(sphere(0.06), skin, { x, y: -0.02, sx: 0.6 }));
+  // eyes
+  const eyes = [], brows = [];
+  for (const x of [-0.1, 0.1]) {
+    const e = new THREE.Group(); e.position.set(x, 0.03, 0.255);
+    e.add(mesh(sphere(0.045), mat(0xffffff, { rough: 0.3 }), { sz: 0.5, cast: false }));
+    e.add(mesh(sphere(0.03), mat(C.eye, { rough: 0.25 }), { z: 0.015, sz: 0.6, cast: false }));
+    e.add(mesh(sphere(0.009, 8), mat(0xffffff, { emissive: 0xffffff }), { x: 0.01, y: 0.012, z: 0.035, cast: false }));
+    head.add(e); eyes.push(e);
+    const b = mesh(rbox(0.1, 0.022, 0.03, 0.01), mat(father ? C.beard : C.hair), { x, y: 0.12, z: 0.262, rz: x > 0 ? -0.12 : 0.12, cast: false });
+    head.add(b); brows.push(b);
+  }
+  head.add(mesh(sphere(0.04), mat(C.skinDark, { rep: 8 }), { y: -0.04, z: 0.285, sy: 0.9, cast: false })); // nose
+  const mouth = mesh(new THREE.TorusGeometry(0.045, 0.016, 10, 28), mat(0x6b2a22, { rough: 0.4 }), { y: -0.13, z: 0.255, sy: 0.45, cast: false });
+  head.add(mouth);
+  const mouthIn = mesh(sphere(0.04), mat(0x3a1512), { y: -0.13, z: 0.245, sx: 1, sy: 0.1, sz: 0.4, cast: false });
+  head.add(mouthIn);
+
+  if (father) {
+    // beard + moustache
+    head.add(mesh(sphere(0.2, 32), mat(C.beard, { rep: 10 }), { y: -0.16, z: 0.1, sx: 1.25, sy: 0.85, sz: 0.95 }));
+    head.add(mesh(capsule(0.025, 0.12), mat(C.beard), { y: -0.085, z: 0.27, rz: Math.PI / 2, cast: false }));
+    mouth.position.y = -0.14; mouth.position.z = 0.27; mouthIn.position.z = 0.262; mouthIn.position.y = -0.14;
+    // shemagh (red & white check) + agal
+    const shemagh = canvasTex(256, 256, (g, w, h) => {
+      g.fillStyle = '#f7f3ee'; g.fillRect(0, 0, w, h);
+      g.fillStyle = '#c8202c';
+      for (let i = 0; i < 16; i++) for (let j = 0; j < 16; j++) if ((i + j) % 2 === 0) g.fillRect(i * 16 + 4, j * 16 + 4, 8, 8);
+    });
+    shemagh.wrapS = shemagh.wrapT = THREE.RepeatWrapping; shemagh.repeat.set(3, 3);
+    const sm = mat(0xffffff, { map: shemagh, rep: 20, bump: 0.2 });
+    sm.side = THREE.DoubleSide;
+    head.add(mesh(new THREE.SphereGeometry(0.315, 48, 32, 0, Math.PI * 2, 0, Math.PI * 0.38), sm, { y: 0.0 }));
+    const drape = mesh(new THREE.CylinderGeometry(0.3, 0.44, 0.62, 40, 1, true, Math.PI * 0.3, Math.PI * 1.4), sm, { y: -0.2 });
+    head.add(drape);
+    const agal = mat(C.black, { rep: 10, rough: 0.4 });
+    head.add(mesh(new THREE.TorusGeometry(0.255, 0.03, 12, 48), agal, { y: 0.2, rx: Math.PI / 2 - 0.12 }));
+    head.add(mesh(new THREE.TorusGeometry(0.245, 0.028, 12, 48), agal, { y: 0.255, rx: Math.PI / 2 - 0.12 }));
+  } else {
+    // curly hair: cluster of blobs
+    const hm = mat(C.hair, { rep: 10, rough: 0.8 });
+    const rnd = mulberry(7);
+    for (let i = 0; i < 46; i++) {
+      const th = rnd() * Math.PI * 2, ph = rnd() * 1.05;
+      const r = 0.285;
+      const x = r * Math.sin(ph) * Math.cos(th), z = r * Math.sin(ph) * Math.sin(th) - 0.02, y = r * Math.cos(ph) + 0.03;
+      if (z > 0.17 && y < 0.2) continue; // keep the forehead clear
+      head.add(mesh(sphere(0.075 + rnd() * 0.04, 16), hm, { x, y, z }));
+    }
+  }
+
+  // arms (pivot at shoulder)
+  const arms = [];
+  for (const side of [-1, 1]) {
+    const sh = new THREE.Group(); sh.position.set(0.27 * side, 1.17, 0); body.add(sh);
+    sh.add(mesh(capsule(0.075, 0.36), thobe, { y: -0.24 }));
+    const hand = mesh(sphere(0.07), skin, { y: -0.5 });
+    sh.add(hand);
+    arms.push({ sh, hand });
+  }
+  return { root, body, head, eyes, brows, mouth, mouthIn, arms, feet, skirt, scale: s };
+}
+
+function mulberry(a) { return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+
+// face expressions
+function face(p, { talk = 0, whistle = 0, shock = 0, smile = 0, blink = 0 } = {}) {
+  const eyeS = 1 + 0.55 * shock;
+  p.eyes.forEach(e => { e.scale.set(eyeS, eyeS * (1 - 0.9 * blink), eyeS); });
+  p.brows.forEach((b, i) => { b.position.y = 0.12 + 0.06 * shock; b.rotation.z = (i ? -1 : 1) * (0.12 - 0.3 * shock); });
+  // mouth: neutral smile ring squashed; whistle = small round; talk = open; shock = big O
+  const open = Math.max(talk, shock);
+  const sx = lerp(lerp(1.15 + 0.3 * smile, 0.55, whistle), 0.9, shock);
+  const sy = lerp(0.42, 0.9, Math.max(whistle, open));
+  p.mouth.scale.set(sx, sy + 0.4 * open, 1);
+  p.mouthIn.scale.set(sx * 0.9, 0.1 + 0.85 * Math.max(open, whistle * 0.6), 0.4);
+}
+
+function bread(r = 0.16) {
+  const g = new THREE.Group();
+  g.add(mesh(cyl(r, r * 0.97, 0.035, 40), mat(C.bread, { rep: 3 }), {}));
+  g.add(mesh(sphere(r * 0.98, 40), mat(C.bread, { rep: 6 }), { y: 0.012, sy: 0.12 }));
+  const rnd = mulberry(Math.round(r * 1000));
+  for (let i = 0; i < 9; i++) {
+    const a = rnd() * Math.PI * 2, d = rnd() * r * 0.75;
+    g.add(mesh(sphere(0.018, 10), mat(C.breadDark), { x: Math.cos(a) * d, y: 0.03, z: Math.sin(a) * d, sy: 0.3, cast: false }));
+  }
+  return g;
+}
+function samoli() {
+  const g = new THREE.Group();
+  g.add(mesh(capsule(0.06, 0.26), mat(C.samoli, { rep: 10 }), { rz: Math.PI / 2, sz: 0.85 }));
+  for (let i = 0; i < 3; i++) g.add(mesh(rbox(0.012, 0.02, 0.1, 0.005), mat(0xb8702a), { x: -0.08 + i * 0.08, y: 0.055, ry: 0.6, cast: false }));
+  return g;
+}
+
+// ------------------------------------------------------------ scenes
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(34, W / H, 0.05, 100);
+const hemi = new THREE.HemisphereLight(0xfff4e6, 0x6b5a48, 0.9); scene.add(hemi);
+const sun = new THREE.DirectionalLight(0xfff0dc, 2.2);
+sun.castShadow = true; sun.shadow.mapSize.set(2048, 2048); sun.shadow.bias = -0.0004; sun.shadow.normalBias = 0.02;
+const sc = sun.shadow.camera; sc.left = -6; sc.right = 6; sc.top = 6; sc.bottom = -6; sc.near = 0.5; sc.far = 40;
+scene.add(sun); scene.add(sun.target);
+
+const sets = {};
+
+// living room
+{
+  const g = new THREE.Group(); sets.room = g; scene.add(g);
+  const planks = canvasTex(512, 512, (c, w, h) => {
+    for (let i = 0; i < 8; i++) { c.fillStyle = i % 2 ? '#b98a5e' : '#c49668'; c.fillRect(0, i * 64, w, 64); c.fillStyle = '#9c714b'; c.fillRect(0, i * 64, w, 3); c.fillRect((i * 173) % w, i * 64, 3, 64); }
+  });
+  planks.wrapS = planks.wrapT = THREE.RepeatWrapping; planks.repeat.set(3, 3);
+  g.add(mesh(new THREE.PlaneGeometry(10, 10), mat(0xffffff, { map: planks, rep: 60, bump: 0.1 }), { rx: -Math.PI / 2, cast: false }));
+  g.add(mesh(new THREE.PlaneGeometry(10, 5), mat(0xe9dcc6, { rep: 80, bump: 0.15 }), { z: -2.2, y: 2.5, cast: false }));
+  g.add(mesh(new THREE.PlaneGeometry(6, 5), mat(0xe2d3bb, { rep: 80, bump: 0.15 }), { x: -3.2, y: 2.5, ry: Math.PI / 2, cast: false }));
+  // window with warm evening glow
+  g.add(mesh(rbox(1.3, 1.5, 0.08, 0.03), mat(0x7a5537), { x: 1.7, y: 2.1, z: -2.17 }));
+  g.add(mesh(new THREE.PlaneGeometry(1.14, 1.34), new THREE.MeshBasicMaterial({ color: 0xffc58a }), { x: 1.7, y: 2.1, z: -2.12, cast: false }));
+  g.add(mesh(rbox(0.05, 1.34, 0.04, 0.01), mat(0x7a5537), { x: 1.7, y: 2.1, z: -2.1 }));
+  // rug
+  const rug = canvasTex(512, 384, (c, w, h) => {
+    c.fillStyle = '#8e1f2a'; c.fillRect(0, 0, w, h);
+    c.strokeStyle = '#e8c27a'; c.lineWidth = 14; c.strokeRect(24, 24, w - 48, h - 48);
+    c.strokeStyle = '#1f3b5a'; c.lineWidth = 10; c.strokeRect(52, 52, w - 104, h - 104);
+    c.fillStyle = '#e8c27a'; c.save(); c.translate(w / 2, h / 2); c.rotate(Math.PI / 4); c.fillRect(-60, -60, 120, 120); c.restore();
+    c.fillStyle = '#1f3b5a'; c.save(); c.translate(w / 2, h / 2); c.rotate(Math.PI / 4); c.fillRect(-30, -30, 60, 60); c.restore();
+  });
+  g.add(mesh(rbox(3.2, 0.03, 2.3, 0.01), mat(0xffffff, { map: rug, rep: 40, bump: 0.25 }), { y: 0.015, z: 0.1 }));
+  // sofa (majlis style)
+  const sofaM = mat(0x2f6f73, { rep: 14 });
+  g.add(mesh(rbox(2.6, 0.42, 0.9, 0.1), sofaM, { y: 0.21, z: -1.55 }));
+  g.add(mesh(rbox(2.6, 0.75, 0.25, 0.1), sofaM, { y: 0.62, z: -1.95 }));
+  for (const x of [-1.25, 1.25]) g.add(mesh(rbox(0.25, 0.62, 0.9, 0.1), sofaM, { x, y: 0.4, z: -1.55 }));
+  const cush = mat(0xd9a441, { rep: 10 });
+  g.add(mesh(rbox(0.45, 0.4, 0.14, 0.08), cush, { x: -0.85, y: 0.72, z: -1.78, rx: -0.15 }));
+  g.add(mesh(rbox(0.45, 0.4, 0.14, 0.08), mat(0x8e1f2a, { rep: 10 }), { x: 0.9, y: 0.72, z: -1.78, rx: -0.15 }));
+  // coffee table + dallah + cups
+  g.add(mesh(rbox(0.9, 0.08, 0.55, 0.03), mat(0x6b4a2f, { rep: 6 }), { x: 0.75, y: 0.36, z: -0.55 }));
+  for (const [x, z] of [[0.38, -0.33], [1.12, -0.33], [0.38, -0.77], [1.12, -0.77]]) g.add(mesh(cyl(0.025, 0.025, 0.34), mat(0x6b4a2f), { x, y: 0.17, z }));
+  const gold = mat(0xd4a437, { rep: 16, rough: 0.3, metal: 0.7 });
+  const pts = [[0, 0], [0.09, 0], [0.1, 0.03], [0.07, 0.12], [0.045, 0.16], [0.05, 0.2], [0.03, 0.24], [0.012, 0.3], [0, 0.31]].map(p => new THREE.Vector2(p[0], p[1]));
+  g.add(mesh(new THREE.LatheGeometry(pts, 32), gold, { x: 0.6, y: 0.4, z: -0.55 }));
+  g.add(mesh(cyl(0.012, 0.02, 0.16, 10), gold, { x: 0.68, y: 0.52, z: -0.55, rz: -0.9 }));
+  for (const x of [0.88, 1.0]) g.add(mesh(cyl(0.03, 0.022, 0.05, 20), mat(0xf6f1e8, { rep: 6 }), { x, y: 0.425, z: -0.5 }));
+  // floor lamp
+  g.add(mesh(cyl(0.02, 0.02, 1.5, 12), mat(0x2a2a2a), { x: -1.75, y: 0.75, z: -1.7 }));
+  g.add(mesh(cyl(0.18, 0.28, 0.3, 32), mat(0xfff0d0, { emissive: 0xffc070 }), { x: -1.75, y: 1.6, z: -1.7 }));
+  const lamp = new THREE.PointLight(0xffb866, 6, 6, 1.6); lamp.position.set(-1.75, 1.5, -1.6); g.add(lamp);
+  // plant
+  g.add(mesh(cyl(0.16, 0.12, 0.3, 24), mat(0xb7653e, { rep: 10 }), { x: 2.1, y: 0.15, z: -1.6 }));
+  const leaf = mat(0x3f8a4a, { rep: 8 });
+  for (let i = 0; i < 7; i++) g.add(mesh(sphere(0.12, 16), leaf, { x: 2.1 + Math.cos(i) * 0.08, y: 0.42 + (i % 3) * 0.1, z: -1.6 + Math.sin(i * 2) * 0.08, sx: 0.5, sy: 1.6, rz: (i - 3) * 0.25 }));
+}
+
+// grocery
+{
+  const g = new THREE.Group(); sets.shop = g; scene.add(g);
+  const tiles = canvasTex(256, 256, (c, w, h) => { c.fillStyle = '#e9edf0'; c.fillRect(0, 0, w, h); c.fillStyle = '#c9d2d8'; for (let i = 0; i <= 4; i++) { c.fillRect(i * 64 - 2, 0, 4, h); c.fillRect(0, i * 64 - 2, w, 4); } });
+  tiles.wrapS = tiles.wrapT = THREE.RepeatWrapping; tiles.repeat.set(6, 6);
+  g.add(mesh(new THREE.PlaneGeometry(10, 10), mat(0xffffff, { map: tiles, rep: 60, bump: 0.05 }), { rx: -Math.PI / 2, cast: false }));
+  g.add(mesh(new THREE.PlaneGeometry(10, 5), mat(0xbfe3dc, { rep: 80, bump: 0.15 }), { z: -2.2, y: 2.5, cast: false }));
+  const sign = canvasTex(1024, 256, (c, w, h) => {
+    c.fillStyle = '#0f5f73'; c.fillRect(0, 0, w, h);
+    c.fillStyle = '#ffcc00'; c.font = '900 150px Cairo'; c.textAlign = 'center'; c.textBaseline = 'middle'; c.direction = 'rtl';
+    c.fillText('بقالة الحي', w / 2, h / 2 + 10);
+  });
+  g.add(mesh(rbox(2.4, 0.6, 0.06, 0.04), mat(0xffffff, { map: sign, rep: 2, bump: 0.05 }), { y: 2.75, z: -2.15 }));
+  // back shelves with products
+  const shelfM = mat(0xf2f2f2, { rep: 20 });
+  const cols = [0xe63946, 0xf4a261, 0x2a9d8f, 0x457b9d, 0xffd166, 0x8ecae6, 0xef476f, 0x06d6a0];
+  const rnd = mulberry(11);
+  for (const sx of [-1.5, 1.5]) {
+    g.add(mesh(rbox(1.9, 2.2, 0.45, 0.03), shelfM, { x: sx, y: 1.1, z: -1.95 }));
+    for (let r = 0; r < 4; r++) {
+      g.add(mesh(rbox(1.8, 0.04, 0.42, 0.01), mat(0xcfcfcf), { x: sx, y: 0.35 + r * 0.5, z: -1.82 }));
+      let x = sx - 0.8;
+      while (x < sx + 0.8) {
+        const w = 0.12 + rnd() * 0.1, h = 0.18 + rnd() * 0.18;
+        const m = mat(cols[Math.floor(rnd() * cols.length)], { rep: 12 });
+        if (rnd() < 0.35) g.add(mesh(cyl(w / 2, w / 2, h, 20), m, { x: x + w / 2, y: 0.37 + r * 0.5 + h / 2, z: -1.78 }));
+        else g.add(mesh(rbox(w, h, 0.18, 0.015), m, { x: x + w / 2, y: 0.37 + r * 0.5 + h / 2, z: -1.78 }));
+        x += w + 0.03;
+      }
+    }
+  }
+  // bread rack (front): flatbread stacks and samoli rolls
+  const wood = mat(0xa8774d, { rep: 12 });
+  g.add(mesh(rbox(1.6, 0.9, 0.7, 0.04), wood, { x: 0.0, y: 0.45, z: -0.6 }));
+  g.add(mesh(rbox(1.5, 0.05, 0.6, 0.02), mat(0xd9b48a), { x: 0.0, y: 0.92, z: -0.6 }));
+  sets.breadStack = [];
+  for (let i = 0; i < 5; i++) { const b = bread(0.17); b.position.set(-0.4, 0.97 + i * 0.045, -0.6); g.add(b); sets.breadStack.push(b); }
+  for (let i = 0; i < 3; i++) { const b = bread(0.17); b.position.set(-0.05, 0.97 + i * 0.045, -0.65); g.add(b); }
+  for (let i = 0; i < 6; i++) { const s = samoli(); s.position.set(0.42 + (i % 2) * 0.05, 0.99 + Math.floor(i / 2) * 0.1, -0.75 + (i % 2) * 0.22); s.rotation.y = 0.3; g.add(s); }
+  const lbl = canvasTex(512, 160, (c, w, h) => { c.fillStyle = '#fff'; c.fillRect(0, 0, w, h); c.fillStyle = '#c0392b'; c.font = '900 96px Cairo'; c.textAlign = 'center'; c.textBaseline = 'middle'; c.direction = 'rtl'; c.fillText('صامولي', w / 2, h / 2 + 6); });
+  g.add(mesh(rbox(0.42, 0.13, 0.02, 0.01), mat(0xffffff, { map: lbl, rep: 2, bump: 0.02 }), { x: 0.48, y: 0.78, z: -0.24, cast: false }));
+  const lbl2 = canvasTex(512, 160, (c, w, h) => { c.fillStyle = '#fff'; c.fillRect(0, 0, w, h); c.fillStyle = '#1b7f4a'; c.font = '900 96px Cairo'; c.textAlign = 'center'; c.textBaseline = 'middle'; c.direction = 'rtl'; c.fillText('عيش', w / 2, h / 2 + 6); });
+  g.add(mesh(rbox(0.42, 0.13, 0.02, 0.01), mat(0xffffff, { map: lbl2, rep: 2, bump: 0.02 }), { x: -0.3, y: 0.78, z: -0.24, cast: false }));
+}
+
+// street
+{
+  const g = new THREE.Group(); sets.street = g; scene.add(g);
+  g.add(mesh(new THREE.PlaneGeometry(60, 60), mat(0xd8c3a0, { rep: 200, bump: 0.05 }), { rx: -Math.PI / 2, cast: false }));
+  g.add(mesh(new THREE.PlaneGeometry(4, 60), mat(0x4a4f57, { rep: 200, bump: 0.05 }), { x: 2.4, y: 0.005, rx: -Math.PI / 2, cast: false }));
+  for (let z = -30; z < 10; z += 2.2) g.add(mesh(new THREE.PlaneGeometry(0.12, 1.1), new THREE.MeshStandardMaterial({ color: 0xf5f5f5 }), { x: 2.4, y: 0.01, z, rx: -Math.PI / 2, cast: false }));
+  g.add(mesh(rbox(1.8, 0.12, 60, 0.03), mat(0xcfc6b8, { rep: 30 }), { x: -0.1, y: 0.06 }));
+  const villa = (x, z, w, d, h, col) => {
+    g.add(mesh(rbox(w, h, d, 0.06), mat(col, { rep: 40 }), { x, y: h / 2, z }));
+    g.add(mesh(rbox(w + 0.15, 0.15, d + 0.15, 0.04), mat(0xffffff, { rep: 8 }), { x, y: h + 0.05, z }));
+    for (let i = 0; i < Math.floor(d / 1.6); i++) {
+      const wz = z - d / 2 + 0.9 + i * 1.6;
+      g.add(mesh(rbox(0.06, 0.8, 0.6, 0.02), mat(0x5f8fa6, { rough: 0.2 }), { x: x + w / 2 + 0.01, y: h * 0.62, z: wz, cast: false }));
+    }
+  };
+  const rnd = mulberry(5);
+  for (let z = -26; z < 6; z += 4.2) {
+    villa(-3.4, z, 2.6, 3.6, 2.6 + rnd() * 1.4, [0xe8d5b5, 0xf0e2c8, 0xdcc3a0, 0xeadbc0][Math.floor(rnd() * 4)]);
+    villa(7.2, z + 1.5, 2.6, 3.6, 2.8 + rnd() * 1.2, [0xe8d5b5, 0xf0e2c8, 0xdcc3a0][Math.floor(rnd() * 3)]);
+  }
+  // boundary wall with gates
+  for (let z = -28; z < 8; z += 4.2) {
+    g.add(mesh(rbox(0.2, 1.6, 3.2, 0.03), mat(0xd9c29c, { rep: 30 }), { x: -1.4, y: 0.8, z }));
+    g.add(mesh(rbox(0.08, 1.3, 0.9, 0.02), mat(0x6a4a2e, { rep: 12 }), { x: -1.29, y: 0.65, z: z + 1.8 }));
+  }
+  const palm = (x, z, h) => {
+    const trunk = mat(0x8a6a45, { rep: 30 });
+    for (let i = 0; i < 9; i++) g.add(mesh(cyl(0.11 - i * 0.004, 0.13 - i * 0.004, h / 9 + 0.02, 14), trunk, { x: x + Math.sin(i * 0.3) * 0.05, y: (i + 0.5) * h / 9, z }));
+    const fr = mat(0x3d8b3d, { rep: 6 });
+    for (let i = 0; i < 9; i++) {
+      const a = i / 9 * Math.PI * 2;
+      g.add(mesh(capsule(0.07, 1.1), fr, { x: x + Math.cos(a) * 0.5, y: h - 0.1, z: z + Math.sin(a) * 0.5, sx: 1.8, sz: 0.4, rz: Math.cos(a) * 1.2, rx: -Math.sin(a) * 1.2, ry: -a }));
+    }
+  };
+  for (let z = -25; z < 6; z += 5.5) { palm(0.75, z, 3.2 + (z % 3 + 3) * 0.15); }
+  for (let z = -22; z < 6; z += 6) { palm(-2.1, z, 3.6); }
+}
+
+// cast
+const boy = person();
+const dad = person({ father: true });
+scene.add(boy.root); scene.add(dad.root);
+const heldBread = bread(0.15); boy.arms[1].hand.add(heldBread); heldBread.position.set(0, -0.05, 0.08); heldBread.rotation.set(Math.PI / 2, 0, 0);
+
+// seat the father: hide the long skirt, add bent legs
+const seatParts = new THREE.Group(); dad.body.add(seatParts);
+{
+  const th = mat(C.thobe, { rep: 18 });
+  seatParts.add(mesh(capsule(0.16, 0.3), th, { y: 0.5, z: 0.2, rx: Math.PI / 2, sx: 1.6 }));
+  for (const x of [-0.11, 0.11]) seatParts.add(mesh(capsule(0.09, 0.3), th, { x, y: 0.25, z: 0.42 }));
+}
+
+function show(name) { for (const k of ['room', 'shop', 'street']) sets[k].visible = k === name; }
+
+function lookAt(pos, target) { camera.position.set(...pos); camera.lookAt(new THREE.Vector3(...target)); camera.updateMatrixWorld(); }
+
+function resetPose(p) {
+  p.root.position.set(0, 0, 0); p.root.rotation.set(0, 0, 0);
+  p.body.position.set(0, 0, 0); p.body.rotation.set(0, 0, 0);
+  p.head.rotation.set(0, 0, 0);
+  p.arms.forEach(a => { a.sh.rotation.set(0, 0, 0); a.sh.scale.set(1, 1, 1); });
+  p.feet.forEach(f => { f.position.z = 0.03; f.position.y = 0.035; });
+  face(p);
+}
+
+function walkCycle(p, ph, amp = 1) {
+  const s = Math.sin(ph);
+  p.feet[0].position.z = 0.03 + 0.14 * s * amp; p.feet[1].position.z = 0.03 - 0.14 * s * amp;
+  p.feet[0].position.y = 0.035 + 0.04 * Math.max(0, Math.cos(ph)) * amp; p.feet[1].position.y = 0.035 + 0.04 * Math.max(0, -Math.cos(ph)) * amp;
+  p.arms[0].sh.rotation.x = -0.45 * s * amp; p.arms[1].sh.rotation.x = 0.45 * s * amp;
+  p.body.position.y = 0.03 * Math.abs(Math.cos(ph)) * amp;
+  p.body.rotation.z = 0.04 * s * amp;
+}
+
+// ------------------------------------------------------------ shots
+// [start, end, name]; times in seconds (overlay script uses the same table)
+const SHOTS = [
+  [0.0, 2.2, 'intro'], [2.2, 7.0, 'father'], [7.0, 10.8, 'shop'], [10.8, 15.2, 'walk'], [15.2, 18.6, 'surprise'],
+];
+window.SHOTS = SHOTS;
+const END = 18.6;
+
+function setupRoom(t, intro) {
+  show('room');
+  scene.background = new THREE.Color(0x2b2420);
+  hemi.intensity = 0.75; sun.intensity = 1.4; sun.position.set(3, 5, 3); sun.target.position.set(0, 0, -1);
+  resetPose(dad); resetPose(boy);
+  dad.root.visible = true; seatParts.visible = true; dad.skirt.visible = false; dad.feet.forEach(f => f.visible = false);
+  dad.root.position.set(0, 0.0, -1.5);
+  dad.body.position.y = -0.05;
+  boy.root.visible = true; heldBread.visible = false;
+  boy.root.position.set(-0.75, 0, 0.55); boy.root.rotation.y = Math.PI - 0.35;
+  dad.head.rotation.y = 0.12;
+  face(dad, { smile: 0.4, blink: (t % 3.1) < 0.12 ? 1 : 0 });
+}
+
+function render(t) {
+  const meta = {};
+  if (t < SHOTS[1][0]) { // intro: wide establishing shot of the living room
+    setupRoom(t, true);
+    const k = t / 2.2;
+    lookAt([lerp(-1.6, -1.2, k), 2.3, lerp(4.6, 4.2, k)], [0.1, 0.9, -0.8]);
+    dad.arms[1].sh.rotation.x = -0.3;
+  } else if (t < SHOTS[2][0]) { // father says the line
+    const lt = t - SHOTS[1][0];
+    setupRoom(t);
+    const k = easeInOut(prog(lt, 0, 4.8));
+    lookAt([lerp(0.85, 0.55, k), lerp(1.45, 1.4, k), lerp(2.9, 2.2, k)], [-0.1, 1.75, -1.5]);
+    const talking = lt > 0.6 && lt < 2.8;
+    const talk = talking ? 0.5 + 0.5 * Math.sin(lt * 22) * Math.sin(lt * 7.3) : 0;
+    face(dad, { talk: Math.max(0, talk), smile: 0.4, blink: (lt % 2.7) < 0.1 ? 1 : 0 });
+    const gest = easeOut(prog(lt, 0.5, 0.4)) * (1 - easeOut(prog(lt, 2.9, 0.5)));
+    dad.arms[1].sh.rotation.x = -1.15 * gest - 0.25;
+    dad.arms[1].sh.rotation.z = 0.35 * gest + 0.08 * Math.sin(lt * 6) * gest;
+    dad.arms[0].sh.rotation.x = -0.25;
+    dad.head.rotation.x = 0.06 * Math.sin(lt * 5) * (talking ? 1 : 0);
+    dad.head.rotation.y = 0.12 + 0.08 * Math.sin(lt * 1.3);
+    // the boy nods "ok"
+    boy.head.rotation.x = 0.25 * Math.max(0, Math.sin((lt - 3.2) * 9)) * (lt > 3.2 && lt < 4.0 ? 1 : 0);
+    meta.dadHead = project(dad.head, 0.45);
+  } else if (t < SHOTS[3][0]) { // grocery: takes the bread, leaves the samoli
+    const lt = t - SHOTS[2][0];
+    show('shop');
+    scene.background = new THREE.Color(0xbfe3dc);
+    hemi.intensity = 1.0; sun.intensity = 1.8; sun.position.set(2, 6, 4); sun.target.position.set(0, 0, -1);
+    dad.root.visible = false; boy.root.visible = true; resetPose(boy);
+    const turn = easeInOut(prog(lt, 2.2, 0.5));
+    const walkOut = prog(lt, 2.6, 1.2);
+    boy.root.position.set(lerp(-0.35, 0.3, walkOut), 0, lerp(0.15, 1.2, walkOut));
+    boy.root.rotation.y = lerp(Math.PI, Math.PI * 2 + 0.4, turn);
+    // reach for the bread
+    const reach = easeOut(prog(lt, 0.6, 0.45)) * (1 - easeOut(prog(lt, 1.6, 0.5)));
+    boy.arms[1].sh.rotation.x = -1.3 * reach;
+    const grabbed = lt > 1.15;
+    sets.breadStack[4].visible = !grabbed;
+    heldBread.visible = grabbed;
+    if (walkOut > 0) walkCycle(boy, lt * 9, 1);
+    face(boy, { smile: grabbed ? 1 : 0.4, blink: (lt % 2.3) < 0.1 ? 1 : 0 });
+    const k = easeInOut(prog(lt, 0, 3.8));
+    lookAt([lerp(2.3, 2.0, k), lerp(2.0, 1.8, k), lerp(3.6, 4.0, k)], [lerp(-0.1, 0.25, k), 0.95, lerp(-0.4, 0.3, k)]);
+    meta.boyHead = project(boy.head, 0.4);
+  } else { // street: walking home whistling, then the surprise
+    show('street');
+    scene.background = new THREE.Color(0x9fd3f0);
+    hemi.intensity = 1.0; sun.intensity = 2.6; sun.color.set(0xffe2b8);
+    dad.root.visible = false; boy.root.visible = true; resetPose(boy); heldBread.visible = true;
+    const lt = t - SHOTS[3][0];
+    const tStop = SHOTS[4][0] - SHOTS[3][0];
+    const speed = 1.15;
+    const walkT = Math.min(lt, tStop);
+    const z = -9 + walkT * speed;
+    boy.root.position.set(0, 0.12, z);
+    sun.position.set(4, 7, z + 3); sun.target.position.set(0, 0, z);
+    if (lt < tStop) {
+      walkCycle(boy, lt * 8.5, 1);
+      boy.head.rotation.z = 0.08 * Math.sin(lt * 4.25);
+      boy.head.rotation.x = -0.05;
+      face(boy, { whistle: 1, blink: (lt % 2.5) < 0.1 ? 1 : 0 });
+      const cz = z + 3.4;
+      lookAt([0.55 + 0.1 * Math.sin(lt * 0.8), 1.5, cz], [0, 1.25, z]);
+      meta.mouth = project(boy.mouth, 0);
+      meta.whistle = true;
+    } else {
+      const st = lt - tStop;
+      // freeze, little hop, eyes pop, hand to forehead
+      const hop = Math.sin(clamp(st / 0.28) * Math.PI) * 0.06;
+      boy.body.position.y = hop;
+      const shock = easeOut(prog(st, 0.05, 0.2));
+      face(boy, { shock, blink: 0 });
+      const hand = easeOut(prog(st, 0.35, 0.35));
+      boy.arms[0].sh.rotation.x = -2.75 * hand;
+      boy.arms[0].sh.rotation.z = 0.38 * hand;
+      boy.arms[0].sh.scale.y = 1 + 0.3 * hand;
+      boy.arms[1].sh.rotation.x = -0.35 * shock;
+      boy.head.rotation.x = -0.12 * shock;
+      boy.head.rotation.z = 0.06 * Math.sin(st * 30) * (1 - prog(st, 0, 0.5));
+      // snap zoom to the face
+      const zm = easeOut(prog(st, 0.0, 0.22));
+      const cz = z + lerp(3.4, 2.9, zm);
+      lookAt([lerp(0.55, 0.25, zm), lerp(1.5, 1.7, zm), cz], [0, lerp(1.25, 1.5, zm), z]);
+      meta.boyHead = project(boy.head, 0.42);
+      meta.surprise = true;
+    }
+  }
+  renderer.render(scene, camera);
+  return meta;
+}
+
+function project(obj, up) {
+  const v = new THREE.Vector3(); obj.getWorldPosition(v); v.y += up;
+  v.project(camera);
+  return [(v.x + 1) / 2 * W, (1 - v.y) / 2 * H];
+}
+
+window.renderAt = t => render(t);
+window.END = END;
+window.ready = true;
+</script>
+</body>
+</html>
