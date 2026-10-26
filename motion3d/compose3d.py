@@ -4,8 +4,9 @@ Takes the rendered 3D frames (scene.html via render3d.js), adds the Arabic
 overlays and sound, then appends Tamim's filmed hook and the motion-graphics
 lesson (director scene onward).
 
-Usage: python3 compose3d.py <frames_dir> <hook_clip.mp4> <out.mp4>
+Usage: python3 compose3d.py <frames_dir> <out.mp4> [--hook clip.mp4] [--mg-speed 1.8]
 """
+import argparse
 import json
 import math
 import os
@@ -168,7 +169,7 @@ def scratch():
     return 0.25 * (s + noise) * np.minimum(1, t / 0.005) * np.exp(-t / 0.18)
 
 
-def build_audio(total, t_hook, hook_audio, t_mg, mg_len, path):
+def build_audio(total, t_hook, hook_audio, t_mg, mg_len, path, mg_speed=1.0):
     n = int(total * SR)
     mix = np.zeros(n)
 
@@ -217,7 +218,7 @@ def build_audio(total, t_hook, hook_audio, t_mg, mg_len, path):
     put(m, t_mg)
     for t, kind in R.SFX:
         if t >= R.S2:
-            put(R.synth(kind), t_mg + t - R.S2)
+            put(R.synth(kind), t_mg + (t - R.S2) / mg_speed)
     mix /= max(1.0, np.abs(mix).max() / 0.95)
     with wave.open(path, "wb") as w:
         w.setnchannels(2)
@@ -240,13 +241,19 @@ def clip_frames(path):
 
 
 def main():
-    frames_dir, hook, out = sys.argv[1], sys.argv[2], sys.argv[3]
+    ap = argparse.ArgumentParser()
+    ap.add_argument("frames_dir")
+    ap.add_argument("out")
+    ap.add_argument("--hook", help="filmed hook clip to play between the story and the lesson")
+    ap.add_argument("--mg-speed", type=float, default=1.0, help="speed-up factor for the motion-graphics lesson")
+    a = ap.parse_args()
+    frames_dir, hook, out, speed = a.frames_dir, a.hook, a.out, a.mg_speed
     meta = json.load(open(os.path.join(frames_dir, "meta.json")))
     hook_dur = float(subprocess.check_output(["ffprobe", "-v", "error", "-show_entries", "format=duration",
-                                              "-of", "csv=p=0", hook]))
+                                              "-of", "csv=p=0", hook])) if hook else 0.0
     t_hook = END3D
     t_mg = t_hook + hook_dur
-    mg_len = R.END - R.S2
+    mg_len = (R.END - R.S2) / speed
     total = t_mg + mg_len
 
     tmp_v = out + ".video.mp4"
@@ -259,17 +266,20 @@ def main():
         enc.stdin.write(cv.convert("RGB").tobytes())
         if i % 90 == 0:
             print("3d", i, len(meta), flush=True)
-    for buf in clip_frames(hook):
-        enc.stdin.write(buf)
+    if hook:
+        for buf in clip_frames(hook):
+            enc.stdin.write(buf)
     for i in range(int(mg_len * FPS)):
-        enc.stdin.write(R.frame(R.S2 + i / FPS).tobytes())
+        enc.stdin.write(R.frame(R.S2 + i * speed / FPS).tobytes())
     enc.stdin.close()
     enc.wait()
 
-    raw = subprocess.check_output(["ffmpeg", "-v", "error", "-i", hook, "-ac", "1", "-ar", str(SR), "-f", "s16le", "-"])
-    hook_audio = np.frombuffer(raw, np.int16).astype(float) / 32768
+    hook_audio = np.zeros(0)
+    if hook:
+        raw = subprocess.check_output(["ffmpeg", "-v", "error", "-i", hook, "-ac", "1", "-ar", str(SR), "-f", "s16le", "-"])
+        hook_audio = np.frombuffer(raw, np.int16).astype(float) / 32768
     wav = out + ".audio.wav"
-    build_audio(total, t_hook, hook_audio, t_mg, mg_len, wav)
+    build_audio(total, t_hook, hook_audio, t_mg, mg_len, wav, speed)
     subprocess.check_call(["ffmpeg", "-v", "error", "-y", "-i", tmp_v, "-i", wav, "-map", "0:v", "-map", "1:a",
                            "-c:v", "copy", "-c:a", "aac", "-b:a", "192k", "-movflags", "+faststart", "-shortest", out])
     os.remove(tmp_v)
