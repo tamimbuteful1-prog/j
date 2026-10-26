@@ -9,19 +9,19 @@
 
 export const HOOK = {
   /** Flip to true once public/footage/hook.mp4 exists (Higgsfield-graded clip). */
-  enabled: false,
+  enabled: true,
   src: 'footage/hook.mp4',
   /**
    * Fallback length when the real clip is off. When enabled, the real clip
    * duration is read automatically (calculateMetadata) and the whole film re-flows.
    */
-  placeholderDurationSec: 5.4,
+  placeholderDurationSec: 5.7,
   /** Second (inside the clip) where Tamim says the 2nd «أو» — the dramatic beat. */
-  orWordSec: 3.55,
+  orWordSec: 4.2,
   /** Hold-frame length at «أو» (frame + audio pause). 0 disables the stop. */
   freezeFrames: 12,
   /** Push-in during the clip (1 = none). Keep subtle. */
-  pushIn: 1.07,
+  pushIn: 1.04,
   volume: 1,
 } as const;
 

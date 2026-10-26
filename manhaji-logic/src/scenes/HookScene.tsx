@@ -93,7 +93,7 @@ const OrBeat: React.FC<{frame: number; orF: number; hold: number}> = ({frame, or
     <div
       style={{
         position: 'absolute',
-        top: 600,
+        top: 1170,
         left: 540 + dx - 120,
         width: 240,
         display: 'flex',
@@ -107,13 +107,13 @@ const OrBeat: React.FC<{frame: number; orF: number; hold: number}> = ({frame, or
   );
   return (
     <AbsoluteFill style={{pointerEvents: 'none'}}>
-      <AbsoluteFill style={{background: `rgba(9,13,24,${0.35 * o})`}} />
+      <AbsoluteFill style={{background: `linear-gradient(180deg, rgba(9,13,24,0) 35%, rgba(9,13,24,${0.6 * o}) 75%)`}} />
       {glyph('و', COLORS.and, 250)}
       {glyph('أو', COLORS.or, -250)}
       <div
         style={{
           position: 'absolute',
-          top: 690,
+          top: 1260,
           left: 0,
           right: 0,
           textAlign: 'center',

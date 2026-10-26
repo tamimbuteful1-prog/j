@@ -284,6 +284,6 @@ export const buildTimeline = (hookClipSec: number): Timeline => {
 
 /** Hook captions — seconds inside the ORIGINAL clip (the «أو» hold is added automatically). */
 export const HOOK_CAPTIONS: Caption[] = [
-  {from: 0.15, to: 2.3, text: 'أبوي قال لي أجيب عيش وصامولي…', highlight: [{word: 'وصامولي…', color: 'and'}]},
-  {from: 2.3, to: 5.3, text: 'ولا قال عيش أو صامولي؟!', highlight: [{word: 'أو', color: 'or'}]},
+  {from: 0.1, to: 3.1, text: 'أبوي قال لي أجيب عيش وصامولي…', highlight: [{word: 'وصامولي…', color: 'and'}]},
+  {from: 3.25, to: 5.6, text: 'ولا قال عيش أو صامولي؟!', highlight: [{word: 'أو', color: 'or'}]},
 ];
