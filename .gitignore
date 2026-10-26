@@ -5,3 +5,5 @@ motion3d/.frames/
 motion3d/.render.log
 *.video.mp4
 *.audio.wav
+motion2d/.frames/
+motion2d/.render.log
