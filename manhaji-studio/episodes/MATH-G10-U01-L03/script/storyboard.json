@@ -1,0 +1,958 @@
+{
+  "episode_id": "MATH-G10-U01-L03",
+  "script_version": 2,
+  "analysis": {
+    "central_visual_idea": "تحويل العبارة الشرطية إلى خانتين ماديتين (الفرض/النتيجة) تتبادلان وتُنفيان أمام الطالب",
+    "elements": [
+      "لوحة العرض",
+      "شاشة الكاشير",
+      "خانة الفرض p",
+      "خانة النتيجة q",
+      "خط الأعداد",
+      "الكوبون"
+    ],
+    "environment": "بقالة → استوديو شرح",
+    "recurring": [
+      "خانتا p و q بلونيهما"
+    ],
+    "changing": [
+      "ترتيب الخانتين",
+      "النفي",
+      "اسم الصيغة"
+    ],
+    "relations_to_show": [
+      "فرض ← نتيجة",
+      "تبديل",
+      "نفي",
+      "تكافؤ الأصلية والمعاكس الإيجابي"
+    ],
+    "real_to_abstract_moment": "نص لوحة العرض يسقط في خانات القالب (S04)",
+    "confusion_treatments": [
+      "دائرة مفتوحة عند 50",
+      "مثال مضاد بالكوبون",
+      "ربط التكافؤ"
+    ]
+  },
+  "world": {
+    "name": "checkout",
+    "kit": "worlds/checkout",
+    "description": "كاشير ولوحة عرض وكوبون وخط أعداد — عالم جديد مختلف عن ممر المنطق",
+    "reused_from": ""
+  },
+  "scenes": [
+    {
+      "id": "S01",
+      "section": "context",
+      "lines": [
+        "L02",
+        "L03"
+      ],
+      "goal": "يرى الطالب العرض كما رآه تميم: جملة إذا… فإن… على لوحة",
+      "background": "جدار بقالة دافئ",
+      "elements": [],
+      "on_screen_text": [],
+      "motion": [
+        {
+          "beat": "poster",
+          "what": "لوحة العرض تنزل وتضيء على جدار البقالة",
+          "why": "المكان والعرض",
+          "result": "العرض مقروء"
+        },
+        {
+          "beat": "ifWord",
+          "what": "«إذا» تتوهج أزرق",
+          "why": "بداية الشرط",
+          "result": "تمهيد للفرض"
+        },
+        {
+          "beat": "thenWord",
+          "what": "«فإن» تتوهج ذهبي",
+          "why": "بداية النتيجة",
+          "result": "تمهيد للنتيجة"
+        }
+      ],
+      "beats": [
+        {
+          "name": "poster",
+          "anchor": {
+            "line": "L02",
+            "at": 0.35
+          }
+        },
+        {
+          "name": "ifWord",
+          "anchor": {
+            "line": "L03",
+            "word": "إذا"
+          },
+          "offset": -0.08
+        },
+        {
+          "name": "thenWord",
+          "anchor": {
+            "line": "L03",
+            "word": "فإنك"
+          },
+          "offset": -0.08
+        },
+        {
+          "name": "discountWord",
+          "anchor": {
+            "line": "L03",
+            "word": "خصم"
+          },
+          "offset": -0.1
+        }
+      ],
+      "sfx": [
+        {
+          "beat": "poster",
+          "name": "whoosh_short",
+          "offset": 0,
+          "volume": 0.5
+        },
+        {
+          "beat": "ifWord",
+          "name": "tick",
+          "offset": 0,
+          "volume": 0.5
+        },
+        {
+          "beat": "thenWord",
+          "name": "tick",
+          "offset": 0,
+          "volume": 0.5
+        },
+        {
+          "beat": "discountWord",
+          "name": "pop",
+          "offset": 0,
+          "volume": 0.5
+        }
+      ],
+      "transition_out": {
+        "type": "match-cut"
+      }
+    },
+    {
+      "id": "S02",
+      "section": "context",
+      "lines": [
+        "L04",
+        "L05"
+      ],
+      "goal": "المشكلة: المجموع 50.00 والخصم لم يُطبق",
+      "background": "كاشير",
+      "elements": [],
+      "on_screen_text": [],
+      "motion": [
+        {
+          "beat": "fifty",
+          "what": "عداد الكاشير يصل 50.00 بالضبط",
+          "why": "المشتريات 50",
+          "result": "الرقم واضح"
+        },
+        {
+          "beat": "denied",
+          "what": "سطر الخصم يرفض: «لا يوجد خصم»",
+          "why": "الحيرة",
+          "result": "المشكلة مرئية"
+        },
+        {
+          "beat": "why",
+          "what": "«ليش!!» كبيرة",
+          "why": "السؤال",
+          "result": "فضول"
+        }
+      ],
+      "beats": [
+        {
+          "name": "countStart",
+          "anchor": {
+            "line": "L04",
+            "at": "start"
+          }
+        },
+        {
+          "name": "fifty",
+          "anchor": {
+            "line": "L04",
+            "word": "بخمسين"
+          },
+          "offset": 0.1
+        },
+        {
+          "name": "exact",
+          "anchor": {
+            "line": "L04",
+            "word": "بالضبط"
+          },
+          "offset": -0.05
+        },
+        {
+          "name": "denied",
+          "anchor": {
+            "line": "L04",
+            "word": "عطوني"
+          },
+          "offset": -0.1
+        },
+        {
+          "name": "why",
+          "anchor": {
+            "line": "L05",
+            "at": "start"
+          },
+          "offset": -0.05
+        }
+      ],
+      "sfx": [
+        {
+          "beat": "countStart",
+          "name": "tick",
+          "offset": 0,
+          "volume": 0.4
+        },
+        {
+          "beat": "fifty",
+          "name": "lock",
+          "offset": 0,
+          "volume": 0.5
+        },
+        {
+          "beat": "denied",
+          "name": "false_hit",
+          "offset": 0,
+          "volume": 0.45
+        },
+        {
+          "beat": "why",
+          "name": "impact",
+          "offset": 0,
+          "volume": 0.35
+        }
+      ],
+      "transition_out": {
+        "type": "match-cut"
+      }
+    },
+    {
+      "id": "S03",
+      "section": "bridge",
+      "lines": [
+        "L06",
+        "L07",
+        "L08"
+      ],
+      "goal": "قالب العبارة الشرطية: إذا … فإن …",
+      "background": "استوديو داكن",
+      "elements": [],
+      "on_screen_text": [],
+      "motion": [
+        {
+          "beat": "title",
+          "what": "عنوان «العبارة الشرطية»",
+          "why": "المصطلح",
+          "result": "يُسمّى المفهوم"
+        },
+        {
+          "beat": "template",
+          "what": "خانة «إذا» فارغة",
+          "why": "الصيغة",
+          "result": "هيكل"
+        },
+        {
+          "beat": "thenSlot",
+          "what": "خانة «فإن» فارغة",
+          "why": "الصيغة",
+          "result": "هيكل كامل"
+        }
+      ],
+      "beats": [
+        {
+          "name": "bridge",
+          "anchor": {
+            "line": "L06",
+            "at": "start"
+          }
+        },
+        {
+          "name": "title",
+          "anchor": {
+            "line": "L07",
+            "word": "العبارة"
+          },
+          "offset": -0.1
+        },
+        {
+          "name": "template",
+          "anchor": {
+            "line": "L08",
+            "word": "إذا"
+          },
+          "offset": -0.1
+        },
+        {
+          "name": "thenSlot",
+          "anchor": {
+            "line": "L08",
+            "word": "فإن"
+          },
+          "offset": -0.1
+        }
+      ],
+      "sfx": [
+        {
+          "beat": "bridge",
+          "name": "whoosh_long",
+          "offset": 0,
+          "volume": 0.5
+        },
+        {
+          "beat": "title",
+          "name": "impact",
+          "offset": 0,
+          "volume": 0.3
+        },
+        {
+          "beat": "template",
+          "name": "swish",
+          "offset": 0,
+          "volume": 0.4
+        },
+        {
+          "beat": "thenSlot",
+          "name": "swish",
+          "offset": 0,
+          "volume": 0.4
+        }
+      ],
+      "transition_out": {
+        "type": "match-cut"
+      }
+    },
+    {
+      "id": "S04",
+      "section": "explanation",
+      "lines": [
+        "L09",
+        "L10",
+        "L11",
+        "L12"
+      ],
+      "goal": "الفرض = ما بعد إذا، النتيجة = ما بعد فإن",
+      "background": "استوديو داكن",
+      "elements": [],
+      "on_screen_text": [],
+      "motion": [
+        {
+          "beat": "fillP",
+          "what": "نص الفرض يسقط في خانة إذا",
+          "why": "p",
+          "result": "الفرض في مكانه"
+        },
+        {
+          "beat": "fillQ",
+          "what": "نص النتيجة يسقط في خانة فإن",
+          "why": "q",
+          "result": "النتيجة في مكانها"
+        },
+        {
+          "beat": "labelP",
+          "what": "وسم «الفرض p»",
+          "why": "المصطلح",
+          "result": "تسمية"
+        },
+        {
+          "beat": "labelQ",
+          "what": "وسم «النتيجة q» + p → q",
+          "why": "المصطلح",
+          "result": "تسمية"
+        }
+      ],
+      "beats": [
+        {
+          "name": "posterBack",
+          "anchor": {
+            "line": "L09",
+            "at": "start"
+          }
+        },
+        {
+          "name": "fillP",
+          "anchor": {
+            "line": "L10",
+            "word": "اشتريت"
+          },
+          "offset": -0.1
+        },
+        {
+          "name": "fillQ",
+          "anchor": {
+            "line": "L10",
+            "word": "ستحصل"
+          },
+          "offset": -0.1
+        },
+        {
+          "name": "labelP",
+          "anchor": {
+            "line": "L11",
+            "word": "الفرض"
+          },
+          "offset": -0.1
+        },
+        {
+          "name": "labelQ",
+          "anchor": {
+            "line": "L12",
+            "word": "النتيجة"
+          },
+          "offset": -0.1
+        }
+      ],
+      "sfx": [
+        {
+          "beat": "fillP",
+          "name": "drop",
+          "offset": 0,
+          "volume": 0.6
+        },
+        {
+          "beat": "fillQ",
+          "name": "drop",
+          "offset": 0,
+          "volume": 0.6
+        },
+        {
+          "beat": "labelP",
+          "name": "pop",
+          "offset": 0,
+          "volume": 0.5
+        },
+        {
+          "beat": "labelQ",
+          "name": "pop",
+          "offset": 0,
+          "volume": 0.5
+        }
+      ],
+      "transition_out": {
+        "type": "match-cut"
+      }
+    },
+    {
+      "id": "S05",
+      "section": "explanation",
+      "lines": [
+        "L13"
+      ],
+      "goal": "50 ليست أكثر من 50 → الفرض لم يتحقق",
+      "background": "استوديو داكن",
+      "elements": [],
+      "on_screen_text": [],
+      "motion": [
+        {
+          "beat": "marker50",
+          "what": "المؤشر يقف على 50 والدائرة مفتوحة",
+          "why": "أكثر من 50 لا تشمل 50",
+          "result": "المؤشر خارج المنطقة"
+        },
+        {
+          "beat": "notMore",
+          "what": "خانة الفرض: ✗ لم يتحقق",
+          "why": "الفرض لم يتحقق",
+          "result": "يفهم لماذا لا خصم"
+        }
+      ],
+      "beats": [
+        {
+          "name": "numberLine",
+          "anchor": {
+            "line": "L13",
+            "at": "start"
+          },
+          "offset": -0.15
+        },
+        {
+          "name": "marker50",
+          "anchor": {
+            "line": "L13",
+            "word": "بخمسين"
+          },
+          "offset": 0.05
+        },
+        {
+          "name": "notMore",
+          "anchor": {
+            "line": "L13",
+            "word": "مو"
+          },
+          "offset": -0.05
+        }
+      ],
+      "sfx": [
+        {
+          "beat": "numberLine",
+          "name": "swish",
+          "offset": 0,
+          "volume": 0.4
+        },
+        {
+          "beat": "marker50",
+          "name": "drop",
+          "offset": 0,
+          "volume": 0.6
+        },
+        {
+          "beat": "notMore",
+          "name": "false_hit",
+          "offset": 0,
+          "volume": 0.4
+        }
+      ],
+      "transition_out": {
+        "type": "match-cut"
+      },
+      "silent_tail_sec": 0.6
+    },
+    {
+      "id": "S06",
+      "section": "demonstration",
+      "lines": [
+        "L14",
+        "L15",
+        "L16"
+      ],
+      "goal": "العكس = تبديل الفرض والنتيجة",
+      "background": "استوديو داكن",
+      "elements": [],
+      "on_screen_text": [],
+      "motion": [
+        {
+          "beat": "swap",
+          "what": "الخانتان تتبادلان مكانيهما بقوس",
+          "why": "العكس",
+          "result": "q → p"
+        },
+        {
+          "beat": "notNecessarily",
+          "what": "علامة ؟ على العكس",
+          "why": "ليس بالضرورة صحيحًا",
+          "result": "تمهيد للمثال المضاد"
+        }
+      ],
+      "beats": [
+        {
+          "name": "swap",
+          "anchor": {
+            "line": "L14",
+            "word": "عكسنا"
+          },
+          "offset": -0.1
+        },
+        {
+          "name": "converseName",
+          "anchor": {
+            "line": "L16",
+            "word": "العكس"
+          },
+          "offset": -0.1
+        },
+        {
+          "name": "notNecessarily",
+          "anchor": {
+            "line": "L16",
+            "word": "شرط"
+          },
+          "offset": -0.1
+        }
+      ],
+      "sfx": [
+        {
+          "beat": "swap",
+          "name": "whoosh_short",
+          "offset": 0,
+          "volume": 0.6
+        },
+        {
+          "beat": "converseName",
+          "name": "pop",
+          "offset": 0,
+          "volume": 0.5
+        },
+        {
+          "beat": "notNecessarily",
+          "name": "tick",
+          "offset": 0,
+          "volume": 0.5
+        }
+      ],
+      "transition_out": {
+        "type": "match-cut"
+      }
+    },
+    {
+      "id": "S07",
+      "section": "demonstration",
+      "lines": [
+        "L17",
+        "L18"
+      ],
+      "goal": "المثال المضاد يثبت أن العكس خاطئ",
+      "background": "استوديو داكن",
+      "elements": [],
+      "on_screen_text": [],
+      "motion": [
+        {
+          "beat": "coupon",
+          "what": "كوبون يطير إلى الكاشير والمجموع 30",
+          "why": "حالة جديدة",
+          "result": "خصم مع مشتريات أقل"
+        },
+        {
+          "beat": "under50",
+          "what": "خانة الفرض (خصم) ✓ وخانة النتيجة (أكثر من 50) ✗",
+          "why": "مثال مضاد",
+          "result": "التناقض واضح"
+        },
+        {
+          "beat": "falseStamp",
+          "what": "ختم FALSE على العكس",
+          "why": "المثال المضاد ينفي",
+          "result": "العكس خاطئ"
+        }
+      ],
+      "beats": [
+        {
+          "name": "coupon",
+          "anchor": {
+            "line": "L17",
+            "word": "كوبون"
+          },
+          "offset": -0.1
+        },
+        {
+          "name": "discountOK",
+          "anchor": {
+            "line": "L17",
+            "word": "خصم"
+          },
+          "offset": -0.05
+        },
+        {
+          "name": "under50",
+          "anchor": {
+            "line": "L17",
+            "word": "أقل"
+          },
+          "offset": -0.05
+        },
+        {
+          "name": "counterName",
+          "anchor": {
+            "line": "L18",
+            "word": "المثال"
+          },
+          "offset": -0.1
+        },
+        {
+          "name": "falseStamp",
+          "anchor": {
+            "line": "L18",
+            "word": "خاطئة"
+          },
+          "offset": -0.1
+        }
+      ],
+      "sfx": [
+        {
+          "beat": "coupon",
+          "name": "whoosh_short",
+          "offset": 0,
+          "volume": 0.5
+        },
+        {
+          "beat": "discountOK",
+          "name": "true_chime",
+          "offset": 0,
+          "volume": 0.35
+        },
+        {
+          "beat": "under50",
+          "name": "tick",
+          "offset": 0,
+          "volume": 0.5
+        },
+        {
+          "beat": "falseStamp",
+          "name": "false_hit",
+          "offset": 0,
+          "volume": 0.6
+        }
+      ],
+      "transition_out": {
+        "type": "match-cut"
+      }
+    },
+    {
+      "id": "S08",
+      "section": "demonstration",
+      "lines": [
+        "L19",
+        "L20",
+        "L21"
+      ],
+      "goal": "المعكوس = نفي الفرض والنتيجة",
+      "background": "استوديو داكن",
+      "elements": [],
+      "on_screen_text": [],
+      "motion": [
+        {
+          "beat": "swapBack",
+          "what": "الخانتان تعودان لترتيبهما",
+          "why": "نبدأ من الأصلية",
+          "result": "p ثم q"
+        },
+        {
+          "beat": "negate",
+          "what": "علامة النفي ~ تنزل على الخانتين ويتحول النص",
+          "why": "النفي",
+          "result": "~p و ~q"
+        },
+        {
+          "beat": "inverseName",
+          "what": "«المعكوس ~p → ~q»",
+          "why": "المصطلح",
+          "result": "تسمية"
+        }
+      ],
+      "beats": [
+        {
+          "name": "swapBack",
+          "anchor": {
+            "line": "L19",
+            "at": "start"
+          },
+          "offset": -0.25
+        },
+        {
+          "name": "negate",
+          "anchor": {
+            "line": "L19",
+            "word": "نفينا"
+          },
+          "offset": -0.1
+        },
+        {
+          "name": "inverseName",
+          "anchor": {
+            "line": "L21",
+            "word": "المعكوس"
+          },
+          "offset": -0.1
+        }
+      ],
+      "sfx": [
+        {
+          "beat": "swapBack",
+          "name": "swish",
+          "offset": 0,
+          "volume": 0.4
+        },
+        {
+          "beat": "negate",
+          "name": "glitch",
+          "offset": 0,
+          "volume": 0.4
+        },
+        {
+          "beat": "inverseName",
+          "name": "pop",
+          "offset": 0,
+          "volume": 0.5
+        }
+      ],
+      "transition_out": {
+        "type": "match-cut"
+      }
+    },
+    {
+      "id": "S09",
+      "section": "demonstration",
+      "lines": [
+        "L22",
+        "L23",
+        "L24"
+      ],
+      "goal": "المعاكس الإيجابي = تبديل + نفي، ويكافئ الأصلية",
+      "background": "استوديو داكن",
+      "elements": [],
+      "on_screen_text": [],
+      "motion": [
+        {
+          "beat": "swapNeg",
+          "what": "تبديل الخانتين المنفيتين",
+          "why": "المعاكس الإيجابي",
+          "result": "~q → ~p"
+        },
+        {
+          "beat": "sameValue",
+          "what": "بطاقة الأصلية تظهر وتُربط بعلامة ≡",
+          "why": "نفس قيمة الصواب",
+          "result": "تكافؤ"
+        }
+      ],
+      "beats": [
+        {
+          "name": "swapNeg",
+          "anchor": {
+            "line": "L22",
+            "word": "عكسنا"
+          },
+          "offset": -0.1
+        },
+        {
+          "name": "contraName",
+          "anchor": {
+            "line": "L24",
+            "word": "المعاكس"
+          },
+          "offset": -0.1
+        },
+        {
+          "name": "sameValue",
+          "anchor": {
+            "line": "L24",
+            "word": "نفس"
+          },
+          "offset": -0.1
+        }
+      ],
+      "sfx": [
+        {
+          "beat": "swapNeg",
+          "name": "whoosh_short",
+          "offset": 0,
+          "volume": 0.6
+        },
+        {
+          "beat": "contraName",
+          "name": "pop",
+          "offset": 0,
+          "volume": 0.5
+        },
+        {
+          "beat": "sameValue",
+          "name": "lock",
+          "offset": 0,
+          "volume": 0.6
+        }
+      ],
+      "transition_out": {
+        "type": "match-cut"
+      },
+      "silent_tail_sec": 0.5
+    },
+    {
+      "id": "S10",
+      "section": "demonstration",
+      "lines": [],
+      "goal": "ملخص الصيغ الأربع في تصميم واحد",
+      "background": "استوديو داكن",
+      "elements": [],
+      "on_screen_text": [],
+      "motion": [
+        {
+          "beat": "grid",
+          "what": "شبكة 2×2 للصيغ الأربع",
+          "why": "تثبيت",
+          "result": "مقارنة"
+        },
+        {
+          "beat": "link",
+          "what": "ربط الأصلية بالمعاكس الإيجابي",
+          "why": "التكافؤ",
+          "result": "الخلاصة"
+        }
+      ],
+      "beats": [
+        {
+          "name": "grid",
+          "anchor": {
+            "scene": "S10",
+            "at": 0.06
+          }
+        },
+        {
+          "name": "link",
+          "anchor": {
+            "scene": "S10",
+            "at": 0.5
+          }
+        }
+      ],
+      "sfx": [
+        {
+          "beat": "grid",
+          "name": "whoosh_short",
+          "offset": 0,
+          "volume": 0.5
+        },
+        {
+          "beat": "link",
+          "name": "shimmer",
+          "offset": 0,
+          "volume": 0.35
+        }
+      ],
+      "transition_out": {
+        "type": "match-cut"
+      },
+      "silent_tail_sec": 0.2,
+      "silent_duration_sec": 3.4
+    },
+    {
+      "id": "S11",
+      "section": "conclusion",
+      "lines": [
+        "L25"
+      ],
+      "goal": "نهاية منهجي",
+      "background": "استوديو داكن",
+      "elements": [],
+      "on_screen_text": [],
+      "motion": [
+        {
+          "beat": "logo",
+          "what": "الشعار",
+          "why": "الهوية",
+          "result": "ختام"
+        }
+      ],
+      "beats": [
+        {
+          "name": "logo",
+          "anchor": {
+            "scene": "S11",
+            "at": "start"
+          },
+          "offset": 0.25
+        }
+      ],
+      "sfx": [
+        {
+          "beat": "logo",
+          "name": "shimmer",
+          "offset": 0,
+          "volume": 0.4
+        }
+      ],
+      "transition_out": {
+        "type": "end"
+      },
+      "silent_tail_sec": 1.6
+    }
+  ],
+  "revision_log": []
+}

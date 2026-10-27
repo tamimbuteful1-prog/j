@@ -1,0 +1,419 @@
+{
+  "episode_id": "MATH-G10-U01-L03",
+  "title": "العبارات الشرطية",
+  "version": 2,
+  "approval": {
+    "status": "approved",
+    "by": "presenter (script author) — corrections pending confirmation",
+    "at": "2026-10-27T00:00:00Z"
+  },
+  "idea_id": "PRESENTER",
+  "target_duration_sec": 85,
+  "estimated_duration_sec": 0,
+  "hook": {
+    "text": "اشتريت بخمسين ريال… بس الخصم ما تفعل!",
+    "location": "البقالة — عند الكاشير",
+    "key_word": "خمسين",
+    "performance_notes": "استغراب حقيقي، انظر للفاتورة ثم للكاميرا"
+  },
+  "lines": [
+    {
+      "id": "L01",
+      "section": "hook",
+      "text": "اشتريت بخمسين ريال… بس الخصم ما تفعل!",
+      "hook": true,
+      "visual_intent": "الهوك — تصوير حقيقي",
+      "emphasis": [
+        "خمسين",
+        "الخصم"
+      ],
+      "performance_note": "استغراب، وقفة قصيرة بعد «ريال…»"
+    },
+    {
+      "id": "L02",
+      "section": "context",
+      "text": "دخلت البقالة، وشفت إعلان مكتوب عليه:",
+      "hook": false,
+      "visual_intent": "لوحة العرض في البقالة تظهر",
+      "emphasis": [],
+      "performance_note": "سرد طبيعي"
+    },
+    {
+      "id": "L03",
+      "section": "context",
+      "text": "«إذا اشتريت بأكثر من خمسين ريال، فإنك ستحصل على خصم».",
+      "hook": false,
+      "visual_intent": "نص اللوحة يُقرأ، «إذا» و«فإن» تضيئان",
+      "emphasis": [
+        "إذا",
+        "فإن"
+      ],
+      "performance_note": "اقرأها كأنك تقرأ لوحة"
+    },
+    {
+      "id": "L04",
+      "section": "context",
+      "text": "أنا اشتريت بخمسين ريال بالضبط، بس ما عطوني خصم!",
+      "hook": false,
+      "visual_intent": "شاشة الكاشير تعد إلى 50.00 والخصم لا يتفعل",
+      "emphasis": [
+        "بالضبط"
+      ],
+      "performance_note": "تشديد على «بالضبط»"
+    },
+    {
+      "id": "L05",
+      "section": "context",
+      "text": "ليش!!",
+      "hook": false,
+      "visual_intent": "«ليش!!» كبيرة مع رد فعل",
+      "emphasis": [
+        "ليش!!"
+      ],
+      "performance_note": "استنكار"
+    },
+    {
+      "id": "L06",
+      "section": "bridge",
+      "text": "خلونا نفهم اللي صار.",
+      "hook": false,
+      "visual_intent": "اللوحة تنتقل لمساحة الشرح",
+      "emphasis": [],
+      "performance_note": "هدوء"
+    },
+    {
+      "id": "L07",
+      "section": "explanation",
+      "text": "في الرياضيات، عندنا شيء يسمى العبارة الشرطية،",
+      "hook": false,
+      "visual_intent": "عنوان «العبارة الشرطية»",
+      "emphasis": [
+        "العبارة الشرطية،"
+      ],
+      "performance_note": ""
+    },
+    {
+      "id": "L08",
+      "section": "explanation",
+      "text": "وتكون بصيغة: إذا… فإن…",
+      "hook": false,
+      "visual_intent": "قالب بخانتين فارغتين: إذا … فإن …",
+      "emphasis": [
+        "إذا…",
+        "فإن…"
+      ],
+      "performance_note": "وقفة بين «إذا» و«فإن»"
+    },
+    {
+      "id": "L09",
+      "section": "explanation",
+      "text": "مثال عليها: العرض اللي في البقالة،",
+      "hook": false,
+      "visual_intent": "اللوحة تعود",
+      "emphasis": [],
+      "performance_note": ""
+    },
+    {
+      "id": "L10",
+      "section": "explanation",
+      "text": "إذا اشتريت بأكثر من خمسين ريال، فإنك ستحصل على خصم.",
+      "hook": false,
+      "visual_intent": "نص اللوحة يملأ الخانتين",
+      "emphasis": [
+        "إذا",
+        "فإنك"
+      ],
+      "performance_note": ""
+    },
+    {
+      "id": "L11",
+      "section": "explanation",
+      "text": "اللي بعد «إذا» هو الفرض،",
+      "hook": false,
+      "visual_intent": "تسمية الخانة الأولى: الفرض p",
+      "emphasis": [
+        "الفرض،"
+      ],
+      "performance_note": ""
+    },
+    {
+      "id": "L12",
+      "section": "explanation",
+      "text": "واللي بعد «فإن» هو النتيجة.",
+      "hook": false,
+      "visual_intent": "تسمية الخانة الثانية: النتيجة q",
+      "emphasis": [
+        "النتيجة."
+      ],
+      "performance_note": ""
+    },
+    {
+      "id": "L13",
+      "section": "explanation",
+      "text": "وأنا اشتريت بخمسين ريال، مو أكثر!",
+      "hook": false,
+      "visual_intent": "خط الأعداد: 50 على دائرة مفتوحة خارج المنطقة",
+      "emphasis": [
+        "مو",
+        "أكثر!"
+      ],
+      "performance_note": "تشديد «مو أكثر»"
+    },
+    {
+      "id": "L14",
+      "section": "demonstration",
+      "text": "طيب، لو عكسنا الجملة:",
+      "hook": false,
+      "visual_intent": "الخانتان تتبادلان مكانيهما",
+      "emphasis": [
+        "عكسنا"
+      ],
+      "performance_note": ""
+    },
+    {
+      "id": "L15",
+      "section": "demonstration",
+      "text": "«إذا حصلت على خصم، فإن مشترياتي أكثر من خمسين ريال».",
+      "hook": false,
+      "visual_intent": "العبارة المعكوسة الترتيب تُقرأ",
+      "emphasis": [],
+      "performance_note": ""
+    },
+    {
+      "id": "L16",
+      "section": "demonstration",
+      "text": "هذا يسمى العكس، ومو شرط يكون صحيح؛",
+      "hook": false,
+      "visual_intent": "اسم «العكس» + q → p + علامة ؟",
+      "emphasis": [
+        "العكس،"
+      ],
+      "performance_note": ""
+    },
+    {
+      "id": "L17",
+      "section": "demonstration",
+      "text": "لأن ممكن يكون عندي كوبون، وآخذ خصم ومشترياتي أقل من خمسين.",
+      "hook": false,
+      "visual_intent": "كوبون + مشتريات 30 ريال + خصم مفعّل",
+      "emphasis": [
+        "كوبون،",
+        "أقل"
+      ],
+      "performance_note": ""
+    },
+    {
+      "id": "L18",
+      "section": "demonstration",
+      "text": "وهذا يسمى المثال المضاد، وهو يثبت أن العبارة خاطئة.",
+      "hook": false,
+      "visual_intent": "ختم FALSE على العكس + «مثال مضاد»",
+      "emphasis": [
+        "المثال",
+        "المضاد،",
+        "خاطئة."
+      ],
+      "performance_note": ""
+    },
+    {
+      "id": "L19",
+      "section": "demonstration",
+      "text": "ولو نفينا الاثنين:",
+      "hook": false,
+      "visual_intent": "علامة النفي تنزل على الخانتين",
+      "emphasis": [
+        "نفينا"
+      ],
+      "performance_note": ""
+    },
+    {
+      "id": "L20",
+      "section": "demonstration",
+      "text": "«إذا ما اشتريت بأكثر من خمسين ريال، فإنني لن أحصل على خصم».",
+      "hook": false,
+      "visual_intent": "النصان يتحولان للنفي",
+      "emphasis": [],
+      "performance_note": ""
+    },
+    {
+      "id": "L21",
+      "section": "demonstration",
+      "text": "وهذا يسمى المعكوس.",
+      "hook": false,
+      "visual_intent": "اسم «المعكوس» + ~p → ~q",
+      "emphasis": [
+        "المعكوس."
+      ],
+      "performance_note": ""
+    },
+    {
+      "id": "L22",
+      "section": "demonstration",
+      "text": "أما لو عكسنا ونفينا:",
+      "hook": false,
+      "visual_intent": "تبديل + نفي",
+      "emphasis": [
+        "عكسنا",
+        "ونفينا:"
+      ],
+      "performance_note": ""
+    },
+    {
+      "id": "L23",
+      "section": "demonstration",
+      "text": "«إذا لم أحصل على خصم، فإنني لم أشترِ بأكثر من خمسين ريال».",
+      "hook": false,
+      "visual_intent": "العبارة الجديدة تُقرأ",
+      "emphasis": [],
+      "performance_note": ""
+    },
+    {
+      "id": "L24",
+      "section": "demonstration",
+      "text": "هذا المعاكس الإيجابي، وله نفس قيمة صواب العبارة الأصلية.",
+      "hook": false,
+      "visual_intent": "المعاكس الإيجابي ≡ الأصلية",
+      "emphasis": [
+        "المعاكس",
+        "الإيجابي،",
+        "نفس"
+      ],
+      "performance_note": "تشديد «نفس»"
+    },
+    {
+      "id": "L25",
+      "section": "conclusion",
+      "text": "وهذا درس العبارات الشرطية، من مادة الرياضيات للصف الأول الثانوي.",
+      "hook": false,
+      "visual_intent": "نهاية منهجي",
+      "emphasis": [],
+      "performance_note": "ختام هادئ"
+    }
+  ],
+  "on_screen_terms": [
+    "العبارة الشرطية",
+    "إذا",
+    "فإن",
+    "الفرض",
+    "النتيجة",
+    "p",
+    "q",
+    "p → q",
+    "العكس",
+    "q → p",
+    "المعكوس",
+    "~p → ~q",
+    "المعاكس الإيجابي",
+    "~q → ~p",
+    "المثال المضاد",
+    "50"
+  ],
+  "confusion_points": [
+    {
+      "point": "«أكثر من 50» لا تشمل 50",
+      "how_to_show": "خط أعداد بدائرة مفتوحة عند 50"
+    },
+    {
+      "point": "العكس ليس بالضرورة صحيحًا",
+      "how_to_show": "مثال مضاد: كوبون + مشتريات 30 + خصم"
+    },
+    {
+      "point": "المعاكس الإيجابي له نفس قيمة صواب الأصلية",
+      "how_to_show": "ربط البطاقتين بعلامة تكافؤ"
+    }
+  ],
+  "locked_facts": [
+    {
+      "fact": "الفرض يلي «إذا» والنتيجة تلي «فإن»",
+      "page": null
+    },
+    {
+      "fact": "العكس: تبديل الفرض والنتيجة",
+      "page": null
+    },
+    {
+      "fact": "المعكوس: نفي الفرض والنتيجة",
+      "page": null
+    },
+    {
+      "fact": "المعاكس الإيجابي: تبديل ونفي، ويكافئ العبارة الأصلية",
+      "page": null
+    },
+    {
+      "fact": "المثال المضاد يثبت أن العبارة خاطئة",
+      "page": null
+    },
+    {
+      "fact": "50 ليست أكثر من 50",
+      "page": null
+    }
+  ],
+  "self_tests": {
+    "reality": {
+      "pass": true,
+      "evidence": "موقف العروض في البقالات شائع"
+    },
+    "relation": {
+      "pass": true,
+      "evidence": "الخطأ اليومي (50 = أكثر من 50؟) هو بالضبط شرط الفرض"
+    },
+    "accuracy": {
+      "pass": true,
+      "evidence": "صُحح وصف المثال المضاد؛ أضيف اسم «المعكوس»"
+    },
+    "comprehension": {
+      "pass": true,
+      "evidence": "كل صيغة تُبنى من نفس الخانتين"
+    },
+    "narrative": {
+      "pass": true,
+      "evidence": "الحيرة ← فهم الفرض ← الصيغ الثلاث"
+    },
+    "brevity": {
+      "pass": true,
+      "evidence": "سطور قصيرة"
+    },
+    "visual": {
+      "pass": true,
+      "evidence": "كل سطر له فعل بصري"
+    },
+    "standalone": {
+      "pass": true,
+      "evidence": "لا يعتمد على حلقة سابقة"
+    },
+    "originality": {
+      "pass": true,
+      "evidence": "مختلفة عن حلقة المنطق: كاشير وعرض بدل سلة"
+    },
+    "duration": {
+      "pass": true,
+      "evidence": "≈ 80 ث تقديريًا"
+    }
+  },
+  "revision_log": [
+    {
+      "version": 2,
+      "change": "«وهذا يسمى المثال المضاد يثبت صحة العبارة الشرطية» → «…وهو يثبت أن العبارة خاطئة»",
+      "reason": "خطأ رياضي: المثال المضاد ينفي صحة العبارة",
+      "requested_by": "quality"
+    },
+    {
+      "version": 2,
+      "change": "صياغة الكوبون: «ممكن يكون عندي كوبون، وآخذ خصم ومشترياتي أقل من خمسين»",
+      "reason": "المثال المضاد يحتاج: النتيجة الجديدة (أكثر من 50) لا تتحقق مع تحقق الفرض الجديد (خصم)",
+      "requested_by": "quality"
+    },
+    {
+      "version": 2,
+      "change": "إضافة «وهذا يسمى المعكوس.»",
+      "reason": "النص ذكر نفي الاثنين دون تسميته، والمصطلح من الدرس",
+      "requested_by": "quality"
+    },
+    {
+      "version": 2,
+      "change": "تصحيح إملائي: يسمى، أشترِ، اللي، البقالة",
+      "reason": "سلامة لغوية للترجمة على الشاشة",
+      "requested_by": "quality"
+    }
+  ]
+}

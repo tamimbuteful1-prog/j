@@ -1,0 +1,62 @@
+{
+  "episode_id": "MATH-G10-U01-L03",
+  "stage": "script_qa",
+  "round": 1,
+  "verdict": "revise",
+  "summary": "نص المقدم قوي تحريريًا (حيرة حقيقية تقود للمفهوم) لكن فيه خطأ رياضي واحد مانع ونقص مصطلح.",
+  "findings": [
+    {
+      "id": "F1",
+      "check": "educational",
+      "severity": "blocker",
+      "location": {
+        "line": "L18"
+      },
+      "problem": "«المثال المضاد يثبت صحة العبارة الشرطية» — خطأ: المثال المضاد يثبت أن العبارة خاطئة.",
+      "cause": "خلط بين الإثبات والنفي",
+      "student_impact": "يتعلم الطالب عكس المفهوم",
+      "fix": "«وهذا يسمى المثال المضاد، وهو يثبت أن العبارة خاطئة.»",
+      "owner": "writer"
+    },
+    {
+      "id": "F2",
+      "check": "educational",
+      "severity": "major",
+      "location": {
+        "line": "L17"
+      },
+      "problem": "وصف الكوبون غامض («ينقص سعر المشتريات وأيضًا يضاف لي الخصم») ولا يوضح أن المشتريات أقل من 50 مع وجود خصم.",
+      "cause": "",
+      "student_impact": "لا يرى الطالب لماذا العكس خاطئ",
+      "fix": "«لأن ممكن يكون عندي كوبون، وآخذ خصم ومشترياتي أقل من خمسين.»",
+      "owner": "writer"
+    },
+    {
+      "id": "F3",
+      "check": "educational",
+      "severity": "major",
+      "location": {
+        "line": "L19-L21"
+      },
+      "problem": "نفي الاثنين بلا تسمية؛ مصطلح «المعكوس» جزء من الدرس.",
+      "cause": "",
+      "student_impact": "ينقص الطالب مصطلح من المصطلحات الأربعة",
+      "fix": "إضافة سطر «وهذا يسمى المعكوس.»",
+      "owner": "writer"
+    },
+    {
+      "id": "F4",
+      "check": "editorial",
+      "severity": "minor",
+      "location": {},
+      "problem": "أخطاء إملائية (يمسى، اشتري، الي، البقاله).",
+      "cause": "",
+      "student_impact": "تظهر في الترجمة",
+      "fix": "تصحيحها",
+      "owner": "writer"
+    }
+  ],
+  "checked_artifacts": [
+    "script/script.json"
+  ]
+}

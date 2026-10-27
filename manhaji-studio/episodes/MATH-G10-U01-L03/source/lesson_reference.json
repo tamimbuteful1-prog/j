@@ -1,0 +1,19 @@
+{
+  "episode_id": "MATH-G10-U01-L03",
+  "subject": "الرياضيات",
+  "grade": "أول ثانوي",
+  "semester": "1",
+  "unit": "01",
+  "unit_title": "التبرير والبرهان",
+  "lesson": "03",
+  "title": "العبارات الشرطية",
+  "book": {
+    "id": "MATH-G10-S1",
+    "file": "(not provided)",
+    "pages": [
+      0,
+      0
+    ]
+  },
+  "notes": "Script authored by the presenter. Book PDF not provided — facts checked against standard definitions; page numbers to be filled when the book is added. Unit/lesson numbers assumed (التبرير والبرهان 1-3)."
+}

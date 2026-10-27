@@ -26,7 +26,8 @@ else {
   const script = JSON.parse(fs.readFileSync(path.join(epDir, 'script', 'script.json'), 'utf8'));
   props = {timeline: tl, hookText: script.hook.text, keyWord: script.hook.key_word, media: {framing: 'fit', trimStartSec: 0, music: null}};
 }
-const publicDir = path.join(epDir, 'production', 'public');
+let publicDir = path.join(epDir, 'production', 'public');
+if (!fs.existsSync(path.join(publicDir, 'fonts'))) publicDir = path.join(here, 'public'); // not prepared yet → shared assets
 const outDir = path.join(epDir, 'quality', 'stills', `${mode}-agent`);
 fs.mkdirSync(outDir, {recursive: true});
 const serveUrl = await bundle({entryPoint: path.join(here, 'src', 'index.ts'), publicDir});

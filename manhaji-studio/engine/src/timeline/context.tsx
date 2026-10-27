@@ -36,5 +36,7 @@ export const useScene = () => {
     if (!l) throw new Error(`unknown line ${id}`);
     return {start: l.start - sc.start, end: l.end - sc.start, text: l.text};
   };
-  return {beat, line, duration: sc.end - sc.start, sceneId: sc.id, mode: tl.mode};
+  /** absolute beat time (seconds since film start) — for state that persists across scenes */
+  const abs = (name: string) => beat(name) + sc.start;
+  return {beat, line, abs, start: sc.start, duration: sc.end - sc.start, sceneId: sc.id, mode: tl.mode, beats: tl.beats};
 };

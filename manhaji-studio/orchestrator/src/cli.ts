@@ -7,7 +7,7 @@ import {sdkRunner} from './agents.ts';
 import {addBook, indexBook, enqueueNextLessons} from './books.ts';
 import {runStudio} from './scheduler.ts';
 import {approve, reject, retry} from './pipeline.ts';
-import {mediaStatus, prepareMedia} from './media.ts';
+import {mediaStatus, preparePublicDir, prepareMedia} from './media.ts';
 import {renderEpisode, resolveEpisode, stillsAt, syncRegistry} from './render.ts';
 import {refreshActionBoard, scaffoldEpisode} from './episode.ts';
 
@@ -92,6 +92,7 @@ const main = async () => {
     }
     case 'resolve': {
       const tl = resolveEpisode(a[0], (a[1] ?? 'preview') as 'preview' | 'final');
+      preparePublicDir(a[0]);
       syncRegistry();
       console.log(`total ${tl.totalSec}s · ${tl.scenes.length} scenes · ${Object.keys(tl.beats).length} beats`);
       for (const s of tl.scenes) console.log(`  ${s.id}  ${s.start.toFixed(2)} → ${s.end.toFixed(2)}`);
