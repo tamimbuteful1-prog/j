@@ -3,7 +3,7 @@ import {CalculateMetadataFunction, Composition, Folder, staticFile} from 'remoti
 import {getVideoMetadata} from '@remotion/media-utils';
 import {ManhajiLogic, VideoProps} from './Video';
 import {HOOK} from './config/media';
-import {SCENES, buildTimeline, sec} from './config/timeline';
+import {SCENE_A, SCENE_B, SCENE_C, SCENE_D, SCENE_E, SCENE_F, SCENE_OUTRO, buildTimeline, sec} from './config/timeline';
 import {VIDEO} from './config/theme';
 import {SceneA_Store} from './scenes/SceneA_Store';
 import {SceneB_TruthValue} from './scenes/SceneB_TruthValue';
@@ -24,14 +24,14 @@ const calculateMetadata: CalculateMetadataFunction<VideoProps> = async ({props})
   return {durationInFrames: buildTimeline(hookClipSec).total, props: {...props, hookClipSec}};
 };
 
-const SOLO: [string, React.FC][] = [
-  ['A-Store', SceneA_Store],
-  ['B-TruthValue', SceneB_TruthValue],
-  ['C-Disjunction-OR', SceneC_Or],
-  ['D-OR-to-AND', SceneD_OrToAnd],
-  ['E-Conjunction-AND', SceneE_And],
-  ['F-Summary', SceneF_Summary],
-  ['Outro', Outro],
+const SOLO: [string, React.FC, number][] = [
+  ['A-Store', SceneA_Store, SCENE_A.durationSec],
+  ['B-TruthValue', SceneB_TruthValue, SCENE_B.durationSec],
+  ['C-Disjunction-OR', SceneC_Or, SCENE_C.durationSec],
+  ['D-OR-to-AND', SceneD_OrToAnd, SCENE_D.durationSec],
+  ['E-Conjunction-AND', SceneE_And, SCENE_E.durationSec],
+  ['F-Summary', SceneF_Summary, SCENE_F.durationSec],
+  ['Outro', Outro, SCENE_OUTRO.durationSec],
 ];
 
 export const RemotionRoot: React.FC = () => (
@@ -48,8 +48,8 @@ export const RemotionRoot: React.FC = () => (
     />
     {/* individual scenes for fast iteration in the Studio */}
     <Folder name="Scenes">
-      {SOLO.map(([id, C], i) => (
-        <Composition key={id} id={id} component={C} width={VIDEO.width} height={VIDEO.height} fps={VIDEO.fps} durationInFrames={sec(SCENES[i].durationSec)} />
+      {SOLO.map(([id, C, d]) => (
+        <Composition key={id} id={id} component={C} width={VIDEO.width} height={VIDEO.height} fps={VIDEO.fps} durationInFrames={sec(d)} />
       ))}
     </Folder>
   </>

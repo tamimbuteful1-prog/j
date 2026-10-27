@@ -254,7 +254,8 @@ export const SCENE_OUTRO = scene({
 /** Hook captions — relative to the hook clip. Only drawn on the placeholder. */
 export const HOOK_LINE = 'أبوي قال لي أجيب عيش وصامولي… ولا قال عيش أو صامولي؟!';
 
-export const SCENES = [SCENE_A, SCENE_B, SCENE_C, SCENE_D, SCENE_E, SCENE_F, SCENE_OUTRO] as const;
+// Scene A («نسيت وش أبوي طلب») removed at the presenter's request: the hook leads straight into B.
+export const SCENES = [SCENE_B, SCENE_C, SCENE_D, SCENE_E, SCENE_F, SCENE_OUTRO] as const;
 
 export const sec = (s: number) => Math.round(s * VIDEO.fps);
 
