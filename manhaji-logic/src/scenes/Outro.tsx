@@ -15,7 +15,7 @@ export const Outro: React.FC = () => {
   const t = frame / 30;
   const mark = pop(frame, B.logo, {damping: 12, stiffness: 110});
   const sweep = ramp(frame, B.logo + 0.5, B.logo + 1.5, EASE.inOut);
-  const fadeOut = ramp(frame, 5.0, 5.6, EASE.in);
+  const fadeOut = ramp(frame, SCENE_OUTRO.durationSec - 0.6, SCENE_OUTRO.durationSec, EASE.in);
   const prod = ramp(frame, B.subject, B.subject + 0.7);
   return (
     <AbsoluteFill>

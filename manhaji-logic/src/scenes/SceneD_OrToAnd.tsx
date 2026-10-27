@@ -21,7 +21,7 @@ const FLIP_AT = B.flip + 0.4;
 export const SceneD_OrToAnd: React.FC = () => {
   const frame = useCurrentFrame();
   const t = frame / 30;
-  const exit = ramp(frame, 7.0, 7.4, EASE.in);
+  const exit = ramp(frame, SCENE_D.durationSec - 0.4, SCENE_D.durationSec, EASE.in);
 
   const enter = pop(frame, B.flip - 0.1, {damping: 14, stiffness: 150});
   const flip = ramp(frame, FLIP_AT - 0.1, FLIP_AT + 0.4, EASE.anticipate);

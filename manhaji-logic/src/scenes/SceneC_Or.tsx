@@ -30,7 +30,7 @@ const CASES: [number, boolean, boolean][] = [
 export const SceneC_Or: React.FC = () => {
   const frame = useCurrentFrame();
   const t = frame / 30;
-  const exit = ramp(frame, 20.15, 20.6, EASE.in);
+  const exit = ramp(frame, SCENE_C.durationSec - 0.45, SCENE_C.durationSec, EASE.in);
 
   // ── phase 1/2: the order card and the growing «أو»
   const grow = ramp(frame, B.orGrow, B.orGrow + 0.7, EASE.inOut);
@@ -46,13 +46,13 @@ export const SceneC_Or: React.FC = () => {
   const chip = ramp(frame, B.split + 0.3, B.split + 0.8);
 
   // ── phase 4: lanes split, then merge into the basket
-  const lanes = ramp(frame, B.split, B.split + 0.7, EASE.out) * (1 - ramp(frame, 12.4, 13.0, EASE.inOut));
+  const lanes = ramp(frame, B.split, B.split + 0.7, EASE.out) * (1 - ramp(frame, B.case1 - 0.9, B.case1 - 0.3, EASE.inOut));
   const merge = ramp(frame, B.merge - 0.2, B.merge + 0.9, EASE.inOut);
-  const pathsOut = ramp(frame, 12.4, 13.0);
+  const pathsOut = ramp(frame, B.case1 - 0.9, B.case1 - 0.3);
 
   // ── basket: appears at merge, re-frames for the case run
   const bIn = pop(frame, B.merge, {damping: 15, stiffness: 120});
-  const caseMode = ramp(frame, 12.5, 13.2, EASE.inOut);
+  const caseMode = ramp(frame, B.case1 - 0.8, B.case1 - 0.1, EASE.inOut);
   const basket: BasketPlacement = {
     x: 540,
     y: mix(bIn, 2500, mix(caseMode, 1440, 1440)),
@@ -99,7 +99,7 @@ export const SceneC_Or: React.FC = () => {
   const sY = mix(sIn, standbyS.y, slotS.y) - Math.sin(sIn * Math.PI) * 120;
 
   // table & results
-  const table = ramp(frame, 12.8, 13.4);
+  const table = ramp(frame, B.case1 - 0.5, B.case1 + 0.1);
   const rows = CASES.map(([at, a, s]) => ({aish: a, samoli: s, result: a || s, progress: ramp(frame, at + 0.3, at + 0.6), active: t >= at && t < at + 1.45 ? 1 : 0}));
   const settle = ramp(frame, B.settle, B.settle + 0.5);
   const curCase = caseIdx >= 0 ? CASES[caseIdx] : null;
@@ -267,7 +267,7 @@ export const SceneC_Or: React.FC = () => {
         )}
 
         {/* «at least one» rule */}
-        <div style={{position: 'absolute', left: 0, right: 0, top: 470, opacity: ramp(frame, B.atLeastOne - 0.2, B.atLeastOne + 0.2) * (1 - ramp(frame, 12.3, 12.7))}}>
+        <div style={{position: 'absolute', left: 0, right: 0, top: 470, opacity: ramp(frame, B.atLeastOne - 0.2, B.atLeastOne + 0.2) * (1 - ramp(frame, B.case1 - 1.0, B.case1 - 0.6))}}>
           <KineticLine
             at={B.atLeastOne - 0.1}
             size={84}
@@ -275,7 +275,7 @@ export const SceneC_Or: React.FC = () => {
             words={[{t: 'يكفي'}, {t: 'واحد', color: COLORS.or, glow: COLORS.orGlow}, {t: 'على'}, {t: 'الأقل', color: COLORS.or}]}
           />
         </div>
-        <ResultBadge value progress={ruleTrue * (1 - ramp(frame, 12.3, 12.6))} x={540} y={650} flash={ruleTrue} />
+        <ResultBadge value progress={ruleTrue * (1 - ramp(frame, B.case1 - 1.0, B.case1 - 0.7))} x={540} y={650} flash={ruleTrue} />
 
         {/* ── truth table */}
         <TruthTable x={540} y={330} rows={rows} op="or" appear={table} width={760} highlightResult={settle} />

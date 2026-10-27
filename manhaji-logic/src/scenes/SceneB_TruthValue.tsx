@@ -21,7 +21,7 @@ const B = SCENE_B.beats;
 export const SceneB_TruthValue: React.FC = () => {
   const frame = useCurrentFrame();
   const t = frame / 30;
-  const exit = ramp(frame, 8.25, 8.8, EASE.in);
+  const exit = ramp(frame, SCENE_B.durationSec - 0.55, SCENE_B.durationSec, EASE.in);
 
   // ── backdrop arrives over the aisle
   const bg = ramp(frame, 0, 0.55, EASE.inOut);
@@ -66,7 +66,7 @@ export const SceneB_TruthValue: React.FC = () => {
   // ── results
   const tr = ramp(frame, B.trueCase, B.trueCase + 0.45, EASE.out);
   const fa = ramp(frame, B.falseCase, B.falseCase + 0.45, EASE.out);
-  const split = ramp(frame, 7.05, 7.6, EASE.inOut);
+  const split = ramp(frame, B.falseCase + 0.75, B.falseCase + 1.3, EASE.inOut);
   const trueFlash = ramp(frame, B.trueCase, B.trueCase + 0.6, EASE.out);
   const falseFlash = ramp(frame, B.falseCase, B.falseCase + 0.6, EASE.out);
 

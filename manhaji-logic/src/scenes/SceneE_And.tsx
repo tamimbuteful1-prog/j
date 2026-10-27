@@ -21,7 +21,7 @@ const B = SCENE_E.beats;
 export const SceneE_And: React.FC = () => {
   const frame = useCurrentFrame();
   const t = frame / 30;
-  const exit = ramp(frame, 15.2, 15.6, EASE.in);
+  const exit = ramp(frame, SCENE_E.durationSec - 0.4, SCENE_E.durationSec, EASE.in);
 
   // ── recomposed "camera" for the third case
   const reco = ramp(frame, B.recompose - 0.1, B.recompose + 0.8, EASE.inOut);
