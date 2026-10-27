@@ -32,6 +32,28 @@ export const syncRegistry = () => {
 
 type Plan = {hook: {duration_sec: number; trim_start_sec: number; trim_end_sec: number | null; key_word_sec: number | null; hold_frames: number; framing: 'fit' | 'fill'; speech: [number, number][]}; voiceover: {lines: {id: string; file: string; duration_sec: number}[]}};
 
+/** Hook timing from the assembly plan. Preview uses the real hook too as soon as it is uploaded. */
+const hookTiming = (plan: Plan | null, exitSec: number, publicDir: string) => {
+  const usable = plan && plan.hook.duration_sec > 0 && fs.existsSync(path.join(publicDir, 'hook.mp4'));
+  if (!usable) return {clipSec: null, holdFrames: 0, keyWordSec: null, tailHoldSec: 0.4};
+  const h = plan!.hook;
+  const end = h.trim_end_sec ?? h.duration_sec;
+  const clipSec = Math.round((end - h.trim_start_sec) * 1000) / 1000;
+  const speech = h.speech.map(([a, b]) => [a - h.trim_start_sec, Math.min(b, end) - h.trim_start_sec] as [number, number]).filter(([a, b]) => b > 0 && a < clipSec);
+  const kw = h.key_word_sec === null ? null : h.key_word_sec - h.trim_start_sec;
+  // the last word must finish before the 3D exit starts → hold the last frame if the clip ends right on speech
+  const lastSpeech = speech.length ? speech[speech.length - 1][1] : clipSec;
+  const tailHoldSec = Math.max(0.2, exitSec - (clipSec - lastSpeech) + 0.1);
+  return {clipSec, holdFrames: kw === null ? 0 : h.hold_frames, keyWordSec: kw, speech, tailHoldSec};
+};
+
+export const hasHook = (id: string) => {
+  const e = ep(id);
+  const f = path.join(e.final, 'assembly_plan.json');
+  if (!fs.existsSync(f) || !fs.existsSync(path.join(e.publicDir, 'hook.mp4'))) return null;
+  return readContract<Plan>('assembly_plan', f);
+};
+
 export const resolveEpisode = (id: string, mode: 'preview' | 'final'): Timeline => {
   const cfg = loadConfig();
   const e = ep(id);
@@ -45,33 +67,24 @@ export const resolveEpisode = (id: string, mode: 'preview' | 'final'): Timeline 
     sceneOverlapSec: 0.3,
     hookExitSec: 0.9,
   };
-  let tl: Timeline;
+  const planFile = path.join(e.final, 'assembly_plan.json');
+  const plan = fs.existsSync(planFile) ? readContract<Plan>('assembly_plan', planFile) : null;
+  if (mode === 'final' && !plan) throw new Error('final render needs final/assembly_plan.json (run: studio media <ID>)');
+  const hook = hookTiming(plan, settings.hookExitSec, e.publicDir);
+  const tl = resolveTimeline({
+    episodeId: id,
+    mode,
+    script,
+    storyboard,
+    // preview keeps estimated line durations even if some recordings already exist
+    durations: mode === 'final' && plan ? Object.fromEntries(plan.voiceover.lines.map((l) => [l.id, l.duration_sec])) : undefined,
+    hook,
+    settings,
+  });
   if (mode === 'preview') {
-    tl = resolveTimeline({episodeId: id, mode, script, storyboard, hook: {clipSec: null, holdFrames: 0, keyWordSec: null, tailHoldSec: 0.4}, settings});
     fs.mkdirSync(e.engineDir, {recursive: true});
     writeJson(path.join(e.engineDir, 'timeline.preview.json'), tl);
-  } else {
-    const plan = readContract<Plan>('assembly_plan', path.join(e.final, 'assembly_plan.json'));
-    const end = plan.hook.trim_end_sec ?? plan.hook.duration_sec;
-    const clipSec = Math.round((end - plan.hook.trim_start_sec) * 1000) / 1000;
-    const speech = plan.hook.speech
-      .map(([a, b]) => [a - plan.hook.trim_start_sec, Math.min(b, end) - plan.hook.trim_start_sec] as [number, number])
-      .filter(([a, b]) => b > 0 && a < clipSec);
-    const kw = plan.hook.key_word_sec === null ? null : plan.hook.key_word_sec - plan.hook.trim_start_sec;
-    // last word must finish before the 3D exit starts → hold the last frame if the clip ends right on speech
-    const lastSpeech = speech.length ? speech[speech.length - 1][1] : clipSec;
-    const tailHoldSec = Math.max(0.2, settings.hookExitSec - (clipSec - lastSpeech) + 0.1);
-    tl = resolveTimeline({
-      episodeId: id,
-      mode,
-      script,
-      storyboard,
-      durations: Object.fromEntries(plan.voiceover.lines.map((l) => [l.id, l.duration_sec])),
-      hook: {clipSec, holdFrames: kw === null ? 0 : plan.hook.hold_frames, keyWordSec: kw, speech, tailHoldSec},
-      settings,
-    });
-    writeJson(path.join(e.final, 'timeline.json'), tl);
-  }
+  } else writeJson(path.join(e.final, 'timeline.json'), tl);
   return tl;
 };
 
@@ -85,16 +98,16 @@ export const renderEpisode = async (id: string, mode: 'preview' | 'final', owner
   preparePublicDir(id);
   syncRegistry();
   const script = readContract<{hook: {text: string; key_word?: string}}>('script', path.join(e.script, 'script.json'));
-  const plan = mode === 'final' ? readContract<Plan>('assembly_plan', path.join(e.final, 'assembly_plan.json')) : null;
+  const plan = hasHook(id);
   const props = {
     timeline: tl,
     hookText: script.hook.text,
     keyWord: script.hook.key_word,
     media: {
-      hookSrc: mode === 'final' ? 'hook.mp4' : undefined,
+      hookSrc: plan ? 'hook.mp4' : undefined,
       framing: plan?.hook.framing ?? 'fit',
       trimStartSec: plan?.hook.trim_start_sec ?? 0,
-      voice: plan ? Object.fromEntries(plan.voiceover.lines.map((l) => [l.id, l.file])) : undefined,
+      voice: mode === 'final' && plan ? Object.fromEntries(plan.voiceover.lines.map((l) => [l.id, l.file])) : undefined,
       // preview has no voice → no ducking; final ducks ~8 dB under the presenter
       music: mode === 'preview' ? {src: 'music/bed.wav', volume: 0.42, ducked: 0.42} : {src: 'music/bed.wav', volume: 0.34, ducked: 0.14},
     },

@@ -80,8 +80,10 @@ const Block: React.FC<{
 }> = ({kind, pos, arc, fill, neg, mark, dim = 0, glow = 0}) => {
   const c = kind === 'p' ? P_COLOR : Q_COLOR;
   const y = mix(pos, SLOT_Y[0], SLOT_Y[1]);
-  const text = kind === 'p' ? 'اشتريت بأكثر من 50 ريال' : 'تحصل على خصم';
-  const negText = kind === 'p' ? 'ما اشتريت بأكثر من 50 ريال' : 'ما تحصل على خصم';
+  const text = kind === 'p' ? 'اشتريت بأكثر من 50 ريال' : 'أحصل على خصم';
+  // negation with «لم» + jussive: لم أشترِ / لم أحصل
+  const negRest = kind === 'p' ? 'أشترِ بأكثر من 50 ريال' : 'أحصل على خصم';
+  const negText = `لم ${negRest}`;
   const showNeg = neg > 0.5;
   const swapTwist = Math.sin(Math.PI * Math.min(1, Math.max(0, pos))) ;
   return (
@@ -110,7 +112,7 @@ const Block: React.FC<{
       <div dir="rtl" style={{position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: FONTS.display, fontWeight: 800, fontSize: 44, color: COLORS.paper, padding: '0 36px 0 110px'}}>
         <span style={{opacity: showNeg ? 0 : 1 - Math.min(1, neg * 2), position: 'absolute'}}>{text}</span>
         <span style={{opacity: showNeg ? Math.min(1, (neg - 0.5) * 2) : 0, position: 'absolute'}}>
-          <span style={{color: NEG_COLOR}}>ما</span> {kind === 'p' ? 'اشتريت بأكثر من 50 ريال' : 'تحصل على خصم'}
+          <span style={{color: NEG_COLOR}}>لم</span> {negRest}
         </span>
         <span style={{visibility: 'hidden'}}>{negText}</span>
       </div>

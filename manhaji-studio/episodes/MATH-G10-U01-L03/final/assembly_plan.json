@@ -1,0 +1,31 @@
+{
+  "episode_id": "MATH-G10-U01-L03",
+  "hook": {
+    "file": "01_hook/hook.mp4",
+    "width": 3840,
+    "height": 2160,
+    "duration_sec": 1.834,
+    "framing": "fit",
+    "speech": [
+      [
+        0.362,
+        1.638
+      ]
+    ],
+    "trim_start_sec": 0,
+    "trim_end_sec": null,
+    "key_word_sec": null,
+    "hold_frames": 12
+  },
+  "voiceover": {
+    "mode": "per_line",
+    "lines": []
+  },
+  "issues": [
+    {
+      "severity": "blocker",
+      "message": "missing voice-over lines: L02, L03, L04, L05, L06, L07, L08, L09, L10, L11, L12, L13, L14, L15, L16, L17, L18, L19, L20, L21, L22, L23, L24, L25"
+    }
+  ],
+  "agent_notes": ""
+}

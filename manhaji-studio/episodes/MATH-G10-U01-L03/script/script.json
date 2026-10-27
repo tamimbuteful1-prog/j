@@ -1,7 +1,7 @@
 {
   "episode_id": "MATH-G10-U01-L03",
   "title": "العبارات الشرطية",
-  "version": 2,
+  "version": 3,
   "approval": {
     "status": "approved",
     "by": "presenter (script author) — corrections pending confirmation",
@@ -32,9 +32,9 @@
     {
       "id": "L02",
       "section": "context",
-      "text": "دخلت البقالة، وشفت إعلان مكتوب عليه:",
+      "text": "طلبت من تطبيق البقالة، وشفت إعلان مكتوب عليه:",
       "hook": false,
-      "visual_intent": "لوحة العرض في البقالة تظهر",
+      "visual_intent": "الصفحة الرئيسية للتطبيق وبانر العرض",
       "emphasis": [],
       "performance_note": "سرد طبيعي"
     },
@@ -229,7 +229,7 @@
     {
       "id": "L20",
       "section": "demonstration",
-      "text": "«إذا ما اشتريت بأكثر من خمسين ريال، فإنني لن أحصل على خصم».",
+      "text": "«إذا لم أشترِ بأكثر من خمسين ريال، فإنني لم أحصل على خصم».",
       "hook": false,
       "visual_intent": "النصان يتحولان للنفي",
       "emphasis": [],
@@ -414,6 +414,18 @@
       "change": "تصحيح إملائي: يسمى، أشترِ، اللي، البقالة",
       "reason": "سلامة لغوية للترجمة على الشاشة",
       "requested_by": "quality"
+    },
+    {
+      "version": 3,
+      "change": "L02: «دخلت البقالة» → «طلبت من تطبيق البقالة»",
+      "reason": "القصة صارت داخل تطبيق بقالة",
+      "requested_by": "presenter"
+    },
+    {
+      "version": 3,
+      "change": "النفي بـ«لم»: «إذا لم أشترِ… فإنني لم أحصل…» (كان: ما اشتريت / لن أحصل)",
+      "reason": "طلب المقدم؛ «لم أشترِ» بالجزم",
+      "requested_by": "presenter"
     }
   ]
 }

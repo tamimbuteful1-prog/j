@@ -131,7 +131,7 @@ export const prepareMedia = (id: string) => {
     const conformed = path.join(pub, 'hook.mp4');
     const srcStat = fs.statSync(hookSrc).mtimeMs;
     if (!fs.existsSync(conformed) || fs.statSync(conformed).mtimeMs < srcStat) {
-      run(['-i', hookSrc, '-vf', `fps=${cfg.episode.fps},format=yuv420p`, '-af', `highpass=f=70,loudnorm=I=${cfg.episode.loudness_lufs}:TP=-1.5:LRA=9`, '-ar', '48000', '-c:v', 'libx264', '-crf', '14', '-preset', 'medium', '-c:a', 'aac', '-b:a', '256k', '-movflags', '+faststart', conformed]);
+      run(['-i', hookSrc, '-vf', `scale='min(1920,iw)':-2:flags=lanczos,fps=${cfg.episode.fps},format=yuv420p`, '-af', `highpass=f=70,loudnorm=I=${cfg.episode.loudness_lufs}:TP=-1.5:LRA=9`, '-ar', '48000', '-c:v', 'libx264', '-crf', '14', '-preset', 'medium', '-c:a', 'aac', '-b:a', '256k', '-movflags', '+faststart', conformed]);
     }
     const sameFile = prev?.hook?.file === path.relative(e.dir, hookSrc) && prev?.hook?.duration_sec === Math.round(pr.durationSec * 1000) / 1000;
     hook = {

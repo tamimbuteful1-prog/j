@@ -5,7 +5,7 @@
     {
       "name": "opens",
       "ok": true,
-      "detail": "duration 80.85s"
+      "detail": "duration 80.38s"
     },
     {
       "name": "dimensions",
@@ -25,7 +25,7 @@
     {
       "name": "duration",
       "ok": true,
-      "detail": "80.85s vs timeline 80.82s"
+      "detail": "80.38s vs timeline 80.36s"
     },
     {
       "name": "black_frames",
@@ -35,7 +35,7 @@
     {
       "name": "audio_present",
       "ok": true,
-      "detail": "-17.2 LUFS"
+      "detail": "-17.1 LUFS"
     }
   ]
 }
