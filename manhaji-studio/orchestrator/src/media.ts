@@ -88,21 +88,26 @@ export const preparePublicDir = (id: string) => {
   return pub;
 };
 
-const run = (args: string[]) => execFileSync(FFMPEG, ['-hide_banner', '-loglevel', 'error', '-y', ...args]);
+const run = (args: string[]) => execFileSync(FFMPEG, ['-nostdin', '-hide_banner', '-loglevel', 'error', '-y', ...args], {stdio: ['ignore', 'pipe', 'pipe'], timeout: 10 * 60 * 1000});
 
-/** Trim leading/trailing silence (keep 120 ms air) and normalise one spoken line. */
+/**
+ * Trim leading/trailing silence (keep 120 ms air) and normalise one spoken line.
+ * Edges are found with silencedetect and cut with -ss/-t (single-pass filters only:
+ * areverse + loudnorm in one graph can deadlock ffmpeg).
+ */
 const conformLine = (src: string, dst: string, lufs: number, fromSec?: number, toSec?: number) => {
-  const cut = fromSec !== undefined && toSec !== undefined ? ['-ss', String(Math.max(0, fromSec - 0.12)), '-t', String(toSec - fromSec + 0.24)] : [];
+  let a = fromSec ?? 0;
+  let b = toSec ?? probe(src).durationSec;
+  const sp = speechWindows(src, -40, 0.12).filter(([x, y]) => y > a && x < b);
+  if (sp.length) {
+    a = Math.max(a, sp[0][0]);
+    b = Math.min(b, sp[sp.length - 1][1]);
+  }
   run([
-    ...cut,
+    '-ss', String(Math.max(0, a - 0.12)),
+    '-t', String(b - a + 0.24),
     '-i', src,
-    '-af',
-    [
-      'highpass=f=70',
-      // trim edge silence, keep 120 ms of air (also for segments cut from a single take)
-      'silenceremove=start_periods=1:start_threshold=-40dB:start_silence=0.12:stop_periods=1:stop_threshold=-40dB:stop_silence=0.12',
-      `loudnorm=I=${lufs}:TP=-1.5:LRA=9`,
-    ].join(','),
+    '-af', `highpass=f=70,afade=t=in:d=0.01,loudnorm=I=${lufs}:TP=-1.5:LRA=9`,
     '-ar', '48000', '-ac', '1', dst,
   ]);
   return probe(dst).durationSec;

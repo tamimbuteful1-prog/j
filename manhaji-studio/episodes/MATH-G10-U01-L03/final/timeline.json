@@ -1,0 +1,896 @@
+{
+  "episodeId": "MATH-G10-U01-L03",
+  "mode": "final",
+  "fps": 30,
+  "hook": {
+    "start": 0,
+    "end": 2.638,
+    "clipSec": 1.834,
+    "holdFrames": 0,
+    "keyWordSec": null,
+    "tailHoldSec": 0.8039999999999998,
+    "exitSec": 0.9
+  },
+  "lines": [
+    {
+      "id": "L02",
+      "section": "context",
+      "text": "طلبت من مطعم، وشفت إعلان مكتوب عليه:",
+      "hook": false,
+      "visual_intent": "جدار المطعم ولوحة العرض",
+      "emphasis": [],
+      "performance_note": "سرد طبيعي",
+      "start": 2.758,
+      "end": 5.978,
+      "estimated": false
+    },
+    {
+      "id": "L03",
+      "section": "context",
+      "text": "«إذا اشتريت بأكثر من خمسين ريال، فإنك ستحصل على خصم»",
+      "hook": false,
+      "visual_intent": "نص اللوحة يُقرأ، «إذا» و«فإن» تضيئان",
+      "emphasis": [
+        "إذا",
+        "فإن"
+      ],
+      "performance_note": "اقرأها كأنك تقرأ لوحة",
+      "start": 6.098,
+      "end": 11.318,
+      "estimated": false
+    },
+    {
+      "id": "L04",
+      "section": "context",
+      "text": "أنا مباشرة اشتريت بخمسين ريال بالضبط، لكن ما عطوني الخصم،",
+      "hook": false,
+      "visual_intent": "فاتورة المطعم تُطبع حتى 50.00 والخصم لا يُطبق",
+      "emphasis": [
+        "بالضبط"
+      ],
+      "performance_note": "تشديد على «بالضبط»",
+      "start": 11.468,
+      "end": 16.102,
+      "estimated": false
+    },
+    {
+      "id": "L05",
+      "section": "context",
+      "text": "ليش؟",
+      "hook": false,
+      "visual_intent": "«ليش!!» كبيرة مع رد فعل",
+      "emphasis": [
+        "ليش!!"
+      ],
+      "performance_note": "استنكار",
+      "start": 16.222,
+      "end": 16.972,
+      "estimated": false
+    },
+    {
+      "id": "L06",
+      "section": "bridge",
+      "text": "خلونا نفهم اللي صار،",
+      "hook": false,
+      "visual_intent": "اللوحة تنتقل لمساحة الشرح",
+      "emphasis": [],
+      "performance_note": "هدوء",
+      "start": 17.122,
+      "end": 19.362,
+      "estimated": false
+    },
+    {
+      "id": "L07",
+      "section": "explanation",
+      "text": "في الرياضيات عندنا شيء يسمى العبارة الشرطية،",
+      "hook": false,
+      "visual_intent": "عنوان «العبارة الشرطية»",
+      "emphasis": [
+        "العبارة الشرطية،"
+      ],
+      "performance_note": "",
+      "start": 19.482,
+      "end": 23.162,
+      "estimated": false
+    },
+    {
+      "id": "L08",
+      "section": "explanation",
+      "text": "وتكون بصيغة: إذا… فإن…",
+      "hook": false,
+      "visual_intent": "قالب بخانتين فارغتين: إذا … فإن …",
+      "emphasis": [
+        "إذا…",
+        "فإن…"
+      ],
+      "performance_note": "وقفة بين «إذا» و«فإن»",
+      "start": 23.282,
+      "end": 25.382,
+      "estimated": false
+    },
+    {
+      "id": "L09",
+      "section": "explanation",
+      "text": "مثال عليها: العرض اللي في المطعم،",
+      "hook": false,
+      "visual_intent": "اللوحة تعود",
+      "emphasis": [],
+      "performance_note": "",
+      "start": 25.532,
+      "end": 28.152,
+      "estimated": false
+    },
+    {
+      "id": "L10",
+      "section": "explanation",
+      "text": "إذا اشتريت بأكثر من خمسين ريال، فإنك ستحصل على خصم،",
+      "hook": false,
+      "visual_intent": "نص اللوحة يملأ الخانتين",
+      "emphasis": [
+        "إذا",
+        "فإنك"
+      ],
+      "performance_note": "",
+      "start": 28.272,
+      "end": 33.032,
+      "estimated": false
+    },
+    {
+      "id": "L11",
+      "section": "explanation",
+      "text": "اللي بعد «إذا» نسميها الفرض،",
+      "hook": false,
+      "visual_intent": "تسمية الخانة الأولى: الفرض p",
+      "emphasis": [
+        "الفرض،"
+      ],
+      "performance_note": "",
+      "start": 33.152,
+      "end": 35.271,
+      "estimated": false
+    },
+    {
+      "id": "L12",
+      "section": "explanation",
+      "text": "واللي بعد «فإن» هو النتيجة،",
+      "hook": false,
+      "visual_intent": "تسمية الخانة الثانية: النتيجة q",
+      "emphasis": [
+        "النتيجة."
+      ],
+      "performance_note": "",
+      "start": 35.391,
+      "end": 37.848,
+      "estimated": false
+    },
+    {
+      "id": "L13",
+      "section": "explanation",
+      "text": "والمشكلة إني اشتريت بخمسين ريال بالضبط، مش أكثر، عشان كذا ما تفعّل الخصم.",
+      "hook": false,
+      "visual_intent": "خط الأعداد: 50 على دائرة مفتوحة خارج المنطقة",
+      "emphasis": [
+        "مش",
+        "أكثر،"
+      ],
+      "performance_note": "تشديد «مو أكثر»",
+      "start": 37.998,
+      "end": 45.558,
+      "estimated": false
+    },
+    {
+      "id": "L14",
+      "section": "demonstration",
+      "text": "طيب، لو عكسنا الجملة:",
+      "hook": false,
+      "visual_intent": "الخانتان تتبادلان مكانيهما",
+      "emphasis": [
+        "عكسنا"
+      ],
+      "performance_note": "",
+      "start": 46.058,
+      "end": 47.734,
+      "estimated": false
+    },
+    {
+      "id": "L15",
+      "section": "demonstration",
+      "text": "«إذا حصلت على خصم، فإن مشترياتي أكثر من خمسين ريال»",
+      "hook": false,
+      "visual_intent": "العبارة المعكوسة الترتيب تُقرأ",
+      "emphasis": [],
+      "performance_note": "",
+      "start": 47.854,
+      "end": 52.954,
+      "estimated": false
+    },
+    {
+      "id": "L16",
+      "section": "demonstration",
+      "text": "هذا نسميها العكس، ومو شرط يكون صحيح؛",
+      "hook": false,
+      "visual_intent": "اسم «العكس» + q → p + علامة ؟",
+      "emphasis": [
+        "العكس،"
+      ],
+      "performance_note": "",
+      "start": 53.074,
+      "end": 56.894,
+      "estimated": false
+    },
+    {
+      "id": "L17",
+      "section": "demonstration",
+      "text": "لأنه ممكن يكون عندي كوبون إضافي ينقص السعر، وآخذ الخصم اللي في العرض ومشترياتي أقل من خمسين ريال.",
+      "hook": false,
+      "visual_intent": "كوبون + فاتورة 30 ريال + خصم مفعّل",
+      "emphasis": [
+        "كوبون،",
+        "أقل"
+      ],
+      "performance_note": "",
+      "start": 57.044,
+      "end": 65.804,
+      "estimated": false
+    },
+    {
+      "id": "L18",
+      "section": "demonstration",
+      "text": "وهذا يسمى المثال المضاد.",
+      "hook": false,
+      "visual_intent": "ختم FALSE على العكس + «مثال مضاد»",
+      "emphasis": [
+        "المثال",
+        "المضاد."
+      ],
+      "performance_note": "",
+      "start": 65.924,
+      "end": 68.018,
+      "estimated": false
+    },
+    {
+      "id": "L19",
+      "section": "demonstration",
+      "text": "طيب، لو نفينا العبارة:",
+      "hook": false,
+      "visual_intent": "علامة النفي تنزل على الخانتين",
+      "emphasis": [
+        "نفينا"
+      ],
+      "performance_note": "",
+      "start": 69.518,
+      "end": 72.844,
+      "estimated": false
+    },
+    {
+      "id": "L20",
+      "section": "demonstration",
+      "text": "«إذا لم أشترِ بأكثر من خمسين ريال، فإنني لم أحصل على خصم»",
+      "hook": false,
+      "visual_intent": "النصان يتحولان للنفي",
+      "emphasis": [],
+      "performance_note": "",
+      "start": 72.964,
+      "end": 77.389,
+      "estimated": false
+    },
+    {
+      "id": "L21",
+      "section": "demonstration",
+      "text": "هذا نسميه المعكوس،",
+      "hook": false,
+      "visual_intent": "اسم «المعكوس» + ~p → ~q",
+      "emphasis": [
+        "المعكوس."
+      ],
+      "performance_note": "",
+      "start": 77.509,
+      "end": 79.529,
+      "estimated": false
+    },
+    {
+      "id": "L22",
+      "section": "demonstration",
+      "text": "أما لو عكسنا ونفينا في نفس الوقت:",
+      "hook": false,
+      "visual_intent": "تبديل + نفي",
+      "emphasis": [
+        "عكسنا",
+        "ونفينا:"
+      ],
+      "performance_note": "",
+      "start": 79.679,
+      "end": 83.199,
+      "estimated": false
+    },
+    {
+      "id": "L23",
+      "section": "demonstration",
+      "text": "«إذا لم أحصل على خصم، فإنني لم أشترِ بأكثر من خمسين ريال»",
+      "hook": false,
+      "visual_intent": "العبارة الجديدة تُقرأ",
+      "emphasis": [],
+      "performance_note": "",
+      "start": 83.319,
+      "end": 88.859,
+      "estimated": false
+    },
+    {
+      "id": "L24",
+      "section": "demonstration",
+      "text": "هذا المعاكس الإيجابي.",
+      "hook": false,
+      "visual_intent": "المعاكس الإيجابي ≡ الأصلية",
+      "emphasis": [
+        "المعاكس",
+        "الإيجابي،",
+        "نفس"
+      ],
+      "performance_note": "تشديد «نفس»",
+      "start": 88.979,
+      "end": 91.359,
+      "estimated": false
+    },
+    {
+      "id": "L25",
+      "section": "conclusion",
+      "text": "وبكذا تعلمنا درس العبارات الشرطية، من مادة الرياضيات للصف الأول ثانوي.",
+      "hook": false,
+      "visual_intent": "نهاية منهجي",
+      "emphasis": [],
+      "performance_note": "ختام هادئ",
+      "start": 96.559,
+      "end": 102.939,
+      "estimated": false
+    }
+  ],
+  "scenes": [
+    {
+      "id": "S01",
+      "start": 1.738,
+      "end": 11.568
+    },
+    {
+      "id": "S02",
+      "start": 11.268,
+      "end": 17.222
+    },
+    {
+      "id": "S03",
+      "start": 16.922,
+      "end": 25.632
+    },
+    {
+      "id": "S04",
+      "start": 25.332,
+      "end": 38.098
+    },
+    {
+      "id": "S05",
+      "start": 37.798,
+      "end": 46.158
+    },
+    {
+      "id": "S06",
+      "start": 45.858,
+      "end": 57.144
+    },
+    {
+      "id": "S07",
+      "start": 56.844,
+      "end": 69.618
+    },
+    {
+      "id": "S08",
+      "start": 69.318,
+      "end": 79.779
+    },
+    {
+      "id": "S09",
+      "start": 79.479,
+      "end": 93.159
+    },
+    {
+      "id": "S10",
+      "start": 92.859,
+      "end": 96.659
+    },
+    {
+      "id": "S11",
+      "start": 96.359,
+      "end": 104.539
+    }
+  ],
+  "beats": {
+    "poster": 3.885,
+    "ifWord": 6.118,
+    "thenWord": 9.331,
+    "discountWord": 10.816,
+    "printStart": 11.418,
+    "countStart": 11.468,
+    "fifty": 13.031,
+    "exact": 13.857,
+    "denied": 15.026,
+    "why": 16.172,
+    "bridge": 17.122,
+    "title": 21.724,
+    "template": 24.423,
+    "thenSlot": 24.9,
+    "posterBack": 25.532,
+    "fillP": 28.545,
+    "fillQ": 31.625,
+    "labelP": 34.717,
+    "labelQ": 37.02,
+    "numberLine": 37.848,
+    "marker50": 40.119,
+    "notMore": 38.259,
+    "swap": 46.596,
+    "converseName": 54.141,
+    "notNecessarily": 55.308,
+    "coupon": 58.75,
+    "discountOK": 61.6,
+    "under50": 64.128,
+    "counterName": 66.697,
+    "falseStamp": 67.457,
+    "swapBack": 69.568,
+    "negate": 70.627,
+    "inverseName": 78.531,
+    "swapNeg": 80.326,
+    "contraName": 89.332,
+    "sameValue": 91.509,
+    "grid": 93.087,
+    "link": 94.759,
+    "logo": 96.609
+  },
+  "sfx": [
+    {
+      "name": "board",
+      "at": 4.005,
+      "volume": 0.8
+    },
+    {
+      "name": "tick",
+      "at": 6.118,
+      "volume": 0.6
+    },
+    {
+      "name": "tick",
+      "at": 9.331,
+      "volume": 0.6
+    },
+    {
+      "name": "pop",
+      "at": 10.816,
+      "volume": 0.6
+    },
+    {
+      "name": "printer",
+      "at": 11.418,
+      "volume": 0.85
+    },
+    {
+      "name": "reject",
+      "at": 15.026,
+      "volume": 0.75
+    },
+    {
+      "name": "impact",
+      "at": 16.172,
+      "volume": 0.55
+    },
+    {
+      "name": "whoosh_short",
+      "at": 16.072,
+      "volume": 0.4
+    },
+    {
+      "name": "whoosh_short",
+      "at": 17.122,
+      "volume": 0.5
+    },
+    {
+      "name": "impact",
+      "at": 21.724,
+      "volume": 0.35
+    },
+    {
+      "name": "swish",
+      "at": 24.423,
+      "volume": 0.45
+    },
+    {
+      "name": "swish",
+      "at": 24.9,
+      "volume": 0.45
+    },
+    {
+      "name": "paper_slide",
+      "at": 25.532,
+      "volume": 0.5
+    },
+    {
+      "name": "paper_drop",
+      "at": 28.695,
+      "volume": 0.8
+    },
+    {
+      "name": "paper_drop",
+      "at": 31.775,
+      "volume": 0.8
+    },
+    {
+      "name": "pop",
+      "at": 34.717,
+      "volume": 0.55
+    },
+    {
+      "name": "pop",
+      "at": 37.02,
+      "volume": 0.55
+    },
+    {
+      "name": "swish",
+      "at": 37.848,
+      "volume": 0.4
+    },
+    {
+      "name": "drop",
+      "at": 40.119,
+      "volume": 0.6
+    },
+    {
+      "name": "nope",
+      "at": 38.259,
+      "volume": 0.7
+    },
+    {
+      "name": "whoosh_short",
+      "at": 46.596,
+      "volume": 0.6
+    },
+    {
+      "name": "pop",
+      "at": 54.141,
+      "volume": 0.5
+    },
+    {
+      "name": "tick",
+      "at": 55.308,
+      "volume": 0.6
+    },
+    {
+      "name": "paper_slide",
+      "at": 58.55,
+      "volume": 0.7
+    },
+    {
+      "name": "printer_short",
+      "at": 58.85,
+      "volume": 0.8
+    },
+    {
+      "name": "kaching",
+      "at": 60,
+      "volume": 0.7
+    },
+    {
+      "name": "nope",
+      "at": 64.128,
+      "volume": 0.65
+    },
+    {
+      "name": "stamp",
+      "at": 67.357,
+      "volume": 0.9
+    },
+    {
+      "name": "yes",
+      "at": 61.6,
+      "volume": 0.5
+    },
+    {
+      "name": "whoosh_short",
+      "at": 69.568,
+      "volume": 0.5
+    },
+    {
+      "name": "snap",
+      "at": 70.627,
+      "volume": 0.8
+    },
+    {
+      "name": "snap",
+      "at": 70.727,
+      "volume": 0.7
+    },
+    {
+      "name": "pop",
+      "at": 78.531,
+      "volume": 0.5
+    },
+    {
+      "name": "whoosh_short",
+      "at": 80.326,
+      "volume": 0.6
+    },
+    {
+      "name": "pop",
+      "at": 89.332,
+      "volume": 0.5
+    },
+    {
+      "name": "lock",
+      "at": 91.509,
+      "volume": 0.7
+    },
+    {
+      "name": "whoosh_short",
+      "at": 93.087,
+      "volume": 0.5
+    },
+    {
+      "name": "pop",
+      "at": 94.759,
+      "volume": 0.5
+    },
+    {
+      "name": "shimmer",
+      "at": 96.609,
+      "volume": 0.45
+    }
+  ],
+  "captions": [
+    {
+      "start": 0.362,
+      "end": 1.638,
+      "text": "جد صار لك هذا الموقف؟",
+      "highlight": [
+        "الموقف",
+        "الموقف؟"
+      ]
+    },
+    {
+      "start": 2.758,
+      "end": 6.098,
+      "text": "طلبت من مطعم، وشفت إعلان مكتوب عليه:",
+      "highlight": []
+    },
+    {
+      "start": 6.098,
+      "end": 9.423,
+      "text": "«إذا اشتريت بأكثر من خمسين ريال،",
+      "highlight": [
+        "إذا"
+      ]
+    },
+    {
+      "start": 9.423,
+      "end": 11.438,
+      "text": "فإنك ستحصل على خصم»",
+      "highlight": [
+        "فإن"
+      ]
+    },
+    {
+      "start": 11.468,
+      "end": 14.583,
+      "text": "أنا مباشرة اشتريت بخمسين ريال بالضبط،",
+      "highlight": [
+        "بالضبط"
+      ]
+    },
+    {
+      "start": 14.583,
+      "end": 16.222,
+      "text": "لكن ما عطوني الخصم،",
+      "highlight": []
+    },
+    {
+      "start": 16.222,
+      "end": 17.092,
+      "text": "ليش؟",
+      "highlight": []
+    },
+    {
+      "start": 17.122,
+      "end": 19.482,
+      "text": "خلونا نفهم اللي صار،",
+      "highlight": []
+    },
+    {
+      "start": 19.482,
+      "end": 23.282,
+      "text": "في الرياضيات عندنا شيء يسمى العبارة الشرطية،",
+      "highlight": [
+        "العبارة الشرطية،"
+      ]
+    },
+    {
+      "start": 23.282,
+      "end": 25.502,
+      "text": "وتكون بصيغة: إذا… فإن…",
+      "highlight": [
+        "إذا…",
+        "فإن…"
+      ]
+    },
+    {
+      "start": 25.532,
+      "end": 28.272,
+      "text": "مثال عليها: العرض اللي في المطعم،",
+      "highlight": []
+    },
+    {
+      "start": 28.272,
+      "end": 31.275,
+      "text": "إذا اشتريت بأكثر من خمسين ريال،",
+      "highlight": [
+        "إذا"
+      ]
+    },
+    {
+      "start": 31.275,
+      "end": 33.152,
+      "text": "فإنك ستحصل على خصم،",
+      "highlight": [
+        "فإنك"
+      ]
+    },
+    {
+      "start": 33.152,
+      "end": 35.391,
+      "text": "اللي بعد «إذا» نسميها الفرض،",
+      "highlight": [
+        "الفرض،"
+      ]
+    },
+    {
+      "start": 35.391,
+      "end": 37.968,
+      "text": "واللي بعد «فإن» هو النتيجة،",
+      "highlight": []
+    },
+    {
+      "start": 37.998,
+      "end": 42.149,
+      "text": "والمشكلة إني اشتريت بخمسين ريال بالضبط،",
+      "highlight": [
+        "مش"
+      ]
+    },
+    {
+      "start": 42.149,
+      "end": 45.678,
+      "text": "مش أكثر، عشان كذا ما تفعّل الخصم.",
+      "highlight": [
+        "مش",
+        "أكثر،"
+      ]
+    },
+    {
+      "start": 46.058,
+      "end": 47.854,
+      "text": "طيب، لو عكسنا الجملة:",
+      "highlight": [
+        "عكسنا"
+      ]
+    },
+    {
+      "start": 47.854,
+      "end": 51.066,
+      "text": "«إذا حصلت على خصم، فإن مشترياتي",
+      "highlight": []
+    },
+    {
+      "start": 51.066,
+      "end": 53.074,
+      "text": "أكثر من خمسين ريال»",
+      "highlight": []
+    },
+    {
+      "start": 53.074,
+      "end": 57.014,
+      "text": "هذا نسميها العكس، ومو شرط يكون صحيح؛",
+      "highlight": [
+        "العكس،"
+      ]
+    },
+    {
+      "start": 57.044,
+      "end": 59.944,
+      "text": "لأنه ممكن يكون عندي كوبون إضافي",
+      "highlight": []
+    },
+    {
+      "start": 59.944,
+      "end": 62.753,
+      "text": "ينقص السعر، وآخذ الخصم اللي في",
+      "highlight": []
+    },
+    {
+      "start": 62.753,
+      "end": 65.924,
+      "text": "العرض ومشترياتي أقل من خمسين ريال.",
+      "highlight": [
+        "أقل"
+      ]
+    },
+    {
+      "start": 65.924,
+      "end": 68.138,
+      "text": "وهذا يسمى المثال المضاد.",
+      "highlight": [
+        "المثال",
+        "المضاد."
+      ]
+    },
+    {
+      "start": 69.518,
+      "end": 72.964,
+      "text": "طيب، لو نفينا العبارة:",
+      "highlight": [
+        "نفينا"
+      ]
+    },
+    {
+      "start": 72.964,
+      "end": 75.237,
+      "text": "«إذا لم أشترِ بأكثر من خمسين",
+      "highlight": []
+    },
+    {
+      "start": 75.237,
+      "end": 77.509,
+      "text": "ريال، فإنني لم أحصل على خصم»",
+      "highlight": []
+    },
+    {
+      "start": 77.509,
+      "end": 79.649,
+      "text": "هذا نسميه المعكوس،",
+      "highlight": []
+    },
+    {
+      "start": 79.679,
+      "end": 83.319,
+      "text": "أما لو عكسنا ونفينا في نفس الوقت:",
+      "highlight": [
+        "عكسنا"
+      ]
+    },
+    {
+      "start": 83.319,
+      "end": 86.051,
+      "text": "«إذا لم أحصل على خصم، فإنني",
+      "highlight": []
+    },
+    {
+      "start": 86.051,
+      "end": 88.979,
+      "text": "لم أشترِ بأكثر من خمسين ريال»",
+      "highlight": []
+    },
+    {
+      "start": 88.979,
+      "end": 91.479,
+      "text": "هذا المعاكس الإيجابي.",
+      "highlight": [
+        "المعاكس"
+      ]
+    },
+    {
+      "start": 96.559,
+      "end": 100.038,
+      "text": "وبكذا تعلمنا درس العبارات الشرطية، من",
+      "highlight": []
+    },
+    {
+      "start": 100.038,
+      "end": 103.059,
+      "text": "مادة الرياضيات للصف الأول ثانوي.",
+      "highlight": []
+    }
+  ],
+  "totalSec": 104.539,
+  "warnings": []
+}

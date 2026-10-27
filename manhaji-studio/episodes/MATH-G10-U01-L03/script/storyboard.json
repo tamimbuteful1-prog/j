@@ -500,7 +500,7 @@
           "name": "notMore",
           "anchor": {
             "line": "L13",
-            "word": "مو"
+            "word": "مش"
           },
           "offset": -0.05
         }
@@ -674,9 +674,9 @@
           "name": "falseStamp",
           "anchor": {
             "line": "L18",
-            "word": "خاطئة"
+            "word": "المضاد"
           },
-          "offset": -0.1
+          "offset": 0.05
         }
       ],
       "sfx": [
@@ -719,7 +719,8 @@
       ],
       "transition_out": {
         "type": "match-cut"
-      }
+      },
+      "silent_tail_sec": 1.6
     },
     {
       "id": "S08",
@@ -760,7 +761,7 @@
             "line": "L19",
             "at": "start"
           },
-          "offset": -0.25
+          "offset": 0.05
         },
         {
           "name": "negate",
@@ -856,9 +857,9 @@
           "name": "sameValue",
           "anchor": {
             "line": "L24",
-            "word": "نفس"
+            "at": "end"
           },
-          "offset": -0.1
+          "offset": 0.15
         }
       ],
       "sfx": [
@@ -884,7 +885,7 @@
       "transition_out": {
         "type": "match-cut"
       },
-      "silent_tail_sec": 0.5
+      "silent_tail_sec": 1.8
     },
     {
       "id": "S10",

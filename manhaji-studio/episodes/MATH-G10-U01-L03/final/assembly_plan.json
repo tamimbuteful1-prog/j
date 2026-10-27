@@ -19,12 +19,182 @@
   },
   "voiceover": {
     "mode": "per_line",
-    "lines": []
+    "lines": [
+      {
+        "id": "L02",
+        "file": "vo/L02.wav",
+        "duration_sec": 3.22,
+        "expected_sec": 2.843,
+        "ratio": 1.13
+      },
+      {
+        "id": "L03",
+        "file": "vo/L03.wav",
+        "duration_sec": 5.22,
+        "expected_sec": 3.954,
+        "ratio": 1.32
+      },
+      {
+        "id": "L04",
+        "file": "vo/L04.wav",
+        "duration_sec": 4.634,
+        "expected_sec": 3.954,
+        "ratio": 1.17
+      },
+      {
+        "id": "L05",
+        "file": "vo/L05.wav",
+        "duration_sec": 0.75,
+        "expected_sec": 0.9,
+        "ratio": 0.83
+      },
+      {
+        "id": "L06",
+        "file": "vo/L06.wav",
+        "duration_sec": 2.24,
+        "expected_sec": 1.731,
+        "ratio": 1.29
+      },
+      {
+        "id": "L07",
+        "file": "vo/L07.wav",
+        "duration_sec": 3.68,
+        "expected_sec": 2.843,
+        "ratio": 1.29
+      },
+      {
+        "id": "L08",
+        "file": "vo/L08.wav",
+        "duration_sec": 2.1,
+        "expected_sec": 1.731,
+        "ratio": 1.21
+      },
+      {
+        "id": "L09",
+        "file": "vo/L09.wav",
+        "duration_sec": 2.62,
+        "expected_sec": 2.472,
+        "ratio": 1.06
+      },
+      {
+        "id": "L10",
+        "file": "vo/L10.wav",
+        "duration_sec": 4.76,
+        "expected_sec": 3.954,
+        "ratio": 1.2
+      },
+      {
+        "id": "L11",
+        "file": "vo/L11.wav",
+        "duration_sec": 2.119,
+        "expected_sec": 2.102,
+        "ratio": 1.01
+      },
+      {
+        "id": "L12",
+        "file": "vo/L12.wav",
+        "duration_sec": 2.457,
+        "expected_sec": 2.102,
+        "ratio": 1.17
+      },
+      {
+        "id": "L13",
+        "file": "vo/L13.wav",
+        "duration_sec": 7.56,
+        "expected_sec": 5.065,
+        "ratio": 1.49
+      },
+      {
+        "id": "L14",
+        "file": "vo/L14.wav",
+        "duration_sec": 1.676,
+        "expected_sec": 1.731,
+        "ratio": 0.97
+      },
+      {
+        "id": "L15",
+        "file": "vo/L15.wav",
+        "duration_sec": 5.1,
+        "expected_sec": 3.954,
+        "ratio": 1.29
+      },
+      {
+        "id": "L16",
+        "file": "vo/L16.wav",
+        "duration_sec": 3.82,
+        "expected_sec": 2.843,
+        "ratio": 1.34
+      },
+      {
+        "id": "L17",
+        "file": "vo/L17.wav",
+        "duration_sec": 8.76,
+        "expected_sec": 6.917,
+        "ratio": 1.27
+      },
+      {
+        "id": "L18",
+        "file": "vo/L18.wav",
+        "duration_sec": 2.094,
+        "expected_sec": 1.731,
+        "ratio": 1.21
+      },
+      {
+        "id": "L19",
+        "file": "vo/L19.wav",
+        "duration_sec": 3.326,
+        "expected_sec": 1.731,
+        "ratio": 1.92
+      },
+      {
+        "id": "L20",
+        "file": "vo/L20.wav",
+        "duration_sec": 4.425,
+        "expected_sec": 4.694,
+        "ratio": 0.94
+      },
+      {
+        "id": "L21",
+        "file": "vo/L21.wav",
+        "duration_sec": 2.02,
+        "expected_sec": 1.361,
+        "ratio": 1.48
+      },
+      {
+        "id": "L22",
+        "file": "vo/L22.wav",
+        "duration_sec": 3.52,
+        "expected_sec": 2.843,
+        "ratio": 1.24
+      },
+      {
+        "id": "L23",
+        "file": "vo/L23.wav",
+        "duration_sec": 5.54,
+        "expected_sec": 4.694,
+        "ratio": 1.18
+      },
+      {
+        "id": "L24",
+        "file": "vo/L24.wav",
+        "duration_sec": 2.38,
+        "expected_sec": 1.361,
+        "ratio": 1.75
+      },
+      {
+        "id": "L25",
+        "file": "vo/L25.wav",
+        "duration_sec": 6.38,
+        "expected_sec": 4.324,
+        "ratio": 1.48
+      }
+    ]
   },
   "issues": [
     {
-      "severity": "blocker",
-      "message": "missing voice-over lines: L02, L03, L04, L05, L06, L07, L08, L09, L10, L11, L12, L13, L14, L15, L16, L17, L18, L19, L20, L21, L22, L23, L24, L25"
+      "severity": "warning",
+      "line": "L19",
+      "message": "L19 duration is unusual (3.326s vs ~1.731s)"
     }
   ],
   "agent_notes": ""
