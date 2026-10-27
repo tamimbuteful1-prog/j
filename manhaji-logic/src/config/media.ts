@@ -16,6 +16,9 @@ export const HOOK = {
    * duration is read automatically (calculateMetadata) and the whole film re-flows.
    */
   placeholderDurationSec: 6.03,
+  /** Seconds inside the clip where «وصامولي» and the 2nd «أو» start (drive the order card). */
+  waWordStartSec: 2.62,
+  orWordStartSec: 4.98,
   /** Second (inside the clip) right after Tamim says the 2nd «أو» — the dramatic beat. */
   orWordSec: 5.24,
   /** Hold-frame length at «أو» (frame + audio pause). 0 disables the stop. */
@@ -23,11 +26,12 @@ export const HOOK = {
   /** Hold the last frame this long so the 3D exit never cuts into speech. */
   tailHoldSec: 0.7,
   /**
-   * 'fit'  → the whole landscape shot, no crop / no zoom, over a soft blurred fill (natural).
+   * 'fit'  → the whole landscape shot, no crop / no zoom, framed as a card inside a designed
+   *          Manhaji layout (header + the father's order card) — it never reads as "landscape".
    * 'fill' → crop to fill 9:16 (use with a vertical master).
    */
   framing: 'fit' as 'fit' | 'fill',
-  /** Top of the shot on the 9:16 canvas in 'fit' mode. */
+  /** Top of the framed shot on the 9:16 canvas in 'fit' mode. */
   fitTop: 560,
   /** Push-in during the clip (1 = none) and the small punch on «أو» (0 = none). */
   pushIn: 1,

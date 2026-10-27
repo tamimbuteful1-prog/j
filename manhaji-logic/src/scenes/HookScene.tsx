@@ -4,6 +4,7 @@ import {HOOK} from '../config/media';
 import {COLORS, FONTS} from '../config/theme';
 import {EASE, clamp01, f, pop} from '../lib/anim';
 import {Extruded} from '../components/Extruded';
+import {HookFitLayout} from './HookFitLayout';
 
 /**
  * SCENE 1 — the real hook footage.
@@ -34,6 +35,10 @@ export const HookScene: React.FC<{hookFrames: number; clipFrames: number; exitFr
   const tx = 60 * e1 + 980 * e2;
   const exitBlur = e2 * 16;
 
+  if (HOOK.enabled && HOOK.framing === 'fit') {
+    return <HookFitLayout hookFrames={hookFrames} clipFrames={clipFrames} exitFrames={exitFrames} />;
+  }
+
   return (
     <AbsoluteFill style={{perspective: 1600, background: e > 0 ? 'transparent' : COLORS.ink}}>
       <AbsoluteFill
@@ -62,9 +67,8 @@ export const HookScene: React.FC<{hookFrames: number; clipFrames: number; exitFr
 
 /**
  * The clip as timed segments: play → hold on «أو» (silent) → play → hold last frame (silent).
- * Rendered twice in 'fit' mode: a blurred ambient fill + the untouched full shot.
  */
-const ClipTimeline: React.FC<{orF: number; hold: number; clipFrames: number; style: React.CSSProperties; muted?: boolean}> = ({
+export const ClipTimeline: React.FC<{orF: number; hold: number; clipFrames: number; style: React.CSSProperties; muted?: boolean}> = ({
   orF,
   hold,
   clipFrames,
@@ -101,33 +105,9 @@ const ClipTimeline: React.FC<{orF: number; hold: number; clipFrames: number; sty
   );
 };
 
-const HookFootage: React.FC<{orF: number; hold: number; clipFrames: number}> = (p) => {
-  if (HOOK.framing === 'fill') {
-    return <ClipTimeline {...p} style={{width: '100%', height: '100%', objectFit: 'cover'}} />;
-  }
-  // 'fit': the full landscape shot — no crop, no zoom — on a soft ambient fill of itself
-  const h = Math.round((1080 * 9) / 16);
-  return (
-    <AbsoluteFill style={{background: COLORS.ink}}>
-      <AbsoluteFill style={{filter: 'blur(46px) brightness(0.42) saturate(1.15)', transform: 'scale(1.15)'}}>
-        <ClipTimeline {...p} muted style={{width: '100%', height: '100%', objectFit: 'cover'}} />
-      </AbsoluteFill>
-      <div
-        style={{
-          position: 'absolute',
-          left: 0,
-          top: HOOK.fitTop,
-          width: 1080,
-          height: h,
-          overflow: 'hidden',
-          boxShadow: '0 40px 120px rgba(0,0,0,0.55)',
-        }}
-      >
-        <ClipTimeline {...p} style={{width: '100%', height: '100%', objectFit: 'cover'}} />
-      </div>
-    </AbsoluteFill>
-  );
-};
+const HookFootage: React.FC<{orF: number; hold: number; clipFrames: number}> = (p) => (
+  <ClipTimeline {...p} style={{width: '100%', height: '100%', objectFit: 'cover'}} />
+);
 
 /** The «و | أو» split that lands on the hold frame — confusion made visual. */
 const OrBeat: React.FC<{frame: number; orF: number; hold: number}> = ({frame, orF, hold}) => {
@@ -141,7 +121,7 @@ const OrBeat: React.FC<{frame: number; orF: number; hold: number}> = ({frame, or
     <div
       style={{
         position: 'absolute',
-        top: HOOK.framing === 'fit' ? HOOK.fitTop + 640 : 1170,
+        top: 1170,
         left: 540 + dx - 120,
         width: 240,
         display: 'flex',
@@ -161,7 +141,7 @@ const OrBeat: React.FC<{frame: number; orF: number; hold: number}> = ({frame, or
       <div
         style={{
           position: 'absolute',
-          top: HOOK.framing === 'fit' ? HOOK.fitTop + 730 : 1260,
+          top: 1260,
           left: 0,
           right: 0,
           textAlign: 'center',
