@@ -90,26 +90,35 @@ export const preparePublicDir = (id: string) => {
 
 const run = (args: string[]) => execFileSync(FFMPEG, ['-nostdin', '-hide_banner', '-loglevel', 'error', '-y', ...args], {stdio: ['ignore', 'pipe', 'pipe'], timeout: 10 * 60 * 1000});
 
+/** Integrated loudness and true peak of a file (ffmpeg loudnorm analysis pass). */
+const measureLoudness = (file: string) => {
+  const log = execFileSync('sh', ['-c', `"${FFMPEG}" -nostdin -hide_banner -i "${file}" -af loudnorm=print_format=json -f null - 2>&1 || true`]).toString();
+  const j = JSON.parse(log.slice(log.lastIndexOf('{'), log.lastIndexOf('}') + 1)) as {input_i: string; input_tp: string};
+  return {i: Number(j.input_i), tp: Number(j.input_tp)};
+};
+
 /**
- * Trim leading/trailing silence (keep 120 ms air) and normalise one spoken line.
- * Edges are found with silencedetect and cut with -ss/-t (single-pass filters only:
- * areverse + loudnorm in one graph can deadlock ffmpeg).
+ * Trim leading/trailing silence (keep 120 ms air) and level one spoken line.
+ * Edges come from a lenient silencedetect (-50 dB) so soft onsets and word tails survive,
+ * with short fades so no cut clicks. Levelling is one static gain (never dynamic
+ * loudnorm, which pumps on short clips), capped so the true peak stays ≤ -1.5 dBTP.
  */
 const conformLine = (src: string, dst: string, lufs: number, fromSec?: number, toSec?: number) => {
   let a = fromSec ?? 0;
   let b = toSec ?? probe(src).durationSec;
-  const sp = speechWindows(src, -40, 0.12).filter(([x, y]) => y > a && x < b);
+  const sp = speechWindows(src, -50, 0.12).filter(([x, y]) => y > a && x < b);
   if (sp.length) {
     a = Math.max(a, sp[0][0]);
     b = Math.min(b, sp[sp.length - 1][1]);
   }
-  run([
-    '-ss', String(Math.max(0, a - 0.12)),
-    '-t', String(b - a + 0.24),
-    '-i', src,
-    '-af', `highpass=f=70,afade=t=in:d=0.01,loudnorm=I=${lufs}:TP=-1.5:LRA=9`,
-    '-ar', '48000', '-ac', '1', dst,
-  ]);
+  const start = Math.max(0, a - 0.12);
+  const dur = b - a + 0.24;
+  const tmp = `${dst}.cut.wav`;
+  run(['-ss', String(start), '-t', String(dur), '-i', src, '-af', `highpass=f=70,afade=t=in:d=0.012,afade=t=out:st=${Math.max(0, dur - 0.03).toFixed(3)}:d=0.03`, '-ar', '48000', '-ac', '1', '-c:a', 'pcm_f32le', tmp]);
+  const m = measureLoudness(tmp);
+  const gain = Number.isFinite(m.i) ? Math.min(lufs - m.i, -1.5 - m.tp) : 0;
+  run(['-i', tmp, '-af', `volume=${gain.toFixed(2)}dB`, '-ar', '48000', '-ac', '1', dst]);
+  fs.rmSync(tmp, {force: true});
   return probe(dst).durationSec;
 };
 
