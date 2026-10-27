@@ -6,7 +6,8 @@ import {Eyebrow, KineticLine} from '../../kit/Type';
 import {Outro} from '../../kit/Outro';
 import {COLORS, FONTS} from '../../kit/theme';
 import {EASE, clamp01, kf, mix, pop, ramp, shake, wobble} from '../../kit/anim';
-import {Coupon, NumberLine, OfferPoster, POS} from '../../worlds/checkout';
+import {Coupon} from '../../worlds/checkout';
+import {APP, AppFrame, CartList, CategoryChips, OfferProgress, OrderSummary, ProductGrid, PromoBanner, Toast, type Item} from '../../worlds/grocery-app';
 import {ConditionStage, Nota, P_COLOR, Q_COLOR} from './stage';
 
 const FPS = 30;
@@ -34,50 +35,67 @@ const StoreWall: React.FC<{frame: number}> = ({frame}) => (
   </AbsoluteFill>
 );
 
-// ── S01 — the offer on the wall ─────────────────────────────────────
+// ── S01 — the offer, on the app's home screen ─────────────────────
+const SHELF: Item[] = [
+  {name: 'عيش', price: 4, kind: 'aish'},
+  {name: 'صامولي', price: 6, kind: 'samoli'},
+  {name: 'حليب', price: 12.5, color: '#D8DCE6'},
+  {name: 'بيض', price: 17.5, color: '#E8C99A'},
+];
 export const S01: React.FC = () => {
   const frame = useCurrentFrame();
   const {beat, duration} = useScene();
-  const push = 1 + 0.06 * ramp(frame, 0, duration, EASE.inOut);
-  const ap = pop(frame, beat('poster'), {damping: 13, stiffness: 120});
-  const g = (k: string) => ramp(frame, beat(k), beat(k) + 0.35) * (1 - 0.4 * ramp(frame, beat(k) + 1.2, beat(k) + 2));
+  const push = 1 + 0.03 * ramp(frame, 0, duration, EASE.inOut);
+  const ap = pop(frame, beat('poster'), {damping: 16, stiffness: 160});
+  const g = (k: string) => ramp(frame, beat(k), beat(k) + 0.25) * (1 - 0.4 * ramp(frame, beat(k) + 1.2, beat(k) + 2));
+  const tap = ramp(frame, beat('discountWord') + 0.1, beat('discountWord') + 0.6);
   return (
     <FadeIn>
-      <AbsoluteFill style={{transform: `scale(${push})`, transformOrigin: '50% 45%'}}>
-        <StoreWall frame={frame} />
-        <Spotlight x={540} y={820} r={560} color="rgba(255,225,170,0.25)" opacity={ap} />
-        <OfferPoster x={540} y={840} appear={clamp01(ap)} ifGlow={g('ifWord')} thenGlow={g('thenWord')} dealGlow={g('discountWord')} rotate={Math.sin(frame / 22) * 0.8} />
+      <AbsoluteFill style={{transform: `scale(${push})`, transformOrigin: '50% 40%'}}>
+        <AppFrame header={{kind: 'home'}} tab="home" cartCount={0}>
+          <CategoryChips y={272} />
+          <PromoBanner y={380} appear={clamp01(ap)} ifGlow={g('ifWord')} thenGlow={g('thenWord')} dealGlow={g('discountWord')} tap={tap} />
+          <ProductGrid y={800} items={SHELF} appear={ramp(frame, 0.1, 1.2)} />
+        </AppFrame>
       </AbsoluteFill>
     </FadeIn>
   );
 };
 
-// ── S02 — 50.00 exactly, no discount ───────────────────────────────
+// ── S02 — the cart: exactly 50.00, no discount ───────────────────
+const CART: Item[] = [
+  {name: 'عيش', price: 4, kind: 'aish'},
+  {name: 'صامولي', price: 6, kind: 'samoli'},
+  {name: 'حليب', price: 12.5, color: '#D8DCE6'},
+  {name: 'بيض', price: 17.5, color: '#E8C99A'},
+  {name: 'عصير', price: 10, color: '#F2B53A'},
+];
 export const S02: React.FC = () => {
   const frame = useCurrentFrame();
-  const {beat} = useScene();
-  const count = kf(frame, [beat('countStart'), beat('fifty')], [0, 50], EASE.out);
-  const exact = ramp(frame, beat('exact'), beat('exact') + 0.3) * (1 - ramp(frame, beat('exact') + 0.6, beat('exact') + 1));
-  const denied = ramp(frame, beat('denied'), beat('denied') + 0.25);
-  const why = pop(frame, beat('why'), {damping: 9, stiffness: 180});
-  const appear = pop(frame, 0.05, {damping: 16, stiffness: 120});
-  const cam = useCameraLife(useScene().start + frame / FPS);
+  const {beat, start} = useScene();
+  const shown = kf(frame, [beat('countStart') - 0.3, beat('fifty')], [0.6, CART.length], EASE.out);
+  let total = 0;
+  CART.forEach((it, i) => (total += it.price * clamp01(shown - i)));
+  const exact = ramp(frame, beat('exact'), beat('exact') + 0.2) * (1 - ramp(frame, beat('exact') + 0.5, beat('exact') + 0.9));
+  const denied = ramp(frame, beat('denied'), beat('denied') + 0.2);
+  const why = pop(frame, beat('why'), {damping: 9, stiffness: 220});
+  const cam = useCameraLife(start + frame / FPS);
   return (
     <FadeIn>
-      <AbsoluteFill style={{transform: `translateY(${cam.y}px) scale(${cam.scale})`}}>
-      <StudioBackdrop tint={COLORS.or} tintAmount={0.25} floorY={1400} />
-      <Spotlight x={540} y={860} r={520} opacity={0.8} />
-      <div style={{position: 'absolute', inset: 0, transform: `scale(${1 + 0.05 * exact})`, transformOrigin: '540px 860px'}}>
-        <POS x={540} y={900} amount={count} discount={denied > 0 ? 'denied' : 'idle'} discountP={denied} shakeX={shake(frame, beat('denied'), 16)} appear={clamp01(appear)} />
-      </div>
-      {why > 0.01 && (
-        <div style={{position: 'absolute', left: 0, right: 0, top: 300, textAlign: 'center', transform: `scale(${why}) rotate(${(1 - why) * -8}deg)`}}>
-          <span dir="rtl" style={{fontFamily: FONTS.display, fontWeight: 900, fontSize: 170, color: COLORS.paper, textShadow: `0 0 50px ${COLORS.falseGlow}`}}>
-            ليش!!
-          </span>
-        </div>
-      )}
-      </AbsoluteFill>
+      <AppFrame header={{kind: 'nav', title: 'السلة', subtitle: `${Math.round(Math.min(shown, CART.length))} منتجات`}} tab="cart" cartCount={Math.round(Math.min(shown, CART.length))}>
+        <AbsoluteFill style={{transform: `translateY(${cam.y}px) scale(${cam.scale})`}}>
+          <CartList y={220} items={CART} shown={shown} />
+          <OrderSummary y={930} total={Math.round(total * 100) / 100} discount={denied > 0 ? 'denied' : 'none'} discountP={denied} pulse={exact} shakeX={shake(frame, beat('denied'), 14)} />
+        </AbsoluteFill>
+        <Toast y={70} p={denied * (1 - ramp(frame, beat('why') + 0.8, beat('why') + 1.1))} text="لم يُطبَّق الخصم على طلبك" color={COLORS.false} />
+        {why > 0.01 && (
+          <AbsoluteFill style={{background: `rgba(9,13,24,${0.55 * clamp01(why)})`, alignItems: 'center', justifyContent: 'center'}}>
+            <span dir="rtl" style={{fontFamily: FONTS.display, fontWeight: 900, fontSize: 190, color: COLORS.paper, transform: `scale(${why}) rotate(${(1 - why) * -8}deg)`, textShadow: `0 0 50px ${COLORS.falseGlow}`}}>
+              ليش!!
+            </span>
+          </AbsoluteFill>
+        )}
+      </AppFrame>
     </FadeIn>
   );
 };
@@ -118,13 +136,12 @@ const Lesson: React.FC<{children?: React.ReactNode; stageScale?: number; tint?: 
   const read = useReading(t);
   const cam = useCameraLife(t);
   return (
-    <AbsoluteFill>
-      <StudioBackdrop tint={tint} tintAmount={0.28} floorY={1460} />
-      <AbsoluteFill style={{transform: `translateY(${cam.y}px) rotate(${cam.rotate}deg) scale(${cam.scale})`, transformOrigin: '50% 45%'}}>
+    <AppFrame header={{kind: 'nav', title: 'تفاصيل العرض', subtitle: 'شروط العرض'}} tab="offers" glow={tint}>
+      <AbsoluteFill style={{transform: `translateY(${cam.y}px) rotate(${cam.rotate * 0.5}deg) scale(${cam.scale})`, transformOrigin: '50% 45%'}}>
         <ConditionStage t={t} B={beats} scale={stageScale} read={read} />
         {children}
       </AbsoluteFill>
-    </AbsoluteFill>
+    </AppFrame>
   );
 };
 
@@ -169,9 +186,9 @@ export const S04: React.FC = () => {
     <Lesson>
       {mini > 0.01 && (
         <div style={{position: 'absolute', left: 0, right: 0, top: 1140, opacity: mini, transform: `translateY(${(1 - mini) * 40}px)`}}>
-          <div dir="rtl" style={{margin: '0 auto', width: 860, padding: '22px 30px', borderRadius: 26, background: '#FFF7E6', color: '#2B2118', fontFamily: FONTS.display, fontWeight: 800, fontSize: 40, textAlign: 'center', boxShadow: `0 0 0 6px ${COLORS.samoli}, 0 30px 60px rgba(0,0,0,0.5)`}}>
-            <span style={{color: P_COLOR, opacity: 1 - ramp(frame, beat('fillP'), beat('fillP') + 0.3)}}>إذا اشتريت بأكثر من 50 ريال،</span>{' '}
-            <span style={{color: '#C88A10', opacity: 1 - ramp(frame, beat('fillQ'), beat('fillQ') + 0.3)}}>فإنك ستحصل على خصم</span>
+          <div dir="rtl" style={{margin: '0 auto', width: 860, padding: '22px 30px', borderRadius: 26, background: 'linear-gradient(135deg, #FF7550, #E2483C 60%, #A3243A)', color: '#fff', fontFamily: FONTS.display, fontWeight: 800, fontSize: 40, textAlign: 'center', boxShadow: '0 30px 60px rgba(255,117,80,0.35)'}}>
+            <span style={{color: '#BFE0FF', opacity: 1 - ramp(frame, beat('fillP'), beat('fillP') + 0.3)}}>إذا اشتريت بأكثر من 50 ريال،</span>{' '}
+            <span style={{color: '#FFE08A', opacity: 1 - ramp(frame, beat('fillQ'), beat('fillQ') + 0.3)}}>فإنك ستحصل على خصم</span>
           </div>
         </div>
       )}
@@ -186,11 +203,11 @@ export const S05: React.FC = () => {
   const nl = ramp(frame, beat('numberLine'), beat('numberLine') + 0.5) * (1 - ramp(frame, duration - 0.35, duration));
   const m = ramp(frame, beat('marker50') - 0.35, beat('marker50'), EASE.in);
   const v = ramp(frame, beat('notMore'), beat('notMore') + 0.6);
-  const sweep = kf(frame, [beat('numberLine'), beat('marker50') - 0.35, beat('marker50')], [58, 58, 50], EASE.inOut);
+  const sweep = 50;
   return (
     <Lesson>
-      <NumberLine y={1270} from={40} to={60} threshold={50} appear={nl} marker={Math.round(sweep)} markerP={m} verdict={v} />
-      <div dir="rtl" style={{position: 'absolute', left: 0, right: 0, top: 1372, textAlign: 'center', opacity: v * nl, fontFamily: FONTS.display, fontWeight: 800, fontSize: 46, color: COLORS.paper}}>
+      <OfferProgress y={1110} appear={nl} value={Math.round(mix(m, 0, sweep) * 100) / 100} threshold={50} max={75} verdict={v} />
+      <div dir="rtl" style={{position: 'absolute', left: 0, right: 0, top: 1330, textAlign: 'center', opacity: v * nl, fontFamily: FONTS.display, fontWeight: 800, fontSize: 46, color: COLORS.paper}}>
         <span dir="ltr" style={{unicodeBidi: 'isolate', fontFamily: FONTS.text}}>50</span> مو أكثر من <span dir="ltr" style={{unicodeBidi: 'isolate', fontFamily: FONTS.text}}>50</span>
       </div>
     </Lesson>
@@ -205,7 +222,6 @@ export const S07: React.FC = () => {
   const frame = useCurrentFrame();
   const {beat, duration} = useScene();
   const scale = useStageScale();
-  const posIn = pop(frame, beat('coupon') - 0.4, {damping: 15, stiffness: 120});
   const out = ramp(frame, duration - 0.5, duration);
   const fly = ramp(frame, beat('coupon'), beat('coupon') + 0.6, EASE.inOut);
   const amount = kf(frame, [beat('coupon') - 0.4, beat('under50')], [0, 30], EASE.out);
@@ -214,11 +230,17 @@ export const S07: React.FC = () => {
   return (
     <Lesson stageScale={scale}>
       <div style={{opacity: 1 - out}}>
-        <POS x={540} y={1140} scale={0.6} amount={amount} discount={ok > 0 ? 'applied' : 'idle'} discountP={ok} coupon={fly > 0.9} appear={clamp01(posIn)} />
-        {fly < 0.98 && <Coupon x={mix(fly, 900, 600)} y={mix(fly, 1420, 1080)} rotate={mix(fly, 25, -8)} scale={mix(fly, 1, 0.55)} opacity={ramp(frame, beat('coupon') - 0.3, beat('coupon'))} />}
+        <OrderSummary
+          y={840}
+          total={Math.round(amount * 100) / 100}
+          discount={ok > 0 ? 'applied' : 'none'}
+          discountP={ok}
+          coupon={{text: 'كوبون منهجي', typed: ramp(frame, beat('coupon') + 0.45, beat('coupon') + 0.9), applied: ok}}
+        />
+        {fly < 0.98 && <Coupon x={mix(fly, 900, 640)} y={mix(fly, 1420, 900)} rotate={mix(fly, 25, -4)} scale={mix(fly, 1, 0.45)} opacity={ramp(frame, beat('coupon') - 0.3, beat('coupon'))} />}
       </div>
       {label > 0.01 && (
-        <div style={{position: 'absolute', left: 0, right: 0, top: 1360, display: 'flex', justifyContent: 'center', opacity: label}}>
+        <div style={{position: 'absolute', left: 0, right: 0, top: 1300, display: 'flex', justifyContent: 'center', opacity: label}}>
           <div dir="rtl" style={{padding: '10px 30px', borderRadius: 999, background: `${COLORS.false}22`, border: `3px solid ${COLORS.false}`, fontFamily: FONTS.display, fontWeight: 900, fontSize: 48, color: COLORS.paper}}>
             مثال مضاد
           </div>
@@ -266,7 +288,7 @@ export const S10: React.FC = () => {
   const link = ramp(frame, beat('link'), beat('link') + 0.6);
   return (
     <FadeIn>
-      <StudioBackdrop tint="#7A7CFF" tintAmount={0.3} floorY={1700} />
+      <AppFrame header={{kind: 'nav', title: 'ملخص الدرس', subtitle: 'الصيغ الأربع'}} tab="offers" glow="#7A7CFF">
       <div style={{position: 'absolute', left: 0, right: 0, top: 300}}>
         <KineticLine at={beat('grid')} size={84} weight={900} words={[{t: 'الصيغ'}, {t: 'الأربع', color: '#FFD27A'}]} />
       </div>
@@ -309,6 +331,7 @@ export const S10: React.FC = () => {
           </div>
         </div>
       )}
+      </AppFrame>
     </FadeIn>
   );
 };
