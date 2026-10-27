@@ -54,9 +54,40 @@ export const StudioBackdrop: React.FC<{
         }}
       />
       <FloorGrid floorY={floorY} />
+      <Particles frame={frame} tint={tint} />
+      {/* slow light sweep */}
+      <AbsoluteFill style={{background: `linear-gradient(105deg, transparent ${((frame * 0.35) % 260) - 80}%, rgba(255,255,255,0.045) ${((frame * 0.35) % 260) - 60}%, transparent ${((frame * 0.35) % 260) - 40}%)`}} />
     </AbsoluteFill>
   );
 };
+
+/** Floating bokeh particles with depth (deterministic). Keeps every frame alive. */
+const Particles: React.FC<{frame: number; tint: string}> = ({frame, tint}) => (
+  <AbsoluteFill style={{pointerEvents: 'none'}}>
+    {Array.from({length: 26}).map((_, i) => {
+      const depth = 0.4 + ((i * 37) % 60) / 100;
+      const x = ((i * 211) % 1080) + Math.sin(frame / (60 + i * 3) + i) * 30 * depth;
+      const y = 1920 - ((frame * (0.6 + depth * 1.6) + i * 173) % 2100);
+      const r = 3 + depth * 7;
+      return (
+        <div
+          key={i}
+          style={{
+            position: 'absolute',
+            left: x,
+            top: y,
+            width: r * 2,
+            height: r * 2,
+            borderRadius: '50%',
+            background: i % 3 === 0 ? tint : 'rgba(255,255,255,0.9)',
+            opacity: 0.06 + depth * 0.12,
+            filter: `blur(${(1.2 - depth) * 4}px)`,
+          }}
+        />
+      );
+    })}
+  </AbsoluteFill>
+);
 
 /** Perspective grid on the floor — gives depth and a "system" feeling. */
 const FloorGrid: React.FC<{floorY: number}> = ({floorY}) => {

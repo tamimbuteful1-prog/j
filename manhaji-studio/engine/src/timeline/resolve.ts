@@ -144,7 +144,7 @@ export const resolveTimeline = (inp: ResolveInput): Timeline => {
       lastLineEnd = cursor - S.lineGapSec;
     }
     const contentEnd = sc.lines.length ? lastLineEnd : start + S.sceneLeadSec + (sc.silent_duration_sec ?? 2.5);
-    const end = r3(contentEnd + (sc.silent_tail_sec ?? 0.35));
+    const end = r3(contentEnd + (sc.silent_tail_sec ?? 0.25));
     scenes.push({id: sc.id, start, end});
     prevSceneEnd = end;
     if (!sc.lines.length) lastLineEnd = Math.max(lastLineEnd, end - S.sceneOverlapSec);

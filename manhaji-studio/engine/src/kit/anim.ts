@@ -26,7 +26,7 @@ export const clamp01 = (v: number) => Math.max(0, Math.min(1, v));
 
 /** Physically based pop-in starting at `atSec`. */
 export const pop = (frame: number, atSec: number, config: {damping?: number; stiffness?: number; mass?: number} = {}) =>
-  spring({frame: frame - atSec * fps, fps, config: {damping: 14, stiffness: 170, mass: 0.9, ...config}});
+  spring({frame: frame - atSec * fps, fps, config: {damping: 15, stiffness: 240, mass: 0.75, ...config}});
 
 /** Gentle settle — for heavy objects (products landing). */
 export const settle = (frame: number, atSec: number) =>

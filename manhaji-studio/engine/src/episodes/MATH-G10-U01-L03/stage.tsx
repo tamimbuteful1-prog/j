@@ -18,11 +18,12 @@ const r = (t: number, a: number, b: number, e = EASE.out) => ramp(t * fps, a, b,
 const has = (B: Beats, k: string) => B[k] !== undefined;
 
 export const stageState = (t: number, B: Beats) => {
-  const sw = (k: string) => (has(B, k) ? r(t, B[k], B[k] + 0.75, EASE.inOut) : 0);
+  const sw = (k: string) => (has(B, k) ? r(t, B[k], B[k] + 0.45, EASE.inOut) : 0);
   const posP = sw('swap') - sw('swapBack') + sw('swapNeg'); // 0 = «إذا» slot, 1 = «فإن» slot
-  const neg = has(B, 'negate') ? r(t, B.negate, B.negate + 0.55) : 0;
+  const neg = has(B, 'negate') ? r(t, B.negate, B.negate + 0.32) : 0;
   const phase =
-    t >= B.contraName ? 'contra' : t >= B.inverseName ? 'inverse' : t >= B.swapBack ? 'original' : t >= B.converseName ? 'converse' : t >= B.labelQ ? 'original' : 'none';
+    // the label follows the ACTION (swap / negate) so it never contradicts what is on screen
+    t >= B.swapNeg + 0.25 ? 'contra' : t >= B.negate + 0.2 ? 'inverse' : t >= B.swapBack + 0.25 ? 'original' : t >= B.swap + 0.25 ? 'converse' : t >= B.labelQ ? 'original' : 'none';
   return {posP, neg, phase};
 };
 
@@ -74,7 +75,9 @@ const Block: React.FC<{
   neg: number;
   mark?: {ok: boolean; p: number; label: string};
   dim?: number;
-}> = ({kind, pos, arc, fill, neg, mark, dim = 0}) => {
+  /** 0..1 — this block is being read aloud right now */
+  glow?: number;
+}> = ({kind, pos, arc, fill, neg, mark, dim = 0, glow = 0}) => {
   const c = kind === 'p' ? P_COLOR : Q_COLOR;
   const y = mix(pos, SLOT_Y[0], SLOT_Y[1]);
   const text = kind === 'p' ? 'اشتريت بأكثر من 50 ريال' : 'تحصل على خصم';
@@ -90,7 +93,7 @@ const Block: React.FC<{
         width: BLOCK.w,
         height: BLOCK.h,
         opacity: fill * (1 - dim * 0.55),
-        transform: `rotate(${(kind === 'p' ? -1 : 1) * swapTwist * 4}deg) scale(${1 + swapTwist * 0.04})`,
+        transform: `rotate(${(kind === 'p' ? -1 : 1) * swapTwist * 4}deg) scale(${1 + swapTwist * 0.04 + glow * 0.045})`,
         zIndex: kind === 'p' ? 2 : 1,
       }}
     >
@@ -99,9 +102,9 @@ const Block: React.FC<{
           position: 'absolute',
           inset: 0,
           borderRadius: 30,
-          background: `linear-gradient(180deg, ${c}38, ${c}14)`,
           border: `3px solid ${c}`,
-          boxShadow: `0 24px 60px rgba(0,0,0,0.45), 0 0 ${30 + 20 * swapTwist}px ${c}44`,
+          boxShadow: `0 24px 60px rgba(0,0,0,0.45), 0 0 ${30 + 20 * swapTwist + 50 * glow}px ${c}${glow > 0.3 ? '99' : '44'}`,
+          background: `linear-gradient(180deg, ${c}${glow > 0.3 ? '55' : '38'}, ${c}14)`,
         }}
       />
       <div dir="rtl" style={{position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: FONTS.display, fontWeight: 800, fontSize: 44, color: COLORS.paper, padding: '0 36px 0 110px'}}>
@@ -145,28 +148,28 @@ const Block: React.FC<{
 };
 
 /** Full stage. `t` = absolute seconds. */
-export const ConditionStage: React.FC<{t: number; B: Beats; scale?: number; originY?: number; showName?: boolean}> = ({t, B, scale = 1, originY = 260, showName = true}) => {
+export const ConditionStage: React.FC<{t: number; B: Beats; scale?: number; originY?: number; showName?: boolean; read?: [number, number]}> = ({t, B, scale = 1, originY = 260, showName = true, read = [0, 0]}) => {
   const {posP, neg, phase} = stageState(t, B);
   const arc = Math.sin(Math.PI * Math.max(0, Math.min(1, posP))) * 300;
-  const slots = r(t, B.template, B.template + 0.5);
-  const slot2 = r(t, B.thenSlot, B.thenSlot + 0.5);
-  const fillP = has(B, 'fillP') ? r(t, B.fillP, B.fillP + 0.5) : 0;
-  const fillQ = has(B, 'fillQ') ? r(t, B.fillQ, B.fillQ + 0.5) : 0;
-  const labP = r(t, B.labelP, B.labelP + 0.4);
-  const labQ = r(t, B.labelQ, B.labelQ + 0.4);
+  const slots = r(t, B.template, B.template + 0.28);
+  const slot2 = r(t, B.thenSlot, B.thenSlot + 0.28);
+  const fillP = has(B, 'fillP') ? r(t, B.fillP, B.fillP + 0.3, EASE.anticipate) : 0;
+  const fillQ = has(B, 'fillQ') ? r(t, B.fillQ, B.fillQ + 0.3, EASE.anticipate) : 0;
+  const labP = r(t, B.labelP, B.labelP + 0.25);
+  const labQ = r(t, B.labelQ, B.labelQ + 0.25);
 
   // marks
   const clearAt = (k: string) => 1 - r(t, B[k] - 0.2, B[k] + 0.2);
-  const pFailHook = r(t, B.notMore, B.notMore + 0.35) * clearAt('swap');
-  const qOk = r(t, B.discountOK, B.discountOK + 0.35) * clearAt('swapBack');
-  const pFailCounter = r(t, B.under50, B.under50 + 0.35) * clearAt('swapBack');
-  const stamp = r(t, B.falseStamp, B.falseStamp + 0.4) * clearAt('swapBack');
-  const question = r(t, B.notNecessarily, B.notNecessarily + 0.4) * (1 - r(t, B.falseStamp - 0.1, B.falseStamp + 0.2));
+  const pFailHook = r(t, B.notMore, B.notMore + 0.22) * clearAt('swap');
+  const qOk = r(t, B.discountOK, B.discountOK + 0.22) * clearAt('swapBack');
+  const pFailCounter = r(t, B.under50, B.under50 + 0.22) * clearAt('swapBack');
+  const stamp = r(t, B.falseStamp, B.falseStamp + 0.25) * clearAt('swapBack');
+  const question = r(t, B.notNecessarily, B.notNecessarily + 0.25) * (1 - r(t, B.falseStamp - 0.1, B.falseStamp + 0.2));
 
   const name = NAMES[phase];
   const nameP = phase === 'none' ? 0 : 1;
   const nameKey = `${phase}`;
-  const nameBump = Math.max(...['labelQ', 'converseName', 'swapBack', 'inverseName', 'contraName'].map((k) => (has(B, k) ? 1 - r(t, B[k], B[k] + 0.45) : 0) * (t >= (B[k] ?? Infinity) ? 1 : 0)));
+  const nameBump = Math.max(...['labelQ', 'converseName', 'inverseName', 'contraName'].map((k) => (has(B, k) ? 1 - r(t, B[k], B[k] + 0.35) : 0) * (t >= (B[k] ?? Infinity) ? 1 : 0)));
 
   const ifLabel = (y: number, txt: string, sub: string, subP: number, appear: number, c: string) => (
     <div dir="rtl" style={{position: 'absolute', left: 820, width: 200, top: y - 70, opacity: appear, textAlign: 'center', transform: `translateX(${(1 - appear) * 40}px)`}}>
@@ -201,10 +204,11 @@ export const ConditionStage: React.FC<{t: number; B: Beats; scale?: number; orig
       <div style={{position: 'absolute', left: BLOCK.x - 3, top: SLOT_Y[0] + BLOCK.h / 2 + 6, width: 6, height: SLOT_Y[1] - SLOT_Y[0] - BLOCK.h - 12, background: 'rgba(255,255,255,0.35)', opacity: slot2}} />
       <div style={{position: 'absolute', left: BLOCK.x - 16, top: SLOT_Y[1] - BLOCK.h / 2 - 24, width: 0, height: 0, borderLeft: '16px solid transparent', borderRight: '16px solid transparent', borderTop: '20px solid rgba(255,255,255,0.35)', opacity: slot2}} />
 
-      <Block kind="q" pos={1 - posP} arc={arc} fill={fillQ} neg={neg} mark={qOk > 0.01 ? {ok: true, p: qOk, label: 'تحقق'} : undefined} />
+      <Block kind="q" pos={1 - posP} arc={arc} fill={fillQ} neg={neg} glow={read[Math.round(1 - posP)]} mark={qOk > 0.01 ? {ok: true, p: qOk, label: 'تحقق'} : undefined} />
       <Block
         kind="p"
         pos={posP}
+        glow={read[Math.round(posP)]}
         arc={-arc}
         fill={fillP}
         neg={neg}

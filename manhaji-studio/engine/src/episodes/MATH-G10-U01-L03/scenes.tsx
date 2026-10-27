@@ -1,6 +1,6 @@
 import React from 'react';
 import {AbsoluteFill, useCurrentFrame} from 'remotion';
-import {useScene} from '../../timeline/context';
+import {useScene, useTimeline} from '../../timeline/context';
 import {StudioBackdrop, Spotlight} from '../../kit/Backdrop';
 import {Eyebrow, KineticLine} from '../../kit/Type';
 import {Outro} from '../../kit/Outro';
@@ -61,8 +61,10 @@ export const S02: React.FC = () => {
   const denied = ramp(frame, beat('denied'), beat('denied') + 0.25);
   const why = pop(frame, beat('why'), {damping: 9, stiffness: 180});
   const appear = pop(frame, 0.05, {damping: 16, stiffness: 120});
+  const cam = useCameraLife(useScene().start + frame / FPS);
   return (
     <FadeIn>
+      <AbsoluteFill style={{transform: `translateY(${cam.y}px) scale(${cam.scale})`}}>
       <StudioBackdrop tint={COLORS.or} tintAmount={0.25} floorY={1400} />
       <Spotlight x={540} y={860} r={520} opacity={0.8} />
       <div style={{position: 'absolute', inset: 0, transform: `scale(${1 + 0.05 * exact})`, transformOrigin: '540px 860px'}}>
@@ -75,8 +77,37 @@ export const S02: React.FC = () => {
           </span>
         </div>
       )}
+      </AbsoluteFill>
     </FadeIn>
   );
+};
+
+/**
+ * Which slot is being read aloud: inside a spoken «إذا … فإن …» sentence the «إذا» slot
+ * glows for the first clause and the «فإن» slot for the second — the stage moves with the voice.
+ */
+const useReading = (t: number): [number, number] => {
+  const tl = useTimeline();
+  const l = tl.lines.find((x) => t >= x.start - 0.05 && t <= x.end + 0.1);
+  if (!l) return [0, 0];
+  const iIf = l.text.indexOf('إذا');
+  const iThen = l.text.search(/فإن/);
+  if (iIf < 0 && iThen < 0) return [0, 0];
+  const at = (i: number) => l.start + (l.end - l.start) * (i / l.text.length);
+  const env = (a: number, b: number) => clamp01(Math.min((t - a) / 0.15, (b - t) / 0.2));
+  const a0 = iIf >= 0 ? at(iIf) - 0.1 : -1;
+  const b0 = iThen >= 0 ? at(iThen) - 0.05 : l.end;
+  const g0 = iIf >= 0 ? env(a0, b0) : 0;
+  const g1 = iThen >= 0 ? env(at(iThen) - 0.05, l.end + 0.1) : 0;
+  return [g0, g1];
+};
+
+/** Beat-synced camera kick + slow drift — the frame is never still. */
+const useCameraLife = (t: number) => {
+  const tl = useTimeline();
+  let kick = 0;
+  for (const b of Object.values(tl.beats)) if (t >= b && t - b < 0.7) kick = Math.max(kick, Math.exp(-(t - b) * 7));
+  return {scale: 1 + 0.022 * kick + 0.012 * Math.sin(t * 0.5), rotate: Math.sin(t * 0.37) * 0.35, y: Math.sin(t * 0.6) * 6};
 };
 
 /** Shared background + stage for S03–S09 (identical rendering → seamless overlaps). */
@@ -84,11 +115,15 @@ const Lesson: React.FC<{children?: React.ReactNode; stageScale?: number; tint?: 
   const frame = useCurrentFrame();
   const {start, beats} = useScene();
   const t = start + frame / FPS;
+  const read = useReading(t);
+  const cam = useCameraLife(t);
   return (
     <AbsoluteFill>
       <StudioBackdrop tint={tint} tintAmount={0.28} floorY={1460} />
-      <ConditionStage t={t} B={beats} scale={stageScale} />
-      {children}
+      <AbsoluteFill style={{transform: `translateY(${cam.y}px) rotate(${cam.rotate}deg) scale(${cam.scale})`, transformOrigin: '50% 45%'}}>
+        <ConditionStage t={t} B={beats} scale={stageScale} read={read} />
+        {children}
+      </AbsoluteFill>
     </AbsoluteFill>
   );
 };
@@ -111,6 +146,9 @@ export const S03: React.FC = () => {
   return (
     <FadeIn>
       <Lesson />
+      <div style={{position: 'absolute', left: 0, right: 0, top: 760}}>
+        <KineticLine at={beat('bridge') + 0.05} size={110} weight={900} words={[{t: 'خلونا'}, {t: 'نفهم', color: COLORS.or, glow: COLORS.orGlow}]} outAt={beat('title') - 0.25} />
+      </div>
       <div style={{position: 'absolute', left: 0, right: 0, top: mix(titleUp, 620, 300), transform: `scale(${mix(titleUp, 1, 0.7)})`}}>
         <Eyebrow latin color={COLORS.muted} style={{opacity: ramp(frame, beat('title') + 0.2, beat('title') + 0.6) * (1 - titleUp), marginBottom: 10}}>
           CONDITIONAL STATEMENT

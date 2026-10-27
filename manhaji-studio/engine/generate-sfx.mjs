@@ -5,7 +5,7 @@ import {writeFileSync, mkdirSync} from 'node:fs';
 import {join, dirname} from 'node:path';
 import {fileURLToPath} from 'node:url';
 
-const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', 'public');
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), 'public');
 const SR = 44100;
 const TAU = Math.PI * 2;
 
@@ -187,55 +187,77 @@ writeWav('sfx/glitch.wav', make(0.35, (L, R, n) => {
   }
 }));
 
-// ── MUSIC BED (temp) — soft modern pulse, 96 BPM, 16 bars, seamless loop ──
+// ── MUSIC BED (temp) — energetic edu-pop, 122 BPM, sidechained, 16 bars loop ──
+// Four-on-the-floor kick, claps on 2 & 4, 16th hats, pumping chords, plucky arp,
+// driving bass and a riser/impact every 8 bars. Replace with a licensed track of the same name.
 {
-  const bpm = 96;
+  const bpm = 122;
   const beat = 60 / bpm;
   const bars = 16;
   const secs = bars * 4 * beat;
   const midi = (m) => 440 * Math.pow(2, (m - 69) / 12);
-  // Am9 – Fmaj7 – Cmaj7 – G6 (one chord per bar, cycle)
-  const chords = [
-    [57, 60, 64, 67, 71],
-    [53, 57, 60, 64, 67],
-    [48, 55, 59, 64, 67],
-    [55, 59, 62, 64, 69],
+  const prog = [
+    [57, 60, 64, 67], // Am7
+    [53, 57, 60, 64], // Fmaj7
+    [48, 52, 55, 59], // Cmaj7
+    [55, 59, 62, 66], // G(add#11) — bright lift
   ];
-  const bass = [45, 41, 48, 43];
+  const bassRoot = [33, 29, 36, 31];
+  const arpPattern = [0, 2, 1, 3, 2, 1, 3, 2];
   const music = make(secs, (L, R, n) => {
-    const lp = svf(), lp2 = svf(), hp = svf();
+    const lpPad = svf(), lpBass = svf(), hpHat = svf(), bpClap = svf(), lpLead = svf(), riserF = svf();
     for (let i = 0; i < n; i++) {
       const t = i / SR;
-      const bar = Math.floor(t / (4 * beat)) % 4;
-      const inBar = t % (4 * beat);
+      const barF = t / (4 * beat);
+      const bar = Math.floor(barF);
+      const chord = prog[bar % 4];
       const inBeat = t % beat;
-      const beatIdx = Math.floor(inBar / beat);
-      // pad (detuned saws through lowpass)
+      const beatIdx = Math.floor((t % (4 * beat)) / beat);
+      const s16 = beat / 4;
+      const step16 = Math.floor(t / s16);
+      const in16 = t % s16;
+      // sidechain envelope (duck after each kick)
+      const duck = 0.35 + 0.65 * Math.min(1, Math.pow(inBeat / (beat * 0.55), 1.6));
+
+      // kick — punchy with click
+      const kf = 45 + 110 * Math.exp(-inBeat * 38);
+      const kick = Math.sin(TAU * kf * inBeat) * Math.exp(-inBeat * 7.5) * 0.85 + noise() * Math.exp(-inBeat * 400) * 0.25;
+      // clap on 2 & 4
+      const clapT = beatIdx % 2 === 1 ? inBeat : 9;
+      const clap = clapT < 0.25 ? bpClap(noise(), 1500, 0.8).band * (Math.exp(-clapT * 22) + 0.5 * Math.exp(-Math.max(0, clapT - 0.012) * 30)) * 0.55 : 0;
+      // hats — 16ths, accented off-beats, open hat on the "and"
+      const accent = step16 % 4 === 2 ? 1 : step16 % 2 ? 0.55 : 0.35;
+      const hatDecay = step16 % 4 === 2 ? 18 : 70;
+      const hat = hpHat(noise(), 9000, 0.4).high * Math.exp(-in16 * hatDecay) * 0.16 * accent;
+      // pumping pad: detuned saws, filter opens across the 8-bar phrase
+      const phrase = (barF % 8) / 8;
       let pad = 0;
-      for (const m of chords[bar]) {
-        const f = midi(m);
-        pad += ((t * f) % 1) * 2 - 1;
-        pad += ((t * f * 1.004) % 1) * 2 - 1;
+      for (const m of chord) {
+        const f = midi(m + 12);
+        pad += ((t * f) % 1) * 2 - 1 + ((t * f * 1.006) % 1) * 2 - 1;
       }
-      const padSwell = 0.55 + 0.45 * Math.sin((Math.PI * inBar) / (4 * beat));
-      const padF = lp(pad * 0.05, 900 + 500 * padSwell, 0.9).low * padSwell;
-      // pluck arp on 8ths
-      const eighth = beat / 2;
-      const step = Math.floor(inBar / eighth);
-      const tn = inBar % eighth;
-      const note = chords[bar][(step * 3) % chords[bar].length] + 12;
-      const pl = Math.sin(TAU * midi(note) * t) * Math.exp(-tn * 9) * 0.11;
-      // sub bass
-      const b = Math.sin(TAU * midi(bass[bar]) * t) * (0.6 + 0.4 * Math.exp(-inBeat * 4)) * 0.16;
-      // soft kick on 1 & 3, rim on 2 & 4, hats on off-beats
-      const kick = beatIdx % 2 === 0 ? Math.sin(TAU * (48 + 90 * Math.exp(-inBeat * 35)) * inBeat) * Math.exp(-inBeat * 9) * 0.32 : 0;
-      const rim = beatIdx % 2 === 1 ? hp(noise(), 2400, 0.5).band * Math.exp(-inBeat * 40) * 0.12 : 0;
-      const hatT = (t + eighth) % beat;
-      const hat = hatT < 0.05 ? lp2(noise(), 9000, 0.3).high * Math.exp(-hatT * 90) * 0.05 : 0;
-      const v = padF + pl + b + kick + rim + hat;
-      const w = Math.sin(TAU * 0.11 * t) * 0.2;
-      L[i] = v + pl * w;
-      R[i] = v - pl * w;
+      const padF = lpPad(pad * 0.045, 1200 + 2600 * phrase, 0.7).low * duck;
+      // pluck arp — 16ths
+      const note = chord[arpPattern[step16 % 8] % chord.length] + 24;
+      const pluckEnv = Math.exp(-in16 * 16);
+      const pf = midi(note);
+      const pluck = lpLead(((t * pf) % 1) * 2 - 1 + Math.sin(TAU * pf * t), 2500 + 3000 * pluckEnv, 0.5).low * pluckEnv * 0.13;
+      // bass — 8ths with octave jumps, sidechained
+      const s8 = beat / 2;
+      const step8 = Math.floor(t / s8);
+      const bm = bassRoot[bar % 4] + (step8 % 4 === 3 ? 12 : 0);
+      const bf = midi(bm);
+      const bassRaw = ((t * bf) % 1) * 2 - 1;
+      const bass = lpBass(bassRaw, 380, 0.9).low * 0.42 * duck * (0.6 + 0.4 * Math.exp(-(t % s8) * 6));
+      // riser in the last bar of every 8, impact on the downbeat
+      const pos8 = barF % 8;
+      const riser = pos8 > 7 ? riserF(noise(), 500 + 7000 * (pos8 - 7), 0.6).band * (pos8 - 7) * 0.35 : 0;
+      const impact = pos8 < 0.5 && bar > 0 ? Math.sin(TAU * 40 * t) * Math.exp(-(t % (8 * 4 * beat)) * 3) * 0.3 : 0;
+
+      const v = kick + clap + hat + padF + pluck + bass + riser + impact;
+      const wide = Math.sin(TAU * 0.25 * t) * 0.3;
+      L[i] = Math.tanh((v + pluck * wide + hat * 0.3) * 1.1);
+      R[i] = Math.tanh((v - pluck * wide - hat * 0.3) * 1.1);
     }
   });
   writeWav('music/bed.wav', music);

@@ -95,7 +95,8 @@ export const renderEpisode = async (id: string, mode: 'preview' | 'final', owner
       framing: plan?.hook.framing ?? 'fit',
       trimStartSec: plan?.hook.trim_start_sec ?? 0,
       voice: plan ? Object.fromEntries(plan.voiceover.lines.map((l) => [l.id, l.file])) : undefined,
-      music: {src: 'music/bed.wav', volume: 0.2, ducked: 0.07},
+      // preview has no voice → no ducking; final ducks ~8 dB under the presenter
+      music: mode === 'preview' ? {src: 'music/bed.wav', volume: 0.42, ducked: 0.42} : {src: 'music/bed.wav', volume: 0.34, ducked: 0.14},
     },
   };
   const propsFile = path.join(e.production, `props.${mode}.json`);

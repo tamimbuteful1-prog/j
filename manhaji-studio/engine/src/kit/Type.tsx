@@ -38,9 +38,9 @@ export const KineticLine: React.FC<{
   style?: React.CSSProperties;
   /** seconds — when the line exits (optional) */
   outAt?: number;
-}> = ({words, at, stagger = 0.07, size = 96, weight = 800, color = COLORS.paper, font = FONTS.display, gap, style, outAt}) => {
+}> = ({words, at, stagger = 0.045, size = 96, weight = 800, color = COLORS.paper, font = FONTS.display, gap, style, outAt}) => {
   const frame = useCurrentFrame();
-  const out = outAt !== undefined ? ramp(frame, outAt, outAt + 0.35, EASE.in) : 0;
+  const out = outAt !== undefined ? ramp(frame, outAt, outAt + 0.22, EASE.in) : 0;
   return (
     <div
       dir="rtl"
@@ -63,7 +63,7 @@ export const KineticLine: React.FC<{
       {groupGlued(words).map((group, gi) => (
         <span key={gi} style={{display: 'inline-flex', flexDirection: 'row', whiteSpace: 'nowrap'}}>
           {group.map(({w, i}) => {
-            const p = ramp(frame, at + i * stagger, at + i * stagger + 0.55, EASE.out);
+            const p = ramp(frame, at + i * stagger, at + i * stagger + 0.32, EASE.out);
             return (
               <span
                 key={i}
