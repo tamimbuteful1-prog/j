@@ -107,27 +107,27 @@
       "sfx": [
         {
           "beat": "poster",
-          "name": "whoosh_short",
-          "offset": 0,
-          "volume": 0.5
+          "name": "board",
+          "offset": 0.12,
+          "volume": 0.8
         },
         {
           "beat": "ifWord",
           "name": "tick",
           "offset": 0,
-          "volume": 0.5
+          "volume": 0.6
         },
         {
           "beat": "thenWord",
           "name": "tick",
           "offset": 0,
-          "volume": 0.5
+          "volume": 0.6
         },
         {
           "beat": "discountWord",
           "name": "pop",
           "offset": 0,
-          "volume": 0.5
+          "volume": 0.6
         }
       ],
       "transition_out": {
@@ -166,6 +166,14 @@
         }
       ],
       "beats": [
+        {
+          "name": "printStart",
+          "anchor": {
+            "scene": "S02",
+            "at": "start"
+          },
+          "offset": 0.15
+        },
         {
           "name": "countStart",
           "anchor": {
@@ -208,28 +216,28 @@
       ],
       "sfx": [
         {
-          "beat": "countStart",
-          "name": "tick",
+          "beat": "printStart",
+          "name": "printer",
           "offset": 0,
-          "volume": 0.4
-        },
-        {
-          "beat": "fifty",
-          "name": "lock",
-          "offset": 0,
-          "volume": 0.5
+          "volume": 0.85
         },
         {
           "beat": "denied",
-          "name": "false_hit",
+          "name": "reject",
           "offset": 0,
-          "volume": 0.45
+          "volume": 0.75
         },
         {
           "beat": "why",
           "name": "impact",
           "offset": 0,
-          "volume": 0.35
+          "volume": 0.55
+        },
+        {
+          "beat": "why",
+          "name": "whoosh_short",
+          "offset": -0.1,
+          "volume": 0.4
         }
       ],
       "transition_out": {
@@ -304,7 +312,7 @@
       "sfx": [
         {
           "beat": "bridge",
-          "name": "whoosh_long",
+          "name": "whoosh_short",
           "offset": 0,
           "volume": 0.5
         },
@@ -312,19 +320,19 @@
           "beat": "title",
           "name": "impact",
           "offset": 0,
-          "volume": 0.3
+          "volume": 0.35
         },
         {
           "beat": "template",
           "name": "swish",
           "offset": 0,
-          "volume": 0.4
+          "volume": 0.45
         },
         {
           "beat": "thenSlot",
           "name": "swish",
           "offset": 0,
-          "volume": 0.4
+          "volume": 0.45
         }
       ],
       "transition_out": {
@@ -413,28 +421,34 @@
       ],
       "sfx": [
         {
-          "beat": "fillP",
-          "name": "drop",
+          "beat": "posterBack",
+          "name": "paper_slide",
           "offset": 0,
-          "volume": 0.6
+          "volume": 0.5
+        },
+        {
+          "beat": "fillP",
+          "name": "paper_drop",
+          "offset": 0.15,
+          "volume": 0.8
         },
         {
           "beat": "fillQ",
-          "name": "drop",
-          "offset": 0,
-          "volume": 0.6
+          "name": "paper_drop",
+          "offset": 0.15,
+          "volume": 0.8
         },
         {
           "beat": "labelP",
           "name": "pop",
           "offset": 0,
-          "volume": 0.5
+          "volume": 0.55
         },
         {
           "beat": "labelQ",
           "name": "pop",
           "offset": 0,
-          "volume": 0.5
+          "volume": 0.55
         }
       ],
       "transition_out": {
@@ -506,9 +520,9 @@
         },
         {
           "beat": "notMore",
-          "name": "false_hit",
+          "name": "nope",
           "offset": 0,
-          "volume": 0.4
+          "volume": 0.7
         }
       ],
       "transition_out": {
@@ -585,7 +599,7 @@
           "beat": "notNecessarily",
           "name": "tick",
           "offset": 0,
-          "volume": 0.5
+          "volume": 0.6
         }
       ],
       "transition_out": {
@@ -668,27 +682,39 @@
       "sfx": [
         {
           "beat": "coupon",
-          "name": "whoosh_short",
-          "offset": 0,
-          "volume": 0.5
+          "name": "paper_slide",
+          "offset": -0.2,
+          "volume": 0.7
         },
         {
-          "beat": "discountOK",
-          "name": "true_chime",
-          "offset": 0,
-          "volume": 0.35
+          "beat": "coupon",
+          "name": "printer_short",
+          "offset": 0.1,
+          "volume": 0.8
+        },
+        {
+          "beat": "coupon",
+          "name": "kaching",
+          "offset": 1.25,
+          "volume": 0.7
         },
         {
           "beat": "under50",
-          "name": "tick",
+          "name": "nope",
           "offset": 0,
-          "volume": 0.5
+          "volume": 0.65
         },
         {
           "beat": "falseStamp",
-          "name": "false_hit",
+          "name": "stamp",
+          "offset": -0.1,
+          "volume": 0.9
+        },
+        {
+          "beat": "discountOK",
+          "name": "yes",
           "offset": 0,
-          "volume": 0.6
+          "volume": 0.5
         }
       ],
       "transition_out": {
@@ -756,15 +782,21 @@
       "sfx": [
         {
           "beat": "swapBack",
-          "name": "swish",
+          "name": "whoosh_short",
           "offset": 0,
-          "volume": 0.4
+          "volume": 0.5
         },
         {
           "beat": "negate",
-          "name": "glitch",
+          "name": "snap",
           "offset": 0,
-          "volume": 0.4
+          "volume": 0.8
+        },
+        {
+          "beat": "negate",
+          "name": "snap",
+          "offset": 0.1,
+          "volume": 0.7
         },
         {
           "beat": "inverseName",
@@ -846,7 +878,13 @@
           "beat": "sameValue",
           "name": "lock",
           "offset": 0,
-          "volume": 0.6
+          "volume": 0.7
+        },
+        {
+          "beat": "sameValue",
+          "name": "shimmer",
+          "offset": 0.15,
+          "volume": 0.35
         }
       ],
       "transition_out": {
@@ -900,10 +938,34 @@
           "volume": 0.5
         },
         {
+          "beat": "grid",
+          "name": "tick",
+          "offset": 0.2,
+          "volume": 0.5
+        },
+        {
+          "beat": "grid",
+          "name": "tick",
+          "offset": 0.32,
+          "volume": 0.5
+        },
+        {
+          "beat": "grid",
+          "name": "tick",
+          "offset": 0.44,
+          "volume": 0.5
+        },
+        {
+          "beat": "grid",
+          "name": "tick",
+          "offset": 0.56,
+          "volume": 0.5
+        },
+        {
           "beat": "link",
           "name": "shimmer",
           "offset": 0,
-          "volume": 0.35
+          "volume": 0.4
         }
       ],
       "transition_out": {
@@ -945,7 +1007,7 @@
           "beat": "logo",
           "name": "shimmer",
           "offset": 0,
-          "volume": 0.4
+          "volume": 0.45
         }
       ],
       "transition_out": {
@@ -954,5 +1016,6 @@
       "silent_tail_sec": 1.6
     }
   ],
-  "revision_log": []
+  "revision_log": [],
+  "music": false
 }

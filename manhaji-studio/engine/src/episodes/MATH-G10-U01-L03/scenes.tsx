@@ -52,7 +52,8 @@ const ORDER: ReceiptLine[] = [
 export const S02: React.FC = () => {
   const frame = useCurrentFrame();
   const {beat} = useScene();
-  const printed = kf(frame, [0.15, beat('fifty')], [0.12, 1], EASE.out);
+  // printing has a fixed length (1.6 s) so it always matches the printer sound
+  const printed = kf(frame, [beat('printStart'), beat('printStart') + 1.6], [0.12, 1], EASE.inOut);
   let count = 0;
   ORDER.forEach((it, i) => (count += it.price * clamp01(printed * (ORDER.length + 2.6) - 1.6 - i)));
   const exact = ramp(frame, beat('exact'), beat('exact') + 0.3) * (1 - ramp(frame, beat('exact') + 0.6, beat('exact') + 1));
@@ -212,14 +213,15 @@ export const S07: React.FC = () => {
   const posIn = pop(frame, beat('coupon') - 0.4, {damping: 15, stiffness: 120});
   const out = ramp(frame, beat('falseStamp') + 0.5, beat('falseStamp') + 0.9);
   const fly = ramp(frame, beat('coupon'), beat('coupon') + 0.6, EASE.inOut);
-  const amount = kf(frame, [beat('coupon') - 0.4, beat('under50')], [0, 30], EASE.out);
-  const ok = ramp(frame, beat('discountOK'), beat('discountOK') + 0.25);
+  const amount = kf(frame, [beat('coupon') + 0.6, beat('coupon') + 1.2], [0, 30], EASE.out);
+  // discount lands right after the receipt finishes printing (matches the ka-ching)
+  const ok = ramp(frame, beat('coupon') + 1.25, beat('coupon') + 1.45);
   const label = ramp(frame, beat('counterName'), beat('counterName') + 0.4) * (1 - out);
   return (
     <Lesson stageScale={scale}>
       <div style={{opacity: 1 - out}}>
         <div style={{opacity: clamp01(posIn)}}>
-          <Receipt x={540} y={850} scale={0.62} items={COUPON_ORDER} coupon={fly > 0.9} printed={ramp(frame, beat('coupon') - 0.4, beat('under50'))} total={Math.round(amount * 100) / 100} discount={ok > 0 ? 'applied' : 'none'} discountP={ok} trueC={PAL.true} falseC={PAL.false} />
+          <Receipt x={540} y={850} scale={0.62} items={COUPON_ORDER} coupon={fly > 0.9} printed={ramp(frame, beat('coupon') + 0.1, beat('coupon') + 1.2, EASE.inOut)} total={Math.round(amount * 100) / 100} discount={ok > 0 ? 'applied' : 'none'} discountP={ok} trueC={PAL.true} falseC={PAL.false} />
         </div>
         {fly < 0.98 && <Coupon x={mix(fly, 900, 600)} y={mix(fly, 1420, 1080)} rotate={mix(fly, 25, -8)} scale={mix(fly, 1, 0.55)} opacity={ramp(frame, beat('coupon') - 0.3, beat('coupon'))} />}
       </div>

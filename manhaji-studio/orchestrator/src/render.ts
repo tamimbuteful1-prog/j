@@ -99,6 +99,7 @@ export const renderEpisode = async (id: string, mode: 'preview' | 'final', owner
   syncRegistry();
   const script = readContract<{hook: {text: string; key_word?: string}}>('script', path.join(e.script, 'script.json'));
   const plan = hasHook(id);
+  const noMusic = readContract<{music?: boolean}>('storyboard', path.join(e.script, 'storyboard.json')).music === false;
   const props = {
     timeline: tl,
     hookText: script.hook.text,
@@ -109,7 +110,7 @@ export const renderEpisode = async (id: string, mode: 'preview' | 'final', owner
       trimStartSec: plan?.hook.trim_start_sec ?? 0,
       voice: mode === 'final' && plan ? Object.fromEntries(plan.voiceover.lines.map((l) => [l.id, l.file])) : undefined,
       // preview has no voice → no ducking; final ducks ~8 dB under the presenter
-      music: mode === 'preview' ? {src: 'music/bed.wav', volume: 0.42, ducked: 0.42} : {src: 'music/bed.wav', volume: 0.34, ducked: 0.14},
+      music: noMusic ? null : mode === 'preview' ? {src: 'music/bed.wav', volume: 0.42, ducked: 0.42} : {src: 'music/bed.wav', volume: 0.34, ducked: 0.14},
     },
   };
   const propsFile = path.join(e.production, `props.${mode}.json`);

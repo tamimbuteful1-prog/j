@@ -187,6 +187,102 @@ writeWav('sfx/glitch.wav', make(0.35, (L, R, n) => {
   }
 }));
 
+// ── FOLEY / UI (realistic object sounds) ─────────────────────────
+// thermal printer: stepper-motor chatter + paper feed + final cut
+const printer = (sec) =>
+  make(sec + 0.35, (L, R, n) => {
+    const bp = svf(), bp2 = svf();
+    for (let i = 0; i < n; i++) {
+      const t = i / SR;
+      let v = 0;
+      if (t < sec) {
+        const step = (t * 42) % 1; // 42 steps/s
+        const click = Math.exp(-step * 30);
+        const motor = Math.sin(TAU * 480 * t) * 0.08 + Math.sin(TAU * 960 * t) * 0.04;
+        const feed = bp(noise(), 3200, 0.9).band * 0.25;
+        const env = Math.min(1, t / 0.04) * Math.min(1, (sec - t) / 0.05);
+        v = (bp2(noise(), 1800, 0.5).band * click * 0.9 + motor + feed) * env;
+      } else {
+        const c = t - sec - 0.08; // cutter "tchk"
+        if (c > 0) v = (noise() * 0.8 + Math.sin(TAU * 900 * c) * 0.3) * Math.exp(-c * 60);
+      }
+      L[i] = v;
+      R[i] = v * 0.92;
+    }
+  });
+writeWav('sfx/printer.wav', printer(1.6));
+writeWav('sfx/printer_short.wav', printer(1.1));
+
+// POS rejection: two descending square beeps
+writeWav('sfx/reject.wav', tone(0.55, (t) => {
+  const beep = (t0, f) => (t >= t0 && t < t0 + 0.16 ? Math.tanh(Math.sin(TAU * f * (t - t0)) * 4) * 0.35 * Math.min(1, (t0 + 0.16 - t) / 0.02) : 0);
+  return beep(0, 740) + beep(0.21, 520);
+}));
+
+// cash register "ka-ching": drawer thunk + bright bell
+writeWav('sfx/kaching.wav', tone(1.3, (t) => {
+  const thunk = Math.sin(TAU * (90 + 60 * Math.exp(-t * 40)) * t) * Math.exp(-t * 25) * 0.6 + noise() * Math.exp(-t * 90) * 0.3;
+  const b = (f, d) => (t < d ? 0 : Math.sin(TAU * f * (t - d)) * Math.exp(-(t - d) * 4.5));
+  const bell = (b(2093, 0.08) * 0.35 + b(2637, 0.08) * 0.25 + b(3136, 0.11) * 0.2 + b(4186, 0.11) * 0.1);
+  return thunk + bell;
+}));
+
+// rubber stamp: whoosh-in + heavy slap
+writeWav('sfx/stamp.wav', make(0.7, (L, R, n) => {
+  const f = svf();
+  for (let i = 0; i < n; i++) {
+    const t = i / SR;
+    const pre = t < 0.12 ? f(noise(), 600 + 4000 * (t / 0.12), 0.7).band * (t / 0.12) * 0.4 : 0;
+    const h = t - 0.12;
+    const slap = h > 0 ? (noise() * 0.9 * Math.exp(-h * 70) + Math.sin(TAU * (70 + 90 * Math.exp(-h * 30)) * h) * Math.exp(-h * 14) * 0.9) : 0;
+    L[i] = pre + slap;
+    R[i] = pre * 0.8 + slap;
+  }
+}));
+
+// "nope": soft low double buzz for ✕ marks
+writeWav('sfx/nope.wav', tone(0.45, (t) => {
+  const z = (t0) => (t >= t0 && t < t0 + 0.12 ? Math.tanh(Math.sin(TAU * 160 * (t - t0)) * 3) * 0.3 * Math.sin(Math.PI * (t - t0) / 0.12) : 0);
+  return z(0) + z(0.16);
+}));
+
+// success: soft rising two-note chime for ✓ marks
+writeWav('sfx/yes.wav', tone(0.6, (t) => {
+  const n1 = Math.sin(TAU * 880 * t) * Math.exp(-t * 9) * (t < 0.3 ? 1 : 0);
+  const n2 = t > 0.09 ? Math.sin(TAU * 1318.5 * (t - 0.09)) * Math.exp(-(t - 0.09) * 7) : 0;
+  return (n1 * 0.35 + n2 * 0.35);
+}));
+
+// wooden board hung on the wall: knock + small creak
+writeWav('sfx/board.wav', make(0.9, (L, R, n) => {
+  const bp = svf();
+  for (let i = 0; i < n; i++) {
+    const t = i / SR;
+    const knock = Math.sin(TAU * (180 + 40 * Math.exp(-t * 20)) * t) * Math.exp(-t * 18) * 0.6 + bp(noise(), 900, 0.4).band * Math.exp(-t * 30) * 0.5;
+    const c = t - 0.18;
+    const creak = c > 0 && c < 0.5 ? Math.sin(TAU * (300 + 80 * Math.sin(TAU * 6 * c)) * c) * Math.sin(Math.PI * c / 0.5) * 0.12 * (0.5 + 0.5 * Math.sin(TAU * 37 * c)) : 0;
+    L[i] = knock + creak;
+    R[i] = knock * 0.9 + creak;
+  }
+}));
+
+// paper slide (coupon) and paper drop (slot fill)
+writeWav('sfx/paper_slide.wav', make(0.5, (L, R, n) => {
+  const f = svf();
+  for (let i = 0; i < n; i++) {
+    const t = i / n;
+    const v = f(noise(), 2500 + 2500 * t, 0.3).band * Math.sin(Math.PI * t) * 0.6;
+    L[i] = v;
+    R[i] = v;
+  }
+}));
+writeWav('sfx/paper_drop.wav', tone(0.35, (t) => {
+  return noise() * Math.exp(-t * 35) * 0.35 + Math.sin(TAU * (140 + 120 * Math.exp(-t * 40)) * t) * Math.exp(-t * 22) * 0.55;
+}));
+
+// snap: negation tab clicks onto the block
+writeWav('sfx/snap.wav', tone(0.2, (t) => (noise() * 0.6 + Math.sin(TAU * 2600 * t) * 0.4) * Math.exp(-t * 80) + Math.sin(TAU * 420 * t) * Math.exp(-t * 30) * 0.3));
+
 // ── MUSIC BED (temp) — energetic edu-pop, 122 BPM, sidechained, 16 bars loop ──
 // Four-on-the-floor kick, claps on 2 & 4, 16th hats, pumping chords, plucky arp,
 // driving bass and a riser/impact every 8 bars. Replace with a licensed track of the same name.

@@ -346,6 +346,10 @@
           "requested_by"
         ]
       }
+    },
+    "music": {
+      "type": "boolean",
+      "description": "false = no music bed (SFX + voice only)"
     }
   },
   "additionalProperties": false,

@@ -407,6 +407,7 @@
     "ifWord": 5.716,
     "thenWord": 8.103,
     "discountWord": 9.202,
+    "printStart": 9.775,
     "countStart": 9.825,
     "fifty": 10.764,
     "exact": 11.528,
@@ -444,84 +445,89 @@
   },
   "sfx": [
     {
-      "name": "whoosh_short",
-      "at": 3.753,
-      "volume": 0.5
+      "name": "board",
+      "at": 3.873,
+      "volume": 0.8
     },
     {
       "name": "tick",
       "at": 5.716,
-      "volume": 0.5
+      "volume": 0.6
     },
     {
       "name": "tick",
       "at": 8.103,
-      "volume": 0.5
+      "volume": 0.6
     },
     {
       "name": "pop",
       "at": 9.202,
-      "volume": 0.5
+      "volume": 0.6
     },
     {
-      "name": "tick",
-      "at": 9.825,
-      "volume": 0.4
+      "name": "printer",
+      "at": 9.775,
+      "volume": 0.85
     },
     {
-      "name": "lock",
-      "at": 10.764,
-      "volume": 0.5
-    },
-    {
-      "name": "false_hit",
+      "name": "reject",
       "at": 12.546,
-      "volume": 0.45
+      "volume": 0.75
     },
     {
       "name": "impact",
       "at": 13.478,
-      "volume": 0.35
+      "volume": 0.55
     },
     {
-      "name": "whoosh_long",
+      "name": "whoosh_short",
+      "at": 13.378,
+      "volume": 0.4
+    },
+    {
+      "name": "whoosh_short",
       "at": 14.578,
       "volume": 0.5
     },
     {
       "name": "impact",
       "at": 18.161,
-      "volume": 0.3
+      "volume": 0.35
     },
     {
       "name": "swish",
       "at": 20.315,
-      "volume": 0.4
+      "volume": 0.45
     },
     {
       "name": "swish",
       "at": 20.708,
-      "volume": 0.4
+      "volume": 0.45
     },
     {
-      "name": "drop",
-      "at": 24.075,
-      "volume": 0.6
+      "name": "paper_slide",
+      "at": 21.273,
+      "volume": 0.5
     },
     {
-      "name": "drop",
-      "at": 26.634,
-      "volume": 0.6
+      "name": "paper_drop",
+      "at": 24.225,
+      "volume": 0.8
+    },
+    {
+      "name": "paper_drop",
+      "at": 26.784,
+      "volume": 0.8
     },
     {
       "name": "pop",
       "at": 29.415,
-      "volume": 0.5
+      "volume": 0.55
     },
     {
       "name": "pop",
       "at": 31.54,
-      "volume": 0.5
+      "volume": 0.55
     },
     {
       "name": "swish",
@@ -534,9 +540,9 @@
       "volume": 0.6
     },
     {
-      "name": "false_hit",
+      "name": "nope",
       "at": 34.236,
-      "volume": 0.4
+      "volume": 0.7
     },
     {
       "name": "whoosh_short",
@@ -551,37 +557,52 @@
     {
       "name": "tick",
       "at": 42.882,
+      "volume": 0.6
+    },
+    {
+      "name": "paper_slide",
+      "at": 45.419,
+      "volume": 0.7
+    },
+    {
+      "name": "printer_short",
+      "at": 45.719,
+      "volume": 0.8
+    },
+    {
+      "name": "kaching",
+      "at": 46.869,
+      "volume": 0.7
+    },
+    {
+      "name": "nope",
+      "at": 47.608,
+      "volume": 0.65
+    },
+    {
+      "name": "stamp",
+      "at": 51.708,
+      "volume": 0.9
+    },
+    {
+      "name": "yes",
+      "at": 46.564,
       "volume": 0.5
     },
     {
       "name": "whoosh_short",
-      "at": 45.619,
-      "volume": 0.5
-    },
-    {
-      "name": "true_chime",
-      "at": 46.564,
-      "volume": 0.35
-    },
-    {
-      "name": "tick",
-      "at": 47.608,
-      "volume": 0.5
-    },
-    {
-      "name": "false_hit",
-      "at": 51.808,
-      "volume": 0.6
-    },
-    {
-      "name": "swish",
       "at": 52.23,
-      "volume": 0.4
+      "volume": 0.5
     },
     {
-      "name": "glitch",
+      "name": "snap",
       "at": 52.682,
-      "volume": 0.4
+      "volume": 0.8
+    },
+    {
+      "name": "snap",
+      "at": 52.782,
+      "volume": 0.7
     },
     {
       "name": "pop",
@@ -601,7 +622,12 @@
     {
       "name": "lock",
       "at": 68.515,
-      "volume": 0.6
+      "volume": 0.7
+    },
+    {
+      "name": "shimmer",
+      "at": 68.665,
+      "volume": 0.35
     },
     {
       "name": "whoosh_short",
@@ -609,14 +635,34 @@
       "volume": 0.5
     },
     {
+      "name": "tick",
+      "at": 71.162,
+      "volume": 0.5
+    },
+    {
+      "name": "tick",
+      "at": 71.282,
+      "volume": 0.5
+    },
+    {
+      "name": "tick",
+      "at": 71.402,
+      "volume": 0.5
+    },
+    {
+      "name": "tick",
+      "at": 71.522,
+      "volume": 0.5
+    },
+    {
       "name": "shimmer",
       "at": 72.634,
-      "volume": 0.35
+      "volume": 0.4
     },
     {
       "name": "shimmer",
       "at": 74.484,
-      "volume": 0.4
+      "volume": 0.45
     }
   ],
   "captions": [
