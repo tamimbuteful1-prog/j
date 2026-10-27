@@ -1,0 +1,26 @@
+{
+  "name": "manhaji-studio",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "MANHAJI AI \u2014 autonomous educational episode production (orchestrator + agents + render engine)",
+  "engines": {
+    "node": ">=22.5"
+  },
+  "scripts": {
+    "studio": "node --no-warnings=ExperimentalWarning --import tsx orchestrator/src/cli.ts",
+    "test": "node --no-warnings=ExperimentalWarning --import tsx --test orchestrator/test/*.test.ts",
+    "typecheck": "tsc --noEmit -p .",
+    "stills": "node engine/stills.mjs",
+    "postinstall": "cd engine && npm install --no-audit --no-fund"
+  },
+  "dependencies": {
+    "@anthropic-ai/claude-agent-sdk": "^0.3.311",
+    "ajv": "^8.20.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.5",
+    "tsx": "^4.23.15",
+    "typescript": "^5.6.3"
+  }
+}

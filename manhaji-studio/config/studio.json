@@ -1,0 +1,42 @@
+{
+  "$comment": "MANHAJI studio settings. Approval gates are switches: turn them off once quality is proven → fully autonomous.",
+  "approvals": {
+    "require_script_approval": true,
+    "require_final_approval": true
+  },
+  "slots": {
+    "per_grade": 3,
+    "global_max": 3,
+    "$comment": "Parallel production slots. Scale up/down with machine + budget."
+  },
+  "retries": {
+    "max_revision_rounds_per_stage": 3,
+    "max_agent_failures": 2
+  },
+  "budget": {
+    "per_agent_run_usd": { "writer": 6, "motion": 25, "quality": 4, "assembly": 6 },
+    "daily_usd": 150
+  },
+  "models": {
+    "writer": "claude-opus-5-5",
+    "motion": "claude-opus-5-5",
+    "quality": "claude-opus-5-5",
+    "assembly": "claude-opus-5-5"
+  },
+  "effort": { "writer": "high", "motion": "high", "quality": "high", "assembly": "medium" },
+  "episode": {
+    "target_duration_sec": [60, 90],
+    "speech_rate_words_per_sec": 2.3,
+    "line_gap_sec": 0.18,
+    "scene_lead_sec": 0.25,
+    "loudness_lufs": -14,
+    "fps": 30,
+    "width": 1080,
+    "height": 1920
+  },
+  "notify": {
+    "$comment": "How the presenter is told to record/approve. 'file' writes episodes/<ID>/ACTION_REQUIRED.md; webhook optional.",
+    "mode": "file",
+    "webhook_url": ""
+  }
+}

@@ -1,0 +1,131 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "manhaji/idea_candidates",
+  "title": "Writer · idea candidates",
+  "type": "object",
+  "properties": {
+    "episode_id": {
+      "type": "string",
+      "pattern": "^[A-Z]{3,5}-G(0[7-9]|1[0-2])-U[0-9]{2}-L[0-9]{2}(-[A-Z0-9]+)?$"
+    },
+    "concept_essence": {
+      "type": "string",
+      "minLength": 10
+    },
+    "ideas": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "situation": {
+            "type": "string"
+          },
+          "confusion": {
+            "type": "string"
+          },
+          "relation": {
+            "type": "string"
+          },
+          "appeal": {
+            "type": "string"
+          },
+          "visual_potential": {
+            "type": "string"
+          },
+          "accuracy_check": {
+            "type": "string"
+          },
+          "accuracy_veto": {
+            "type": "boolean"
+          },
+          "memory_conflicts": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "scores": {
+            "type": "object",
+            "properties": {
+              "relation": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 30
+              },
+              "proximity": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 25
+              },
+              "clarity": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 20
+              },
+              "motion": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 15
+              },
+              "originality": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 10
+              },
+              "total": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 100
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "relation",
+              "proximity",
+              "clarity",
+              "motion",
+              "originality",
+              "total"
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "situation",
+          "confusion",
+          "relation",
+          "appeal",
+          "visual_potential",
+          "accuracy_check",
+          "accuracy_veto",
+          "memory_conflicts",
+          "scores"
+        ]
+      },
+      "minItems": 5
+    },
+    "pairwise_notes": {
+      "type": "string"
+    },
+    "selected_id": {
+      "type": "string"
+    },
+    "selection_reason": {
+      "type": "string",
+      "minLength": 20
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "episode_id",
+    "concept_essence",
+    "ideas",
+    "pairwise_notes",
+    "selected_id",
+    "selection_reason"
+  ]
+}

@@ -1,0 +1,155 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "manhaji/assembly_plan",
+  "title": "Assembly · media plan",
+  "type": "object",
+  "properties": {
+    "episode_id": {
+      "type": "string",
+      "pattern": "^[A-Z]{3,5}-G(0[7-9]|1[0-2])-U[0-9]{2}-L[0-9]{2}(-[A-Z0-9]+)?$"
+    },
+    "hook": {
+      "type": "object",
+      "properties": {
+        "file": {
+          "type": "string"
+        },
+        "width": {
+          "type": "integer"
+        },
+        "height": {
+          "type": "integer"
+        },
+        "duration_sec": {
+          "type": "number"
+        },
+        "framing": {
+          "enum": [
+            "fit",
+            "fill"
+          ]
+        },
+        "speech": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "minItems": 2,
+            "maxItems": 2
+          }
+        },
+        "trim_start_sec": {
+          "type": "number",
+          "minimum": 0
+        },
+        "trim_end_sec": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "key_word_sec": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "hold_frames": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "file",
+        "framing",
+        "duration_sec",
+        "trim_start_sec",
+        "key_word_sec"
+      ]
+    },
+    "voiceover": {
+      "type": "object",
+      "properties": {
+        "mode": {
+          "enum": [
+            "per_line",
+            "single_file"
+          ]
+        },
+        "lines": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^L[0-9]{2}[a-z]?$"
+              },
+              "file": {
+                "type": "string"
+              },
+              "duration_sec": {
+                "type": "number"
+              },
+              "expected_sec": {
+                "type": "number"
+              },
+              "ratio": {
+                "type": "number"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "file",
+              "duration_sec"
+            ]
+          }
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "mode",
+        "lines"
+      ]
+    },
+    "issues": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "severity": {
+            "enum": [
+              "blocker",
+              "warning"
+            ]
+          },
+          "message": {
+            "type": "string"
+          },
+          "line": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "severity",
+          "message"
+        ]
+      }
+    },
+    "agent_notes": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "episode_id",
+    "hook",
+    "voiceover",
+    "issues"
+  ]
+}

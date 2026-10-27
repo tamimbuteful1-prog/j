@@ -1,0 +1,17 @@
+{
+  "episode_id": "MATH-G10-U00-L00-SMOKE",
+  "script_version": 1,
+  "analysis": {"central_visual_idea": "smoke", "elements": [], "environment": "studio", "recurring": [], "changing": [], "relations_to_show": [], "real_to_abstract_moment": "n/a", "confusion_treatments": []},
+  "world": {"name": "studio", "kit": "kit", "description": "plain studio"},
+  "scenes": [
+    {"id": "S01", "section": "context", "lines": ["L02"], "goal": "title", "elements": [], "motion": [{"beat": "title", "what": "title in", "why": "start", "result": "title visible"}],
+     "beats": [{"name": "title", "anchor": {"line": "L02", "word": "خط"}, "offset": -0.1}],
+     "sfx": [{"beat": "title", "name": "whoosh_short", "volume": 0.5}], "transition_out": {"type": "cut"}},
+    {"id": "S02", "section": "explanation", "lines": ["L03", "L04"], "goal": "badges", "elements": [], "motion": [{"beat": "trueHit", "what": "TRUE", "why": "one is enough", "result": "badge"}, {"beat": "falseHit", "what": "FALSE", "why": "both needed", "result": "badge"}],
+     "beats": [{"name": "trueHit", "anchor": {"line": "L03", "word": "واحد"}}, {"name": "falseHit", "anchor": {"line": "L04", "word": "False"}}],
+     "sfx": [{"beat": "trueHit", "name": "true_chime"}, {"beat": "falseHit", "name": "false_hit"}], "transition_out": {"type": "dissolve"}, "silent_tail_sec": 0.5},
+    {"id": "S03", "section": "conclusion", "lines": ["L05"], "goal": "outro", "elements": [], "motion": [{"beat": "logo", "what": "logo", "why": "end", "result": "brand"}],
+     "beats": [{"name": "logo", "anchor": {"scene": "S03", "at": "start"}, "offset": 0.2}],
+     "sfx": [{"beat": "logo", "name": "shimmer", "volume": 0.4}], "transition_out": {"type": "end"}, "silent_tail_sec": 1.2}
+  ]
+}

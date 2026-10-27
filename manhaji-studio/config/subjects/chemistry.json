@@ -1,0 +1,10 @@
+{
+  "id": "CHEM",
+  "name_ar": "الكيمياء",
+  "grades": {
+    "G10": {"name_ar": "أول ثانوي", "books": []},
+    "G11": {"name_ar": "ثاني ثانوي", "books": []},
+    "G12": {"name_ar": "ثالث ثانوي", "books": []}
+  },
+  "$comment": "Only grades that have a STANDALONE chemistry book. Middle-school chemistry lives inside the general science book — do not invent chemistry books for G07–G09."
+}

@@ -1,0 +1,10 @@
+{
+  "id": "PHYS",
+  "name_ar": "الفيزياء",
+  "grades": {
+    "G10": {"name_ar": "أول ثانوي", "books": []},
+    "G11": {"name_ar": "ثاني ثانوي", "books": []},
+    "G12": {"name_ar": "ثالث ثانوي", "books": []}
+  },
+  "$comment": "Only grades that have a STANDALONE physics book. Do not invent physics books for grades that study it inside general science."
+}

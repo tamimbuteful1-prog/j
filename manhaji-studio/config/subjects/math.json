@@ -1,0 +1,13 @@
+{
+  "id": "MATH",
+  "name_ar": "الرياضيات",
+  "grades": {
+    "G07": {"name_ar": "أول متوسط", "books": []},
+    "G08": {"name_ar": "ثاني متوسط", "books": []},
+    "G09": {"name_ar": "ثالث متوسط", "books": []},
+    "G10": {"name_ar": "أول ثانوي", "books": []},
+    "G11": {"name_ar": "ثاني ثانوي", "books": []},
+    "G12": {"name_ar": "ثالث ثانوي", "books": []}
+  },
+  "$comment": "A book entry: {\"id\":\"MATH-G10-S1\",\"file\":\"books/math/G10/<file>.pdf\",\"semester\":\"1\",\"title\":\"...\"}. Add with: npm run studio -- add-book"
+}

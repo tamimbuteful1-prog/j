@@ -1,0 +1,10 @@
+{
+  "episode_id": "MATH-G10-U00-L00-SMOKE",
+  "subject": "الرياضيات",
+  "grade": "أول ثانوي",
+  "unit": "00",
+  "lesson": "00",
+  "title": "اختبار خط الإنتاج",
+  "book": {"id": "TEST", "file": "n/a", "pages": [1, 1]},
+  "notes": "Pipeline smoke test — not a real lesson."
+}

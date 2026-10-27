@@ -1,0 +1,67 @@
+{
+  "episode_id": "MATH-G10-U00-L00-SMOKE",
+  "hook": {
+    "file": "01_hook/hook.mp4",
+    "width": 1920,
+    "height": 1080,
+    "duration_sec": 6,
+    "framing": "fit",
+    "speech": [
+      [
+        0.3,
+        1.003
+      ],
+      [
+        1.6,
+        3.003
+      ],
+      [
+        3.384,
+        4.687
+      ],
+      [
+        4.984,
+        5.487
+      ]
+    ],
+    "trim_start_sec": 1.45,
+    "trim_end_sec": null,
+    "key_word_sec": 4.7,
+    "hold_frames": 12
+  },
+  "voiceover": {
+    "mode": "single_file",
+    "lines": [
+      {
+        "id": "L02",
+        "file": "vo/L02.wav",
+        "duration_sec": 2.362,
+        "expected_sec": 2.424,
+        "ratio": 0.97
+      },
+      {
+        "id": "L03",
+        "file": "vo/L03.wav",
+        "duration_sec": 3.039,
+        "expected_sec": 3.293,
+        "ratio": 0.92
+      },
+      {
+        "id": "L04",
+        "file": "vo/L04.wav",
+        "duration_sec": 3.04,
+        "expected_sec": 3.293,
+        "ratio": 0.92
+      },
+      {
+        "id": "L05",
+        "file": "vo/L05.wav",
+        "duration_sec": 1.94,
+        "expected_sec": 1.989,
+        "ratio": 0.98
+      }
+    ]
+  },
+  "issues": [],
+  "agent_notes": "smoke test: greeting 0.3–1.0s trimmed; key word ends at 4.7s"
+}

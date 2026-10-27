@@ -1,0 +1,33 @@
+{
+  "episode_id": "MATH-G10-U00-L00-SMOKE",
+  "title": "اختبار خط الإنتاج",
+  "version": 1,
+  "approval": {"status": "approved", "by": "test", "at": "2026-10-27T00:00:00Z"},
+  "idea_id": "I1",
+  "target_duration_sec": 20,
+  "estimated_duration_sec": 18,
+  "hook": {"text": "عيش وصامولي… ولا عيش أو صامولي؟!", "location": "بقالة", "key_word": "أو", "performance_notes": "حيرة"},
+  "lines": [
+    {"id": "L01", "section": "hook", "text": "عيش وصامولي… ولا عيش أو صامولي؟!", "hook": true, "visual_intent": "الهوك", "emphasis": ["أو"]},
+    {"id": "L02", "section": "context", "text": "خلونا نختبر خط الإنتاج كامل.", "hook": false, "visual_intent": "عنوان", "emphasis": ["خط الإنتاج"]},
+    {"id": "L03", "section": "explanation", "text": "عبارة الفصل يكفي فيها جزء واحد صحيح.", "hook": false, "visual_intent": "شارة TRUE", "emphasis": ["واحد"]},
+    {"id": "L04", "section": "demonstration", "text": "وعبارة الوصل لازم الجزأين، وإلا النتيجة False.", "hook": false, "visual_intent": "شارة FALSE", "emphasis": ["False"]},
+    {"id": "L05", "section": "conclusion", "text": "وهذا اختبار منهجي للمحرك.", "hook": false, "visual_intent": "النهاية", "emphasis": []}
+  ],
+  "on_screen_terms": ["TRUE", "FALSE"],
+  "confusion_points": [],
+  "locked_facts": [],
+  "self_tests": {
+    "reality": {"pass": true, "evidence": "smoke fixture"},
+    "relation": {"pass": true, "evidence": "smoke fixture"},
+    "accuracy": {"pass": true, "evidence": "smoke fixture"},
+    "comprehension": {"pass": true, "evidence": "smoke fixture"},
+    "narrative": {"pass": true, "evidence": "smoke fixture"},
+    "brevity": {"pass": true, "evidence": "smoke fixture"},
+    "visual": {"pass": true, "evidence": "smoke fixture"},
+    "standalone": {"pass": true, "evidence": "smoke fixture"},
+    "originality": {"pass": true, "evidence": "smoke fixture"},
+    "duration": {"pass": true, "evidence": "smoke fixture"}
+  },
+  "revision_log": []
+}

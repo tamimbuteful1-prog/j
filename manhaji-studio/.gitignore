@@ -1,0 +1,17 @@
+node_modules
+studio.db
+studio.db-*
+episodes/*/production/project/node_modules
+*.log
+ACTION_REQUIRED.md
+# media & renders stay out of git (use cloud storage for archives)
+episodes/*/production/
+episodes/*/01_hook/*.mp4
+episodes/*/01_hook/*.mov
+episodes/*/02_voiceover/*.wav
+episodes/*/02_voiceover/*.m4a
+episodes/*/02_voiceover/*.mp3
+episodes/*/03_motion/*.mp4
+episodes/*/final/*.mp4
+episodes/*/quality/stills/
+books/**/*.pdf

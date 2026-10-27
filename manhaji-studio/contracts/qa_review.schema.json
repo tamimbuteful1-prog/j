@@ -1,0 +1,140 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "manhaji/qa_review",
+  "title": "Quality · review",
+  "type": "object",
+  "properties": {
+    "episode_id": {
+      "type": "string",
+      "pattern": "^[A-Z]{3,5}-G(0[7-9]|1[0-2])-U[0-9]{2}-L[0-9]{2}(-[A-Z0-9]+)?$"
+    },
+    "stage": {
+      "enum": [
+        "script_qa",
+        "motion_qa",
+        "final_qa"
+      ]
+    },
+    "round": {
+      "type": "integer"
+    },
+    "verdict": {
+      "enum": [
+        "pass",
+        "revise",
+        "blocked"
+      ]
+    },
+    "summary": {
+      "type": "string"
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "check": {
+            "enum": [
+              "educational",
+              "editorial",
+              "visual",
+              "technical"
+            ]
+          },
+          "severity": {
+            "enum": [
+              "blocker",
+              "major",
+              "minor"
+            ]
+          },
+          "location": {
+            "type": "object",
+            "properties": {
+              "line": {
+                "type": "string"
+              },
+              "scene": {
+                "type": "string"
+              },
+              "time_sec": {
+                "type": "number"
+              },
+              "file": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false,
+            "required": []
+          },
+          "problem": {
+            "type": "string"
+          },
+          "cause": {
+            "type": "string"
+          },
+          "student_impact": {
+            "type": "string"
+          },
+          "fix": {
+            "type": "string"
+          },
+          "owner": {
+            "enum": [
+              "writer",
+              "motion",
+              "assembly",
+              "human"
+            ]
+          },
+          "evidence": {
+            "type": "object",
+            "properties": {
+              "page": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "frame": {
+                "type": "string"
+              },
+              "quote": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false,
+            "required": []
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "check",
+          "severity",
+          "location",
+          "problem",
+          "fix",
+          "owner"
+        ]
+      }
+    },
+    "checked_artifacts": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "episode_id",
+    "stage",
+    "verdict",
+    "summary",
+    "findings"
+  ]
+}

@@ -1,0 +1,404 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "manhaji/script",
+  "title": "Writer · approved narration script (single source of truth)",
+  "type": "object",
+  "properties": {
+    "episode_id": {
+      "type": "string",
+      "pattern": "^[A-Z]{3,5}-G(0[7-9]|1[0-2])-U[0-9]{2}-L[0-9]{2}(-[A-Z0-9]+)?$"
+    },
+    "title": {
+      "type": "string"
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "approval": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "enum": [
+            "draft",
+            "approved",
+            "rejected"
+          ]
+        },
+        "by": {
+          "type": "string"
+        },
+        "at": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "status"
+      ]
+    },
+    "idea_id": {
+      "type": "string"
+    },
+    "target_duration_sec": {
+      "type": "number"
+    },
+    "estimated_duration_sec": {
+      "type": "number"
+    },
+    "hook": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string"
+        },
+        "location": {
+          "type": "string"
+        },
+        "key_word": {
+          "type": "string"
+        },
+        "performance_notes": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "text",
+        "location",
+        "key_word",
+        "performance_notes"
+      ]
+    },
+    "lines": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^L[0-9]{2}[a-z]?$"
+          },
+          "section": {
+            "enum": [
+              "hook",
+              "context",
+              "bridge",
+              "explanation",
+              "demonstration",
+              "conclusion"
+            ]
+          },
+          "text": {
+            "type": "string",
+            "minLength": 1
+          },
+          "hook": {
+            "type": "boolean"
+          },
+          "visual_intent": {
+            "type": "string"
+          },
+          "emphasis": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "performance_note": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "section",
+          "text",
+          "hook",
+          "visual_intent",
+          "emphasis"
+        ]
+      },
+      "minItems": 3
+    },
+    "on_screen_terms": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "confusion_points": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "point": {
+            "type": "string"
+          },
+          "how_to_show": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "point",
+          "how_to_show"
+        ]
+      }
+    },
+    "locked_facts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "fact": {
+            "type": "string"
+          },
+          "page": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "fact",
+          "page"
+        ]
+      }
+    },
+    "self_tests": {
+      "type": "object",
+      "properties": {
+        "reality": {
+          "type": "object",
+          "properties": {
+            "pass": {
+              "type": "boolean"
+            },
+            "evidence": {
+              "type": "string",
+              "minLength": 8
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "pass",
+            "evidence"
+          ]
+        },
+        "relation": {
+          "type": "object",
+          "properties": {
+            "pass": {
+              "type": "boolean"
+            },
+            "evidence": {
+              "type": "string",
+              "minLength": 8
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "pass",
+            "evidence"
+          ]
+        },
+        "accuracy": {
+          "type": "object",
+          "properties": {
+            "pass": {
+              "type": "boolean"
+            },
+            "evidence": {
+              "type": "string",
+              "minLength": 8
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "pass",
+            "evidence"
+          ]
+        },
+        "comprehension": {
+          "type": "object",
+          "properties": {
+            "pass": {
+              "type": "boolean"
+            },
+            "evidence": {
+              "type": "string",
+              "minLength": 8
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "pass",
+            "evidence"
+          ]
+        },
+        "narrative": {
+          "type": "object",
+          "properties": {
+            "pass": {
+              "type": "boolean"
+            },
+            "evidence": {
+              "type": "string",
+              "minLength": 8
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "pass",
+            "evidence"
+          ]
+        },
+        "brevity": {
+          "type": "object",
+          "properties": {
+            "pass": {
+              "type": "boolean"
+            },
+            "evidence": {
+              "type": "string",
+              "minLength": 8
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "pass",
+            "evidence"
+          ]
+        },
+        "visual": {
+          "type": "object",
+          "properties": {
+            "pass": {
+              "type": "boolean"
+            },
+            "evidence": {
+              "type": "string",
+              "minLength": 8
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "pass",
+            "evidence"
+          ]
+        },
+        "standalone": {
+          "type": "object",
+          "properties": {
+            "pass": {
+              "type": "boolean"
+            },
+            "evidence": {
+              "type": "string",
+              "minLength": 8
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "pass",
+            "evidence"
+          ]
+        },
+        "originality": {
+          "type": "object",
+          "properties": {
+            "pass": {
+              "type": "boolean"
+            },
+            "evidence": {
+              "type": "string",
+              "minLength": 8
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "pass",
+            "evidence"
+          ]
+        },
+        "duration": {
+          "type": "object",
+          "properties": {
+            "pass": {
+              "type": "boolean"
+            },
+            "evidence": {
+              "type": "string",
+              "minLength": 8
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "pass",
+            "evidence"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "reality",
+        "relation",
+        "accuracy",
+        "comprehension",
+        "narrative",
+        "brevity",
+        "visual",
+        "standalone",
+        "originality",
+        "duration"
+      ]
+    },
+    "revision_log": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "version": {
+            "type": "integer"
+          },
+          "change": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "requested_by": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "version",
+          "change",
+          "reason",
+          "requested_by"
+        ]
+      }
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "episode_id",
+    "title",
+    "version",
+    "approval",
+    "idea_id",
+    "target_duration_sec",
+    "estimated_duration_sec",
+    "hook",
+    "lines",
+    "on_screen_terms",
+    "confusion_points",
+    "locked_facts",
+    "self_tests",
+    "revision_log"
+  ]
+}

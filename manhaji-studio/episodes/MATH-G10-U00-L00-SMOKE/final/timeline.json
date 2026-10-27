@@ -1,0 +1,154 @@
+{
+  "episodeId": "MATH-G10-U00-L00-SMOKE",
+  "mode": "final",
+  "fps": 30,
+  "hook": {
+    "start": 0,
+    "end": 5.437,
+    "clipSec": 4.55,
+    "holdFrames": 12,
+    "keyWordSec": 3.25,
+    "tailHoldSec": 0.4870000000000001,
+    "exitSec": 0.9
+  },
+  "lines": [
+    {
+      "id": "L02",
+      "section": "context",
+      "text": "خلونا نختبر خط الإنتاج كامل.",
+      "hook": false,
+      "visual_intent": "عنوان",
+      "emphasis": [
+        "خط الإنتاج"
+      ],
+      "start": 5.617,
+      "end": 7.979,
+      "estimated": false
+    },
+    {
+      "id": "L03",
+      "section": "explanation",
+      "text": "عبارة الفصل يكفي فيها جزء واحد صحيح.",
+      "hook": false,
+      "visual_intent": "شارة TRUE",
+      "emphasis": [
+        "واحد"
+      ],
+      "start": 8.279,
+      "end": 11.318,
+      "estimated": false
+    },
+    {
+      "id": "L04",
+      "section": "demonstration",
+      "text": "وعبارة الوصل لازم الجزأين، وإلا النتيجة False.",
+      "hook": false,
+      "visual_intent": "شارة FALSE",
+      "emphasis": [
+        "False"
+      ],
+      "start": 11.498,
+      "end": 14.538,
+      "estimated": false
+    },
+    {
+      "id": "L05",
+      "section": "conclusion",
+      "text": "وهذا اختبار منهجي للمحرك.",
+      "hook": false,
+      "visual_intent": "النهاية",
+      "emphasis": [],
+      "start": 14.988,
+      "end": 16.928,
+      "estimated": false
+    }
+  ],
+  "scenes": [
+    {
+      "id": "S01",
+      "start": 4.537,
+      "end": 8.329
+    },
+    {
+      "id": "S02",
+      "start": 8.029,
+      "end": 15.038
+    },
+    {
+      "id": "S03",
+      "start": 14.738,
+      "end": 18.128
+    }
+  ],
+  "beats": {
+    "title": 6.529,
+    "trueHit": 10.474,
+    "falseHit": 14.141,
+    "logo": 14.938
+  },
+  "sfx": [
+    {
+      "name": "whoosh_short",
+      "at": 6.529,
+      "volume": 0.5
+    },
+    {
+      "name": "true_chime",
+      "at": 10.474,
+      "volume": 0.6
+    },
+    {
+      "name": "false_hit",
+      "at": 14.141,
+      "volume": 0.6
+    },
+    {
+      "name": "shimmer",
+      "at": 14.938,
+      "volume": 0.4
+    }
+  ],
+  "captions": [
+    {
+      "start": 0.15,
+      "end": 4.437,
+      "text": "عيش وصامولي… ولا عيش أو صامولي؟!",
+      "highlight": [
+        "أو",
+        "أو"
+      ]
+    },
+    {
+      "start": 5.617,
+      "end": 8.159,
+      "text": "خلونا نختبر خط الإنتاج كامل.",
+      "highlight": [
+        "خط الإنتاج"
+      ]
+    },
+    {
+      "start": 8.279,
+      "end": 11.498,
+      "text": "عبارة الفصل يكفي فيها جزء واحد صحيح.",
+      "highlight": [
+        "واحد"
+      ]
+    },
+    {
+      "start": 11.498,
+      "end": 14.718,
+      "text": "وعبارة الوصل لازم الجزأين، وإلا النتيجة False.",
+      "highlight": [
+        "False"
+      ]
+    },
+    {
+      "start": 14.988,
+      "end": 17.108,
+      "text": "وهذا اختبار منهجي للمحرك.",
+      "highlight": []
+    }
+  ],
+  "totalSec": 18.128,
+  "warnings": []
+}

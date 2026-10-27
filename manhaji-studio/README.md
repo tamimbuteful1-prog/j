@@ -1,0 +1,79 @@
+# MANHAJI AI — استوديو «منهجي» للإنتاج التعليمي المستقل
+
+> الفكرة تنبع من الحياة، والشرح ينبع من الفكرة، والموشن ينبع من الشرح.
+
+نظام يحوّل كتابًا مدرسيًا إلى حلقات قصيرة 9:16 جاهزة للنشر. **المقدم يتدخل فقط في:** تصوير الهوك وتسجيل الفويس أوفر (ونقطتي اعتماد قابلتين للإيقاف).
+
+## الهيكل
+| المكوّن | النوع | المسؤولية |
+|---|---|---|
+| **Orchestrator** (`orchestrator/`) | برنامج | الكتب، الطابور، الحالات، الجدولة، الاستئناف، الميزانية، الرندر، الفحص التقني الآلي، الأرشفة |
+| **Writer Agent** | وكيل + `.claude/skills/manhaji-writer` | تحليل الدرس، اكتشاف الموقف الواقعي، الهوك، القصة، النص، ورقة التسجيل |
+| **Motion Agent** | وكيل + `.claude/skills/manhaji-motion` | اللغة البصرية، Storyboard مرتبط بالسطور، كود المشاهد في المحرك |
+| **Quality Agent** | وكيل + `.claude/skills/manhaji-quality` | مراجع مستقل: تعليمي، تحريري، بصري، تقني — ويوجّه الإصلاح للوكيل المسؤول |
+| **Assembly Agent** | وكيل + `.claude/skills/manhaji-assembly` | يشبك الهوك + الفويس أوفر + الموشن ويضبطها على السيناريو |
+| **Engine** (`engine/`) | Remotion مشترك | مكتبة المكونات (kit) والعوالم (worlds) ومحلّل الخط الزمني |
+
+مديرو المواد والصفوف = ملفات إعداد (`config/subjects/*.json`) + فهارس الكتب، وليسوا وكلاء.
+خانات التشغيل المتوازية: `config/studio.json > slots` (3 لكل صف افتراضيًا، قابلة للتغيير).
+
+## مجلد الحلقة (ثلاثة أقسام)
+```
+episodes/MATH-G10-U01-L02/
+  01_hook/          ← أنت: فيديو الهوك من Higgsfield (hook.mp4، أفقي أو عمودي)
+  02_voiceover/     ← أنت: ملفات الفويس (L03.wav …) أو full.wav — حسب RECORDING_SHEET.md
+  03_motion/        ← آلي: preview.mp4 (موشن بتوقيت تقديري)
+  final/            ← آلي: final.mp4 + timeline.json + assembly_plan.json + sync_check.json
+  source/ research/ script/ quality/ metadata.json ACTION_REQUIRED.md
+```
+
+## كيف تتم المزامنة تلقائيًا (لماذا يعمل التركيب بلا تدخل)
+النص مقسّم إلى **سطور تسجيل بمعرّفات ثابتة** (L03, L04…). الـ Storyboard لا يحتوي ثوانيَ أبدًا: كل لحظة مهمة
+`beat` مربوط بسطر أو كلمة (`{"line":"L06","word":"أو"}`). محلّل الخط الزمني (`engine/src/timeline/resolve.ts`)
+يحسب الثواني من مدة كل سطر — تقديرية في المعاينة، **حقيقية** بعد رفع تسجيلك. نفس كود المشاهد، توقيت جديد.
+
+## مسار الحلقة
+```
+QUEUED → RESEARCHING → WRITING → SCRIPT_QA → [AWAITING_SCRIPT_APPROVAL] → STORYBOARD → PRODUCING
+→ RENDERING → MOTION_QA → AWAITING_MEDIA → ASSEMBLING → FINAL_RENDER → FINAL_QA → [AWAITING_FINAL_APPROVAL] → COMPLETED
+جانبية: REVISION_REQUIRED · BLOCKED · FAILED
+```
+- بمجرد اعتماد النص يصلك طلب التسجيل (`ACTION_REQUIRED.md`)، والموشن يُنتج **بالتوازي**.
+- إن رفعت الملفات قبل انتهاء الموشن، تمر الحلقة على AWAITING_MEDIA فورًا.
+- ملاحظات الجودة تعود للوكيل المسؤول فقط، بحد أقصى للجولات، ثم BLOCKED بسبب واضح.
+- كل حالة محفوظة في `studio.db` (SQLite) + `metadata.json`؛ أي انقطاع = استئناف من آخر مرحلة.
+
+## التشغيل
+المتطلبات: Node ≥ 22.5، ffmpeg/ffprobe، poppler-utils (pdftotext/pdftoppm)، Chrome/Chromium، و**مفتاح Claude API**
+(`ANTHROPIC_API_KEY`) للوكلاء — الوكلاء تعمل عبر Claude Agent SDK بفوترة حسب الاستخدام.
+
+```bash
+npm install                                         # يثبت المحرك أيضًا
+npm run studio -- add-book MATH G10 ~/books/math-g10-s1.pdf --semester 1
+npm run studio -- index-book MATH-G10-S1            # فهرسة الدروس والصفحات
+npm run studio -- enqueue --next                    # تعبئة الطابور
+npm run studio -- run                               # الاستوديو المستقل (Ctrl-C يوقف بأمان)
+
+npm run studio -- status                            # نظرة عامة
+npm run studio -- approve MATH-G10-U01-L02 script   # اعتماد (إن كان مفعّلًا)
+npm run studio -- reject  MATH-G10-U01-L02 final "الإيقاع بطيء في المشهد الثالث"
+npm run studio -- retry   MATH-G10-U01-L02          # بعد حل سبب التوقف
+npm test                                            # اختبارات المنظم والمحلل
+```
+لوحة المطلوب منك: `ACTION_REQUIRED.md` في الجذر.
+
+### الاستقلال الكامل
+`config/studio.json > approvals`: اجعل `require_script_approval` و`require_final_approval` = `false` بعد أن تثبت الجودة.
+يبقى تدخلك الوحيد: الهوك والفويس أوفر.
+
+### التكلفة
+`budget.per_agent_run_usd` (سقف لكل تشغيل وكيل) و`budget.daily_usd` (يتوقف الإنتاج عند بلوغه). الاستهلاك مسجّل لكل حلقة (`status <ID>`).
+الأرقام الافتراضية تقديرية — اضبطها بعد قياس أول حلقات.
+
+## ما تم التحقق منه في هذه البيئة
+- ✅ اختبارات المنظم (9): الحالات، جولات المراجعة، بوابة الاعتماد، طلب التسجيل، الاستئناف بعد انهيار، حد الفشل وإعادة المحاولة، انتظار الملفات دون استهلاك.
+- ✅ مسار الرندر الحقيقي على حلقة اختبار (`MATH-G10-U00-L00-SMOKE`): معاينة → هوك أفقي بتصميم الهوية + قص تحية + توقف على الكلمة → تقسيم فويس من ملف واحد → إعادة مزامنة → final.mp4 → فحص تقني ناجح (1080×1920، 30fps، yuv420p/bt709، −14.1 LUFS، بلا إطارات سوداء).
+- ⏳ **لم يُشغَّل بعد:** الوكلاء الأربعة على درس حقيقي — يحتاج `ANTHROPIC_API_KEY` وملف PDF لكتاب حقيقي. لم تُحاكَ أي مخرجات وكيل كأنها حقيقية.
+
+## إضافة مادة أو صف
+أضف ملفًا في `config/subjects/` (أو صفًا داخل ملف موجود) — لا تعديل على الكود. الكيمياء والفيزياء: فقط الصفوف التي لها كتاب مستقل فعلًا.
