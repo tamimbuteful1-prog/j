@@ -3,6 +3,7 @@ import {useCurrentFrame} from 'remotion';
 import {COLORS, FONTS} from './theme';
 import {fps, EASE, ramp} from './anim';
 import {LogicSymbol} from './LogicSymbol';
+import {usePalette} from './ThemeContext';
 
 /**
  * Arabic-safe kinetic typography.
@@ -38,8 +39,10 @@ export const KineticLine: React.FC<{
   style?: React.CSSProperties;
   /** seconds — when the line exits (optional) */
   outAt?: number;
-}> = ({words, at, stagger = 0.045, size = 96, weight = 800, color = COLORS.paper, font = FONTS.display, gap, style, outAt}) => {
+}> = ({words, at, stagger = 0.045, size = 96, weight = 800, color: colorProp, font = FONTS.display, gap, style, outAt}) => {
   const frame = useCurrentFrame();
+  const pal = usePalette();
+  const color = colorProp ?? pal.text;
   const out = outAt !== undefined ? ramp(frame, outAt, outAt + 0.22, EASE.in) : 0;
   return (
     <div
@@ -108,10 +111,12 @@ const groupGlued = (words: Word[]) => {
 /** Small tracked Latin/Arabic eyebrow label. */
 export const Eyebrow: React.FC<{children: React.ReactNode; color?: string; style?: React.CSSProperties; latin?: boolean}> = ({
   children,
-  color = COLORS.muted,
+  color: colorProp,
   style,
   latin,
-}) => (
+}) => {
+  const color = colorProp ?? usePalette().sub;
+  return (
   <div
     dir={latin ? 'ltr' : 'rtl'}
     style={{
@@ -127,7 +132,8 @@ export const Eyebrow: React.FC<{children: React.ReactNode; color?: string; style
   >
     {children}
   </div>
-);
+  );
+};
 
 /** Glass chip, e.g. "∨  OR · عبارة فصل". */
 export const Chip: React.FC<{

@@ -1,7 +1,7 @@
 {
   "episode_id": "MATH-G10-U01-L03",
   "title": "العبارات الشرطية",
-  "version": 3,
+  "version": 4,
   "approval": {
     "status": "approved",
     "by": "presenter (script author) — corrections pending confirmation",
@@ -12,7 +12,7 @@
   "estimated_duration_sec": 0,
   "hook": {
     "text": "اشتريت بخمسين ريال… بس الخصم ما تفعل!",
-    "location": "البقالة — عند الكاشير",
+    "location": "مطعم",
     "key_word": "خمسين",
     "performance_notes": "استغراب حقيقي، انظر للفاتورة ثم للكاميرا"
   },
@@ -32,9 +32,9 @@
     {
       "id": "L02",
       "section": "context",
-      "text": "طلبت من تطبيق البقالة، وشفت إعلان مكتوب عليه:",
+      "text": "طلبت من المطعم، وشفت إعلان مكتوب عليه:",
       "hook": false,
-      "visual_intent": "الصفحة الرئيسية للتطبيق وبانر العرض",
+      "visual_intent": "جدار المطعم ولوحة العرض",
       "emphasis": [],
       "performance_note": "سرد طبيعي"
     },
@@ -55,7 +55,7 @@
       "section": "context",
       "text": "أنا اشتريت بخمسين ريال بالضبط، بس ما عطوني خصم!",
       "hook": false,
-      "visual_intent": "شاشة الكاشير تعد إلى 50.00 والخصم لا يتفعل",
+      "visual_intent": "فاتورة المطعم تُطبع حتى 50.00 والخصم لا يُطبق",
       "emphasis": [
         "بالضبط"
       ],
@@ -107,7 +107,7 @@
     {
       "id": "L09",
       "section": "explanation",
-      "text": "مثال عليها: العرض اللي في البقالة،",
+      "text": "مثال عليها: العرض اللي في المطعم،",
       "hook": false,
       "visual_intent": "اللوحة تعود",
       "emphasis": [],
@@ -195,7 +195,7 @@
       "section": "demonstration",
       "text": "لأن ممكن يكون عندي كوبون، وآخذ خصم ومشترياتي أقل من خمسين.",
       "hook": false,
-      "visual_intent": "كوبون + مشتريات 30 ريال + خصم مفعّل",
+      "visual_intent": "كوبون + فاتورة 30 ريال + خصم مفعّل",
       "emphasis": [
         "كوبون،",
         "أقل"
@@ -425,6 +425,12 @@
       "version": 3,
       "change": "النفي بـ«لم»: «إذا لم أشترِ… فإنني لم أحصل…» (كان: ما اشتريت / لن أحصل)",
       "reason": "طلب المقدم؛ «لم أشترِ» بالجزم",
+      "requested_by": "presenter"
+    },
+    {
+      "version": 4,
+      "change": "البقالة → المطعم (L02: «طلبت من المطعم…»، L09: «العرض اللي في المطعم»)",
+      "reason": "طلب المقدم",
       "requested_by": "presenter"
     }
   ]

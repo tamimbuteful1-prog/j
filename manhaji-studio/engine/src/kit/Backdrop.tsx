@@ -1,6 +1,7 @@
 import React from 'react';
 import {AbsoluteFill, useCurrentFrame} from 'remotion';
 import {COLORS} from './theme';
+import {usePalette} from './ThemeContext';
 
 /**
  * Clean explainer "studio": deep ink space, a soft key light, a glossy floor
@@ -14,7 +15,9 @@ export const StudioBackdrop: React.FC<{
   lightX?: number;
 }> = ({tint = COLORS.or, tintAmount = 0.35, floorY = 1260, opacity = 1, lightX = 540}) => {
   const frame = useCurrentFrame();
+  const pal = usePalette();
   const drift = Math.sin(frame / 90) * 30;
+  if (pal.mode === 'light') return <LightStudio tint={tint} tintAmount={tintAmount} floorY={floorY} opacity={opacity} frame={frame} />;
   return (
     <AbsoluteFill style={{opacity}}>
       <AbsoluteFill style={{background: `linear-gradient(180deg, ${COLORS.ink2} 0%, ${COLORS.ink} 70%)`}} />
@@ -124,8 +127,45 @@ const FloorGrid: React.FC<{floorY: number}> = ({floorY}) => {
 };
 
 /** Film grain + vignette — the "premium" finish, applied once over everything. */
+/** Bright, airy studio for light-theme episodes: warm paper, soft tinted glows, faint grid. */
+const LightStudio: React.FC<{tint: string; tintAmount: number; floorY: number; opacity: number; frame: number}> = ({tint, tintAmount, floorY, opacity, frame}) => {
+  const drift = Math.sin(frame / 80) * 40;
+  return (
+    <AbsoluteFill style={{opacity}}>
+      <AbsoluteFill style={{background: 'linear-gradient(180deg, #FFFDF8 0%, #F7F1E7 75%)'}} />
+      <AbsoluteFill style={{background: `radial-gradient(900px 700px at ${540 + drift}px 820px, ${tint}2E, transparent 70%)`, opacity: 0.6 + tintAmount}} />
+      <AbsoluteFill style={{background: `radial-gradient(600px 500px at ${180 - drift}px 300px, ${tint}18, transparent 70%)`}} />
+      {/* fine dot grid */}
+      <AbsoluteFill
+        style={{
+          backgroundImage: 'radial-gradient(rgba(26,31,51,0.10) 1.6px, transparent 1.8px)',
+          backgroundSize: '40px 40px',
+          backgroundPosition: `0px ${(frame * 0.4) % 40}px`,
+          maskImage: 'radial-gradient(ellipse at 50% 45%, rgba(0,0,0,0.9), rgba(0,0,0,0) 72%)',
+          WebkitMaskImage: 'radial-gradient(ellipse at 50% 45%, rgba(0,0,0,0.9), rgba(0,0,0,0) 72%)',
+        }}
+      />
+      {/* table / floor */}
+      <div style={{position: 'absolute', left: 0, right: 0, top: floorY, bottom: 0, background: 'linear-gradient(180deg, #EFE6D8, #E7DCCB)'}} />
+      <div style={{position: 'absolute', left: 0, right: 0, top: floorY - 1, height: 3, background: 'linear-gradient(90deg, transparent, rgba(26,31,51,0.12), transparent)'}} />
+      {/* floating soft particles */}
+      {Array.from({length: 22}).map((_, i) => {
+        const depth = 0.4 + ((i * 37) % 60) / 100;
+        const x = ((i * 211) % 1080) + Math.sin(frame / (60 + i * 3) + i) * 30 * depth;
+        const y = 1920 - ((frame * (0.5 + depth * 1.4) + i * 173) % 2100);
+        const r = 4 + depth * 8;
+        return <div key={i} style={{position: 'absolute', left: x, top: y, width: r * 2, height: r * 2, borderRadius: '50%', background: i % 3 === 0 ? tint : '#C9B79A', opacity: 0.08 + depth * 0.12, filter: `blur(${(1.2 - depth) * 4}px)`}} />;
+      })}
+      <AbsoluteFill style={{background: `linear-gradient(105deg, transparent ${((frame * 0.35) % 260) - 80}%, rgba(255,255,255,0.55) ${((frame * 0.35) % 260) - 60}%, transparent ${((frame * 0.35) % 260) - 40}%)`, mixBlendMode: 'soft-light'}} />
+    </AbsoluteFill>
+  );
+};
+
 export const Finish: React.FC = () => {
   const frame = useCurrentFrame();
+  const pal = usePalette();
+  if (pal.mode === 'light')
+    return <AbsoluteFill style={{pointerEvents: 'none', background: 'radial-gradient(ellipse at 50% 45%, rgba(0,0,0,0) 60%, rgba(90,60,30,0.14) 100%)'}} />;
   return (
     <AbsoluteFill style={{pointerEvents: 'none'}}>
       <AbsoluteFill style={{background: 'radial-gradient(ellipse at 50% 45%, rgba(0,0,0,0) 55%, rgba(0,0,0,0.55) 100%)'}} />

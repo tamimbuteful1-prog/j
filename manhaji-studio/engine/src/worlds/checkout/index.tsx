@@ -1,6 +1,7 @@
 import React from 'react';
 import {interpolate} from 'remotion';
 import {COLORS, FONTS} from '../../kit/theme';
+import {usePalette} from '../../kit/ThemeContext';
 
 /**
  * CHECKOUT world — the supermarket counter: offer poster, POS terminal,
@@ -157,6 +158,8 @@ export const NumberLine: React.FC<{
   markerP: number;
   verdict?: number; // 0..1 shows "outside" emphasis
 }> = ({y, from, to, threshold, appear, marker, markerP, verdict = 0}) => {
+  const pal = usePalette();
+  const ink = pal.mode === 'light' ? 'rgba(26,31,51,0.55)' : 'rgba(255,255,255,0.55)';
   const L = 140;
   const R = 940;
   const X = (v: number) => interpolate(v, [from, to], [L, R]);
@@ -167,20 +170,20 @@ export const NumberLine: React.FC<{
   return (
     <div style={{position: 'absolute', left: 0, top: y - 110, width: 1080, height: 220, opacity: appear, transform: `translateY(${(1 - appear) * 40}px)`}}>
       <svg width={1080} height={220} style={{overflow: 'visible'}}>
-        <line x1={L - 30} y1={110} x2={R + 30} y2={110} stroke="rgba(255,255,255,0.55)" strokeWidth={6} strokeLinecap="round" />
+        <line x1={L - 30} y1={110} x2={R + 30} y2={110} stroke={ink} strokeWidth={6} strokeLinecap="round" />
         {/* region > threshold */}
-        <line x1={tx} y1={110} x2={R + 30} y2={110} stroke={COLORS.or} strokeWidth={14} strokeLinecap="round" style={{filter: `drop-shadow(0 0 14px ${COLORS.or})`}} />
-        <path d={`M${R + 30} 96 L${R + 52} 110 L${R + 30} 124 Z`} fill={COLORS.or} />
+        <line x1={tx} y1={110} x2={R + 30} y2={110} stroke={pal.p} strokeWidth={14} strokeLinecap="round" style={{filter: `drop-shadow(0 0 14px ${pal.p}88)`}} />
+        <path d={`M${R + 30} 96 L${R + 52} 110 L${R + 30} 124 Z`} fill={pal.p} />
         {ticks.map((v) => (
           <g key={v}>
-            <line x1={X(v)} y1={96} x2={X(v)} y2={124} stroke="rgba(255,255,255,0.6)" strokeWidth={4} />
-            <text x={X(v)} y={168} textAnchor="middle" fontFamily={FONTS.text} fontWeight={700} fontSize={34} fill={v === threshold ? '#FFFFFF' : 'rgba(255,255,255,0.6)'}>
+            <line x1={X(v)} y1={96} x2={X(v)} y2={124} stroke={ink} strokeWidth={4} />
+            <text x={X(v)} y={168} textAnchor="middle" fontFamily={FONTS.text} fontWeight={700} fontSize={34} fill={v === threshold ? pal.text : ink}>
               {v}
             </text>
           </g>
         ))}
         {/* open circle: threshold NOT included */}
-        <circle cx={tx} cy={110} r={20} fill={'#0B1222'} stroke={COLORS.or} strokeWidth={7} />
+        <circle cx={tx} cy={110} r={20} fill={pal.mode === 'light' ? '#FFFFFF' : '#0B1222'} stroke={pal.p} strokeWidth={7} />
         {/* marker */}
         <g transform={`translate(${X(marker)} ${interpolate(markerP, [0, 1], [-30, 52])})`} opacity={Math.min(1, markerP * 3)}>
           <path d="M0 0 L-20 -34 H20 Z" fill={COLORS.aish} />

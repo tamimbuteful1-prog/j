@@ -5,7 +5,7 @@
     {
       "name": "opens",
       "ok": true,
-      "detail": "duration 80.38s"
+      "detail": "duration 80.02s"
     },
     {
       "name": "dimensions",
@@ -25,7 +25,7 @@
     {
       "name": "duration",
       "ok": true,
-      "detail": "80.38s vs timeline 80.36s"
+      "detail": "80.02s vs timeline 79.99s"
     },
     {
       "name": "black_frames",

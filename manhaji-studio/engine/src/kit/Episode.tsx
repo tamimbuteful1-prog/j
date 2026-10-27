@@ -8,6 +8,7 @@ import {Finish} from './Backdrop';
 import {Captions} from './Captions';
 import {SoundDesign} from './SoundDesign';
 import {HookFrame, HookOverlayProps} from './HookFrame';
+import {ThemeProvider} from './ThemeContext';
 
 /** What every episode folder exports from src/episodes/<ID>/index.ts */
 export type EpisodeModule = {
@@ -16,6 +17,8 @@ export type EpisodeModule = {
   /** scene id (S01…) → component. Inside a scene, frame 0 = scene start; use useScene(). */
   scenes: Record<string, React.FC>;
   HookOverlay?: React.FC<HookOverlayProps>;
+  /** surface theme for the whole episode (default dark) */
+  theme?: 'dark' | 'light';
   /** timeline written by the orchestrator for Studio browsing */
   previewTimeline: Timeline;
 };
@@ -37,8 +40,9 @@ export type EpisodeProps = {
 export const EpisodeFilm: React.FC<EpisodeProps & {module: EpisodeModule}> = ({module, timeline, media, hookText, keyWord, captions = true}) => {
   const f = (s: number) => Math.round(s * timeline.fps);
   return (
+    <ThemeProvider mode={module.theme}>
     <EpisodeProvider timeline={timeline}>
-      <AbsoluteFill style={{background: COLORS.ink}}>
+      <AbsoluteFill style={{background: module.theme === 'light' ? '#F7F3EC' : COLORS.ink}}>
         {timeline.scenes.map((s) => {
           const C = module.scenes[s.id];
           return (
@@ -57,6 +61,7 @@ export const EpisodeFilm: React.FC<EpisodeProps & {module: EpisodeModule}> = ({m
         <SoundDesign voice={media.voice} music={media.music} />
       </AbsoluteFill>
     </EpisodeProvider>
+    </ThemeProvider>
   );
 };
 

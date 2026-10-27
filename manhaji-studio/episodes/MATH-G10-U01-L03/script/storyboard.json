@@ -34,9 +34,9 @@
     ]
   },
   "world": {
-    "name": "checkout",
-    "kit": "worlds/checkout",
-    "description": "كاشير ولوحة عرض وكوبون وخط أعداد — عالم جديد مختلف عن ممر المنطق",
+    "name": "restaurant-light",
+    "kit": "worlds/restaurant",
+    "description": "مطعم فاتح: جدار وإضاءة معلقة ولوحة عرض وفاتورة مطبوعة",
     "reused_from": ""
   },
   "scenes": [

@@ -1,6 +1,7 @@
 import React from 'react';
 import {COLORS, FONTS} from '../../kit/theme';
 import {EASE, mix, ramp, shake} from '../../kit/anim';
+import {usePalette} from '../../kit/ThemeContext';
 
 /**
  * The conditional statement as two physical slots that persist through the lesson.
@@ -34,17 +35,21 @@ const NAMES: Record<string, {ar: string; nota: string}> = {
   contra: {ar: 'المعاكس الإيجابي', nota: '~q → ~p'},
 };
 
-export const Nota: React.FC<{children: string; size?: number; color?: string}> = ({children, size = 40, color = COLORS.paper}) => (
-  <span dir="ltr" style={{unicodeBidi: 'isolate', fontFamily: FONTS.text, fontWeight: 700, fontSize: size, color, letterSpacing: '0.04em'}}>
-    {children.split(/(p|q)/).map((s, i) => (s === 'p' ? <span key={i} style={{color: P_COLOR}}>p</span> : s === 'q' ? <span key={i} style={{color: Q_COLOR}}>q</span> : <span key={i}>{s}</span>))}
+export const Nota: React.FC<{children: string; size?: number; color?: string}> = ({children, size = 40, color}) => {
+  const pal = usePalette();
+  return (
+  <span dir="ltr" style={{unicodeBidi: 'isolate', fontFamily: FONTS.text, fontWeight: 700, fontSize: size, color: color ?? pal.text, letterSpacing: '0.04em'}}>
+    {children.split(/(p|q)/).map((s, i) => (s === 'p' ? <span key={i} style={{color: pal.p}}>p</span> : s === 'q' ? <span key={i} style={{color: pal.q}}>q</span> : <span key={i}>{s}</span>))}
   </span>
-);
+  );
+};
 
 const SLOT_Y = [640, 905];
 const BLOCK = {x: 455, w: 690, h: 168};
 
-const Mark: React.FC<{ok: boolean; p: number; label: string}> = ({ok, p, label}) =>
-  p > 0.01 ? (
+const Mark: React.FC<{ok: boolean; p: number; label: string}> = ({ok, p, label}) => {
+  const pal = usePalette();
+  return p > 0.01 ? (
     <div
       dir="rtl"
       style={{
@@ -53,8 +58,8 @@ const Mark: React.FC<{ok: boolean; p: number; label: string}> = ({ok, p, label})
         top: -26,
         padding: '6px 16px',
         borderRadius: 999,
-        background: ok ? COLORS.true : COLORS.false,
-        color: COLORS.ink,
+        background: ok ? pal.true : pal.false,
+        color: pal.mode === 'light' ? '#fff' : COLORS.ink,
         fontFamily: FONTS.text,
         fontWeight: 700,
         fontSize: 32,
@@ -66,6 +71,7 @@ const Mark: React.FC<{ok: boolean; p: number; label: string}> = ({ok, p, label})
       {ok ? '✓' : '✕'} {label}
     </div>
   ) : null;
+};
 
 const Block: React.FC<{
   kind: 'p' | 'q';
@@ -78,7 +84,9 @@ const Block: React.FC<{
   /** 0..1 — this block is being read aloud right now */
   glow?: number;
 }> = ({kind, pos, arc, fill, neg, mark, dim = 0, glow = 0}) => {
-  const c = kind === 'p' ? P_COLOR : Q_COLOR;
+  const pal = usePalette();
+  const L = pal.mode === 'light';
+  const c = kind === 'p' ? pal.p : pal.q;
   const y = mix(pos, SLOT_Y[0], SLOT_Y[1]);
   const text = kind === 'p' ? 'اشتريت بأكثر من 50 ريال' : 'أحصل على خصم';
   // negation with «لم» + jussive: لم أشترِ / لم أحصل
@@ -105,14 +113,14 @@ const Block: React.FC<{
           inset: 0,
           borderRadius: 30,
           border: `3px solid ${c}`,
-          boxShadow: `0 24px 60px rgba(0,0,0,0.45), 0 0 ${30 + 20 * swapTwist + 50 * glow}px ${c}${glow > 0.3 ? '99' : '44'}`,
-          background: `linear-gradient(180deg, ${c}${glow > 0.3 ? '55' : '38'}, ${c}14)`,
+          boxShadow: `0 24px 60px rgba(0,0,0,${L ? 0.1 : 0.45}), 0 0 ${30 + 20 * swapTwist + 50 * glow}px ${c}${glow > 0.3 ? (L ? '66' : '99') : L ? '22' : '44'}`,
+          background: L ? `linear-gradient(180deg, ${c}${glow > 0.3 ? '2E' : '16'}, ${c}08), #FFFFFF` : `linear-gradient(180deg, ${c}${glow > 0.3 ? '55' : '38'}, ${c}14)`,
         }}
       />
-      <div dir="rtl" style={{position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: FONTS.display, fontWeight: 800, fontSize: 44, color: COLORS.paper, padding: '0 36px 0 110px'}}>
+      <div dir="rtl" style={{position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: FONTS.display, fontWeight: 800, fontSize: 44, color: pal.text, padding: '0 36px 0 110px'}}>
         <span style={{opacity: showNeg ? 0 : 1 - Math.min(1, neg * 2), position: 'absolute'}}>{text}</span>
         <span style={{opacity: showNeg ? Math.min(1, (neg - 0.5) * 2) : 0, position: 'absolute'}}>
-          <span style={{color: NEG_COLOR}}>لم</span> {negRest}
+          <span style={{color: pal.neg}}>لم</span> {negRest}
         </span>
         <span style={{visibility: 'hidden'}}>{negText}</span>
       </div>
@@ -133,14 +141,14 @@ const Block: React.FC<{
           boxShadow: `0 0 20px ${c}88`,
         }}
       >
-        <span dir="ltr" style={{fontFamily: FONTS.text, fontWeight: 700, fontSize: 40, color: COLORS.ink}}>
+        <span dir="ltr" style={{fontFamily: FONTS.text, fontWeight: 700, fontSize: 40, color: L ? '#fff' : COLORS.ink}}>
           {neg > 0.5 ? '~' : ''}
           {kind}
         </span>
       </div>
       {/* negation tab */}
       {neg > 0.01 && (
-        <div style={{position: 'absolute', right: -14, top: -22, width: 58, height: 58, borderRadius: 18, background: NEG_COLOR, color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: FONTS.text, fontWeight: 700, fontSize: 40, transform: `translateY(${(1 - neg) * -80}px) rotate(${(1 - neg) * 40}deg)`, opacity: Math.min(1, neg * 2), boxShadow: `0 0 20px ${NEG_COLOR}`}}>
+        <div style={{position: 'absolute', right: -14, top: -22, width: 58, height: 58, borderRadius: 18, background: pal.neg, color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: FONTS.text, fontWeight: 700, fontSize: 40, transform: `translateY(${(1 - neg) * -80}px) rotate(${(1 - neg) * 40}deg)`, opacity: Math.min(1, neg * 2), boxShadow: `0 0 20px ${pal.neg}`}}>
           ~
         </div>
       )}
@@ -152,6 +160,8 @@ const Block: React.FC<{
 /** Full stage. `t` = absolute seconds. */
 export const ConditionStage: React.FC<{t: number; B: Beats; scale?: number; originY?: number; showName?: boolean; read?: [number, number]}> = ({t, B, scale = 1, originY = 260, showName = true, read = [0, 0]}) => {
   const {posP, neg, phase} = stageState(t, B);
+  const pal = usePalette();
+  const L = pal.mode === 'light';
   const arc = Math.sin(Math.PI * Math.max(0, Math.min(1, posP))) * 300;
   const slots = r(t, B.template, B.template + 0.28);
   const slot2 = r(t, B.thenSlot, B.thenSlot + 0.28);
@@ -176,7 +186,7 @@ export const ConditionStage: React.FC<{t: number; B: Beats; scale?: number; orig
   const ifLabel = (y: number, txt: string, sub: string, subP: number, appear: number, c: string) => (
     <div dir="rtl" style={{position: 'absolute', left: 820, width: 200, top: y - 70, opacity: appear, textAlign: 'center', transform: `translateX(${(1 - appear) * 40}px)`}}>
       <div style={{fontFamily: FONTS.display, fontWeight: 900, fontSize: 76, color: c, textShadow: `0 0 26px ${c}66`, lineHeight: 1.2}}>{txt}</div>
-      <div style={{fontFamily: FONTS.text, fontWeight: 700, fontSize: 30, color: COLORS.paperDim, opacity: subP}}>{sub}</div>
+      <div style={{fontFamily: FONTS.text, fontWeight: 700, fontSize: 30, color: pal.sub, opacity: subP}}>{sub}</div>
     </div>
   );
 
@@ -185,11 +195,11 @@ export const ConditionStage: React.FC<{t: number; B: Beats; scale?: number; orig
       {/* name chip */}
       {showName && nameP > 0 && name && (
         <div key={nameKey} style={{position: 'absolute', left: 0, right: 0, top: 330, display: 'flex', justifyContent: 'center'}}>
-          <div dir="rtl" style={{display: 'flex', alignItems: 'center', gap: 22, padding: '14px 34px', borderRadius: 999, background: 'rgba(255,255,255,0.07)', border: '2px solid rgba(255,255,255,0.18)', transform: `scale(${1 + 0.1 * nameBump})`, boxShadow: nameBump > 0 ? `0 0 ${40 * nameBump}px rgba(255,210,122,0.5)` : undefined}}>
-            <span style={{fontFamily: FONTS.display, fontWeight: 900, fontSize: 52, color: '#FFD27A'}}>{name.ar}</span>
-            <span style={{width: 2, height: 44, background: 'rgba(255,255,255,0.25)'}} />
+          <div dir="rtl" style={{display: 'flex', alignItems: 'center', gap: 22, padding: '14px 34px', borderRadius: 999, background: L ? '#FFFFFF' : 'rgba(255,255,255,0.07)', border: `2px solid ${pal.line}`, transform: `scale(${1 + 0.1 * nameBump})`, boxShadow: `${L ? '0 12px 30px rgba(26,31,51,0.10)' : '0 0 0 transparent'}${nameBump > 0 ? `, 0 0 ${40 * nameBump}px ${pal.accent}66` : ''}`}}>
+            <span style={{fontFamily: FONTS.display, fontWeight: 900, fontSize: 52, color: pal.accent}}>{name.ar}</span>
+            <span style={{width: 2, height: 44, background: pal.line}} />
             <Nota size={44}>{name.nota}</Nota>
-            {question > 0.01 && <span style={{fontFamily: FONTS.display, fontWeight: 900, fontSize: 56, color: NEG_COLOR, opacity: question, transform: `scale(${0.6 + 0.4 * question})`, display: 'inline-block'}}>؟</span>}
+            {question > 0.01 && <span style={{fontFamily: FONTS.display, fontWeight: 900, fontSize: 56, color: pal.neg, opacity: question, transform: `scale(${0.6 + 0.4 * question})`, display: 'inline-block'}}>؟</span>}
           </div>
         </div>
       )}
@@ -197,14 +207,14 @@ export const ConditionStage: React.FC<{t: number; B: Beats; scale?: number; orig
       {[0, 1].map((i) => {
         const a = i === 0 ? slots : slot2;
         return (
-          <div key={i} style={{position: 'absolute', left: BLOCK.x - BLOCK.w / 2, top: SLOT_Y[i] - BLOCK.h / 2, width: BLOCK.w, height: BLOCK.h, borderRadius: 30, border: '3px dashed rgba(255,255,255,0.28)', opacity: a * 0.9, transform: `scale(${0.94 + 0.06 * a})`}} />
+          <div key={i} style={{position: 'absolute', left: BLOCK.x - BLOCK.w / 2, top: SLOT_Y[i] - BLOCK.h / 2, width: BLOCK.w, height: BLOCK.h, borderRadius: 30, border: `3px dashed ${L ? 'rgba(26,31,51,0.22)' : 'rgba(255,255,255,0.28)'}`, opacity: a * 0.9, transform: `scale(${0.94 + 0.06 * a})`}} />
         );
       })}
-      {ifLabel(SLOT_Y[0], 'إذا', 'الفرض', labP, slots, P_COLOR)}
-      {ifLabel(SLOT_Y[1], 'فإن', 'النتيجة', labQ, slot2, Q_COLOR)}
+      {ifLabel(SLOT_Y[0], 'إذا', 'الفرض', labP, slots, pal.p)}
+      {ifLabel(SLOT_Y[1], 'فإن', 'النتيجة', labQ, slot2, pal.q)}
       {/* arrow */}
-      <div style={{position: 'absolute', left: BLOCK.x - 3, top: SLOT_Y[0] + BLOCK.h / 2 + 6, width: 6, height: SLOT_Y[1] - SLOT_Y[0] - BLOCK.h - 12, background: 'rgba(255,255,255,0.35)', opacity: slot2}} />
-      <div style={{position: 'absolute', left: BLOCK.x - 16, top: SLOT_Y[1] - BLOCK.h / 2 - 24, width: 0, height: 0, borderLeft: '16px solid transparent', borderRight: '16px solid transparent', borderTop: '20px solid rgba(255,255,255,0.35)', opacity: slot2}} />
+      <div style={{position: 'absolute', left: BLOCK.x - 3, top: SLOT_Y[0] + BLOCK.h / 2 + 6, width: 6, height: SLOT_Y[1] - SLOT_Y[0] - BLOCK.h - 12, background: pal.sub, opacity: slot2}} />
+      <div style={{position: 'absolute', left: BLOCK.x - 16, top: SLOT_Y[1] - BLOCK.h / 2 - 24, width: 0, height: 0, borderLeft: '16px solid transparent', borderRight: '16px solid transparent', borderTop: `20px solid ${pal.sub}`, opacity: slot2}} />
 
       <Block kind="q" pos={1 - posP} arc={arc} fill={fillQ} neg={neg} glow={read[Math.round(1 - posP)]} mark={qOk > 0.01 ? {ok: true, p: qOk, label: 'تحقق'} : undefined} />
       <Block
@@ -227,8 +237,8 @@ export const ConditionStage: React.FC<{t: number; B: Beats; scale?: number; orig
             width: 460,
             height: 150,
             borderRadius: 24,
-            border: `8px solid ${COLORS.false}`,
-            color: COLORS.false,
+            border: `8px solid ${pal.false}`,
+            color: pal.false,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -238,7 +248,7 @@ export const ConditionStage: React.FC<{t: number; B: Beats; scale?: number; orig
             letterSpacing: '0.08em',
             transform: `rotate(-10deg) scale(${2.2 - 1.2 * Math.min(1, stamp * 1.4)}) translateX(${shake(t * fps, B.falseStamp + 0.15, 10)}px)`,
             opacity: Math.min(1, stamp * 1.6),
-            background: 'rgba(9,13,24,0.72)',
+            background: L ? 'rgba(255,255,255,0.92)' : 'rgba(9,13,24,0.72)',
             boxShadow: `0 0 50px ${COLORS.falseGlow}`,
           }}
         >

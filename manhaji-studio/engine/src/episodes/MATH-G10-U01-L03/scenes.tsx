@@ -6,9 +6,14 @@ import {Eyebrow, KineticLine} from '../../kit/Type';
 import {Outro} from '../../kit/Outro';
 import {COLORS, FONTS} from '../../kit/theme';
 import {EASE, clamp01, kf, mix, pop, ramp, shake, wobble} from '../../kit/anim';
-import {Coupon} from '../../worlds/checkout';
-import {APP, AppFrame, CartList, CategoryChips, OfferProgress, OrderSummary, ProductGrid, PromoBanner, Toast, type Item} from '../../worlds/grocery-app';
-import {ConditionStage, Nota, P_COLOR, Q_COLOR} from './stage';
+import {Coupon, NumberLine} from '../../worlds/checkout';
+import {OfferBoard, Receipt, RestaurantWall, type ReceiptLine} from '../../worlds/restaurant';
+import {LIGHT} from '../../kit/theme';
+import {ConditionStage, Nota} from './stage';
+
+/** This episode is light-themed (index.ts → theme: 'light'). */
+const PAL = LIGHT;
+const AND_C = '#7C5CE0';
 
 const FPS = 30;
 
@@ -18,84 +23,60 @@ const FadeIn: React.FC<{children: React.ReactNode; d?: number}> = ({children, d 
   return <AbsoluteFill style={{opacity: ramp(frame, 0, d, EASE.inOut)}}>{children}</AbsoluteFill>;
 };
 
-/** Store wall: warm light + soft shelf silhouettes (depth without clutter). */
-const StoreWall: React.FC<{frame: number}> = ({frame}) => (
-  // shelves drift very slightly — the wall feels alive without stealing focus
-  <AbsoluteFill>
-    <StudioBackdrop tint={COLORS.aish} tintAmount={0.35} floorY={1460} />
-    {[260, 520, 780, 1040, 1300].map((y, i) => (
-      <div key={y} style={{position: 'absolute', left: (i % 2 ? -40 : 0) + wobble(frame, i, 0.01, 6), right: i % 2 ? 0 : -40, top: y, height: 18, background: 'rgba(255,255,255,0.05)', filter: 'blur(1px)'}} />
-    ))}
-    {Array.from({length: 26}).map((_, i) => {
-      const row = i % 5;
-      const x = ((i * 137) % 1100) - 20;
-      const h = 70 + ((i * 53) % 90);
-      return <div key={i} style={{position: 'absolute', left: x, top: 260 + row * 260 - h, width: 60 + ((i * 31) % 50), height: h, borderRadius: 8, background: 'rgba(255,255,255,0.045)', filter: 'blur(2.5px)'}} />;
-    })}
-  </AbsoluteFill>
-);
-
-// ── S01 — the offer, on the app's home screen ─────────────────────
-const SHELF: Item[] = [
-  {name: 'عيش', price: 4, kind: 'aish'},
-  {name: 'صامولي', price: 6, kind: 'samoli'},
-  {name: 'حليب', price: 12.5, color: '#D8DCE6'},
-  {name: 'بيض', price: 17.5, color: '#E8C99A'},
-];
+// ── S01 — the offer on the wall ─────────────────────────────────────
 export const S01: React.FC = () => {
   const frame = useCurrentFrame();
   const {beat, duration} = useScene();
-  const push = 1 + 0.03 * ramp(frame, 0, duration, EASE.inOut);
-  const ap = pop(frame, beat('poster'), {damping: 16, stiffness: 160});
-  const g = (k: string) => ramp(frame, beat(k), beat(k) + 0.25) * (1 - 0.4 * ramp(frame, beat(k) + 1.2, beat(k) + 2));
-  const tap = ramp(frame, beat('discountWord') + 0.1, beat('discountWord') + 0.6);
+  const push = 1 + 0.06 * ramp(frame, 0, duration, EASE.inOut);
+  const ap = pop(frame, beat('poster'), {damping: 13, stiffness: 120});
+  const g = (k: string) => ramp(frame, beat(k), beat(k) + 0.35) * (1 - 0.4 * ramp(frame, beat(k) + 1.2, beat(k) + 2));
   return (
     <FadeIn>
-      <AbsoluteFill style={{transform: `scale(${push})`, transformOrigin: '50% 40%'}}>
-        <AppFrame header={{kind: 'home'}} tab="home" cartCount={0}>
-          <CategoryChips y={272} />
-          <PromoBanner y={380} appear={clamp01(ap)} ifGlow={g('ifWord')} thenGlow={g('thenWord')} dealGlow={g('discountWord')} tap={tap} />
-          <ProductGrid y={800} items={SHELF} appear={ramp(frame, 0.1, 1.2)} />
-        </AppFrame>
+      <AbsoluteFill style={{transform: `scale(${push})`, transformOrigin: '50% 45%'}}>
+        <RestaurantWall frame={frame} />
+        <OfferBoard x={540} y={800} appear={clamp01(ap)} ifGlow={g('ifWord')} thenGlow={g('thenWord')} dealGlow={g('discountWord')} p={PAL.p} q={PAL.q} rotate={Math.sin(frame / 22) * 0.8} />
       </AbsoluteFill>
     </FadeIn>
   );
 };
 
-// ── S02 — the cart: exactly 50.00, no discount ───────────────────
-const CART: Item[] = [
-  {name: 'عيش', price: 4, kind: 'aish'},
-  {name: 'صامولي', price: 6, kind: 'samoli'},
-  {name: 'حليب', price: 12.5, color: '#D8DCE6'},
-  {name: 'بيض', price: 17.5, color: '#E8C99A'},
-  {name: 'عصير', price: 10, color: '#F2B53A'},
+const ORDER: ReceiptLine[] = [
+  {name: 'برجر', price: 22},
+  {name: 'بطاطس', price: 10},
+  {name: 'مشروب', price: 8},
+  {name: 'صوص', price: 4},
+  {name: 'آيس كريم', price: 6},
 ];
+
+// ── S02 — 50.00 exactly, no discount ───────────────────────────────
 export const S02: React.FC = () => {
   const frame = useCurrentFrame();
-  const {beat, start} = useScene();
-  const shown = kf(frame, [beat('countStart') - 0.3, beat('fifty')], [0.6, CART.length], EASE.out);
-  let total = 0;
-  CART.forEach((it, i) => (total += it.price * clamp01(shown - i)));
-  const exact = ramp(frame, beat('exact'), beat('exact') + 0.2) * (1 - ramp(frame, beat('exact') + 0.5, beat('exact') + 0.9));
-  const denied = ramp(frame, beat('denied'), beat('denied') + 0.2);
-  const why = pop(frame, beat('why'), {damping: 9, stiffness: 220});
-  const cam = useCameraLife(start + frame / FPS);
+  const {beat} = useScene();
+  const printed = kf(frame, [0.15, beat('fifty')], [0.12, 1], EASE.out);
+  let count = 0;
+  ORDER.forEach((it, i) => (count += it.price * clamp01(printed * (ORDER.length + 2.6) - 1.6 - i)));
+  const exact = ramp(frame, beat('exact'), beat('exact') + 0.3) * (1 - ramp(frame, beat('exact') + 0.6, beat('exact') + 1));
+  const denied = ramp(frame, beat('denied'), beat('denied') + 0.25);
+  const why = pop(frame, beat('why'), {damping: 9, stiffness: 180});
+  const appear = pop(frame, 0.05, {damping: 16, stiffness: 120});
+  const cam = useCameraLife(useScene().start + frame / FPS);
   return (
     <FadeIn>
-      <AppFrame header={{kind: 'nav', title: 'السلة', subtitle: `${Math.round(Math.min(shown, CART.length))} منتجات`}} tab="cart" cartCount={Math.round(Math.min(shown, CART.length))}>
-        <AbsoluteFill style={{transform: `translateY(${cam.y}px) scale(${cam.scale})`}}>
-          <CartList y={220} items={CART} shown={shown} />
-          <OrderSummary y={930} total={Math.round(total * 100) / 100} discount={denied > 0 ? 'denied' : 'none'} discountP={denied} pulse={exact} shakeX={shake(frame, beat('denied'), 14)} />
-        </AbsoluteFill>
-        <Toast y={70} p={denied * (1 - ramp(frame, beat('why') + 0.8, beat('why') + 1.1))} text="لم يُطبَّق الخصم على طلبك" color={COLORS.false} />
-        {why > 0.01 && (
-          <AbsoluteFill style={{background: `rgba(9,13,24,${0.55 * clamp01(why)})`, alignItems: 'center', justifyContent: 'center'}}>
-            <span dir="rtl" style={{fontFamily: FONTS.display, fontWeight: 900, fontSize: 190, color: COLORS.paper, transform: `scale(${why}) rotate(${(1 - why) * -8}deg)`, textShadow: `0 0 50px ${COLORS.falseGlow}`}}>
-              ليش!!
-            </span>
-          </AbsoluteFill>
-        )}
-      </AppFrame>
+      <AbsoluteFill style={{transform: `translateY(${cam.y}px) scale(${cam.scale})`}}>
+      <StudioBackdrop tint={PAL.p} tintAmount={0.15} floorY={1500} />
+      <div style={{position: 'absolute', inset: 0, transform: `scale(${1 + 0.05 * exact})`, transformOrigin: '540px 860px'}}>
+        <div style={{opacity: clamp01(appear)}}>
+          <Receipt x={540} y={300} scale={1.3} items={ORDER} printed={printed} total={Math.round(count * 100) / 100} discount={denied > 0 ? 'denied' : 'none'} discountP={denied} pulse={exact} shakeX={shake(frame, beat('denied'), 16)} trueC={PAL.true} falseC={PAL.false} />
+        </div>
+      </div>
+      {why > 0.01 && (
+        <div style={{position: 'absolute', left: 0, right: 0, top: 1170, textAlign: 'center', transform: `scale(${why}) rotate(${(1 - why) * -8}deg)`}}>
+          <span dir="rtl" style={{fontFamily: FONTS.display, fontWeight: 900, fontSize: 170, color: PAL.false, textShadow: '0 20px 40px rgba(224,56,75,0.25)', WebkitTextStroke: '6px #fff', paintOrder: 'stroke fill'}}>
+            ليش!!
+          </span>
+        </div>
+      )}
+      </AbsoluteFill>
     </FadeIn>
   );
 };
@@ -129,19 +110,20 @@ const useCameraLife = (t: number) => {
 };
 
 /** Shared background + stage for S03–S09 (identical rendering → seamless overlaps). */
-const Lesson: React.FC<{children?: React.ReactNode; stageScale?: number; tint?: string}> = ({children, stageScale = 1, tint = COLORS.or}) => {
+const Lesson: React.FC<{children?: React.ReactNode; stageScale?: number; tint?: string}> = ({children, stageScale = 1, tint = PAL.p}) => {
   const frame = useCurrentFrame();
   const {start, beats} = useScene();
   const t = start + frame / FPS;
   const read = useReading(t);
   const cam = useCameraLife(t);
   return (
-    <AppFrame header={{kind: 'nav', title: 'تفاصيل العرض', subtitle: 'شروط العرض'}} tab="offers" glow={tint}>
-      <AbsoluteFill style={{transform: `translateY(${cam.y}px) rotate(${cam.rotate * 0.5}deg) scale(${cam.scale})`, transformOrigin: '50% 45%'}}>
+    <AbsoluteFill>
+      <StudioBackdrop tint={tint} tintAmount={0.28} floorY={1460} />
+      <AbsoluteFill style={{transform: `translateY(${cam.y}px) rotate(${cam.rotate}deg) scale(${cam.scale})`, transformOrigin: '50% 45%'}}>
         <ConditionStage t={t} B={beats} scale={stageScale} read={read} />
         {children}
       </AbsoluteFill>
-    </AppFrame>
+    </AbsoluteFill>
   );
 };
 
@@ -164,13 +146,13 @@ export const S03: React.FC = () => {
     <FadeIn>
       <Lesson />
       <div style={{position: 'absolute', left: 0, right: 0, top: 760}}>
-        <KineticLine at={beat('bridge') + 0.05} size={110} weight={900} words={[{t: 'خلونا'}, {t: 'نفهم', color: COLORS.or, glow: COLORS.orGlow}]} outAt={beat('title') - 0.25} />
+        <KineticLine at={beat('bridge') + 0.05} size={110} weight={900} words={[{t: 'خلونا'}, {t: 'نفهم', color: PAL.p}]} outAt={beat('title') - 0.25} />
       </div>
       <div style={{position: 'absolute', left: 0, right: 0, top: mix(titleUp, 620, 300), transform: `scale(${mix(titleUp, 1, 0.7)})`}}>
-        <Eyebrow latin color={COLORS.muted} style={{opacity: ramp(frame, beat('title') + 0.2, beat('title') + 0.6) * (1 - titleUp), marginBottom: 10}}>
+        <Eyebrow latin color={PAL.sub} style={{opacity: ramp(frame, beat('title') + 0.2, beat('title') + 0.6) * (1 - titleUp), marginBottom: 10}}>
           CONDITIONAL STATEMENT
         </Eyebrow>
-        <KineticLine at={beat('title')} size={130} weight={900} stagger={0.12} words={[{t: 'العبارة'}, {t: 'الشرطية', color: '#FFD27A'}]} outAt={beat('template') + 2.6} />
+        <KineticLine at={beat('title')} size={130} weight={900} stagger={0.12} words={[{t: 'العبارة'}, {t: 'الشرطية', color: PAL.accent}]} outAt={beat('template') + 2.6} />
       </div>
     </FadeIn>
   );
@@ -186,9 +168,9 @@ export const S04: React.FC = () => {
     <Lesson>
       {mini > 0.01 && (
         <div style={{position: 'absolute', left: 0, right: 0, top: 1140, opacity: mini, transform: `translateY(${(1 - mini) * 40}px)`}}>
-          <div dir="rtl" style={{margin: '0 auto', width: 860, padding: '22px 30px', borderRadius: 26, background: 'linear-gradient(135deg, #FF7550, #E2483C 60%, #A3243A)', color: '#fff', fontFamily: FONTS.display, fontWeight: 800, fontSize: 40, textAlign: 'center', boxShadow: '0 30px 60px rgba(255,117,80,0.35)'}}>
-            <span style={{color: '#BFE0FF', opacity: 1 - ramp(frame, beat('fillP'), beat('fillP') + 0.3)}}>إذا اشتريت بأكثر من 50 ريال،</span>{' '}
-            <span style={{color: '#FFE08A', opacity: 1 - ramp(frame, beat('fillQ'), beat('fillQ') + 0.3)}}>فإنك ستحصل على خصم</span>
+          <div dir="rtl" style={{margin: '0 auto', width: 860, padding: '22px 30px', borderRadius: 26, background: '#FFFFFF', color: PAL.text, fontFamily: FONTS.display, fontWeight: 800, fontSize: 40, textAlign: 'center', boxShadow: '0 0 0 6px #E5484D, 0 30px 60px rgba(120,70,20,0.18)'}}>
+            <span style={{color: PAL.p, opacity: 1 - ramp(frame, beat('fillP'), beat('fillP') + 0.3)}}>إذا اشتريت بأكثر من 50 ريال،</span>{' '}
+            <span style={{color: PAL.q, opacity: 1 - ramp(frame, beat('fillQ'), beat('fillQ') + 0.3)}}>فإنك ستحصل على خصم</span>
           </div>
         </div>
       )}
@@ -203,11 +185,11 @@ export const S05: React.FC = () => {
   const nl = ramp(frame, beat('numberLine'), beat('numberLine') + 0.5) * (1 - ramp(frame, duration - 0.35, duration));
   const m = ramp(frame, beat('marker50') - 0.35, beat('marker50'), EASE.in);
   const v = ramp(frame, beat('notMore'), beat('notMore') + 0.6);
-  const sweep = 50;
+  const sweep = kf(frame, [beat('numberLine'), beat('marker50') - 0.35, beat('marker50')], [58, 58, 50], EASE.inOut);
   return (
     <Lesson>
-      <OfferProgress y={1110} appear={nl} value={Math.round(mix(m, 0, sweep) * 100) / 100} threshold={50} max={75} verdict={v} />
-      <div dir="rtl" style={{position: 'absolute', left: 0, right: 0, top: 1330, textAlign: 'center', opacity: v * nl, fontFamily: FONTS.display, fontWeight: 800, fontSize: 46, color: COLORS.paper}}>
+      <NumberLine y={1270} from={40} to={60} threshold={50} appear={nl} marker={Math.round(sweep)} markerP={m} verdict={v} />
+      <div dir="rtl" style={{position: 'absolute', left: 0, right: 0, top: 1372, textAlign: 'center', opacity: v * nl, fontFamily: FONTS.display, fontWeight: 800, fontSize: 46, color: PAL.text}}>
         <span dir="ltr" style={{unicodeBidi: 'isolate', fontFamily: FONTS.text}}>50</span> مو أكثر من <span dir="ltr" style={{unicodeBidi: 'isolate', fontFamily: FONTS.text}}>50</span>
       </div>
     </Lesson>
@@ -215,14 +197,20 @@ export const S05: React.FC = () => {
 };
 
 // ── S06 — converse (swap) ─────────────────────────────────────────
-export const S06: React.FC = () => <Lesson tint={Q_COLOR} />;
+export const S06: React.FC = () => <Lesson tint={PAL.q} />;
+
+const COUPON_ORDER: ReceiptLine[] = [
+  {name: 'برجر', price: 22},
+  {name: 'مشروب', price: 8},
+];
 
 // ── S07 — counterexample: coupon ──────────────────────────────────
 export const S07: React.FC = () => {
   const frame = useCurrentFrame();
   const {beat, duration} = useScene();
   const scale = useStageScale();
-  const out = ramp(frame, duration - 0.5, duration);
+  const posIn = pop(frame, beat('coupon') - 0.4, {damping: 15, stiffness: 120});
+  const out = ramp(frame, beat('falseStamp') + 0.5, beat('falseStamp') + 0.9);
   const fly = ramp(frame, beat('coupon'), beat('coupon') + 0.6, EASE.inOut);
   const amount = kf(frame, [beat('coupon') - 0.4, beat('under50')], [0, 30], EASE.out);
   const ok = ramp(frame, beat('discountOK'), beat('discountOK') + 0.25);
@@ -230,18 +218,14 @@ export const S07: React.FC = () => {
   return (
     <Lesson stageScale={scale}>
       <div style={{opacity: 1 - out}}>
-        <OrderSummary
-          y={840}
-          total={Math.round(amount * 100) / 100}
-          discount={ok > 0 ? 'applied' : 'none'}
-          discountP={ok}
-          coupon={{text: 'كوبون منهجي', typed: ramp(frame, beat('coupon') + 0.45, beat('coupon') + 0.9), applied: ok}}
-        />
-        {fly < 0.98 && <Coupon x={mix(fly, 900, 640)} y={mix(fly, 1420, 900)} rotate={mix(fly, 25, -4)} scale={mix(fly, 1, 0.45)} opacity={ramp(frame, beat('coupon') - 0.3, beat('coupon'))} />}
+        <div style={{opacity: clamp01(posIn)}}>
+          <Receipt x={540} y={850} scale={0.62} items={COUPON_ORDER} coupon={fly > 0.9} printed={ramp(frame, beat('coupon') - 0.4, beat('under50'))} total={Math.round(amount * 100) / 100} discount={ok > 0 ? 'applied' : 'none'} discountP={ok} trueC={PAL.true} falseC={PAL.false} />
+        </div>
+        {fly < 0.98 && <Coupon x={mix(fly, 900, 600)} y={mix(fly, 1420, 1080)} rotate={mix(fly, 25, -8)} scale={mix(fly, 1, 0.55)} opacity={ramp(frame, beat('coupon') - 0.3, beat('coupon'))} />}
       </div>
       {label > 0.01 && (
-        <div style={{position: 'absolute', left: 0, right: 0, top: 1300, display: 'flex', justifyContent: 'center', opacity: label}}>
-          <div dir="rtl" style={{padding: '10px 30px', borderRadius: 999, background: `${COLORS.false}22`, border: `3px solid ${COLORS.false}`, fontFamily: FONTS.display, fontWeight: 900, fontSize: 48, color: COLORS.paper}}>
+        <div style={{position: 'absolute', left: 0, right: 0, top: 1360, display: 'flex', justifyContent: 'center', opacity: label}}>
+          <div dir="rtl" style={{padding: '10px 30px', borderRadius: 999, background: '#FFFFFF', border: `3px solid ${PAL.false}`, fontFamily: FONTS.display, fontWeight: 900, fontSize: 48, color: PAL.false, boxShadow: '0 12px 30px rgba(224,56,75,0.18)'}}>
             مثال مضاد
           </div>
         </div>
@@ -259,16 +243,16 @@ export const S09: React.FC = () => {
   const {beat} = useScene();
   const eq = ramp(frame, beat('sameValue'), beat('sameValue') + 0.5);
   return (
-    <Lesson tint={COLORS.and}>
+    <Lesson tint={AND_C}>
       {eq > 0.01 && (
         <div style={{position: 'absolute', left: 0, right: 0, top: 1120, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 14, opacity: eq, transform: `translateY(${(1 - eq) * 30}px)`}}>
-          <div dir="rtl" style={{display: 'flex', alignItems: 'center', gap: 26, padding: '18px 34px', borderRadius: 30, background: 'rgba(255,255,255,0.06)', border: '2px solid #FFD27A', boxShadow: '0 0 40px rgba(255,210,122,0.35)'}}>
-            <span style={{fontFamily: FONTS.display, fontWeight: 800, fontSize: 40, color: COLORS.paper}}>الأصلية</span>
+          <div dir="rtl" style={{display: 'flex', alignItems: 'center', gap: 26, padding: '18px 34px', borderRadius: 30, background: '#FFFFFF', border: `2px solid ${PAL.accent}`, boxShadow: '0 16px 40px rgba(199,120,0,0.18)'}}>
+            <span style={{fontFamily: FONTS.display, fontWeight: 800, fontSize: 40, color: PAL.text}}>الأصلية</span>
             <Nota size={40}>p → q</Nota>
-            <span dir="ltr" style={{fontFamily: FONTS.text, fontWeight: 700, fontSize: 56, color: '#FFD27A'}}>≡</span>
+            <span dir="ltr" style={{fontFamily: FONTS.text, fontWeight: 700, fontSize: 56, color: PAL.accent}}>≡</span>
             <Nota size={40}>~q → ~p</Nota>
           </div>
-          <div dir="rtl" style={{fontFamily: FONTS.display, fontWeight: 800, fontSize: 42, color: '#FFD27A'}}>نفس قيمة الصواب</div>
+          <div dir="rtl" style={{fontFamily: FONTS.display, fontWeight: 800, fontSize: 42, color: PAL.accent}}>نفس قيمة الصواب</div>
         </div>
       )}
     </Lesson>
@@ -288,9 +272,9 @@ export const S10: React.FC = () => {
   const link = ramp(frame, beat('link'), beat('link') + 0.6);
   return (
     <FadeIn>
-      <AppFrame header={{kind: 'nav', title: 'ملخص الدرس', subtitle: 'الصيغ الأربع'}} tab="offers" glow="#7A7CFF">
+      <StudioBackdrop tint={AND_C} tintAmount={0.15} floorY={1700} />
       <div style={{position: 'absolute', left: 0, right: 0, top: 300}}>
-        <KineticLine at={beat('grid')} size={84} weight={900} words={[{t: 'الصيغ'}, {t: 'الأربع', color: '#FFD27A'}]} />
+        <KineticLine at={beat('grid')} size={84} weight={900} words={[{t: 'الصيغ'}, {t: 'الأربع', color: PAL.accent}]} />
       </div>
       {FORMS.map((f, i) => {
         const col = i % 2; // RTL: 0 = right column
@@ -307,9 +291,9 @@ export const S10: React.FC = () => {
               width: 430,
               height: 330,
               borderRadius: 34,
-              background: 'linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03))',
-              border: `3px solid ${hot ? '#FFD27A' : 'rgba(255,255,255,0.14)'}`,
-              boxShadow: hot ? `0 0 ${50 * link}px rgba(255,210,122,0.45)` : '0 30px 70px rgba(0,0,0,0.4)',
+              background: '#FFFFFF',
+              border: `3px solid ${hot ? PAL.accent : PAL.line}`,
+              boxShadow: hot ? `0 0 ${50 * link}px rgba(199,120,0,0.30)` : '0 24px 50px rgba(26,31,51,0.10)',
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
@@ -319,19 +303,18 @@ export const S10: React.FC = () => {
               opacity: (f.key === 'c' || f.key === 'i') ? 1 - 0.45 * link : 1,
             }}
           >
-            <div dir="rtl" style={{fontFamily: FONTS.display, fontWeight: 900, fontSize: f.ar.length > 10 ? 44 : 52, color: COLORS.paper}}>{f.ar}</div>
+            <div dir="rtl" style={{fontFamily: FONTS.display, fontWeight: 900, fontSize: f.ar.length > 10 ? 44 : 52, color: PAL.text}}>{f.ar}</div>
             <Nota size={50}>{f.nota}</Nota>
           </div>
         );
       })}
       {link > 0.01 && (
         <div style={{position: 'absolute', left: 0, right: 0, top: 1342, display: 'flex', justifyContent: 'center', opacity: link}}>
-          <div dir="rtl" style={{padding: '12px 30px', borderRadius: 999, background: 'rgba(255,210,122,0.14)', border: '2px solid #FFD27A', fontFamily: FONTS.display, fontWeight: 800, fontSize: 40, color: '#FFD27A'}}>
+          <div dir="rtl" style={{padding: '12px 30px', borderRadius: 999, background: '#FFFFFF', border: `2px solid ${PAL.accent}`, fontFamily: FONTS.display, fontWeight: 800, fontSize: 40, color: PAL.accent}}>
             الأصلية <span dir="ltr" style={{fontFamily: FONTS.text}}>≡</span> المعاكس الإيجابي
           </div>
         </div>
       )}
-      </AppFrame>
     </FadeIn>
   );
 };
@@ -346,7 +329,7 @@ export const S11: React.FC = () => {
       <Outro lesson_ar="العبارات الشرطية" subject_ar="الرياضيات" grade_ar="أول ثانوي" at={beat('logo')} subjectAt={beat('logo') + 1.4}>
         <div style={{opacity: pr, transform: `translateY(${(1 - pr) * 40}px)`}}>
           <Coupon x={300} y={1340} rotate={-10} scale={0.6} />
-          <div style={{position: 'absolute', left: 640, top: 1290, padding: '14px 24px', borderRadius: 22, border: `3px solid ${P_COLOR}`, color: COLORS.paper, fontFamily: FONTS.text, fontWeight: 700, fontSize: 40}}>
+          <div style={{position: 'absolute', left: 640, top: 1290, padding: '14px 24px', borderRadius: 22, border: `3px solid ${PAL.p}`, color: PAL.text, background: '#fff', fontFamily: FONTS.text, fontWeight: 700, fontSize: 40}}>
             <Nota size={40}>p → q</Nota>
           </div>
         </div>

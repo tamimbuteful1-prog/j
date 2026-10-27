@@ -1,7 +1,8 @@
 import React from 'react';
 import {interpolate, useCurrentFrame} from 'remotion';
 import {useTimeline} from '../timeline/context';
-import {COLORS, FONTS, SAFE} from './theme';
+import {FONTS, SAFE} from './theme';
+import {usePalette} from './ThemeContext';
 
 const isLatin = (s: string) => /^[A-Za-z0-9]/.test(s);
 
@@ -12,6 +13,7 @@ const isLatin = (s: string) => /^[A-Za-z0-9]/.test(s);
 export const Captions: React.FC<{accent?: (word: string) => string | undefined}> = ({accent}) => {
   const frame = useCurrentFrame();
   const tl = useTimeline();
+  const pal = usePalette();
   const t = frame / tl.fps;
   const c = tl.captions.find((x) => t >= x.start && t < x.end);
   if (!c) return null;
@@ -30,21 +32,22 @@ export const Captions: React.FC<{accent?: (word: string) => string | undefined}>
           columnGap: 14,
           padding: '16px 34px 20px',
           borderRadius: 26,
-          background: 'rgba(8,11,22,0.58)',
-          border: '1px solid rgba(255,255,255,0.08)',
+          background: pal.glass,
+          border: `1px solid ${pal.line}`,
+          boxShadow: pal.mode === 'light' ? '0 10px 30px rgba(26,31,51,0.12)' : undefined,
           backdropFilter: 'blur(14px)',
           fontFamily: FONTS.text,
           fontWeight: 600,
           fontSize: 50,
           lineHeight: 1.45,
-          color: COLORS.paper,
+          color: pal.text,
         }}
       >
         {words.map((w, i) => {
           const hl = c.highlight.some((h) => w.includes(h));
           const lit = interpolate(local, [(i / words.length) * len * 0.85 - 2, (i / words.length) * len * 0.85 + 4], [0.55, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
           return (
-            <span key={i} dir={isLatin(w) ? 'ltr' : 'rtl'} style={{unicodeBidi: 'isolate', opacity: lit, fontWeight: hl ? 700 : 600, color: hl ? accent?.(w) ?? '#FFD27A' : COLORS.paper}}>
+            <span key={i} dir={isLatin(w) ? 'ltr' : 'rtl'} style={{unicodeBidi: 'isolate', opacity: lit, fontWeight: hl ? 700 : 600, color: hl ? accent?.(w) ?? pal.accent : pal.text}}>
               {w}
             </span>
           );

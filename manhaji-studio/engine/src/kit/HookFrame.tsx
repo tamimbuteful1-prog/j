@@ -3,6 +3,7 @@ import {AbsoluteFill, Freeze, OffthreadVideo, Sequence, interpolate, staticFile,
 import {COLORS, FONTS} from './theme';
 import {EASE, clamp01, pop, ramp} from './anim';
 import {useTimeline} from '../timeline/context';
+import {usePalette} from './ThemeContext';
 
 export type HookOverlayProps = {frame: number; clipT: number; inHold: boolean; out: number; top: number};
 
@@ -149,6 +150,14 @@ const PreviewSlate: React.FC<{text: string}> = ({text}) => (
 
 const World: React.FC<{frame: number}> = ({frame}) => {
   const drift = Math.sin(frame / 50) * 40;
+  const pal = usePalette();
+  if (pal.mode === 'light')
+    return (
+      <AbsoluteFill style={{background: 'linear-gradient(180deg, #FFFDF8, #F5EEE3)'}}>
+        <AbsoluteFill style={{background: `radial-gradient(900px 700px at ${540 + drift}px 860px, ${pal.p}22, transparent 70%), radial-gradient(700px 600px at ${200 - drift}px 1500px, ${pal.q}22, transparent 70%)`}} />
+        <AbsoluteFill style={{backgroundImage: 'radial-gradient(rgba(26,31,51,0.10) 1.6px, transparent 1.8px)', backgroundSize: '36px 36px', backgroundPosition: `0px ${(frame * 0.4) % 36}px`, maskImage: 'radial-gradient(ellipse at 50% 50%, rgba(0,0,0,0.9), rgba(0,0,0,0) 75%)', WebkitMaskImage: 'radial-gradient(ellipse at 50% 50%, rgba(0,0,0,0.9), rgba(0,0,0,0) 75%)'}} />
+      </AbsoluteFill>
+    );
   return (
     <AbsoluteFill style={{background: COLORS.ink}}>
       <AbsoluteFill
@@ -181,14 +190,15 @@ export const ManhajiMark: React.FC<{size?: number}> = ({size = 54}) => (
 
 const Header: React.FC<{frame: number; out: number; meta: HookFrameProps['meta']}> = ({frame, out, meta}) => {
   const p = ramp(frame, 0.05, 0.6, EASE.out);
+  const pal = usePalette();
   return (
     <div dir="rtl" style={{position: 'absolute', top: 300, left: 0, right: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 14, opacity: p * (1 - out), transform: `translateY(${(1 - p) * 20 - out * 60}px)`}}>
       <div style={{display: 'flex', alignItems: 'center', gap: 16}}>
         <ManhajiMark />
-        <span style={{fontFamily: FONTS.display, fontWeight: 900, fontSize: 56, color: COLORS.paper}}>منهجي</span>
+        <span style={{fontFamily: FONTS.display, fontWeight: 900, fontSize: 56, color: pal.text}}>منهجي</span>
       </div>
-      <div style={{fontFamily: FONTS.text, fontWeight: 500, fontSize: 30, color: COLORS.paperDim}}>
-        درس <span style={{color: '#FFD27A', fontWeight: 700}}>{meta.lesson_ar}</span> · {meta.subject_ar} {meta.grade_ar}
+      <div style={{fontFamily: FONTS.text, fontWeight: 500, fontSize: 30, color: pal.sub}}>
+        درس <span style={{color: pal.accent, fontWeight: 700}}>{meta.lesson_ar}</span> · {meta.subject_ar} {meta.grade_ar}
       </div>
     </div>
   );
@@ -206,17 +216,18 @@ const HookTextCard: React.FC<{frame: number; clipT: number; clipSec: number; inH
   keyWord,
 }) => {
   const p = pop(frame, 0.25, {damping: 16, stiffness: 130});
+  const pal = usePalette();
   const words = text.split(/\s+/).filter(Boolean);
   const shown = interpolate(clipT, [0.2, Math.max(0.3, clipSec - 0.3)], [0, words.length], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
   return (
     <div style={{position: 'absolute', left: 80, right: 80, top, minHeight: 200, opacity: clamp01(p) * (1 - out), transform: `translateY(${(1 - p) * 60 + out * 80}px)`}}>
-      <div style={{position: 'absolute', inset: 0, borderRadius: 36, background: 'linear-gradient(180deg, rgba(255,255,255,0.09), rgba(255,255,255,0.03))', border: `1.5px solid ${inHold ? COLORS.or : 'rgba(255,255,255,0.14)'}`, boxShadow: `0 30px 80px rgba(0,0,0,0.45)${inHold ? `, 0 0 50px ${COLORS.or}66` : ''}`}} />
+      <div style={{position: 'absolute', inset: 0, borderRadius: 36, background: pal.mode === 'light' ? '#FFFFFF' : 'linear-gradient(180deg, rgba(255,255,255,0.09), rgba(255,255,255,0.03))', border: `1.5px solid ${inHold ? pal.p : pal.line}`, boxShadow: `0 30px 80px rgba(0,0,0,${pal.mode === 'light' ? 0.12 : 0.45})${inHold ? `, 0 0 50px ${pal.p}66` : ''}`}} />
       <div dir="rtl" style={{position: 'relative', padding: '34px 40px', display: 'flex', flexWrap: 'wrap', justifyContent: 'center', columnGap: 18, fontFamily: FONTS.display, fontWeight: 800, fontSize: 58, lineHeight: 1.45}}>
         {words.map((w, i) => {
           const on = clamp01(shown - i);
           const isKey = keyWord && w.includes(keyWord);
           return (
-            <span key={i} style={{opacity: 0.18 + 0.82 * on, color: isKey ? COLORS.or : COLORS.paper, transform: `scale(${isKey && inHold ? 1.15 : 1})`, display: 'inline-block', textShadow: isKey && on > 0.5 ? `0 0 26px ${COLORS.orGlow}` : undefined}}>
+            <span key={i} style={{opacity: 0.18 + 0.82 * on, color: isKey ? pal.p : pal.text, transform: `scale(${isKey && inHold ? 1.15 : 1})`, display: 'inline-block', textShadow: isKey && on > 0.5 ? `0 0 26px ${COLORS.orGlow}` : undefined}}>
               {w}
             </span>
           );
