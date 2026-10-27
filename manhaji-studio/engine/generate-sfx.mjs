@@ -358,4 +358,118 @@ writeWav('sfx/snap.wav', tone(0.2, (t) => (noise() * 0.6 + Math.sin(TAU * 2600 *
   });
   writeWav('music/bed.wav', music);
 }
+// ── MUSIC (temp) — "upbeat-fun": happy ukulele pop, 112 BPM, I–V–vi–IV ──
+// Karplus–Strong strummed ukulele, round bass, kick/clap/shaker, glockenspiel hook.
+// Bright and familiar, not electronic. Replace with a licensed track of the same name.
+{
+  const bpm = 112;
+  const beat = 60 / bpm;
+  const bars = 16;
+  const secs = bars * 4 * beat;
+  const n = Math.round(secs * SR);
+  const L = new Float32Array(n);
+  const R = new Float32Array(n);
+  const midi = (m) => 440 * Math.pow(2, (m - 69) / 12);
+  const add = (buf, start, data, gain) => {
+    for (let i = 0; i < data.length; i++) {
+      const j = (start + i) % n; // wrap → seamless loop
+      buf[j] += data[i] * gain;
+    }
+  };
+  // Karplus–Strong plucked string
+  const pluck = (f, dur, bright = 0.5) => {
+    const len = Math.max(2, Math.round(SR / f));
+    const line = new Float32Array(len);
+    for (let i = 0; i < len; i++) line[i] = noise() * (0.6 + 0.4 * bright);
+    const out = new Float32Array(Math.round(dur * SR));
+    let idx = 0;
+    const decay = 0.996;
+    for (let i = 0; i < out.length; i++) {
+      const a = line[idx];
+      const b = line[(idx + 1) % len];
+      const v = decay * (a * (0.5 + 0.1 * bright) + b * (0.5 - 0.1 * bright));
+      line[idx] = v;
+      out[i] = a;
+      idx = (idx + 1) % len;
+    }
+    return out;
+  };
+  const prog = [
+    [67, 60, 64, 72], // C  (uke 0003)
+    [67, 62, 67, 71], // G  (0232)
+    [69, 60, 64, 69], // Am (2000)
+    [69, 60, 65, 69], // F  (2010)
+  ];
+  const roots = [36, 43, 45, 41];
+  // strum pattern on 8ths: D _ D U _ U D U
+  const pattern = [[0, 'D', 1], [2, 'D', 0.8], [3, 'U', 0.55], [5, 'U', 0.6], [6, 'D', 0.85], [7, 'U', 0.5]];
+  for (let bar = 0; bar < bars; bar++) {
+    const chord = prog[bar % 4];
+    const t0 = bar * 4 * beat;
+    for (const [e8, dir, vel] of pattern) {
+      const order = dir === 'D' ? chord : [...chord].reverse();
+      order.forEach((m, k) => {
+        const st = Math.round((t0 + e8 * (beat / 2) + k * 0.012) * SR);
+        const d = pluck(midi(m), 0.9, dir === 'D' ? 0.7 : 0.45);
+        add(L, st, d, 0.16 * vel * (k % 2 ? 0.9 : 1.05));
+        add(R, st, d, 0.16 * vel * (k % 2 ? 1.05 : 0.9));
+      });
+    }
+    // bass: root on 1, fifth on 3, passing note on the "and of 4"
+    const bassNotes = [[0, roots[bar % 4]], [2, roots[bar % 4] + 7], [3.5, roots[bar % 4] + 12]];
+    for (const [b4, m] of bassNotes) {
+      const st = Math.round((t0 + b4 * beat) * SR);
+      const len = Math.round(beat * 0.95 * SR);
+      const f = midi(m);
+      const d = new Float32Array(len);
+      for (let i = 0; i < len; i++) {
+        const tt = i / SR;
+        d[i] = (Math.sin(TAU * f * tt) + 0.25 * Math.sin(TAU * 2 * f * tt)) * Math.min(1, tt / 0.01) * Math.exp(-tt * 2.2);
+      }
+      add(L, st, d, 0.32);
+      add(R, st, d, 0.32);
+    }
+  }
+  // drums
+  const kickD = new Float32Array(Math.round(0.35 * SR));
+  for (let i = 0; i < kickD.length; i++) { const tt = i / SR; kickD[i] = Math.sin(TAU * (50 + 80 * Math.exp(-tt * 30)) * tt) * Math.exp(-tt * 9); }
+  const clapD = new Float32Array(Math.round(0.25 * SR));
+  { const f = svf(); for (let i = 0; i < clapD.length; i++) { const tt = i / SR; clapD[i] = f(noise(), 1400, 0.9).band * (Math.exp(-tt * 25) + 0.6 * Math.exp(-Math.max(0, tt - 0.01) * 35) + 0.4 * Math.exp(-Math.max(0, tt - 0.022) * 40)); } }
+  const shakerD = new Float32Array(Math.round(0.07 * SR));
+  { const f = svf(); for (let i = 0; i < shakerD.length; i++) { const tt = i / SR; shakerD[i] = f(noise(), 7500, 0.6).band * Math.sin(Math.PI * tt / 0.07); } }
+  const totalBeats = bars * 4;
+  for (let b = 0; b < totalBeats; b++) {
+    const st = Math.round(b * beat * SR);
+    if (b % 4 === 0 || b % 4 === 2) { add(L, st, kickD, 0.5); add(R, st, kickD, 0.5); }
+    if (b % 4 === 1 || b % 4 === 3) { add(L, st, clapD, 0.42); add(R, st, clapD, 0.36); }
+    if (b % 8 === 7) { const s2 = Math.round((b + 0.5) * beat * SR); add(L, s2, kickD, 0.35); add(R, s2, kickD, 0.35); }
+    for (let k = 0; k < 4; k++) {
+      const s16 = Math.round((b * beat + k * beat / 4) * SR);
+      const g = k % 2 ? 0.07 : 0.11;
+      add(L, s16, shakerD, g * 0.7);
+      add(R, s16, shakerD, g);
+    }
+  }
+  // glockenspiel hook in bars 4–7 and 12–15 (call & response)
+  const bell = (f, dur) => {
+    const d = new Float32Array(Math.round(dur * SR));
+    for (let i = 0; i < d.length; i++) { const tt = i / SR; d[i] = (Math.sin(TAU * f * tt) + 0.35 * Math.sin(TAU * f * 2.76 * tt) * Math.exp(-tt * 6) + 0.15 * Math.sin(TAU * f * 5.4 * tt) * Math.exp(-tt * 12)) * Math.exp(-tt * 3.2); }
+    return d;
+  };
+  const hook = [[0, 76], [1, 79], [1.5, 81], [2, 79], [3, 76], [4, 74], [5, 72], [5.5, 74], [6, 76]];
+  for (const startBar of [4, 12]) {
+    for (const rep of [0, 2]) {
+      for (const [b4, m] of hook) {
+        const st = Math.round(((startBar + rep) * 4 + b4) * beat * SR);
+        const d = bell(midi(m + 12), 1.2);
+        add(L, st, d, 0.07);
+        add(R, st, d, 0.09);
+      }
+    }
+  }
+  // gentle glue
+  for (let i = 0; i < n; i++) { L[i] = Math.tanh(L[i] * 1.2) * 0.9; R[i] = Math.tanh(R[i] * 1.2) * 0.9; }
+  writeWav('music/upbeat.wav', [L, R]);
+}
+
 console.log('done — temporary sound kit generated.');

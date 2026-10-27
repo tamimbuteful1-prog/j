@@ -99,7 +99,11 @@ export const renderEpisode = async (id: string, mode: 'preview' | 'final', owner
   syncRegistry();
   const script = readContract<{hook: {text: string; key_word?: string}}>('script', path.join(e.script, 'script.json'));
   const plan = hasHook(id);
-  const noMusic = readContract<{music?: boolean}>('storyboard', path.join(e.script, 'storyboard.json')).music === false;
+  const sbAudio = readContract<{music?: boolean; music_track?: string}>('storyboard', path.join(e.script, 'storyboard.json'));
+  const noMusic = sbAudio.music === false;
+  const track = sbAudio.music_track ?? 'music/bed.wav';
+  // per-track loudness trim (generated tracks differ); target ≈ −19 LUFS alone, ≈ −27 under the voice
+  const trim = track.endsWith('upbeat.wav') ? 1.35 : 1;
   const props = {
     timeline: tl,
     hookText: script.hook.text,
@@ -110,7 +114,7 @@ export const renderEpisode = async (id: string, mode: 'preview' | 'final', owner
       trimStartSec: plan?.hook.trim_start_sec ?? 0,
       voice: mode === 'final' && plan ? Object.fromEntries(plan.voiceover.lines.map((l) => [l.id, l.file])) : undefined,
       // preview has no voice → no ducking; final ducks ~8 dB under the presenter
-      music: noMusic ? null : mode === 'preview' ? {src: 'music/bed.wav', volume: 0.42, ducked: 0.42} : {src: 'music/bed.wav', volume: 0.34, ducked: 0.14},
+      music: noMusic ? null : mode === 'preview' ? {src: track, volume: 0.42 * trim, ducked: 0.42 * trim} : {src: track, volume: 0.34 * trim, ducked: 0.14 * trim},
     },
   };
   const propsFile = path.join(e.production, `props.${mode}.json`);

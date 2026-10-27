@@ -350,6 +350,10 @@
     "music": {
       "type": "boolean",
       "description": "false = no music bed (SFX + voice only)"
+    },
+    "music_track": {
+      "type": "string",
+      "description": "music file under engine/public (e.g. music/upbeat.wav)"
     }
   },
   "additionalProperties": false,

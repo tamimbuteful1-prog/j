@@ -879,12 +879,6 @@
           "name": "lock",
           "offset": 0,
           "volume": 0.7
-        },
-        {
-          "beat": "sameValue",
-          "name": "shimmer",
-          "offset": 0.15,
-          "volume": 0.35
         }
       ],
       "transition_out": {
@@ -938,34 +932,10 @@
           "volume": 0.5
         },
         {
-          "beat": "grid",
-          "name": "tick",
-          "offset": 0.2,
-          "volume": 0.5
-        },
-        {
-          "beat": "grid",
-          "name": "tick",
-          "offset": 0.32,
-          "volume": 0.5
-        },
-        {
-          "beat": "grid",
-          "name": "tick",
-          "offset": 0.44,
-          "volume": 0.5
-        },
-        {
-          "beat": "grid",
-          "name": "tick",
-          "offset": 0.56,
-          "volume": 0.5
-        },
-        {
           "beat": "link",
-          "name": "shimmer",
+          "name": "pop",
           "offset": 0,
-          "volume": 0.4
+          "volume": 0.5
         }
       ],
       "transition_out": {
@@ -1017,5 +987,6 @@
     }
   ],
   "revision_log": [],
-  "music": false
+  "music": true,
+  "music_track": "music/upbeat.wav"
 }

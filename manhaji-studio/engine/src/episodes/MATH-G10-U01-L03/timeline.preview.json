@@ -625,39 +625,14 @@
       "volume": 0.7
     },
     {
-      "name": "shimmer",
-      "at": 68.665,
-      "volume": 0.35
-    },
-    {
       "name": "whoosh_short",
       "at": 70.962,
       "volume": 0.5
     },
     {
-      "name": "tick",
-      "at": 71.162,
-      "volume": 0.5
-    },
-    {
-      "name": "tick",
-      "at": 71.282,
-      "volume": 0.5
-    },
-    {
-      "name": "tick",
-      "at": 71.402,
-      "volume": 0.5
-    },
-    {
-      "name": "tick",
-      "at": 71.522,
-      "volume": 0.5
-    },
-    {
-      "name": "shimmer",
+      "name": "pop",
       "at": 72.634,
-      "volume": 0.4
+      "volume": 0.5
     },
     {
       "name": "shimmer",
