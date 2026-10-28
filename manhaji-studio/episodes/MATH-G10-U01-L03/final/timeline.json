@@ -21,7 +21,7 @@
       "emphasis": [],
       "performance_note": "سرد طبيعي",
       "start": 2.704,
-      "end": 5.594,
+      "end": 5.852,
       "estimated": false
     },
     {
@@ -35,8 +35,8 @@
         "فإن"
       ],
       "performance_note": "اقرأها كأنك تقرأ لوحة",
-      "start": 5.674,
-      "end": 10.16,
+      "start": 5.932,
+      "end": 10.879,
       "estimated": false
     },
     {
@@ -49,8 +49,8 @@
         "بالضبط"
       ],
       "performance_note": "تشديد على «بالضبط»",
-      "start": 10.31,
-      "end": 14.862,
+      "start": 11.029,
+      "end": 16.035,
       "estimated": false
     },
     {
@@ -63,8 +63,8 @@
         "ليش؟"
       ],
       "performance_note": "استنكار",
-      "start": 14.942,
-      "end": 15.654,
+      "start": 16.115,
+      "end": 16.881,
       "estimated": false
     },
     {
@@ -75,8 +75,8 @@
       "visual_intent": "اللوحة تنتقل لمساحة الشرح",
       "emphasis": [],
       "performance_note": "هدوء",
-      "start": 15.804,
-      "end": 17.358,
+      "start": 17.031,
+      "end": 18.668,
       "estimated": false
     },
     {
@@ -89,8 +89,8 @@
         "العبارة الشرطية،"
       ],
       "performance_note": "",
-      "start": 17.438,
-      "end": 20.902,
+      "start": 18.748,
+      "end": 22.553,
       "estimated": false
     },
     {
@@ -104,8 +104,8 @@
         "فإن…"
       ],
       "performance_note": "وقفة بين «إذا» و«فإن»",
-      "start": 20.982,
-      "end": 23.23,
+      "start": 22.633,
+      "end": 25.096,
       "estimated": false
     },
     {
@@ -116,8 +116,8 @@
       "visual_intent": "اللوحة تعود",
       "emphasis": [],
       "performance_note": "",
-      "start": 23.38,
-      "end": 25.699,
+      "start": 25.246,
+      "end": 27.783,
       "estimated": false
     },
     {
@@ -131,8 +131,8 @@
         "فإنك"
       ],
       "performance_note": "",
-      "start": 25.779,
-      "end": 30.637,
+      "start": 27.863,
+      "end": 33.2,
       "estimated": false
     },
     {
@@ -145,8 +145,8 @@
         "الفرض،"
       ],
       "performance_note": "",
-      "start": 30.717,
-      "end": 32.552,
+      "start": 33.28,
+      "end": 35.286,
       "estimated": false
     },
     {
@@ -159,8 +159,8 @@
         "النتيجة."
       ],
       "performance_note": "",
-      "start": 32.632,
-      "end": 34.397,
+      "start": 35.366,
+      "end": 37.306,
       "estimated": false
     },
     {
@@ -174,8 +174,8 @@
         "أكثر."
       ],
       "performance_note": "تشديد «مو أكثر»",
-      "start": 34.547,
-      "end": 38.513,
+      "start": 37.456,
+      "end": 41.8,
       "estimated": false
     },
     {
@@ -188,8 +188,8 @@
         "عكسنا"
       ],
       "performance_note": "",
-      "start": 38.813,
-      "end": 40.647,
+      "start": 42,
+      "end": 44,
       "estimated": false
     },
     {
@@ -200,8 +200,8 @@
       "visual_intent": "العبارة المعكوسة الترتيب تُقرأ",
       "emphasis": [],
       "performance_note": "",
-      "start": 40.727,
-      "end": 45.364,
+      "start": 44.08,
+      "end": 49.167,
       "estimated": false
     },
     {
@@ -214,8 +214,8 @@
         "العكس،"
       ],
       "performance_note": "",
-      "start": 45.444,
-      "end": 48.834,
+      "start": 49.247,
+      "end": 52.953,
       "estimated": false
     },
     {
@@ -229,8 +229,8 @@
         "أقل"
       ],
       "performance_note": "",
-      "start": 48.984,
-      "end": 56.297,
+      "start": 53.103,
+      "end": 61.141,
       "estimated": false
     },
     {
@@ -244,8 +244,8 @@
         "المضاد،"
       ],
       "performance_note": "",
-      "start": 56.377,
-      "end": 61.332,
+      "start": 61.221,
+      "end": 66.67,
       "estimated": false
     },
     {
@@ -258,8 +258,8 @@
         "نفينا"
       ],
       "performance_note": "",
-      "start": 62.032,
-      "end": 63.272,
+      "start": 67.07,
+      "end": 68.43,
       "estimated": false
     },
     {
@@ -270,8 +270,8 @@
       "visual_intent": "النصان يتحولان للنفي",
       "emphasis": [],
       "performance_note": "",
-      "start": 63.352,
-      "end": 68.358,
+      "start": 68.51,
+      "end": 74.009,
       "estimated": false
     },
     {
@@ -284,8 +284,8 @@
         "المعكوس،"
       ],
       "performance_note": "",
-      "start": 68.438,
-      "end": 70.628,
+      "start": 74.089,
+      "end": 76.487,
       "estimated": false
     },
     {
@@ -299,20 +299,20 @@
         "ونفينا"
       ],
       "performance_note": "",
-      "start": 70.778,
-      "end": 73.354,
+      "start": 76.637,
+      "end": 79.467,
       "estimated": false
     },
     {
       "id": "L23",
       "section": "demonstration",
-      "text": "ولو قلنا: «إذا لم أحصل على خصم، فإنني لم أشترِ بأكثر من خمسين ريال»",
+      "text": "«إذا لم أحصل على خصم، فإنني لم أشترِ بأكثر من خمسين ريال»",
       "hook": false,
       "visual_intent": "العبارة الجديدة تُقرأ",
       "emphasis": [],
       "performance_note": "",
-      "start": 73.434,
-      "end": 79.244,
+      "start": 79.547,
+      "end": 84.767,
       "estimated": false
     },
     {
@@ -327,8 +327,8 @@
         "نفس"
       ],
       "performance_note": "تشديد «نفس»",
-      "start": 79.324,
-      "end": 84.733,
+      "start": 84.847,
+      "end": 90.785,
       "estimated": false
     },
     {
@@ -339,8 +339,8 @@
       "visual_intent": "نهاية منهجي",
       "emphasis": [],
       "performance_note": "ختام هادئ",
-      "start": 87.733,
-      "end": 93.545,
+      "start": 93.085,
+      "end": 99.463,
       "estimated": false
     }
   ],
@@ -348,294 +348,294 @@
     {
       "id": "S01",
       "start": 1.724,
-      "end": 10.41
+      "end": 11.129
     },
     {
       "id": "S02",
-      "start": 10.11,
-      "end": 15.904
+      "start": 10.829,
+      "end": 17.131
     },
     {
       "id": "S03",
-      "start": 15.604,
-      "end": 23.48
+      "start": 16.831,
+      "end": 25.346
     },
     {
       "id": "S04",
-      "start": 23.18,
-      "end": 34.647
+      "start": 25.046,
+      "end": 37.556
     },
     {
       "id": "S05",
-      "start": 34.347,
-      "end": 38.913
+      "start": 37.256,
+      "end": 42.1
     },
     {
       "id": "S06",
-      "start": 38.613,
-      "end": 49.084
+      "start": 41.8,
+      "end": 53.203
     },
     {
       "id": "S07",
-      "start": 48.784,
-      "end": 62.132
+      "start": 52.903,
+      "end": 67.17
     },
     {
       "id": "S08",
-      "start": 61.832,
-      "end": 70.878
+      "start": 66.87,
+      "end": 76.737
     },
     {
       "id": "S09",
-      "start": 70.578,
-      "end": 85.533
+      "start": 76.437,
+      "end": 91.285
     },
     {
       "id": "S10",
-      "start": 85.233,
-      "end": 87.833
+      "start": 90.985,
+      "end": 93.185
     },
     {
       "id": "S11",
-      "start": 87.533,
-      "end": 94.745
+      "start": 92.885,
+      "end": 100.363
     }
   ],
   "beats": {
-    "poster": 3.716,
-    "ifWord": 5.68,
-    "thenWord": 8.441,
-    "discountWord": 9.715,
-    "printStart": 10.26,
-    "countStart": 10.31,
-    "fifty": 11.759,
-    "exact": 12.62,
-    "denied": 13.75,
-    "why": 14.892,
-    "bridge": 15.804,
-    "title": 19.542,
-    "template": 22.21,
-    "thenSlot": 22.721,
-    "posterBack": 23.38,
-    "fillP": 26.06,
-    "fillQ": 29.203,
-    "labelP": 31.993,
-    "labelQ": 33.774,
-    "numberLine": 34.397,
-    "marker50": 36.25,
-    "notMore": 34.745,
-    "swap": 39.412,
-    "converseName": 46.241,
-    "notNecessarily": 47.338,
-    "coupon": 50.457,
-    "discountOK": 50.978,
-    "under50": 54.832,
-    "counterName": 57.249,
-    "falseStamp": 58.079,
-    "swapBack": 62.082,
-    "negate": 62.404,
-    "inverseName": 69.606,
-    "swapNeg": 71.224,
-    "contraName": 80.096,
-    "sameValue": 84.883,
-    "grid": 85.389,
-    "link": 86.533,
-    "logo": 87.783
+    "poster": 3.806,
+    "ifWord": 5.947,
+    "thenWord": 8.991,
+    "discountWord": 10.398,
+    "printStart": 10.979,
+    "countStart": 11.029,
+    "fifty": 12.612,
+    "exact": 13.575,
+    "denied": 14.823,
+    "why": 16.065,
+    "bridge": 17.031,
+    "title": 21.069,
+    "template": 23.988,
+    "thenSlot": 24.548,
+    "posterBack": 25.246,
+    "fillP": 28.182,
+    "fillQ": 31.635,
+    "labelP": 34.685,
+    "labelQ": 36.631,
+    "numberLine": 37.306,
+    "marker50": 39.316,
+    "notMore": 37.678,
+    "swap": 42.662,
+    "converseName": 50.128,
+    "notNecessarily": 51.327,
+    "coupon": 54.732,
+    "discountOK": 55.3,
+    "under50": 59.535,
+    "counterName": 62.189,
+    "falseStamp": 63.087,
+    "swapBack": 67.12,
+    "negate": 67.488,
+    "inverseName": 75.377,
+    "swapNeg": 77.137,
+    "contraName": 85.705,
+    "sameValue": 90.935,
+    "grid": 91.117,
+    "link": 92.085,
+    "logo": 93.135
   },
   "sfx": [
     {
       "name": "board",
-      "at": 3.836,
+      "at": 3.926,
       "volume": 0.8
     },
     {
       "name": "tick",
-      "at": 5.68,
+      "at": 5.947,
       "volume": 0.6
     },
     {
       "name": "tick",
-      "at": 8.441,
+      "at": 8.991,
       "volume": 0.6
     },
     {
       "name": "pop",
-      "at": 9.715,
+      "at": 10.398,
       "volume": 0.6
     },
     {
       "name": "printer",
-      "at": 10.26,
+      "at": 10.979,
       "volume": 0.85
     },
     {
       "name": "reject",
-      "at": 13.75,
+      "at": 14.823,
       "volume": 0.75
     },
     {
       "name": "impact",
-      "at": 14.892,
+      "at": 16.065,
       "volume": 0.55
     },
     {
       "name": "whoosh_short",
-      "at": 14.792,
+      "at": 15.965,
       "volume": 0.4
     },
     {
       "name": "whoosh_short",
-      "at": 15.804,
+      "at": 17.031,
       "volume": 0.5
     },
     {
       "name": "impact",
-      "at": 19.542,
+      "at": 21.069,
       "volume": 0.35
     },
     {
       "name": "swish",
-      "at": 22.21,
+      "at": 23.988,
       "volume": 0.45
     },
     {
       "name": "swish",
-      "at": 22.721,
+      "at": 24.548,
       "volume": 0.45
     },
     {
       "name": "paper_slide",
-      "at": 23.38,
+      "at": 25.246,
       "volume": 0.5
     },
     {
       "name": "paper_drop",
-      "at": 26.21,
+      "at": 28.332,
       "volume": 0.8
     },
     {
       "name": "paper_drop",
-      "at": 29.353,
+      "at": 31.785,
       "volume": 0.8
     },
     {
       "name": "pop",
-      "at": 31.993,
+      "at": 34.685,
       "volume": 0.55
     },
     {
       "name": "pop",
-      "at": 33.774,
+      "at": 36.631,
       "volume": 0.55
     },
     {
       "name": "swish",
-      "at": 34.397,
+      "at": 37.306,
       "volume": 0.4
     },
     {
       "name": "drop",
-      "at": 36.25,
+      "at": 39.316,
       "volume": 0.6
     },
     {
       "name": "nope",
-      "at": 34.745,
+      "at": 37.678,
       "volume": 0.7
     },
     {
       "name": "whoosh_short",
-      "at": 39.412,
+      "at": 42.662,
       "volume": 0.6
     },
     {
       "name": "pop",
-      "at": 46.241,
+      "at": 50.128,
       "volume": 0.5
     },
     {
       "name": "tick",
-      "at": 47.338,
+      "at": 51.327,
       "volume": 0.6
     },
     {
       "name": "paper_slide",
-      "at": 50.257,
+      "at": 54.532,
       "volume": 0.7
     },
     {
       "name": "printer_short",
-      "at": 50.557,
+      "at": 54.832,
       "volume": 0.8
     },
     {
       "name": "kaching",
-      "at": 51.707,
+      "at": 55.982,
       "volume": 0.7
     },
     {
       "name": "nope",
-      "at": 54.832,
+      "at": 59.535,
       "volume": 0.65
     },
     {
       "name": "stamp",
-      "at": 57.979,
+      "at": 62.987,
       "volume": 0.9
     },
     {
       "name": "yes",
-      "at": 50.978,
+      "at": 55.3,
       "volume": 0.5
     },
     {
       "name": "whoosh_short",
-      "at": 62.082,
+      "at": 67.12,
       "volume": 0.5
     },
     {
       "name": "snap",
-      "at": 62.404,
+      "at": 67.488,
       "volume": 0.8
     },
     {
       "name": "snap",
-      "at": 62.504,
+      "at": 67.588,
       "volume": 0.7
     },
     {
       "name": "pop",
-      "at": 69.606,
+      "at": 75.377,
       "volume": 0.5
     },
     {
       "name": "whoosh_short",
-      "at": 71.224,
+      "at": 77.137,
       "volume": 0.6
     },
     {
       "name": "pop",
-      "at": 80.096,
+      "at": 85.705,
       "volume": 0.5
     },
     {
       "name": "lock",
-      "at": 84.883,
+      "at": 90.935,
       "volume": 0.7
     },
     {
       "name": "whoosh_short",
-      "at": 85.389,
+      "at": 91.117,
       "volume": 0.5
     },
     {
       "name": "pop",
-      "at": 86.533,
+      "at": 92.085,
       "volume": 0.5
     },
     {
       "name": "shimmer",
-      "at": 87.783,
+      "at": 93.135,
       "volume": 0.45
     }
   ],
@@ -651,65 +651,65 @@
     },
     {
       "start": 2.704,
-      "end": 5.674,
+      "end": 5.932,
       "text": "طلبت من المطعم، وشفت إعلان مكتوب عليه:",
       "highlight": []
     },
     {
-      "start": 5.674,
-      "end": 8.517,
+      "start": 5.932,
+      "end": 9.062,
       "text": "«إذا اشتريت بأكثر من خمسين ريال،",
       "highlight": [
         "إذا"
       ]
     },
     {
-      "start": 8.517,
-      "end": 10.24,
+      "start": 9.062,
+      "end": 10.959,
       "text": "فإنك ستحصل على خصم»",
       "highlight": [
         "فإن"
       ]
     },
     {
-      "start": 10.31,
-      "end": 13.342,
+      "start": 11.029,
+      "end": 14.358,
       "text": "وعلى طول اشتريت بخمسين ريال بالضبط،",
       "highlight": [
         "بالضبط"
       ]
     },
     {
-      "start": 13.342,
-      "end": 14.942,
+      "start": 14.358,
+      "end": 16.115,
       "text": "بس ما عطوني الخصم،",
       "highlight": []
     },
     {
-      "start": 14.942,
-      "end": 15.734,
+      "start": 16.115,
+      "end": 16.961,
       "text": "ليش؟",
       "highlight": [
         "ليش؟"
       ]
     },
     {
-      "start": 15.804,
-      "end": 17.438,
+      "start": 17.031,
+      "end": 18.748,
       "text": "خلونا نفهم اللي صار،",
       "highlight": []
     },
     {
-      "start": 17.438,
-      "end": 20.982,
+      "start": 18.748,
+      "end": 22.633,
       "text": "في الرياضيات عندنا شيء يسمى العبارة الشرطية،",
       "highlight": [
         "العبارة الشرطية،"
       ]
     },
     {
-      "start": 20.982,
-      "end": 23.31,
+      "start": 22.633,
+      "end": 25.176,
       "text": "وتكون بصيغة: إذا… فإن…",
       "highlight": [
         "إذا…",
@@ -717,46 +717,46 @@
       ]
     },
     {
-      "start": 23.38,
-      "end": 25.779,
+      "start": 25.246,
+      "end": 27.863,
       "text": "مثال عليها: العرض اللي في المطعم،",
       "highlight": []
     },
     {
-      "start": 25.779,
-      "end": 28.818,
+      "start": 27.863,
+      "end": 31.197,
       "text": "إذا اشتريت بأكثر من خمسين ريال،",
       "highlight": [
         "إذا"
       ]
     },
     {
-      "start": 28.818,
-      "end": 30.717,
+      "start": 31.197,
+      "end": 33.28,
       "text": "فإنك ستحصل على خصم،",
       "highlight": [
         "فإنك"
       ]
     },
     {
-      "start": 30.717,
-      "end": 32.632,
+      "start": 33.28,
+      "end": 35.366,
       "text": "اللي بعد «إذا» هو الفرض،",
       "highlight": [
         "الفرض،"
       ]
     },
     {
-      "start": 32.632,
-      "end": 34.477,
+      "start": 35.366,
+      "end": 37.386,
       "text": "واللي بعد «فإن» هو النتيجة.",
       "highlight": [
         "النتيجة."
       ]
     },
     {
-      "start": 34.547,
-      "end": 38.593,
+      "start": 37.456,
+      "end": 41.88,
       "text": "والمشكلة إني اشتريت بخمسين ريال بالضبط، مش أكثر.",
       "highlight": [
         "مش",
@@ -764,58 +764,58 @@
       ]
     },
     {
-      "start": 38.813,
-      "end": 40.727,
+      "start": 42,
+      "end": 44.08,
       "text": "طيب، لو عكسنا الجملة:",
       "highlight": [
         "عكسنا"
       ]
     },
     {
-      "start": 40.727,
-      "end": 43.63,
+      "start": 44.08,
+      "end": 47.26,
       "text": "«إذا حصلت على خصم، فإن مشترياتي",
       "highlight": []
     },
     {
-      "start": 43.63,
-      "end": 45.444,
+      "start": 47.26,
+      "end": 49.247,
       "text": "أكثر من خمسين ريال»",
       "highlight": []
     },
     {
-      "start": 45.444,
-      "end": 48.914,
+      "start": 49.247,
+      "end": 53.033,
       "text": "هذا يسمى العكس، ومو شرط يكون صحيح؛",
       "highlight": [
         "العكس،"
       ]
     },
     {
-      "start": 48.984,
-      "end": 51.343,
+      "start": 53.103,
+      "end": 55.694,
       "text": "لأنه ممكن يكون عندي كوبون خصم",
       "highlight": [
         "كوبون"
       ]
     },
     {
-      "start": 51.343,
-      "end": 54.489,
+      "start": 55.694,
+      "end": 59.148,
       "text": "إضافي ينقص السعر، وآخذ الخصم، ومشترياتي",
       "highlight": []
     },
     {
-      "start": 54.489,
-      "end": 56.377,
+      "start": 59.148,
+      "end": 61.221,
       "text": "تكون أقل من خمسين ريال.",
       "highlight": [
         "أقل"
       ]
     },
     {
-      "start": 56.377,
-      "end": 59.669,
+      "start": 61.221,
+      "end": 64.836,
       "text": "وهذا يسمى المثال المضاد، وهو يثبت",
       "highlight": [
         "المثال",
@@ -823,42 +823,42 @@
       ]
     },
     {
-      "start": 59.669,
-      "end": 61.412,
+      "start": 64.836,
+      "end": 66.75,
       "text": "أن العبارة خاطئة.",
       "highlight": []
     },
     {
-      "start": 62.032,
-      "end": 63.352,
+      "start": 67.07,
+      "end": 68.51,
       "text": "طيب، لو نفينا الجملة:",
       "highlight": [
         "نفينا"
       ]
     },
     {
-      "start": 63.352,
-      "end": 65.895,
+      "start": 68.51,
+      "end": 71.3,
       "text": "«إذا لم أشترِ بأكثر من خمسين",
       "highlight": []
     },
     {
-      "start": 65.895,
-      "end": 68.438,
+      "start": 71.3,
+      "end": 74.089,
       "text": "ريال، فإنني لن أحصل على خصم»",
       "highlight": []
     },
     {
-      "start": 68.438,
-      "end": 70.708,
+      "start": 74.089,
+      "end": 76.567,
       "text": "هذه نسميها المعكوس،",
       "highlight": [
         "المعكوس،"
       ]
     },
     {
-      "start": 70.778,
-      "end": 73.434,
+      "start": 76.637,
+      "end": 79.547,
       "text": "أما لو عكسنا ونفينا في نفس الوقت:",
       "highlight": [
         "عكسنا",
@@ -866,20 +866,20 @@
       ]
     },
     {
-      "start": 73.434,
-      "end": 75.773,
-      "text": "ولو قلنا: «إذا لم أحصل على",
+      "start": 79.547,
+      "end": 82.106,
+      "text": "«إذا لم أحصل على خصم، فإنني",
       "highlight": []
     },
     {
-      "start": 75.773,
-      "end": 79.324,
-      "text": "خصم، فإنني لم أشترِ بأكثر من خمسين ريال»",
+      "start": 82.106,
+      "end": 84.847,
+      "text": "لم أشترِ بأكثر من خمسين ريال»",
       "highlight": []
     },
     {
-      "start": 79.324,
-      "end": 82.461,
+      "start": 84.847,
+      "end": 88.286,
       "text": "هذا نسميه المعاكس الإيجابي، وله نفس",
       "highlight": [
         "المعاكس",
@@ -888,24 +888,24 @@
       ]
     },
     {
-      "start": 82.461,
-      "end": 84.813,
+      "start": 88.286,
+      "end": 90.865,
       "text": "قيمة صواب العبارة الأصلية.",
       "highlight": []
     },
     {
-      "start": 87.733,
-      "end": 90.886,
+      "start": 93.085,
+      "end": 96.541,
       "text": "وبكذا تعلمنا درس العبارات الشرطية، من",
       "highlight": []
     },
     {
-      "start": 90.886,
-      "end": 93.625,
+      "start": 96.541,
+      "end": 99.543,
       "text": "مادة الرياضيات للصف الأول ثانوي.",
       "highlight": []
     }
   ],
-  "totalSec": 94.745,
+  "totalSec": 100.363,
   "warnings": []
 }
