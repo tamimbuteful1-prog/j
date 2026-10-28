@@ -79,23 +79,23 @@
       {
         "id": "L11",
         "file": "vo/L11.wav",
-        "duration_sec": 2.006,
+        "duration_sec": 1.856,
         "expected_sec": 2.102,
-        "ratio": 0.95
+        "ratio": 0.88
       },
       {
         "id": "L12",
         "file": "vo/L12.wav",
-        "duration_sec": 1.94,
+        "duration_sec": 2.115,
         "expected_sec": 2.102,
-        "ratio": 0.92
+        "ratio": 1.01
       },
       {
         "id": "L13",
         "file": "vo/L13.wav",
-        "duration_sec": 4.344,
+        "duration_sec": 4.282,
         "expected_sec": 3.213,
-        "ratio": 1.35
+        "ratio": 1.33
       },
       {
         "id": "L14",
