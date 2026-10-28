@@ -16,7 +16,7 @@ const B = SCENE_F.beats;
  */
 export const SceneF_Summary: React.FC = () => {
   const frame = useCurrentFrame();
-  const exit = ramp(frame, 3.45, 3.9, EASE.in);
+  const exit = ramp(frame, SCENE_F.durationSec - 0.45, SCENE_F.durationSec, EASE.in);
   return (
     <AbsoluteFill>
       <StudioBackdrop tint="#7A7CFF" tintAmount={0.3} floorY={1700} />

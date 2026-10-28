@@ -105,7 +105,7 @@ const measureLoudness = (file: string) => {
 };
 
 /**
- * Trim leading/trailing silence (keep 120 ms air) and level one spoken line.
+ * Trim leading/trailing silence (keep 60 ms air — the timeline adds the line gap) and level one spoken line.
  * Edges come from a lenient silencedetect (-50 dB) so soft onsets and word tails survive,
  * with short fades so no cut clicks. Levelling is one static gain (never dynamic
  * loudnorm, which pumps on short clips), capped so the true peak stays ≤ -1.5 dBTP.
@@ -118,8 +118,8 @@ const conformLine = (src: string, dst: string, lufs: number, fromSec?: number, t
     a = Math.max(a, sp[0][0]);
     b = Math.min(b, sp[sp.length - 1][1]);
   }
-  const start = Math.max(0, a - 0.12);
-  const dur = b - a + 0.24;
+  const start = Math.max(0, a - 0.06);
+  const dur = b - a + 0.12;
   const tmp = `${dst}.cut.wav`;
   run(['-ss', String(start), '-t', String(dur), '-i', src, '-af', `highpass=f=70,afade=t=in:d=0.012,afade=t=out:st=${Math.max(0, dur - 0.03).toFixed(3)}:d=0.03`, '-ar', '48000', '-ac', '1', '-c:a', 'pcm_f32le', tmp]);
   const m = measureLoudness(tmp);

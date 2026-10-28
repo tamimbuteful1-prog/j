@@ -40,7 +40,7 @@
       90
     ],
     "speech_rate_words_per_sec": 2.7,
-    "line_gap_sec": 0.12,
+    "line_gap_sec": 0.08,
     "scene_lead_sec": 0.2,
     "loudness_lufs": -14,
     "fps": 30,

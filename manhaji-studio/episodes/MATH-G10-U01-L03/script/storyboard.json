@@ -528,7 +528,7 @@
       "transition_out": {
         "type": "match-cut"
       },
-      "silent_tail_sec": 0.6
+      "silent_tail_sec": 0.4
     },
     {
       "id": "S06",
@@ -720,7 +720,7 @@
       "transition_out": {
         "type": "match-cut"
       },
-      "silent_tail_sec": 1.6
+      "silent_tail_sec": 0.8
     },
     {
       "id": "S08",
@@ -885,7 +885,7 @@
       "transition_out": {
         "type": "match-cut"
       },
-      "silent_tail_sec": 1.8
+      "silent_tail_sec": 0.8
     },
     {
       "id": "S10",
@@ -943,7 +943,7 @@
         "type": "match-cut"
       },
       "silent_tail_sec": 0.2,
-      "silent_duration_sec": 3.4
+      "silent_duration_sec": 2.2
     },
     {
       "id": "S11",
@@ -984,7 +984,7 @@
       "transition_out": {
         "type": "end"
       },
-      "silent_tail_sec": 1.6
+      "silent_tail_sec": 1.2
     }
   ],
   "revision_log": [],
