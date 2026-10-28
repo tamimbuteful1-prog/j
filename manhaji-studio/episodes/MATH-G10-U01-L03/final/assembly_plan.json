@@ -51,9 +51,9 @@
       {
         "id": "L06",
         "file": "vo/L06.wav",
-        "duration_sec": 1.637,
+        "duration_sec": 1.77,
         "expected_sec": 1.731,
-        "ratio": 0.95
+        "ratio": 1.02
       },
       {
         "id": "L07",
@@ -79,9 +79,9 @@
       {
         "id": "L10",
         "file": "vo/L10.wav",
-        "duration_sec": 5.337,
+        "duration_sec": 4.776,
         "expected_sec": 3.954,
-        "ratio": 1.35
+        "ratio": 1.21
       },
       {
         "id": "L11",
@@ -161,18 +161,11 @@
         "ratio": 1.76
       },
       {
-        "id": "L22",
-        "file": "vo/L22.wav",
-        "duration_sec": 2.83,
-        "expected_sec": 2.843,
-        "ratio": 1
-      },
-      {
         "id": "L23",
         "file": "vo/L23.wav",
-        "duration_sec": 5.22,
-        "expected_sec": 4.694,
-        "ratio": 1.11
+        "duration_sec": 6.39,
+        "expected_sec": 5.435,
+        "ratio": 1.18
       },
       {
         "id": "L24",
