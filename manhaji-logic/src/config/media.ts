@@ -36,7 +36,8 @@ export const HOOK = {
   /** Push-in during the clip (1 = none) and the small punch on «أو» (0 = none). */
   pushIn: 1,
   orPunch: 0,
-  volume: 1,
+  /** Lifts the camera audio (-16.9 LUFS) to the voice-over level (-16 LUFS). */
+  volume: 1.11,
 } as const;
 
 export const MUSIC = {

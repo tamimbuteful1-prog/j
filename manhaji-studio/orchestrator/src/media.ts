@@ -90,6 +90,13 @@ export const preparePublicDir = (id: string) => {
 
 const run = (args: string[]) => execFileSync(FFMPEG, ['-nostdin', '-hide_banner', '-loglevel', 'error', '-y', ...args], {stdio: ['ignore', 'pipe', 'pipe'], timeout: 10 * 60 * 1000});
 
+/**
+ * Every spoken piece (hook audio and each voice line) is levelled to this one loudness.
+ * It sits 2 dB under the platform target so the true-peak cap never binds and every line
+ * lands at exactly the same level; the static mastering gain then lifts the whole mix.
+ */
+const VOICE_LUFS = -16;
+
 /** Integrated loudness and true peak of a file (ffmpeg loudnorm analysis pass). */
 const measureLoudness = (file: string) => {
   const log = execFileSync('sh', ['-c', `"${FFMPEG}" -nostdin -hide_banner -i "${file}" -af loudnorm=print_format=json -f null - 2>&1 || true`]).toString();
@@ -145,7 +152,10 @@ export const prepareMedia = (id: string) => {
     const conformed = path.join(pub, 'hook.mp4');
     const srcStat = fs.statSync(hookSrc).mtimeMs;
     if (!fs.existsSync(conformed) || fs.statSync(conformed).mtimeMs < srcStat) {
-      run(['-i', hookSrc, '-vf', `scale='min(1920,iw)':-2:flags=lanczos,fps=${cfg.episode.fps},format=yuv420p`, '-af', `highpass=f=70,loudnorm=I=${cfg.episode.loudness_lufs}:TP=-1.5:LRA=9`, '-ar', '48000', '-c:v', 'libx264', '-crf', '14', '-preset', 'medium', '-c:a', 'aac', '-b:a', '256k', '-movflags', '+faststart', conformed]);
+      // static gain to the shared voice level, so the hook and the voice-over sound like one take
+      const m = measureLoudness(hookSrc);
+      const gain = Number.isFinite(m.i) ? Math.min(VOICE_LUFS - m.i, -1.5 - m.tp) : 0;
+      run(['-i', hookSrc, '-vf', `scale='min(1920,iw)':-2:flags=lanczos,fps=${cfg.episode.fps},format=yuv420p`, '-af', `highpass=f=70,volume=${gain.toFixed(2)}dB`, '-ar', '48000', '-c:v', 'libx264', '-crf', '14', '-preset', 'medium', '-c:a', 'aac', '-b:a', '256k', '-movflags', '+faststart', conformed]);
     }
     const sameFile = prev?.hook?.file === path.relative(e.dir, hookSrc) && prev?.hook?.duration_sec === Math.round(pr.durationSec * 1000) / 1000;
     hook = {
@@ -172,7 +182,7 @@ export const prepareMedia = (id: string) => {
   if (v.missing.length === 0) {
     for (const l of voiceLines) {
       const dst = path.join(pub, 'vo', `${l.id}.wav`);
-      const d = conformLine(v.perLine[l.id], dst, cfg.episode.loudness_lufs);
+      const d = conformLine(v.perLine[l.id], dst, VOICE_LUFS);
       const exp = estimateLineSec(l.text, cfg.episode.speech_rate_words_per_sec);
       lines.push({id: l.id, file: `vo/${l.id}.wav`, duration_sec: Math.round(d * 1000) / 1000, expected_sec: exp, ratio: Math.round((d / exp) * 100) / 100});
     }
@@ -188,7 +198,7 @@ export const prepareMedia = (id: string) => {
     } else {
       voiceLines.forEach((l, i) => {
         const dst = path.join(pub, 'vo', `${l.id}.wav`);
-        const d = conformLine(v.single!, dst, cfg.episode.loudness_lufs, segs[i][0], segs[i][1]);
+        const d = conformLine(v.single!, dst, VOICE_LUFS, segs[i][0], segs[i][1]);
         const exp = estimateLineSec(l.text, cfg.episode.speech_rate_words_per_sec);
         lines.push({id: l.id, file: `vo/${l.id}.wav`, duration_sec: Math.round(d * 1000) / 1000, expected_sec: exp, ratio: Math.round((d / exp) * 100) / 100});
       });
