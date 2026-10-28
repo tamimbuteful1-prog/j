@@ -344,7 +344,6 @@
       "section": "explanation",
       "lines": [
         "L09",
-        "L10",
         "L11",
         "L12"
       ],
@@ -389,18 +388,18 @@
         {
           "name": "fillP",
           "anchor": {
-            "line": "L10",
-            "word": "اشتريت"
+            "line": "L09",
+            "word": "العرض"
           },
-          "offset": -0.1
+          "offset": -0.05
         },
         {
           "name": "fillQ",
           "anchor": {
-            "line": "L10",
-            "word": "ستحصل"
+            "line": "L09",
+            "word": "المطعم"
           },
-          "offset": -0.1
+          "offset": 0.1
         },
         {
           "name": "labelP",

@@ -113,18 +113,6 @@
       "performance_note": ""
     },
     {
-      "id": "L10",
-      "section": "explanation",
-      "text": "إذا اشتريت بأكثر من خمسين ريال، فإنك ستحصل على خصم،",
-      "hook": false,
-      "visual_intent": "نص اللوحة يملأ الخانتين",
-      "emphasis": [
-        "إذا",
-        "فإنك"
-      ],
-      "performance_note": ""
-    },
-    {
       "id": "L11",
       "section": "explanation",
       "text": "اللي بعد «إذا» هو الفرض،",
