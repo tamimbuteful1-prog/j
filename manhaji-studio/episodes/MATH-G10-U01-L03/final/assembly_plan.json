@@ -100,9 +100,9 @@
       {
         "id": "L13",
         "file": "vo/L13.wav",
-        "duration_sec": 6.658,
+        "duration_sec": 6.544,
         "expected_sec": 5.065,
-        "ratio": 1.31
+        "ratio": 1.29
       },
       {
         "id": "L14",

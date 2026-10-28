@@ -51,6 +51,9 @@ export const MUSIC = {
   startAfterHook: true,
 } as const;
 
+/** Voice-over on/off for the whole film. Render with REMOTION_NO_VOICE=1 for a music+SFX-only version. */
+export const VOICE_ENABLED = process.env.REMOTION_NO_VOICE !== '1';
+
 export const SFX_ENABLED = true;
 export const SFX_MASTER = 1;
 

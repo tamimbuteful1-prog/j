@@ -1,6 +1,6 @@
 import React from 'react';
 import {Audio, Sequence, interpolate, staticFile} from 'remotion';
-import {HOOK, MUSIC, SFX_ENABLED, SFX_MASTER} from '../config/media';
+import {HOOK, MUSIC, SFX_ENABLED, SFX_MASTER, VOICE_ENABLED} from '../config/media';
 import {SfxName, Timeline, sec} from '../config/timeline';
 import {AbsCaption} from '../components/Captions';
 
@@ -47,7 +47,7 @@ export const SoundDesign: React.FC<{tl: Timeline; speech: AbsCaption[]}> = ({tl,
 
       {tl.scenes.map(({def, from}) => (
         <React.Fragment key={def.id}>
-          {def.voice?.enabled && (
+          {VOICE_ENABLED && def.voice?.enabled && (
             <Sequence from={from + sec(def.voice.offsetSec)} layout="none" name={`voice:${def.id}`}>
               <Audio src={staticFile(def.voice.src)} volume={def.voice.volume ?? 1} />
             </Sequence>
