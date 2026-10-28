@@ -8,6 +8,7 @@ def lufs(f, a=None, b=None):
     log = subprocess.run(args+['-i',f,'-af','ebur128','-f','null','-'],capture_output=True,text=True).stderr
     m = re.findall(r'^\s+I:\s+(-?[\d.]+) LUFS', log, re.M)
     return float(m[-1]) if m else None
+os.makedirs(sys.argv[1], exist_ok=True)
 for f in sys.argv[2:]:
     out = os.path.join(sys.argv[1], os.path.basename(f))
     dur = float(subprocess.run(['ffprobe','-v','error','-show_entries','format=duration','-of','csv=p=0',f],capture_output=True,text=True).stdout)
@@ -22,6 +23,6 @@ for f in sys.argv[2:]:
         g = 0.0 if I is None or I < -40 else max(-4, min(4, TARGET - I))
         if abs(g) < 1.0: g = 0.0
         expr.append((a, b, g)); report.append(f"{a:.2f}-{b:.2f}:{'' if I is None else round(I,1)}→{g:+.1f}")
-    vol = '+'.join(f"between(t,{a:.3f},{b:.3f})*{10**(g/20):.4f}" for a, b, g in expr) if expr else '1'
-    subprocess.run(['ffmpeg','-nostdin','-v','error','-y','-i',f,'-af',f"volume='{vol}':eval=frame,alimiter=limit=0.84:attack=3:release=50:level=disabled",'-ar','48000','-ac','1','-c:a','pcm_s24le',out],check=True)
+    vol = '+'.join(f"gte(t,{a:.3f})*lt(t,{b:.3f})*{10**(g/20):.4f}" for a, b, g in expr) if expr else '1'
+    subprocess.run(['ffmpeg','-nostdin','-v','error','-y','-i',f,'-af',f"volume='{vol}':eval=frame,alimiter=limit=0.84:attack=3:release=50:level=disabled:latency=1",'-ar','48000','-ac','1','-c:a','pcm_s24le',out],check=True)
     print(os.path.basename(f), ' '.join(report), '| out', lufs(out))

@@ -3,7 +3,10 @@ import sys, subprocess, numpy as np, os, json
 # then a gentle expander so pauses have the same quiet floor, then static -16 LUFS.
 # usage: match_eq.py <outdir> <strength> <cap_db> files...   (files prefixed with '~' get half strength)
 outdir, strength, cap = sys.argv[1], float(sys.argv[2]), float(sys.argv[3])
-items = [(a.startswith('~'), a.lstrip('~')) for a in sys.argv[4:]]
+import os as _os
+HF_CAP = float(_os.environ.get('HF_CAP', '2'))
+refs = {a.lstrip('~+') for a in sys.argv[4:] if a.startswith('+')}
+items = [(a.startswith('~'), a.lstrip('~+')) for a in sys.argv[4:]]
 SR=48000; N=4096
 edges = 80*2**(np.arange(0, 22)/3)   # 80 Hz … ~10 kHz, 1/3-octave
 edges = edges[edges < 12000]
@@ -16,13 +19,13 @@ def profile(f):
     b=np.array([10*np.log10(P[(fq>=a)&(fq<c)].mean()+1e-20) for a,c in zip(edges[:-1],edges[1:])])
     return b - b[(centers>500)&(centers<2000)].mean()
 profs = {f: profile(f) for _, f in items}
-target = np.median(np.array([profs[f] for h, f in items if not h]), axis=0)
+target = np.median(np.array([profs[f] for h, f in items if (f in refs if refs else not h)]), axis=0)
 os.makedirs(outdir, exist_ok=True)
 for half, f in items:
     d = target - profs[f]
     d = np.convolve(np.pad(d,1,mode='edge'), [0.25,0.5,0.25], mode='valid')   # smooth
     g = np.clip(d*strength*(0.5 if half else 1), -cap, cap)
-    g[centers>4500] = np.minimum(g[centers>4500], 2.0)   # never brighten sibilants much
+    g[centers>4500] = np.minimum(g[centers>4500], HF_CAP)   # never brighten sibilants much
     g[centers<200] = np.minimum(g[centers<200], 4.0)
     ent = ';'.join(f"entry({c:.0f},{v:.2f})" for c, v in zip(centers, g))
     ent = f"entry(20,{g[0]:.2f});" + ent + f";entry(16000,{min(g[-1],0):.2f})"
