@@ -103,7 +103,7 @@ export const renderEpisode = async (id: string, mode: 'preview' | 'final', owner
   const noMusic = sbAudio.music === false;
   const track = sbAudio.music_track ?? 'music/bed.wav';
   // per-track loudness trim (generated tracks differ); target ≈ −19 LUFS alone, ≈ −27 under the voice
-  const trim = track.endsWith('upbeat.wav') ? 1.35 : 1;
+  const trim = track.endsWith('upbeat.wav') || track.endsWith('drive.wav') ? 1.35 : 1;
   const props = {
     timeline: tl,
     hookText: script.hook.text,
