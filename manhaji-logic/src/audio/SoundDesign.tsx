@@ -20,18 +20,33 @@ export const SoundDesign: React.FC<{tl: Timeline; speech: AbsCaption[]}> = ({tl,
   const musicFrom = MUSIC.startAfterHook ? tl.hookFrames - sec(0.9) : 0;
   const orF = sec(HOOK.orWordSec);
 
-  // duck envelope: 1 = full music, 0 = ducked
+  // duck envelope: 1 = full music, 0 = ducked.
+  // Music stays at one steady "under voice" level for the whole narration. It only lifts
+  // (slowly, by at most GAP_LIFT) in real pauses longer than LONG_GAP, and returns to full
+  // only before the first spoken line and after the last — never a quick swell between sentences.
+  const LONG_GAP = sec(1.6);
+  const GAP_LIFT = 0.45;
+  const spans = speech.map((c) => [c.start, c.end] as const).sort((a, b) => a[0] - b[0]);
   const duck = (absFrame: number) => {
-    let d = 1;
-    for (const c of speech) {
-      const v = interpolate(absFrame, [c.start - 6, c.start, c.end, c.end + 10], [1, 0, 0, 1], {
-        extrapolateLeft: 'clamp',
-        extrapolateRight: 'clamp',
-      });
-      d = Math.min(d, v);
+    if (!spans.length) return 1;
+    const first = spans[0][0];
+    const last = spans[spans.length - 1][1];
+    const clamp = {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'} as const;
+    if (absFrame < first) return interpolate(absFrame, [first - 24, first - 3], [1, 0], clamp);
+    if (absFrame > last) return interpolate(absFrame, [last + 12, last + 42], [0, 1], clamp);
+    for (let i = 0; i < spans.length - 1; i++) {
+      const a = spans[i][1];
+      const b = spans[i + 1][0];
+      if (absFrame > a && absFrame < b && b - a > LONG_GAP) {
+        const up = interpolate(absFrame, [a + 9, a + 27], [0, GAP_LIFT], clamp);
+        const down = interpolate(absFrame, [b - 21, b - 5], [GAP_LIFT, 0], clamp);
+        return Math.min(up, down);
+      }
     }
-    return d;
+    return 0;
   };
+  // sound effects that land on a spoken word are kept under the voice
+  const underVoice = (absFrame: number) => spans.some(([a, b]) => absFrame >= a - 2 && absFrame <= b + 2);
 
   return (
     <>
@@ -52,7 +67,7 @@ export const SoundDesign: React.FC<{tl: Timeline; speech: AbsCaption[]}> = ({tl,
               <Audio src={staticFile(def.voice.src)} volume={def.voice.volume ?? 1} />
             </Sequence>
           )}
-          {SFX_ENABLED && def.sfx.map((c, i) => <Sfx key={i} name={c.name} at={from + sec(c.at)} volume={c.volume} />)}
+          {SFX_ENABLED && def.sfx.map((c, i) => <Sfx key={i} name={c.name} at={from + sec(c.at)} volume={underVoice(from + sec(c.at)) ? Math.min(c.volume ?? 1, 0.35) : c.volume} />)}
         </React.Fragment>
       ))}
 

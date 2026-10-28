@@ -146,7 +146,7 @@ export const renderEpisode = async (id: string, mode: 'preview' | 'final', owner
     const log = execFileSync('sh', ['-c', `"${FFMPEG}" -nostdin -hide_banner -i "${out}" -vn -af loudnorm=print_format=json -f null - 2>&1 || true`]).toString();
     const inputI = Number((JSON.parse(log.slice(log.lastIndexOf('{'), log.lastIndexOf('}') + 1)) as {input_i: string}).input_i);
     const gain = Number.isFinite(inputI) ? cfg.episode.loudness_lufs - inputI : 0;
-    execFileSync(FFMPEG, ['-hide_banner', '-loglevel', 'error', '-y', '-i', out, '-c:v', 'copy', '-af', `volume=${gain.toFixed(2)}dB,alimiter=limit=0.89:attack=3:release=50:level=disabled`, '-ar', '48000', '-c:a', 'aac', '-b:a', '256k', '-movflags', '+faststart', master]);
+    execFileSync(FFMPEG, ['-hide_banner', '-loglevel', 'error', '-y', '-i', out, '-c:v', 'copy', '-af', `volume=${gain.toFixed(2)}dB,alimiter=limit=0.8:attack=2:release=50:level=disabled`, '-ar', '48000', '-c:a', 'aac', '-b:a', '256k', '-movflags', '+faststart', master]);
     fs.rmSync(out);
     return {file: master, timeline: tl};
   }
