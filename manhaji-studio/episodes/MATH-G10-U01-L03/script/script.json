@@ -245,21 +245,9 @@
       "performance_note": ""
     },
     {
-      "id": "L22",
-      "section": "demonstration",
-      "text": "أما لو عكسنا ونفينا في نفس الوقت:",
-      "hook": false,
-      "visual_intent": "تبديل + نفي",
-      "emphasis": [
-        "عكسنا",
-        "ونفينا"
-      ],
-      "performance_note": ""
-    },
-    {
       "id": "L23",
       "section": "demonstration",
-      "text": "«إذا لم أحصل على خصم، فإنني لم أشترِ بأكثر من خمسين ريال»",
+      "text": "ولو قلنا: «إذا لم أحصل على خصم، فإنني لم أشترِ بأكثر من خمسين ريال»",
       "hook": false,
       "visual_intent": "العبارة الجديدة تُقرأ",
       "emphasis": [],

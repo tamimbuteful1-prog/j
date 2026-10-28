@@ -814,7 +814,6 @@
       "id": "S09",
       "section": "demonstration",
       "lines": [
-        "L22",
         "L23",
         "L24"
       ],
@@ -840,8 +839,8 @@
         {
           "name": "swapNeg",
           "anchor": {
-            "line": "L22",
-            "word": "عكسنا"
+            "line": "L23",
+            "at": "start"
           },
           "offset": -0.1
         },
