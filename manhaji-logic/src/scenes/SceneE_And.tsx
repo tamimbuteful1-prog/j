@@ -251,7 +251,7 @@ const TwoKeyLock: React.FC<{
           opacity: rule,
         }}
       >
-        كلا العبارتين
+        كلتا العبارتين
       </div>
     </div>
   );

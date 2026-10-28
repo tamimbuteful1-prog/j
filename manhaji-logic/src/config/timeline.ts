@@ -181,7 +181,7 @@ export const SCENE_E = scene({
   voice: {src: 'voice/05b-conjunction.wav', enabled: true, offsetSec: 0.2},
   captions: [
     {from: 0.2, to: 2.81, text: 'وعبارة الوصل تكون صحيحة فقط', highlight: [{word: 'فقط', color: 'and'}]},
-    {from: 2.81, to: 5.6, text: 'إذا كانت كلا العبارتين صحيحتين', highlight: [{word: 'كلا', color: 'and'}]},
+    {from: 2.81, to: 5.6, text: 'إذا كانت كلتا العبارتين صحيحتين', highlight: [{word: 'كلتا', color: 'and'}]},
     {from: 6.0, to: 7.56, text: 'يعني في هذه الحالة'},
     {from: 7.56, to: 10.15, text: 'لازم آخذ صامولي وعيش', highlight: [{word: 'صامولي', color: 'samoli'}, {word: 'وعيش', color: 'aish'}]},
     {from: 10.46, to: 12.32, text: 'طيب لو نسيت العيش؟', highlight: [{word: 'العيش؟', color: 'aish'}]},
@@ -255,7 +255,8 @@ export const SCENE_OUTRO = scene({
 export const HOOK_LINE = 'أبوي قال لي أجيب عيش وصامولي… ولا قال عيش أو صامولي؟!';
 
 // Scene A («نسيت وش أبوي طلب») removed at the presenter's request: the hook leads straight into B.
-export const SCENES = [SCENE_B, SCENE_C, SCENE_D, SCENE_E, SCENE_F, SCENE_OUTRO] as const;
+// Scene F (summary cards) removed at the presenter's request: E leads straight into the outro.
+export const SCENES = [SCENE_B, SCENE_C, SCENE_D, SCENE_E, SCENE_OUTRO] as const;
 
 export const sec = (s: number) => Math.round(s * VIDEO.fps);
 
