@@ -41,12 +41,12 @@ export const HOOK = {
 
 export const MUSIC = {
   enabled: true,
-  /** Temporary generated bed — replace with a licensed track of the same name. */
-  src: 'music/bed.wav',
+  /** Generated lo-fi groove (scripts/generate-music.mjs) — replace with a licensed track of the same name. */
+  src: 'music/groove.wav',
   /** Music level when nobody is speaking. */
-  volume: 0.2,
+  volume: 0.18,
   /** Music level under dialogue (auto-ducked from caption windows). */
-  duckedVolume: 0.07,
+  duckedVolume: 0.06,
   /** Music starts after the hook (the hook stays raw & intimate). */
   startAfterHook: true,
 } as const;
