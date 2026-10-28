@@ -77,13 +77,6 @@
         "ratio": 1.03
       },
       {
-        "id": "L10",
-        "file": "vo/L10.wav",
-        "duration_sec": 4.776,
-        "expected_sec": 3.954,
-        "ratio": 1.21
-      },
-      {
         "id": "L11",
         "file": "vo/L11.wav",
         "duration_sec": 2.006,
