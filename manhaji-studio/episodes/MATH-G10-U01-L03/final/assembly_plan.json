@@ -23,165 +23,159 @@
       {
         "id": "L02",
         "file": "vo/L02.wav",
-        "duration_sec": 3.112,
+        "duration_sec": 2.799,
         "expected_sec": 2.843,
-        "ratio": 1.09
+        "ratio": 0.98
       },
       {
         "id": "L03",
         "file": "vo/L03.wav",
-        "duration_sec": 5.012,
+        "duration_sec": 4.737,
         "expected_sec": 3.954,
-        "ratio": 1.27
+        "ratio": 1.2
       },
       {
         "id": "L04",
         "file": "vo/L04.wav",
-        "duration_sec": 5.019,
-        "expected_sec": 3.954,
-        "ratio": 1.27
-      },
-      {
-        "id": "L05",
-        "file": "vo/L05.wav",
-        "duration_sec": 0.718,
-        "expected_sec": 0.9,
-        "ratio": 0.8
+        "duration_sec": 6.214,
+        "expected_sec": 4.694,
+        "ratio": 1.32
       },
       {
         "id": "L06",
         "file": "vo/L06.wav",
-        "duration_sec": 1.677,
+        "duration_sec": 1.543,
         "expected_sec": 1.731,
-        "ratio": 0.97
+        "ratio": 0.89
       },
       {
         "id": "L07",
         "file": "vo/L07.wav",
-        "duration_sec": 3.602,
+        "duration_sec": 3.777,
         "expected_sec": 2.843,
-        "ratio": 1.27
+        "ratio": 1.33
       },
       {
         "id": "L08",
         "file": "vo/L08.wav",
-        "duration_sec": 2.616,
+        "duration_sec": 2.366,
         "expected_sec": 1.731,
-        "ratio": 1.51
+        "ratio": 1.37
       },
       {
         "id": "L09",
         "file": "vo/L09.wav",
-        "duration_sec": 2.532,
+        "duration_sec": 2.863,
         "expected_sec": 2.472,
-        "ratio": 1.02
+        "ratio": 1.16
       },
       {
         "id": "L11",
         "file": "vo/L11.wav",
-        "duration_sec": 1.989,
+        "duration_sec": 1.829,
         "expected_sec": 2.102,
-        "ratio": 0.95
+        "ratio": 0.87
       },
       {
         "id": "L12",
         "file": "vo/L12.wav",
-        "duration_sec": 1.939,
+        "duration_sec": 2.467,
         "expected_sec": 2.102,
-        "ratio": 0.92
+        "ratio": 1.17
       },
       {
         "id": "L13",
         "file": "vo/L13.wav",
-        "duration_sec": 4.264,
-        "expected_sec": 3.213,
-        "ratio": 1.33
+        "duration_sec": 4.499,
+        "expected_sec": 3.954,
+        "ratio": 1.14
       },
       {
         "id": "L14",
         "file": "vo/L14.wav",
-        "duration_sec": 1.849,
+        "duration_sec": 1.855,
         "expected_sec": 1.731,
         "ratio": 1.07
       },
       {
         "id": "L15",
         "file": "vo/L15.wav",
-        "duration_sec": 5.316,
+        "duration_sec": 4.639,
         "expected_sec": 3.954,
-        "ratio": 1.34
+        "ratio": 1.17
       },
       {
         "id": "L16",
         "file": "vo/L16.wav",
-        "duration_sec": 3.708,
-        "expected_sec": 2.843,
-        "ratio": 1.3
+        "duration_sec": 3.496,
+        "expected_sec": 3.213,
+        "ratio": 1.09
       },
       {
         "id": "L17",
         "file": "vo/L17.wav",
-        "duration_sec": 8.038,
-        "expected_sec": 6.546,
-        "ratio": 1.23
+        "duration_sec": 10.179,
+        "expected_sec": 8.028,
+        "ratio": 1.27
       },
       {
         "id": "L18",
         "file": "vo/L18.wav",
-        "duration_sec": 5.683,
-        "expected_sec": 3.583,
-        "ratio": 1.59
+        "duration_sec": 2.512,
+        "expected_sec": 1.731,
+        "ratio": 1.45
       },
       {
         "id": "L19",
         "file": "vo/L19.wav",
-        "duration_sec": 1.363,
+        "duration_sec": 2.215,
         "expected_sec": 1.731,
-        "ratio": 0.79
+        "ratio": 1.28
       },
       {
         "id": "L20",
         "file": "vo/L20.wav",
-        "duration_sec": 5.218,
+        "duration_sec": 5.204,
         "expected_sec": 4.694,
         "ratio": 1.11
       },
       {
         "id": "L21",
         "file": "vo/L21.wav",
-        "duration_sec": 2.56,
+        "duration_sec": 1.72,
         "expected_sec": 1.361,
-        "ratio": 1.88
+        "ratio": 1.26
+      },
+      {
+        "id": "L22",
+        "file": "vo/L22.wav",
+        "duration_sec": 2.419,
+        "expected_sec": 2.472,
+        "ratio": 0.98
       },
       {
         "id": "L23",
         "file": "vo/L23.wav",
-        "duration_sec": 6.448,
+        "duration_sec": 6.246,
         "expected_sec": 5.435,
-        "ratio": 1.19
+        "ratio": 1.15
       },
       {
         "id": "L24",
         "file": "vo/L24.wav",
-        "duration_sec": 6.128,
-        "expected_sec": 3.954,
-        "ratio": 1.55
+        "duration_sec": 2.645,
+        "expected_sec": 1.731,
+        "ratio": 1.53
       },
       {
         "id": "L25",
         "file": "vo/L25.wav",
-        "duration_sec": 6.399,
+        "duration_sec": 6.818,
         "expected_sec": 4.324,
-        "ratio": 1.48
+        "ratio": 1.58
       }
     ]
   },
-  "issues": [
-    {
-      "severity": "warning",
-      "line": "L21",
-      "message": "L21 duration is unusual (2.56s vs ~1.361s)"
-    }
-  ],
+  "issues": [],
   "agent_notes": ""
 }
