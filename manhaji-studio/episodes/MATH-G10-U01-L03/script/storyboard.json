@@ -138,8 +138,7 @@
       "id": "S02",
       "section": "context",
       "lines": [
-        "L04",
-        "L05"
+        "L04"
       ],
       "goal": "المشكلة: المجموع 50.00 والخصم لم يُطبق",
       "background": "كاشير",
@@ -208,10 +207,10 @@
         {
           "name": "why",
           "anchor": {
-            "line": "L05",
-            "at": "start"
+            "line": "L04",
+            "at": "end"
           },
-          "offset": -0.05
+          "offset": 0.1
         }
       ],
       "sfx": [
@@ -560,7 +559,7 @@
           "name": "swap",
           "anchor": {
             "line": "L14",
-            "word": "عكسنا"
+            "word": "نعكس"
           },
           "offset": -0.1
         },
@@ -813,8 +812,9 @@
       "id": "S09",
       "section": "demonstration",
       "lines": [
-        "L23",
-        "L24"
+        "L22",
+        "L24",
+        "L23"
       ],
       "goal": "المعاكس الإيجابي = تبديل + نفي، ويكافئ الأصلية",
       "background": "استوديو داكن",
@@ -838,8 +838,8 @@
         {
           "name": "swapNeg",
           "anchor": {
-            "line": "L23",
-            "at": "start"
+            "line": "L22",
+            "word": "وعكسنا"
           },
           "offset": -0.1
         },

@@ -5,7 +5,7 @@ x = np.frombuffer(subprocess.run(['ffmpeg','-v','error','-i',src,'-ac','1','-ar'
 SR=48000; H=int(0.01*SR)
 n=len(x)//H; rms=20*np.log10(np.sqrt((x[:n*H].reshape(n,H)**2).mean(1))+1e-9)
 sm=np.convolve(rms, np.ones(3)/3, mode='same')
-def refine(t, lo=None, hi=None, w=0.25):
+def refine(t, lo=None, hi=None, w=float(__import__("os").environ.get("REFINE_W","0.25"))):
     a=max(0,int((t-w)*100)); b=min(n-1,int((t+w)*100))
     if lo is not None: a=max(a,int(lo*100))
     if hi is not None: b=min(b,int(hi*100))
