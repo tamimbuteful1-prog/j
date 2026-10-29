@@ -30,14 +30,14 @@
       {
         "id": "L03",
         "file": "vo/L03.wav",
-        "duration_sec": 5.399,
+        "duration_sec": 5.012,
         "expected_sec": 3.954,
-        "ratio": 1.37
+        "ratio": 1.27
       },
       {
         "id": "L04",
         "file": "vo/L04.wav",
-        "duration_sec": 5.002,
+        "duration_sec": 5.019,
         "expected_sec": 3.954,
         "ratio": 1.27
       },
@@ -51,16 +51,16 @@
       {
         "id": "L06",
         "file": "vo/L06.wav",
-        "duration_sec": 1.675,
+        "duration_sec": 1.677,
         "expected_sec": 1.731,
         "ratio": 0.97
       },
       {
         "id": "L07",
         "file": "vo/L07.wav",
-        "duration_sec": 3.847,
+        "duration_sec": 3.602,
         "expected_sec": 2.843,
-        "ratio": 1.35
+        "ratio": 1.27
       },
       {
         "id": "L08",
@@ -72,7 +72,7 @@
       {
         "id": "L09",
         "file": "vo/L09.wav",
-        "duration_sec": 2.533,
+        "duration_sec": 2.532,
         "expected_sec": 2.472,
         "ratio": 1.02
       },
@@ -93,7 +93,7 @@
       {
         "id": "L13",
         "file": "vo/L13.wav",
-        "duration_sec": 4.266,
+        "duration_sec": 4.264,
         "expected_sec": 3.213,
         "ratio": 1.33
       },
@@ -128,7 +128,7 @@
       {
         "id": "L18",
         "file": "vo/L18.wav",
-        "duration_sec": 5.685,
+        "duration_sec": 5.683,
         "expected_sec": 3.583,
         "ratio": 1.59
       },
@@ -142,7 +142,7 @@
       {
         "id": "L20",
         "file": "vo/L20.wav",
-        "duration_sec": 5.217,
+        "duration_sec": 5.218,
         "expected_sec": 4.694,
         "ratio": 1.11
       },
@@ -170,7 +170,7 @@
       {
         "id": "L25",
         "file": "vo/L25.wav",
-        "duration_sec": 6.4,
+        "duration_sec": 6.399,
         "expected_sec": 4.324,
         "ratio": 1.48
       }
