@@ -24,6 +24,13 @@ const TINT: Record<string, string> = {
   مشروعي: C.text,
 };
 
+/** blend two #rrggbb colours */
+const mix = (a: string, b: string, k: number) => {
+  const pa = [1, 3, 5].map((i) => parseInt(a.slice(i, i + 2), 16));
+  const pb = [1, 3, 5].map((i) => parseInt(b.slice(i, i + 2), 16));
+  return `rgb(${pa.map((v, i) => Math.round(v + (pb[i] - v) * k)).join(',')})`;
+};
+
 const strip = (w: string) => w.replace(/[«»"…،؛,.!?؟:]/g, '');
 
 type Chunk = {start: number; end: number; words: string[]};
@@ -55,41 +62,34 @@ export const Captions: React.FC<{lines: Line[]}> = ({lines}) => {
   if (!c) return null;
   const v = Math.min(1, layoutAt(lines, t));
   const y = 1490 + 90 * v;
-  const p = ramp(frame, c.start - 0.05, c.start + 0.22);
   const total = c.words.join(' ').length;
   let acc = 0;
+  const out = 1 - ramp(frame, c.end - 0.05, c.end + 0.12, EASE.in);
   return (
-    <div style={{position: 'absolute', top: y, left: 60, right: 60, display: 'flex', justifyContent: 'center', opacity: p, transform: `translateY(${(1 - p) * 24}px)`}}>
-      <div
-        style={{
-          direction: 'rtl',
-          display: 'flex',
-          flexWrap: 'wrap',
-          justifyContent: 'center',
-          gap: '6px 16px',
-          padding: '18px 30px',
-          borderRadius: 22,
-          background: 'rgba(5, 8, 13, 0.62)',
-          boxShadow: '0 10px 40px rgba(0,0,0,0.35)',
-        }}
-      >
+    <div style={{position: 'absolute', top: y, left: 50, right: 50, display: 'flex', justifyContent: 'center', opacity: out}}>
+      <div style={{direction: 'rtl', display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '4px 18px'}}>
         {c.words.map((w, i) => {
           const at = c.start + ((c.end - c.start) * acc) / (total || 1);
           acc += w.length + 1;
-          const on = ramp(frame, at - 0.04, at + 0.12, EASE.out);
+          // hidden until spoken; appears with a soft pop, lit in colour, then settles
+          const on = ramp(frame, at - 0.06, at + 0.16, EASE.out);
+          const lit = 1 - ramp(frame, at + 0.25, at + 0.7, EASE.soft);
           const tint = TINT[strip(w)] ?? TINT[w];
+          const hot = tint ?? C.green;
+          const col = tint ?? (lit > 0.05 ? mix(C.green, C.text, 1 - lit) : C.text);
           return (
             <span
               key={i}
               style={{
                 fontFamily: F.head,
                 fontWeight: 800,
-                fontSize: 56,
+                fontSize: 60,
                 lineHeight: 1.25,
-                color: tint ?? C.text,
-                opacity: 0.45 + 0.55 * on,
-                transform: `scale(${0.96 + 0.04 * on})`,
-                textShadow: tint ? `0 0 22px ${tint}66` : '0 2px 12px rgba(0,0,0,0.5)',
+                color: col,
+                opacity: on,
+                filter: `blur(${(1 - on) * 8}px)`,
+                transform: `translateY(${(1 - on) * 16}px) scale(${0.86 + 0.14 * on + 0.06 * lit * on})`,
+                textShadow: `0 3px 14px rgba(0,0,0,0.85), 0 0 2px rgba(0,0,0,0.9), 0 0 ${18 + 22 * lit}px ${hot}${lit > 0.05 || tint ? '99' : '00'}`,
               }}
             >
               {w}

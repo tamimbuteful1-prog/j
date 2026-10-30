@@ -8,7 +8,9 @@ type Cue = {at: number; name: string; vol?: number};
 /** every sound is tied to a spoken line or word, so it re-syncs with the real footage */
 const cues = (): Cue[] => {
   const L = (id: string) => line(id);
+  const switches = LINES.filter((l, i) => i > 0 && LINES[i - 1].layout !== l.layout).map((l) => ({at: l.start - 0.3, name: 'whoosh_fast', vol: 0.45}));
   return [
+    ...switches,
     {at: L('L01').start, name: 'sub_hit', vol: 0.6},
     {at: wordAt('L01', 'ربحي') - 0.12, name: 'stamp', vol: 0.45},
     {at: wordAt('L01', 'لكن') - 0.05, name: 'glitch', vol: 0.35},
@@ -75,7 +77,7 @@ export const Sound: React.FC<{voice?: string}> = ({voice}) => {
           const fadeIn = interpolate(t, [first, first + 1.5], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
           const lift = interpolate(t, [last + 0.2, last + 1.0], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
           const out = interpolate(f, [total - 45, total], [1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
-          return (0.11 + 0.14 * lift) * fadeIn * out;
+          return (0.15 + 0.12 * lift) * fadeIn * out;
         }}
       />
     </>

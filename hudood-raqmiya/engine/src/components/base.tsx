@@ -1,7 +1,7 @@
 import React from 'react';
 import {AbsoluteFill, OffthreadVideo, interpolate, random, staticFile, useCurrentFrame} from 'remotion';
 import {C, F, VIDEO} from '../theme';
-import {EASE, ramp} from '../lib/anim';
+import {EASE} from '../lib/anim';
 import type {Layout, Line} from '../episodes/HR-E01/timeline';
 
 const LV: Record<Layout, number> = {full: 0, pip: 1, gone: 2};
@@ -31,7 +31,18 @@ export const Footage: React.FC<{lines: Line[]; src?: string}> = ({lines, src}) =
   const x = interpolate(v, [0, 1], [0, 1080 - 330 - 56]);
   const y = interpolate(v, [0, 1], [0, 132]);
   const r = interpolate(v, [0, 1], [0, 34]);
-  const push = 1 + 0.035 * ramp(frame, 0, 6, EASE.soft); // slow push-in on the full shot
+  // talking-head energy: a punch-in / re-frame at every line on the full shot (like a multi-cam cut), plus a slow push
+  const ZOOM = [1, 1.13, 1.05, 1.18];
+  const SHIFT = [0, -26, 18, -12];
+  let li = 0;
+  for (let i = 0; i < lines.length; i++) if (t >= lines[i].start - 0.05) li = i;
+  const k = interpolate(t, [lines[li].start - 0.05, lines[li].start + 0.2], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: EASE.out});
+  const zPrev = ZOOM[Math.max(0, li - 1) % 4];
+  const zCur = ZOOM[li % 4];
+  const xPrev = SHIFT[Math.max(0, li - 1) % 4];
+  const xCur = SHIFT[li % 4];
+  const push = (zPrev + (zCur - zPrev) * k) * (1 + 0.02 * Math.sin(t * 0.35)) * (1 - 0.12 * v);
+  const shift = (xPrev + (xCur - xPrev) * k) * (1 - v);
   return (
     <div
       style={{
@@ -45,7 +56,7 @@ export const Footage: React.FC<{lines: Line[]; src?: string}> = ({lines, src}) =
         boxShadow: v > 0.05 ? `0 30px 80px rgba(0,0,0,${0.6 * v}), 0 0 0 ${3 * v}px ${C.green}, 0 0 ${40 * v}px ${C.greenGlow}` : 'none',
       }}
     >
-      <div style={{position: 'absolute', inset: 0, transform: `scale(${push})`}}>
+      <div style={{position: 'absolute', inset: 0, transform: `translateX(${shift}px) scale(${push})`, transformOrigin: '50% 38%'}}>
         {src ? (
           <OffthreadVideo src={staticFile(src)} style={{width: '100%', height: '100%', objectFit: 'cover'}} />
         ) : (
@@ -76,7 +87,7 @@ const Placeholder: React.FC = () => (
 /** the digital-border world behind everything (visible when the footage is a PiP card) */
 export const Backdrop: React.FC = () => {
   const frame = useCurrentFrame();
-  const drift = (frame / VIDEO.fps) * 14;
+  const drift = (frame / VIDEO.fps) * 30;
   return (
     <AbsoluteFill style={{background: `radial-gradient(90% 60% at 50% 45%, ${C.night} 0%, ${C.ink} 100%)`}}>
       <svg viewBox="0 0 1080 1920" style={{position: 'absolute', inset: 0, width: '100%', height: '100%'}}>
@@ -166,5 +177,22 @@ export const LightLeak: React.FC = () => {
   const x = 50 + Math.sin(t * 0.21) * 45;
   return (
     <AbsoluteFill style={{pointerEvents: 'none', mixBlendMode: 'screen', opacity: 0.32, background: `radial-gradient(60% 35% at ${x}% 8%, ${C.green}55, transparent 70%), radial-gradient(50% 30% at ${100 - x}% 98%, #1d4fd855, transparent 70%)`}} />
+  );
+};
+
+/** glow sweep + flash at every switch between the full shot and the graphics */
+export const SwitchFlash: React.FC<{lines: Line[]}> = ({lines}) => {
+  const frame = useCurrentFrame();
+  const t = frame / VIDEO.fps;
+  const at = lines.filter((l, i) => i > 0 && lines[i - 1].layout !== l.layout).map((l) => l.start - 0.25);
+  const cur = at.find((a) => t >= a - 0.05 && t <= a + 0.6);
+  if (cur === undefined) return null;
+  const k = interpolate(t, [cur, cur + 0.5], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: EASE.inOut});
+  const flash = Math.sin(Math.PI * k);
+  return (
+    <AbsoluteFill style={{pointerEvents: 'none'}}>
+      <AbsoluteFill style={{background: C.green, opacity: 0.1 * flash, mixBlendMode: 'screen'}} />
+      <div style={{position: 'absolute', top: -400, bottom: -400, width: 260, left: `${-30 + k * 160}%`, transform: 'rotate(18deg)', background: `linear-gradient(90deg, transparent, ${C.green}66, #ffffffaa, ${C.green}66, transparent)`, filter: 'blur(18px)', opacity: flash, mixBlendMode: 'screen'}} />
+    </AbsoluteFill>
   );
 };

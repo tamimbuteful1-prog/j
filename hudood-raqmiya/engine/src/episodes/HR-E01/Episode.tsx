@@ -1,7 +1,7 @@
 import React from 'react';
 import {AbsoluteFill} from 'remotion';
 import '../../lib/fonts';
-import {Backdrop, Footage, Grade, LightLeak} from '../../components/base';
+import {Backdrop, Footage, Grade, LightLeak, SwitchFlash} from '../../components/base';
 import {Captions} from '../../components/Captions';
 import {Graphics} from './scenes';
 import {Sound} from './Sound';
@@ -19,6 +19,7 @@ export const HRE01: React.FC = () => (
     <Footage lines={LINES} src={MEDIA.footage} />
     <LightLeak />
     <Graphics />
+    <SwitchFlash lines={LINES} />
     <Captions lines={LINES} />
     <Grade />
     <Sound voice={MEDIA.voice} />
