@@ -33,7 +33,7 @@ const cues = (): Cue[] => {
     {at: L('L09').start, name: 'whoosh_air', vol: 0.4},
     {at: L('L10').start - 0.2, name: 'whoosh_fast', vol: 0.35},
     ...['سياسي', 'اجتماعي', 'رياضي', 'تعليمي', 'تاريخي', 'قصص', 'منتجات'].map((w) => ({at: wordAt('L11', w) - 0.08, name: 'tick', vol: 0.4})),
-    ...['غير سعودي', 'غير رسمية', 'لا'].map((w) => ({at: wordAt('L12', w) - 0.05, name: 'flip', vol: 0.45})),
+    ...['غير سعودي', 'غير رسمية', 'أو لا'].map((w) => ({at: wordAt('L12', w) - 0.05, name: 'flip', vol: 0.45})),
     {at: L('L13').start, name: 'riser', vol: 0.35},
     {at: wordAt('L13', 'يستهدفك') - 0.05, name: 'tape_stop', vol: 0.35},
     {at: wordAt('L13', 'يستهدفك'), name: 'sub_hit', vol: 0.75},

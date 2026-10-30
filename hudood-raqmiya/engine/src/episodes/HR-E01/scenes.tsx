@@ -461,7 +461,7 @@ const ContentTarget: React.FC = () => {
         ['موثوقة', 'لا'],
       ].map(([a, b], i) => {
         const rowIn = sp(frame, l12.start + 0.1 + i * 0.35, {damping: 20, stiffness: 140});
-        const flipAt = wordAt('L12', b === 'لا' ? 'لا' : b) - 0.05;
+        const flipAt = wordAt('L12', b === 'لا' ? 'أو لا' : b) - 0.05;
         const f = ramp(frame, flipAt, flipAt + 0.3, EASE.inOut);
         const out = ramp(frame, l12.end - 0.1, l12.end + 0.35, EASE.in);
         return (
