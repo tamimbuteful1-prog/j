@@ -69,9 +69,7 @@ const Placeholder: React.FC = () => (
       <ellipse cx="540" cy="760" rx="150" ry="185" fill="url(#ph-body)" opacity={0.95} />
       <path d="M240 1920 C 250 1260, 380 1080, 540 1080 C 700 1080, 830 1260, 840 1920 Z" fill="url(#ph-body)" opacity={0.95} />
     </svg>
-    <div style={{position: 'absolute', bottom: 90, width: '100%', textAlign: 'center', fontFamily: F.body, fontSize: 30, color: 'rgba(255,255,255,0.28)', letterSpacing: 1}}>
-      مكان فيديو تميم
-    </div>
+
   </AbsoluteFill>
 );
 
@@ -95,6 +93,13 @@ export const Backdrop: React.FC = () => {
           </mask>
         </defs>
         <rect width="1080" height="1920" fill="url(#grid)" mask="url(#gm)" />
+        {/* slow glowing light orbs */}
+        {[0, 1, 2].map((i) => {
+          const tt = frame / VIDEO.fps;
+          const cx = 540 + Math.sin(tt * 0.13 + i * 2.1) * 380;
+          const cy = 960 + Math.cos(tt * 0.11 + i * 1.7) * 640;
+          return <circle key={`orb${i}`} cx={cx} cy={cy} r={420} fill={i === 1 ? '#1d4fd8' : C.green} opacity={0.07} style={{filter: 'blur(90px)'}} />;
+        })}
         {Array.from({length: 40}).map((_, i) => {
           const px = random(`px${i}`) * 1080;
           const py = (random(`py${i}`) * 1920 - drift * (0.4 + random(`s${i}`))) % 1920;
@@ -143,13 +148,23 @@ export const Glass: React.FC<{style?: React.CSSProperties; children?: React.Reac
   <div
     style={{
       background: C.panel,
-      border: `1.5px solid ${tint ?? C.line}`,
+      border: `1.5px solid ${tint ?? 'rgba(31,191,117,0.35)'}`,
       borderRadius: 28,
       backdropFilter: 'blur(14px)',
-      boxShadow: `0 24px 60px rgba(0,0,0,0.45)${tint ? `, 0 0 32px ${tint}33` : ''}`,
+      boxShadow: `0 24px 60px rgba(0,0,0,0.45), 0 0 36px ${tint ?? C.green}40, inset 0 0 24px ${tint ?? C.green}14`,
       ...style,
     }}
   >
     {children}
   </div>
 );
+
+/** soft light leak drifting across the frame — adds glow on the full shot without hiding the face */
+export const LightLeak: React.FC = () => {
+  const frame = useCurrentFrame();
+  const t = frame / VIDEO.fps;
+  const x = 50 + Math.sin(t * 0.21) * 45;
+  return (
+    <AbsoluteFill style={{pointerEvents: 'none', mixBlendMode: 'screen', opacity: 0.32, background: `radial-gradient(60% 35% at ${x}% 8%, ${C.green}55, transparent 70%), radial-gradient(50% 30% at ${100 - x}% 98%, #1d4fd855, transparent 70%)`}} />
+  );
+};

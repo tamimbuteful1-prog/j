@@ -16,10 +16,10 @@ export const EASE = {
 export const ramp = (frame: number, a: number, b: number, ease = EASE.out) => interpolate(frame / VIDEO.fps, [a, b], [0, 1], {...clamp, easing: ease});
 
 /** in at `a`, out at `b` (seconds), with fade lengths */
-export const life = (frame: number, a: number, b: number, fin = 0.45, fout = 0.35) =>
+export const life = (frame: number, a: number, b: number, fin = 0.65, fout = 0.5) =>
   ramp(frame, a, a + fin) * (1 - ramp(frame, b - fout, b, EASE.in));
 
 export const sp = (frame: number, at: number, cfg: {damping?: number; stiffness?: number; mass?: number} = {}) =>
-  spring({frame: frame - sec(at), fps: VIDEO.fps, config: {damping: cfg.damping ?? 22, stiffness: cfg.stiffness ?? 140, mass: cfg.mass ?? 0.9}});
+  spring({frame: frame - sec(at), fps: VIDEO.fps, config: {damping: Math.max(cfg.damping ?? 26, 24), stiffness: Math.min(cfg.stiffness ?? 110, 120), mass: cfg.mass ?? 1}});
 
 export const lerp = (a: number, b: number, t: number) => a + (b - a) * t;

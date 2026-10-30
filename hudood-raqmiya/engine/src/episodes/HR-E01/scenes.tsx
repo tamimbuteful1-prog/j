@@ -20,7 +20,7 @@ const SideTitle: React.FC<{a: number; b: number; kicker?: string; title: string;
   return (
     <div style={{position: 'absolute', left: 56, top: 170, width: 600, direction: 'rtl', textAlign: 'right', opacity: p, transform: `translateX(${(1 - p) * -30}px)`}}>
       {kicker && <div style={{fontFamily: F.body, fontWeight: 600, fontSize: 30, color: C.dim, marginBottom: 12}}>{kicker}</div>}
-      <div style={{fontFamily: F.head, fontWeight: 800, fontSize: 64, lineHeight: 1.15, color: color ?? C.text}}>{title}</div>
+      <div style={{fontFamily: F.head, fontWeight: 800, fontSize: 64, lineHeight: 1.15, color: color ?? C.text, textShadow: `0 0 28px ${color ?? C.green}66`}}>{title}</div>
       <div style={{marginTop: 22, height: 6, width: 160 * ramp(frame, a + 0.2, a + 0.9), background: color ?? C.green, borderRadius: 3, marginRight: 0, marginLeft: 'auto', boxShadow: `0 0 18px ${color ?? C.green}`}} />
     </div>
   );
@@ -186,7 +186,7 @@ const Award: React.FC = () => {
   const shake = Math.max(0, 1 - (frame / VIDEO.fps - stampAt) * 5) * (frame / VIDEO.fps > stampAt ? 1 : 0);
   return (
     <div style={{position: 'absolute', left: 0, right: 0, top: 1060, height: 380, display: 'flex', justifyContent: 'center', alignItems: 'center', opacity: p, perspective: 1200}}>
-      <div style={{transform: `rotateY(${(1 - flip) * 85}deg) translateX(${Math.sin(frame) * 6 * shake}px)`, display: 'flex', alignItems: 'center', gap: 34, direction: 'rtl'}}>
+      <div style={{transform: `rotateY(${(1 - flip) * 70}deg) translateY(${shake * 0}px)`, display: 'flex', alignItems: 'center', gap: 34, direction: 'rtl'}}>
         <svg width={230} height={230} viewBox="0 0 230 230">
           <defs>
             <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
@@ -241,20 +241,20 @@ const FeedToMiyar: React.FC = () => {
             position: 'absolute',
             left: 150,
             right: 150,
-            top: 0,
-            bottom: 0,
+            top: 170,
+            bottom: 170,
             borderRadius: 34,
             border: `3px solid ${C.green}`,
             opacity: order,
             boxShadow: `0 0 40px ${C.greenGlow}, inset 0 0 40px ${C.green}22`,
           }}
         />
-        <div style={{position: 'absolute', top: -34, left: 0, right: 0, display: 'flex', justifyContent: 'center', opacity: order}}>
+        <div style={{position: 'absolute', top: 136, left: 0, right: 0, display: 'flex', justifyContent: 'center', opacity: order, zIndex: 20}}>
           <div style={{background: C.green, color: '#04160c', fontFamily: F.head, fontWeight: 900, fontSize: 44, padding: '6px 34px', borderRadius: 14}}>معيار</div>
         </div>
         {Array.from({length: N}).map((_, i) => {
           const chaos = {x: (random(`cx${i}`) - 0.5) * 520, y: (random(`cy${i}`) - 0.5) * 700, r: (random(`cr${i}`) - 0.5) * 34};
-          const neat = {x: 0, y: -330 + i * 128, r: 0};
+          const neat = {x: 0, y: -170 + i * 58, r: 0};
           const k = interpolate(order, [i * 0.06, i * 0.06 + 0.7], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: EASE.inOut});
           const inP = sp(frame, l.start + i * 0.07, {damping: 20, stiffness: 120});
           return (
@@ -264,7 +264,9 @@ const FeedToMiyar: React.FC = () => {
                 position: 'absolute',
                 left: '50%',
                 top: '50%',
-                transform: `translate(-50%, -50%) translate(${lerp(chaos.x, neat.x, k)}px, ${lerp(chaos.y, neat.y, k)}px) rotate(${lerp(chaos.r, neat.r, k)}deg) scale(${lerp(0.6, 1, Math.min(inP, 1)) * lerp(1, 0.9, k)})`,
+                transform: `translate(-50%, -50%) translate(${lerp(chaos.x, neat.x, k)}px, ${lerp(chaos.y, neat.y, k)}px) rotate(${lerp(chaos.r, neat.r, k)}deg) scale(${lerp(0.6, 1, Math.min(inP, 1)) * lerp(1, 1 - (N - 1 - i) * 0.045, k)})`,
+                zIndex: i,
+                filter: `brightness(${lerp(1, 0.55 + (i / (N - 1)) * 0.45, k)})`,
                 opacity: Math.min(1, inP),
               }}
             >
@@ -555,7 +557,7 @@ const WhoMadeIt: React.FC = () => {
   const q = sp(frame, wordAt('L15', 'وش') - 0.1, {damping: 12, stiffness: 180});
   return (
     <div style={{position: 'absolute', top: 230, left: 0, right: 0, display: 'flex', justifyContent: 'center', opacity: show}}>
-      <Glass style={{width: 760, padding: '28px 34px', display: 'flex', alignItems: 'center', gap: 28, direction: 'rtl', transform: `translateX(${glitch}px)`}} tint={C.red}>
+      <Glass style={{width: 760, padding: '28px 34px', display: 'flex', alignItems: 'center', gap: 28, direction: 'rtl', transform: `translateY(${glitch * 0}px)`}} tint={C.red}>
         <svg width={130} height={130} viewBox="0 0 130 130">
           <circle cx={65} cy={65} r={62} fill="#141c28" stroke={C.line} strokeWidth={2} />
           <circle cx={65} cy={50} r={22} fill="#2b3a4e" />
@@ -574,7 +576,7 @@ const WhoMadeIt: React.FC = () => {
 };
 
 const GoodOrBad: React.FC = () => {
-  const {frame, t} = useT();
+  const {frame} = useT();
   const l = line('L16');
   const show = life(frame, l.start - 0.1, l.end + 0.3);
   const good = sp(frame, wordAt('L16', 'الخير') - 0.1, {damping: 18, stiffness: 140});
@@ -591,7 +593,7 @@ const GoodOrBad: React.FC = () => {
         <div style={{fontFamily: F.head, fontWeight: 900, fontSize: 66, color: C.green, opacity: Math.min(1, good)}}>خير لك</div>
       </div>
       <div style={{position: 'absolute', top: 640, bottom: 470, left: 56, width: (1080 - 112) / 2 - 10, borderRadius: 30, background: `linear-gradient(180deg, ${C.red}33, ${C.red}0d)`, border: `2px solid ${C.red}88`, opacity: split * Math.min(1, bad + 0.25), display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 20}}>
-        <svg width={150} height={150} viewBox="0 0 150 150" style={{transform: `scale(${Math.min(bad, 1.1)}) translateX(${bad > 0.9 ? Math.sin(t * 40) * 2 : 0}px)`}}>
+        <svg width={150} height={150} viewBox="0 0 150 150" style={{transform: `scale(${Math.min(bad, 1.1)}) translateX(0px)`}}>
           <path d="M75 16 L140 128 H10 Z" fill={C.red} opacity={0.2} stroke={C.red} strokeWidth={8} strokeLinejoin="round" />
           <rect x={69} y={58} width={12} height={40} rx={6} fill={C.red} />
           <circle cx={75} cy={112} r={7} fill={C.red} />
@@ -607,27 +609,43 @@ const GoodOrBad: React.FC = () => {
 const PHASES = ['قواعد الحدود الرقمية', 'فهم رسائلهم', 'صناعة رسائلنا', 'الإعلام وقت الأزمات', 'الوعي والأنظمة'];
 
 const Roadmap: React.FC = () => {
-  const {frame} = useT();
+  const {frame, t} = useT();
   const a = line('L17').start;
   const b = line('L18').end;
   const show = life(frame, a - 0.1, b + 0.35);
   const span = b - a;
   const drawn = ramp(frame, a + 0.1, a + span * 0.85, EASE.inOut);
+  const P = [
+    [800, 700],
+    [300, 860],
+    [780, 1020],
+    [300, 1180],
+    [760, 1340],
+  ];
+  const d = `M ${P[0][0]} ${P[0][1]} ` + P.slice(1).map((p, i) => `C ${P[i][0]} ${P[i][1] + 110}, ${p[0]} ${p[1] - 110}, ${p[0]} ${p[1]}`).join(' ');
   return (
     <AbsoluteFill style={{opacity: show}}>
       <SideTitle a={a} b={b + 0.35} kicker="السلسلة" title="خمس مراحل عملية" />
-      <div style={{position: 'absolute', top: 660, right: 150, width: 6, height: 700 * drawn, background: `linear-gradient(180deg, ${C.green}, ${C.green}55)`, borderRadius: 3, boxShadow: `0 0 18px ${C.green}`}} />
+      <svg viewBox="0 0 1080 1920" style={{position: 'absolute', inset: 0, width: '100%', height: '100%'}}>
+        <path d={d} fill="none" stroke={C.green} strokeOpacity={0.15} strokeWidth={10} strokeLinecap="round" />
+        <path d={d} fill="none" stroke={C.green} strokeWidth={6} strokeLinecap="round" pathLength={1} strokeDasharray={1} strokeDashoffset={1 - drawn} style={{filter: `drop-shadow(0 0 14px ${C.green})`}} />
+      </svg>
       {PHASES.map((ph, i) => {
         const at = a + 0.2 + (span * 0.8 * i) / PHASES.length;
-        const k = sp(frame, at, {damping: 18, stiffness: 150});
+        const k = sp(frame, at);
+        const [x, y] = P[i];
+        const right = x > 540;
+        const pulse = 0.6 + 0.4 * Math.sin(t * 3 + i);
         return (
-          <div key={ph} style={{position: 'absolute', top: 640 + i * 168, right: 112, display: 'flex', alignItems: 'center', gap: 30, direction: 'rtl', opacity: Math.min(1, k), transform: `translateX(${(1 - Math.min(k, 1)) * 60}px)`}}>
-            <div style={{width: 82, height: 82, borderRadius: 41, background: C.ink, border: `4px solid ${C.green}`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: F.head, fontWeight: 900, fontSize: 40, color: C.green, boxShadow: `0 0 20px ${C.greenGlow}`}}>
+          <div key={ph} style={{position: 'absolute', left: x, top: y, opacity: Math.min(1, k), transform: `translate(-50%, -50%) scale(${lerp(0.85, 1, Math.min(k, 1))})`}}>
+            <div style={{width: 84, height: 84, borderRadius: 42, background: C.ink, border: `4px solid ${C.green}`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: F.head, fontWeight: 900, fontSize: 40, color: C.green, boxShadow: `0 0 ${24 + 16 * pulse}px ${C.greenGlow}`}}>
               {i + 1}
             </div>
-            <Glass style={{padding: '18px 30px', borderRadius: 20}}>
-              <div style={{fontFamily: F.head, fontWeight: 800, fontSize: 42, color: C.text}}>{ph}</div>
-            </Glass>
+            <div style={{position: 'absolute', top: '50%', [right ? 'right' : 'left']: 104, transform: 'translateY(-50%)', whiteSpace: 'nowrap', direction: 'rtl'} as React.CSSProperties}>
+              <Glass style={{padding: '14px 26px', borderRadius: 18}}>
+                <div style={{fontFamily: F.head, fontWeight: 800, fontSize: 38, color: C.text, textShadow: `0 0 18px ${C.green}44`}}>{ph}</div>
+              </Glass>
+            </div>
           </div>
         );
       })}
