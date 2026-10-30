@@ -1,5 +1,5 @@
 import React from 'react';
-import {AbsoluteFill, interpolate, random, useCurrentFrame} from 'remotion';
+import {AbsoluteFill, Img, interpolate, random, staticFile, useCurrentFrame} from 'remotion';
 import {C, F, VIDEO} from '../../theme';
 import {EASE, lerp, life, ramp, sp} from '../../lib/anim';
 import {Glass, SeriesMark, layoutAt} from '../../components/base';
@@ -146,7 +146,7 @@ const Hook: React.FC = () => {
           position: 'absolute',
           top: lerp(220, 64, markOut),
           right: lerp(540 - 300, 56, markOut),
-          opacity: Math.min(markIn, 1) * (1 - 0.15 * markOut) * (1 - ramp(frame, line('L03').end + 0.35, line('L03').end + 0.45)),
+          opacity: Math.min(markIn, 1) * (1 - ramp(frame, line('L02').start - 0.3, line('L02').start + 0.1)),
           transform: `scale(${lerp(0.8, 1, Math.min(markIn, 1)) * lerp(1.2, 0.62, markOut)})`,
           transformOrigin: 'right top',
         }}
@@ -157,70 +157,87 @@ const Hook: React.FC = () => {
   );
 };
 
-const NameCard: React.FC = () => {
-  const {frame} = useT();
-  const l = line('L02');
-  const p = life(frame, l.start, l.end + 0.8);
-  const bar = ramp(frame, l.start, l.start + 0.5);
-  const reveal = ramp(frame, l.start + 0.15, l.start + 0.9);
+/** the real documents: fellowship certificate, then the «مشروع متميز» card for منصة معيار */
+const Credentials: React.FC = () => {
+  const {frame, t} = useT();
+  const l2 = line('L02');
+  const l3 = line('L03');
+  const show = life(frame, l2.start - 0.15, l3.end + 0.45);
+  // certificate
+  const cIn = sp(frame, l2.start - 0.1);
+  const back = ramp(frame, l3.start - 0.1, l3.start + 0.6, EASE.inOut);
+  const cs = 920 / 1206;
+  const cTop = 690;
+  const box = (x0: number, y0: number, x1: number, y1: number, at: number, s0: number, left: number, top: number, color: string) => {
+    const k = ramp(frame, at - 0.05, at + 0.35);
+    const pulse = 0.75 + 0.25 * Math.sin(t * 5);
+    return (
+      <div
+        style={{
+          position: 'absolute',
+          left: left + x0 * s0 - 10,
+          top: top + y0 * s0 - 8,
+          width: (x1 - x0) * s0 + 20,
+          height: (y1 - y0) * s0 + 16,
+          borderRadius: 12,
+          border: `3px solid ${color}`,
+          boxShadow: `0 0 ${26 * pulse}px ${color}, inset 0 0 18px ${color}55`,
+          opacity: k,
+          transform: `scale(${lerp(1.15, 1, k)})`,
+        }}
+      />
+    );
+  };
+  const sweep = ramp(frame, l2.start + 0.25, l2.start + 1.4, EASE.inOut);
+  // award card
+  const aIn = sp(frame, l3.start + 0.05);
+  const as = 760 / 1280;
+  const aLeft = 540 - (1024 * as) / 2;
+  const aTop = 660;
+  const float = Math.sin(t * 1.6) * 8;
   return (
-    <div style={{position: 'absolute', right: 56, top: 1150, opacity: p, transform: `translateX(${(1 - p) * 40}px)`, direction: 'rtl'}}>
-      <Glass style={{padding: '26px 40px 26px 56px', display: 'flex', gap: 26, alignItems: 'center', borderRadius: 24}}>
-        <div style={{width: 8, height: 120 * bar, background: C.green, borderRadius: 4, boxShadow: `0 0 18px ${C.green}`}} />
-        <div style={{clipPath: `inset(0 0 0 ${100 - reveal * 100}%)`}}>
-          <div style={{fontFamily: F.head, fontWeight: 800, fontSize: 64, color: C.text}}>تميم الحارثي</div>
-          <div style={{fontFamily: F.body, fontWeight: 600, fontSize: 32, color: C.dim, marginTop: 6}}>زمالة الإعلام الرقمي السعودي</div>
+    <AbsoluteFill style={{opacity: show, perspective: 1600}}>
+      <SideTitle a={l2.start} b={l2.end + 0.1} kicker="أنا" title="تميم الحارثي" />
+      <SideTitle a={l3.start} b={l3.end + 0.45} kicker="مشروع التخرج" title="المشروع المتميز" color={C.amber} />
+      <div
+        style={{
+          position: 'absolute',
+          left: 0,
+          top: 0,
+          width: 1080,
+          height: 1920,
+          transformOrigin: '540px 1030px',
+          transform: `translateY(${(1 - Math.min(cIn, 1)) * 160}px) rotateX(${lerp(24, 6, Math.min(cIn, 1))}deg) translateX(${-170 * back}px) scale(${lerp(1, 0.72, back)}) rotateY(${18 * back}deg)`,
+          opacity: Math.min(1, cIn) * lerp(1, 0.45, back),
+          filter: `blur(${back * 2.5}px)`,
+        }}
+      >
+        <div style={{position: 'absolute', left: 80, top: cTop, width: 920, height: 901 * cs, borderRadius: 18, overflow: 'hidden', boxShadow: `0 40px 90px rgba(0,0,0,0.6), 0 0 50px ${C.green}55`, border: `2px solid ${C.green}88`}}>
+          <Img src={staticFile('assets/fellowship_certificate.jpg')} style={{width: '100%', height: '100%'}} />
+          <div style={{position: 'absolute', top: -200, bottom: -200, width: 180, left: `${-20 + sweep * 140}%`, transform: 'rotate(16deg)', background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.55), transparent)', filter: 'blur(10px)', opacity: Math.sin(Math.PI * sweep)}} />
         </div>
-      </Glass>
-    </div>
-  );
-};
-
-const Award: React.FC = () => {
-  const {frame} = useT();
-  const l = line('L03');
-  const p = life(frame, l.start - 0.1, l.end + 0.6);
-  const flip = sp(frame, l.start, {damping: 16, stiffness: 90});
-  const stampAt = wordAt('L03', 'المتميز') - 0.05;
-  const stamp = sp(frame, stampAt, {damping: 13, stiffness: 260});
-  const shake = Math.max(0, 1 - (frame / VIDEO.fps - stampAt) * 5) * (frame / VIDEO.fps > stampAt ? 1 : 0);
-  return (
-    <div style={{position: 'absolute', left: 0, right: 0, top: 1060, height: 380, display: 'flex', justifyContent: 'center', alignItems: 'center', opacity: p, perspective: 1200}}>
-      <div style={{transform: `rotateY(${(1 - flip) * 70}deg) translateY(${shake * 0}px)`, display: 'flex', alignItems: 'center', gap: 34, direction: 'rtl'}}>
-        <svg width={230} height={230} viewBox="0 0 230 230">
-          <defs>
-            <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0" stopColor="#ffe08a" />
-              <stop offset="0.5" stopColor="#d9a43a" />
-              <stop offset="1" stopColor="#8a5a14" />
-            </linearGradient>
-          </defs>
-          <circle cx={115} cy={115} r={96} fill="url(#gold)" />
-          <circle cx={115} cy={115} r={78} fill="none" stroke="#fff6" strokeWidth={3} />
-          {Array.from({length: 18}).map((_, i) => (
-            <ellipse key={i} cx={115} cy={30} rx={7} ry={16} fill="#fff8" transform={`rotate(${i * 20 - 80} 115 115)`} opacity={i % 9 === 0 ? 0 : 0.6} />
-          ))}
-          <path d="M115 72 l13 27 30 4 -22 21 6 30 -27 -15 -27 15 6 -30 -22 -21 30 -4z" fill="#fff" opacity={0.92} />
-        </svg>
-        <div
-          style={{
-            transform: `scale(${lerp(1.8, 1, Math.min(stamp, 1.2))}) rotate(-6deg)`,
-            opacity: Math.min(1, stamp * 1.4),
-            border: `5px solid ${C.amber}`,
-            color: C.amber,
-            padding: '14px 26px',
-            borderRadius: 16,
-            fontFamily: F.head,
-            fontWeight: 900,
-            fontSize: 54,
-            textShadow: `0 0 20px ${C.amber}88`,
-            boxShadow: `0 0 30px ${C.amber}44, inset 0 0 20px ${C.amber}33`,
-          }}
-        >
-          المشروع المتميز
-        </div>
+        {box(583, 392, 826, 430, wordAt('L02', 'تميم'), cs, 80, cTop, C.green)}
+        {box(552, 486, 826, 530, wordAt('L02', 'زمالة'), cs, 80, cTop, C.green)}
       </div>
-    </div>
+      <div
+        style={{
+          position: 'absolute',
+          left: 0,
+          top: 0,
+          width: 1080,
+          height: 1920,
+          transformOrigin: '540px 1040px',
+          transform: `translateX(${(1 - Math.min(aIn, 1)) * 520}px) rotateY(${lerp(-38, -5, Math.min(aIn, 1))}deg) translateY(${float}px)`,
+          opacity: Math.min(1, aIn),
+        }}
+      >
+        <div style={{position: 'absolute', left: aLeft, top: aTop, width: 1024 * as, height: 1280 * as, borderRadius: 22, overflow: 'hidden', boxShadow: `0 40px 100px rgba(0,0,0,0.65), 0 0 60px #7b3fe455, 0 0 30px ${C.amber}33`}}>
+          <Img src={staticFile('assets/miyar_award.jpg')} style={{width: '100%', height: '100%'}} />
+        </div>
+        {box(370, 668, 670, 748, wordAt('L03', 'مشروع'), as, aLeft, aTop, C.green)}
+        {box(392, 116, 632, 178, wordAt('L03', 'المتميز'), as, aLeft, aTop, C.amber)}
+      </div>
+    </AbsoluteFill>
   );
 };
 
@@ -737,8 +754,7 @@ export const Graphics: React.FC = () => {
   return (
     <AbsoluteFill>
       <Hook />
-      <NameCard />
-      <Award />
+      <Credentials />
       <FeedToMiyar />
       <PricingToOpen />
       <SaudiMap />
