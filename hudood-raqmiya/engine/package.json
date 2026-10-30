@@ -1,0 +1,29 @@
+{
+  "name": "hudood-raqmiya-engine",
+  "version": "1.0.0",
+  "private": true,
+  "description": "الحدود الرقمية — motion graphics over the presenter's footage (Remotion)",
+  "scripts": {
+    "dev": "remotion studio",
+    "sfx": "node scripts/generate-sfx.mjs",
+    "map": "node scripts/build-map.mjs",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.539",
+    "@remotion/media-utils": "4.0.539",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "remotion": "4.0.539"
+  },
+  "devDependencies": {
+    "@fontsource/alexandria": "^5.2.5",
+    "@fontsource/ibm-plex-sans-arabic": "^5.3.0",
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.0",
+    "d3-geo": "^3.1.1",
+    "topojson-client": "^3.1.0",
+    "typescript": "^5.6.3",
+    "world-atlas": "^2.0.2"
+  }
+}
