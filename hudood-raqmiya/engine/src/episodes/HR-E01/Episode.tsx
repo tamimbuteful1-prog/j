@@ -6,6 +6,7 @@ import {Captions} from '../../components/Captions';
 import {Graphics} from './scenes';
 import {Sound} from './Sound';
 import {LINES} from './timeline';
+import {VariantCtx, type Variant} from '../../lib/variant';
 
 /** drop Tamim's take at public/footage/HR-E01.mp4 and set these */
 export const MEDIA = {
@@ -13,7 +14,8 @@ export const MEDIA = {
   voice: undefined as string | undefined, // only if the voice is recorded separately from the footage
 };
 
-export const HRE01: React.FC = () => (
+export const HRE01: React.FC<{variant?: Variant}> = ({variant = 'camera'}) => (
+  <VariantCtx.Provider value={variant}>
   <AbsoluteFill style={{background: '#000'}}>
     <Backdrop />
     <Footage lines={LINES} src={MEDIA.footage} />
@@ -24,4 +26,5 @@ export const HRE01: React.FC = () => (
     <Grade />
     <Sound voice={MEDIA.voice} />
   </AbsoluteFill>
+  </VariantCtx.Provider>
 );

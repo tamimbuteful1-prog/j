@@ -4,6 +4,7 @@ import {C, F, VIDEO} from '../theme';
 import {EASE, ramp} from '../lib/anim';
 import type {Line} from '../episodes/HR-E01/timeline';
 import {layoutAt} from './base';
+import {useVariant} from '../lib/variant';
 
 /** words shown in colour wherever they appear */
 const TINT: Record<string, string> = {
@@ -57,10 +58,11 @@ const chunks = (lines: Line[]): Chunk[] => {
 export const Captions: React.FC<{lines: Line[]}> = ({lines}) => {
   const frame = useCurrentFrame();
   const t = frame / VIDEO.fps;
+  const variant = useVariant();
   const list = React.useMemo(() => chunks(lines), [lines]);
   const c = list.find((x) => t >= x.start - 0.05 && t < x.end + 0.05);
   if (!c) return null;
-  const v = Math.min(1, layoutAt(lines, t));
+  const v = variant === 'vo' ? 1 : Math.min(1, layoutAt(lines, t));
   const y = 1490 + 90 * v;
   const total = c.words.join(' ').length;
   let acc = 0;

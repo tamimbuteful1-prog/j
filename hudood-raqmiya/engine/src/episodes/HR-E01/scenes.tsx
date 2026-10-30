@@ -5,6 +5,7 @@ import {EASE, lerp, life, ramp, sp} from '../../lib/anim';
 import {Glass, SeriesMark, layoutAt} from '../../components/base';
 import {LINES, TOTAL, line, wordAt} from './timeline';
 import MAP from '../../lib/saudi-map.json';
+import {useVariant} from '../../lib/variant';
 
 const useT = () => {
   const frame = useCurrentFrame();
@@ -16,12 +17,13 @@ const useT = () => {
 /** a title in the free top-left area beside the PiP card */
 const SideTitle: React.FC<{a: number; b: number; kicker?: string; title: string; color?: string}> = ({a, b, kicker, title, color}) => {
   const {frame} = useT();
+  const vo = useVariant() === 'vo';
   const p = life(frame, a, b);
   return (
-    <div style={{position: 'absolute', left: 56, top: 170, width: 600, direction: 'rtl', textAlign: 'right', opacity: p, transform: `translateX(${(1 - p) * -30}px)`}}>
+    <div style={vo ? {position: 'absolute', left: 60, right: 60, top: 230, direction: 'rtl', textAlign: 'center', opacity: p, transform: `translateY(${(1 - p) * -24}px)`} : {position: 'absolute', left: 56, top: 170, width: 600, direction: 'rtl', textAlign: 'right', opacity: p, transform: `translateX(${(1 - p) * -30}px)`}}>
       {kicker && <div style={{fontFamily: F.body, fontWeight: 600, fontSize: 30, color: C.dim, marginBottom: 12}}>{kicker}</div>}
       <div style={{fontFamily: F.head, fontWeight: 800, fontSize: 64, lineHeight: 1.15, color: color ?? C.text, textShadow: `0 0 28px ${color ?? C.green}66`}}>{title}</div>
-      <div style={{marginTop: 22, height: 6, width: 160 * ramp(frame, a + 0.2, a + 0.9), background: color ?? C.green, borderRadius: 3, marginRight: 0, marginLeft: 'auto', boxShadow: `0 0 18px ${color ?? C.green}`}} />
+      <div style={{marginTop: 22, height: 6, width: 160 * ramp(frame, a + 0.2, a + 0.9), background: color ?? C.green, borderRadius: 3, marginRight: vo ? 'auto' : 0, marginLeft: 'auto', boxShadow: `0 0 18px ${color ?? C.green}`}} />
     </div>
   );
 };
@@ -99,7 +101,7 @@ const Decision: React.FC = () => {
   const openAt = wordAt('L01', 'مفتوح') - 0.1;
   const open = sp(frame, openAt, {damping: 15, stiffness: 150});
   return (
-    <div style={{position: 'absolute', left: 0, right: 0, top: 150, height: 470, opacity: show, direction: 'rtl'}}>
+    <div style={{position: 'absolute', left: 0, right: 0, top: useVariant() === 'vo' ? 700 : 150, height: 470, opacity: show, direction: 'rtl'}}>
       <div style={{position: 'absolute', left: 0, right: 0, top: 30, display: 'flex', justifyContent: 'center', opacity: Math.min(1, profit) * (1 - sink), transform: `translateY(${sink * 60}px) scale(${lerp(1.25, 1, Math.min(profit, 1))})`}}>
         <div style={{position: 'relative', display: 'flex', alignItems: 'center', gap: 26}}>
           <div style={{width: 110, height: 110, borderRadius: 55, border: `6px solid ${C.amber}`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: F.head, fontWeight: 900, fontSize: 44, color: C.amber, boxShadow: `0 0 26px ${C.amber}55`}}>ر.س</div>
@@ -439,6 +441,12 @@ const ShareRipple: React.FC = () => {
           const k = (((t - l.start) * 0.7 + i * 0.25) % 1 + 1) % 1;
           return <circle key={i} cx={540} cy={820} r={160 + k * 700} fill="none" stroke={C.green} strokeWidth={4 * (1 - k)} opacity={(1 - k) * 0.7} />;
         })}
+        {useVariant() === 'vo' && (
+          <g transform="translate(540 820)">
+            <rect x={-70} y={-120} width={140} height={240} rx={26} fill="#0d1624" stroke={C.green} strokeWidth={6} style={{filter: `drop-shadow(0 0 18px ${C.green})`}} />
+            <path d="M -26 0 L 26 0 M 6 -20 L 26 0 L 6 20" fill="none" stroke={C.green} strokeWidth={8} strokeLinecap="round" strokeLinejoin="round" />
+          </g>
+        )}
         {Array.from({length: 10}).map((_, i) => {
           const ang = (i / 10) * Math.PI * 2 + 0.3;
           const k = ramp(frame, l.start + 0.1 + i * 0.05, l.start + 1.3 + i * 0.05, EASE.out);
@@ -554,8 +562,16 @@ const YouAreTarget: React.FC = () => {
   const {frame} = useT();
   const l = line('L14');
   const show = life(frame, l.start, l.end + 0.2);
+  const vo = useVariant() === 'vo';
   return (
     <>
+      {vo && (
+        <svg viewBox="0 0 1080 1920" style={{position: 'absolute', inset: 0, width: '100%', height: '100%', opacity: show}}>
+          <circle cx={540} cy={800} r={150} fill={C.red} opacity={0.08} />
+          <circle cx={540} cy={740} r={70} fill="none" stroke={C.text} strokeWidth={8} style={{filter: `drop-shadow(0 0 14px ${C.red})`}} />
+          <path d="M 410 930 C 420 840, 660 840, 670 930" fill="none" stroke={C.text} strokeWidth={8} strokeLinecap="round" style={{filter: `drop-shadow(0 0 14px ${C.red})`}} />
+        </svg>
+      )}
       <Reticle cx={540} cy={800} a={l.start} b={l.end + 0.1} label="الهدف الرئيسي" />
       <div style={{position: 'absolute', top: 190, left: 0, right: 0, textAlign: 'center', opacity: show}}>
         <div style={{fontFamily: F.head, fontWeight: 900, fontSize: 130, color: C.text, letterSpacing: -1}}>
@@ -573,7 +589,7 @@ const WhoMadeIt: React.FC = () => {
   const glitch = Math.sin(t * 47) > 0.86 ? (random(`g${frame}`) - 0.5) * 18 : 0;
   const q = sp(frame, wordAt('L15', 'وش') - 0.1, {damping: 12, stiffness: 180});
   return (
-    <div style={{position: 'absolute', top: 230, left: 0, right: 0, display: 'flex', justifyContent: 'center', opacity: show}}>
+    <div style={{position: 'absolute', top: useVariant() === 'vo' ? 760 : 230, left: 0, right: 0, display: 'flex', justifyContent: 'center', opacity: show}}>
       <Glass style={{width: 760, padding: '28px 34px', display: 'flex', alignItems: 'center', gap: 28, direction: 'rtl', transform: `translateY(${glitch * 0}px)`}} tint={C.red}>
         <svg width={130} height={130} viewBox="0 0 130 130">
           <circle cx={65} cy={65} r={62} fill="#141c28" stroke={C.line} strokeWidth={2} />
@@ -725,7 +741,7 @@ const EndCard: React.FC = () => {
   return (
     <>
       <AbsoluteFill style={{background: `radial-gradient(80% 50% at 50% 45%, ${C.night}, ${C.ink})`, opacity: take}} />
-      <div style={{position: 'absolute', left: 0, right: 0, top: lerp(190, 760, take), display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 34, opacity: show}}>
+      <div style={{position: 'absolute', left: 0, right: 0, top: lerp(useVariant() === 'vo' ? 700 : 190, 760, take), display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 34, opacity: show}}>
         <div style={{transform: `scale(${lerp(1.1, 1.5, take)})`}}>
           <SeriesMark scale={1.2} glow={0.6 + 0.4 * Math.sin(t * 3)} />
         </div>
@@ -749,7 +765,8 @@ const EndCard: React.FC = () => {
 /** all graphics layers of HR-E01, above the footage */
 export const Graphics: React.FC = () => {
   const {t} = useT();
-  const v = Math.min(1, layoutAt(LINES, t));
+  const vo = useVariant() === 'vo';
+  const v = vo ? 0 : Math.min(1, layoutAt(LINES, t));
   const after = t > line('L03').end + 0.4 && t < TOTAL - 2;
   return (
     <AbsoluteFill>

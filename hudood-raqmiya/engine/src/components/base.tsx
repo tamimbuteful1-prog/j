@@ -3,6 +3,7 @@ import {AbsoluteFill, OffthreadVideo, interpolate, random, staticFile, useCurren
 import {C, F, VIDEO} from '../theme';
 import {EASE} from '../lib/anim';
 import type {Layout, Line} from '../episodes/HR-E01/timeline';
+import {useVariant} from '../lib/variant';
 
 const LV: Record<Layout, number> = {full: 0, pip: 1, gone: 2};
 
@@ -23,6 +24,7 @@ export const layoutAt = (lines: Line[], t: number) => {
 /** The presenter's footage (or a placeholder until it is filmed), moving between full frame and a PiP card. */
 export const Footage: React.FC<{lines: Line[]; src?: string}> = ({lines, src}) => {
   const frame = useCurrentFrame();
+  const variant = useVariant();
   const t = frame / VIDEO.fps;
   const v = Math.min(1, layoutAt(lines, t));
   // PiP card: top-right (RTL reading starts on the right)
@@ -43,6 +45,7 @@ export const Footage: React.FC<{lines: Line[]; src?: string}> = ({lines, src}) =
   const xCur = SHIFT[li % 4];
   const push = (zPrev + (zCur - zPrev) * k) * (1 + 0.02 * Math.sin(t * 0.35)) * (1 - 0.12 * v);
   const shift = (xPrev + (xCur - xPrev) * k) * (1 - v);
+  if (variant === 'vo') return null;
   return (
     <div
       style={{
@@ -183,10 +186,11 @@ export const LightLeak: React.FC = () => {
 /** glow sweep + flash at every switch between the full shot and the graphics */
 export const SwitchFlash: React.FC<{lines: Line[]}> = ({lines}) => {
   const frame = useCurrentFrame();
+  const variant = useVariant();
   const t = frame / VIDEO.fps;
   const at = lines.filter((l, i) => i > 0 && lines[i - 1].layout !== l.layout).map((l) => l.start - 0.25);
   const cur = at.find((a) => t >= a - 0.05 && t <= a + 0.6);
-  if (cur === undefined) return null;
+  if (cur === undefined || variant === 'vo') return null;
   const k = interpolate(t, [cur, cur + 0.5], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: EASE.inOut});
   const flash = Math.sin(Math.PI * k);
   return (
