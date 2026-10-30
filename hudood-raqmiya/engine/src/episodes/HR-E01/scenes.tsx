@@ -87,16 +87,47 @@ const Post: React.FC<{w: number; seed: string; tag?: string; tagColor?: string; 
 
 /* ───────────────────────── hook & intro ───────────────────────── */
 
+/** the hook: «ربحي» is struck out and becomes «مفتوح لكل سعودي», then the border sweeps in */
+const Decision: React.FC = () => {
+  const {frame} = useT();
+  const l = line('L01');
+  const show = life(frame, l.start, l.end + 0.25, 0.3, 0.3);
+  const profit = sp(frame, wordAt('L01', 'ربحي') - 0.12, {damping: 16, stiffness: 170});
+  const strikeAt = wordAt('L01', 'لكن') - 0.05;
+  const strike = ramp(frame, strikeAt, strikeAt + 0.35, EASE.inOut);
+  const sink = ramp(frame, wordAt('L01', 'قررت'), wordAt('L01', 'قررت') + 0.5, EASE.in);
+  const openAt = wordAt('L01', 'مفتوح') - 0.1;
+  const open = sp(frame, openAt, {damping: 15, stiffness: 150});
+  return (
+    <div style={{position: 'absolute', left: 0, right: 0, top: 150, height: 470, opacity: show, direction: 'rtl'}}>
+      <div style={{position: 'absolute', left: 0, right: 0, top: 30, display: 'flex', justifyContent: 'center', opacity: Math.min(1, profit) * (1 - sink), transform: `translateY(${sink * 60}px) scale(${lerp(1.25, 1, Math.min(profit, 1))})`}}>
+        <div style={{position: 'relative', display: 'flex', alignItems: 'center', gap: 26}}>
+          <div style={{width: 110, height: 110, borderRadius: 55, border: `6px solid ${C.amber}`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: F.head, fontWeight: 900, fontSize: 44, color: C.amber, boxShadow: `0 0 26px ${C.amber}55`}}>ر.س</div>
+          <div style={{fontFamily: F.head, fontWeight: 900, fontSize: 150, color: C.amber, textShadow: `0 0 34px ${C.amber}55`}}>ربحي</div>
+          <div style={{position: 'absolute', right: -20, left: -20, top: '50%', height: 14, borderRadius: 7, background: C.red, boxShadow: `0 0 22px ${C.red}`, transform: `scaleX(${strike}) rotate(-7deg)`, transformOrigin: 'right center'}} />
+        </div>
+      </div>
+      <div style={{position: 'absolute', left: 0, right: 0, top: 50, display: 'flex', flexDirection: 'column', alignItems: 'center', opacity: Math.min(1, open), transform: `scale(${lerp(0.8, 1, Math.min(open, 1))})`}}>
+        <div style={{display: 'flex', alignItems: 'center', gap: 22}}>
+          <div style={{fontFamily: 'monospace', fontWeight: 700, fontSize: 64, color: '#04160c', background: C.green, padding: '8px 22px', borderRadius: 18, boxShadow: `0 0 30px ${C.greenGlow}`}}>{'</>'}</div>
+          <div style={{fontFamily: F.head, fontWeight: 900, fontSize: 140, color: C.green, textShadow: `0 0 36px ${C.greenGlow}`}}>مفتوح</div>
+        </div>
+        <div style={{fontFamily: F.head, fontWeight: 800, fontSize: 70, color: C.text, marginTop: 6}}>لكل سعودي</div>
+      </div>
+    </div>
+  );
+};
+
 const Hook: React.FC = () => {
   const {frame} = useT();
   const l1 = line('L01');
-  const sweep = ramp(frame, l1.end - 0.35, l1.end + 0.35, EASE.inOut);
-  const markIn = sp(frame, l1.end - 0.1, {damping: 20, stiffness: 110});
+  const sweep = ramp(frame, l1.end - 0.15, l1.end + 0.55, EASE.inOut);
+  const markIn = sp(frame, l1.end + 0.1, {damping: 20, stiffness: 110});
   const markOut = ramp(frame, line('L03').end - 0.2, line('L03').end + 0.4, EASE.inOut);
   const big = 1 - markOut;
   return (
     <>
-      <Reticle cx={540} cy={780} a={l1.start} b={l1.end + 0.2} label="الهدف" />
+      <Decision />
       {/* the border sweeps across the frame and becomes the series mark */}
       <div
         style={{
@@ -107,7 +138,7 @@ const Hook: React.FC = () => {
           width: `${100 * sweep}%`,
           background: `linear-gradient(270deg, transparent, ${C.green} 30%, ${C.green})`,
           boxShadow: `0 0 26px ${C.green}`,
-          opacity: 1 - ramp(frame, l1.end + 0.4, l1.end + 0.9),
+          opacity: 1 - ramp(frame, l1.end + 0.6, l1.end + 1.1),
         }}
       />
       <div

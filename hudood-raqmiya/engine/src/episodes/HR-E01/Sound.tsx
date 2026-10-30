@@ -9,10 +9,14 @@ type Cue = {at: number; name: string; vol?: number};
 const cues = (): Cue[] => {
   const L = (id: string) => line(id);
   return [
-    {at: L('L01').start, name: 'sub_hit', vol: 0.7},
-    {at: L('L01').start + 0.15, name: 'lock_on', vol: 0.55},
-    {at: L('L01').end - 0.35, name: 'whoosh_air', vol: 0.5},
-    {at: L('L01').end - 0.05, name: 'boom_soft', vol: 0.45},
+    {at: L('L01').start, name: 'sub_hit', vol: 0.6},
+    {at: wordAt('L01', 'ربحي') - 0.12, name: 'stamp', vol: 0.45},
+    {at: wordAt('L01', 'لكن') - 0.05, name: 'glitch', vol: 0.35},
+    {at: wordAt('L01', 'قررت'), name: 'whoosh_fast', vol: 0.35},
+    {at: wordAt('L01', 'مفتوح') - 0.1, name: 'unlock', vol: 0.65},
+    {at: wordAt('L01', 'مفتوح'), name: 'warm_swell', vol: 0.35},
+    {at: L('L01').end - 0.15, name: 'whoosh_air', vol: 0.5},
+    {at: L('L01').end + 0.1, name: 'boom_soft', vol: 0.45},
     {at: L('L02').start, name: 'whoosh_fast', vol: 0.3},
     {at: L('L02').start + 0.2, name: 'tick', vol: 0.35},
     {at: wordAt('L03', 'المتميز') - 0.05, name: 'stamp', vol: 0.75},

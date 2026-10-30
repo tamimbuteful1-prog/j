@@ -20,6 +20,8 @@ const TINT: Record<string, string> = {
   السعودي: C.green,
   سعودي: C.green,
   المتميز: C.amber,
+  ربحي: C.amber,
+  مشروعي: C.text,
 };
 
 const strip = (w: string) => w.replace(/[«»"…،؛,.!?؟:]/g, '');
