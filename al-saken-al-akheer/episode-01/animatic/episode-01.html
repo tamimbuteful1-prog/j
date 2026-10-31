@@ -1,0 +1,377 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>الساكن الأخير 01</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@400;600;800&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{--W:720px;--H:1280px;--amber:#e8b658;--ink:#0a0c0e}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:#000;width:var(--W);height:var(--H);overflow:hidden}
+  #stage{position:relative;width:var(--W);height:var(--H);overflow:hidden;background:#000;font-family:'Tajawal',sans-serif;color:#ddd}
+  .scene{position:absolute;inset:0;opacity:0;will-change:opacity,transform}
+  svg{position:absolute;inset:0;width:100%;height:100%}
+  /* phone UI */
+  .phone{position:absolute;inset:0;background:#0b0f12;font-family:'Tajawal',sans-serif}
+  .sb{display:flex;justify-content:space-between;padding:22px 34px 0;font-size:24px;color:#cfd6da;direction:ltr;font-weight:500}
+  .hdr{display:flex;align-items:center;gap:18px;padding:26px 30px 22px;border-bottom:1px solid #1c2429;background:#11171b}
+  .av{width:64px;height:64px;border-radius:50%;background:#2a343a;display:flex;align-items:center;justify-content:center;font-size:30px;color:#8a979e}
+  .nm{font-size:32px;font-weight:700;color:#e6ecef}
+  .sub{font-size:20px;color:#7f8c93;margin-top:4px}
+  .msgs{padding:24px 26px;display:flex;flex-direction:column;gap:16px}
+  .day{align-self:center;background:#1a2126;color:#8f9ca3;font-size:19px;padding:6px 16px;border-radius:10px}
+  .b{align-self:flex-start;max-width:78%;background:#1f2a30;color:#e9eef0;font-size:29px;line-height:1.55;padding:16px 20px 30px;border-radius:18px 18px 18px 4px;position:relative}
+  .b .tm{position:absolute;left:14px;bottom:6px;font-size:17px;color:#87959c;direction:ltr}
+  .typing{align-self:flex-start;background:#1f2a30;border-radius:18px;padding:16px 22px;color:#9aa7ad;font-size:22px}
+  .warn{margin:14px 26px 0;background:#2a2316;color:#d8b46a;font-size:20px;padding:12px 16px;border-radius:12px;text-align:center}
+  .lock{position:absolute;inset:0;background:radial-gradient(120% 80% at 50% 30%,#16222b 0%,#05080a 70%)}
+  .clock{position:absolute;top:210px;width:100%;text-align:center;font-family:'Tajawal';font-weight:300;font-size:200px;color:#e9eef0;direction:ltr;letter-spacing:-4px}
+  .date{position:absolute;top:165px;width:100%;text-align:center;font-size:30px;color:#b9c4c9}
+  .notif{position:absolute;top:520px;left:34px;right:34px;background:rgba(40,52,60,.92);border-radius:28px;padding:22px 26px}
+  .notif .t{font-size:22px;color:#9fb0b8;display:flex;justify-content:space-between}
+  .notif .m{font-size:28px;color:#eef3f5;margin-top:8px;line-height:1.5}
+  .call{position:absolute;inset:0;background:linear-gradient(#1a252c,#070a0c);text-align:center}
+  .call .who{margin-top:300px;font-size:64px;font-weight:700;color:#eef3f5}
+  .call .st{margin-top:18px;font-size:32px;color:#9fb0b8;direction:ltr}
+  .call .btns{position:absolute;bottom:360px;width:100%;display:flex;justify-content:center;gap:70px}
+  .call .btn{width:120px;height:120px;border-radius:50%;background:#26323a;display:flex;align-items:center;justify-content:center;font-size:22px;color:#cfd8dc}
+  .call .end{background:#c0392b;color:#fff}
+  /* overlays */
+  #big{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;font-family:'Noto Kufi Arabic';font-weight:800;color:#f2f2f2;font-size:66px;line-height:1.5;padding:0 50px;opacity:0;text-shadow:0 0 30px rgba(0,0,0,.9)}
+  #subs{position:absolute;left:40px;right:40px;bottom:120px;text-align:center;font-family:'Tajawal';font-weight:700;font-size:38px;line-height:1.5;color:#fff;text-shadow:0 2px 6px #000,0 0 18px rgba(0,0,0,.9)}
+  #subs .who{display:block;font-size:24px;font-weight:500;color:var(--amber);margin-bottom:4px}
+  #subs .q{color:#f3dfb5}
+  #grain{position:absolute;inset:-50px;opacity:.09;mix-blend-mode:screen;pointer-events:none}
+  #vig{position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 50%,rgba(0,0,0,.75) 100%),linear-gradient(to top,rgba(0,0,0,.7) 0,rgba(0,0,0,0) 330px);pointer-events:none}
+  #black{position:absolute;inset:0;background:#000;opacity:0}
+  #title{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;font-family:'Noto Kufi Arabic'}
+  #title .s{font-size:70px;font-weight:800;color:#e9e9e9}
+  #title .n{font-size:40px;color:#777;margin-top:24px;letter-spacing:6px;font-family:'Tajawal'}
+</style>
+</head>
+<body>
+<div id="stage">
+
+  <!-- 1. Narrator silhouette -->
+  <div class="scene" id="s_narr">
+    <svg viewBox="0 0 720 1280">
+      <defs>
+        <radialGradient id="lamp" cx="85%" cy="40%" r="70%"><stop offset="0" stop-color="#d9a24a" stop-opacity=".75"/><stop offset=".45" stop-color="#6a4a1e" stop-opacity=".35"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>
+        <linearGradient id="rim" x1="1" x2="0"><stop offset="0" stop-color="#e2b062"/><stop offset=".12" stop-color="#3b2a14"/><stop offset=".3" stop-color="#0a0806"/></linearGradient>
+      </defs>
+      <rect width="720" height="1280" fill="#050403"/>
+      <rect width="720" height="1280" fill="url(#lamp)"/>
+      <g id="narrFig">
+        <path d="M360 330c95 0 150 75 150 175 0 70-25 120-55 150 10 30 25 50 60 70 120 40 220 110 260 255V1280H-55V1180c40-145 140-215 260-255 35-20 50-40 60-70-30-30-55-80-55-150 0-100 55-175 150-175z" fill="url(#rim)"/>
+      </g>
+    </svg>
+  </div>
+
+  <!-- 2. Room wide -->
+  <div class="scene" id="s_room">
+    <svg viewBox="0 0 720 1280">
+      <defs>
+        <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0c1116"/><stop offset="1" stop-color="#141b20"/></linearGradient>
+        <linearGradient id="floor" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#121212"/><stop offset="1" stop-color="#060606"/></linearGradient>
+        <radialGradient id="spill" cx="50%" cy="0%" r="100%"><stop offset="0" stop-color="#e8b658" stop-opacity=".55"/><stop offset="1" stop-color="#e8b658" stop-opacity="0"/></radialGradient>
+        <linearGradient id="moon" x1="0" x2="1"><stop offset="0" stop-color="#3d5a78" stop-opacity=".45"/><stop offset="1" stop-color="#3d5a78" stop-opacity="0"/></linearGradient>
+        <linearGradient id="glass" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1d272e"/><stop offset=".5" stop-color="#0d1317"/><stop offset="1" stop-color="#1a2329"/></linearGradient>
+      </defs>
+      <g id="roomCam">
+        <rect width="720" height="900" fill="url(#wall)"/>
+        <!-- window light -->
+        <polygon points="0,180 120,200 120,520 0,560" fill="#1a2a3a" opacity=".6"/>
+        <polygon points="0,560 120,520 520,1280 0,1280" fill="url(#moon)" opacity=".5"/>
+        <polygon points="0,900 720,900 720,1280 0,1280" fill="url(#floor)"/>
+        <!-- door -->
+        <rect x="285" y="380" width="170" height="520" fill="#1a1612" stroke="#0a0806" stroke-width="6"/>
+        <rect x="300" y="400" width="140" height="210" fill="none" stroke="#120f0c" stroke-width="3"/>
+        <rect x="300" y="640" width="140" height="240" fill="none" stroke="#120f0c" stroke-width="3"/>
+        <circle cx="300" cy="650" r="7" fill="#5b4a33"/>
+        <rect x="285" y="896" width="170" height="5" fill="#f5c46a"/>
+        <ellipse cx="370" cy="905" rx="180" ry="38" fill="url(#spill)"/>
+        <!-- mirror (right wall leaning) -->
+        <g transform="translate(560,470) skewX(-4)">
+          <rect x="0" y="0" width="110" height="440" fill="#3a2a1b"/>
+          <rect x="10" y="10" width="90" height="420" fill="url(#glass)"/>
+          <rect id="mirrorRefl" x="30" y="220" width="40" height="160" fill="#06090b" opacity=".0" rx="18"/>
+        </g>
+        <!-- boxes -->
+        <g transform="translate(40,880)">
+          <rect x="0" y="0" width="200" height="150" fill="#3a2f22"/><rect x="0" y="0" width="200" height="22" fill="#45382a"/>
+          <rect x="30" y="-120" width="160" height="120" fill="#32291e"/>
+          <text x="100" y="95" text-anchor="middle" font-family="Tajawal" font-size="26" fill="#14100b" font-weight="700">غرفة نواف</text>
+          <text x="110" y="-50" text-anchor="middle" font-family="Tajawal" font-size="22" fill="#14100b" font-weight="700">كتب</text>
+        </g>
+        <!-- bed foreground -->
+        <path d="M360 1120 L720 1080 L720 1280 L300 1280 Z" fill="#0c0d0f"/>
+        <path d="M380 1110 L720 1072 L720 1100 L390 1140Z" fill="#1b1e22"/>
+      </g>
+    </svg>
+  </div>
+
+  <!-- 3. Lock screen -->
+  <div class="scene" id="s_lock">
+    <div class="lock" id="lockInner">
+      <div class="date">الخميس، 17 نوفمبر</div>
+      <div class="clock" id="lockClock">3:17</div>
+      <div class="notif" id="lockNotif" style="opacity:0">
+        <div class="t"><span>الرسائل · أمي</span><span>الآن</span></div>
+        <div class="m">أنا وأبوك في المستشفى، بنرجع الصباح، لا تنسى تقفل الباب</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. Door close -->
+  <div class="scene" id="s_door">
+    <svg viewBox="0 0 720 1280">
+      <defs>
+        <linearGradient id="dwood" x1="0" x2="1"><stop offset="0" stop-color="#17130f"/><stop offset=".5" stop-color="#211b15"/><stop offset="1" stop-color="#15110d"/></linearGradient>
+        <radialGradient id="spill2" cx="50%" cy="0%" r="90%"><stop offset="0" stop-color="#f0bd5e" stop-opacity=".7"/><stop offset="1" stop-color="#f0bd5e" stop-opacity="0"/></radialGradient>
+      </defs>
+      <rect width="720" height="1280" fill="#07090b"/>
+      <g id="doorG">
+        <rect x="110" y="40" width="500" height="1060" fill="url(#dwood)" stroke="#050403" stroke-width="10"/>
+        <rect x="150" y="90" width="420" height="420" fill="none" stroke="#0f0c09" stroke-width="5"/>
+        <rect x="150" y="560" width="420" height="500" fill="none" stroke="#0f0c09" stroke-width="5"/>
+        <rect x="145" y="560" width="22" height="70" rx="6" fill="#4d3f2c"/>
+        <circle cx="156" cy="600" r="14" fill="#6b5a40"/>
+      </g>
+      <rect x="0" y="1100" width="720" height="180" fill="#090909"/>
+      <rect x="110" y="1096" width="500" height="9" fill="#ffd27a"/>
+      <ellipse cx="360" cy="1110" rx="360" ry="90" fill="url(#spill2)"/>
+    </svg>
+  </div>
+
+  <!-- 7. Chat mom -->
+  <div class="scene" id="s_chatA">
+    <div class="phone">
+      <div class="sb"><span>3:17</span><span>23% ▮▯ ·ıl</span></div>
+      <div class="hdr"><div class="av">م</div><div><div class="nm">أمي</div><div class="sub">آخر ظهور 3:16 ص</div></div></div>
+      <div class="msgs">
+        <div class="day">أمس</div>
+        <div class="b">وصلنا العمارة؟ قول لأبوك يجيب الكراتين اللي بالسيارة<span class="tm">10:42 م</span></div>
+        <div class="day">اليوم</div>
+        <div class="b" id="chatA2" style="opacity:0">أنا وأبوك في المستشفى، بنرجع الصباح، لا تنسى تقفل الباب<span class="tm">3:16 ص</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 9. Call -->
+  <div class="scene" id="s_call">
+    <div class="call">
+      <div class="who">أمي</div>
+      <div class="st" id="callSt">جاري الاتصال…</div>
+      <div class="btns"><div class="btn">مكبر</div><div class="btn end">إنهاء</div><div class="btn">كتم</div></div>
+    </div>
+  </div>
+
+  <!-- 13. Chat unknown -->
+  <div class="scene" id="s_chatC">
+    <div class="phone">
+      <div class="sb"><span>3:17</span><span>23% ▮▯ ·ıl</span></div>
+      <div class="hdr"><div class="av">?</div><div><div class="nm" style="direction:ltr;text-align:right">+966 50 000 0317</div><div class="sub">رقم غير معروف</div></div></div>
+      <div class="warn">هذا الرقم ليس ضمن جهات الاتصال</div>
+      <div class="msgs">
+        <div class="b" id="c1" style="opacity:0">لا تفتح الباب.<br>هو للحين ما يعرف شكلك.<span class="tm">3:17 ص</span></div>
+        <div class="typing" id="c2t" style="opacity:0">يكتب الآن…</div>
+        <div class="b" id="c2" style="opacity:0">ولا تطالع تحت الباب.<span class="tm">3:17 ص</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 16. Floor level -->
+  <div class="scene" id="s_floor">
+    <svg viewBox="0 0 720 1280">
+      <defs>
+        <linearGradient id="fl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1b1813"/><stop offset="1" stop-color="#050505"/></linearGradient>
+        <radialGradient id="spill3" cx="50%" cy="0%" r="100%"><stop offset="0" stop-color="#f3c066" stop-opacity=".55"/><stop offset=".6" stop-color="#8a6a33" stop-opacity=".12"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>
+        <filter id="blur"><feGaussianBlur stdDeviation="9"/></filter>
+      </defs>
+      <rect width="720" height="1280" fill="#060708"/>
+      <!-- door bottom -->
+      <rect x="0" y="120" width="720" height="440" fill="#15110d"/>
+      <rect x="0" y="545" width="720" height="16" fill="#ffd47e"/>
+      <!-- floor -->
+      <polygon points="0,561 720,561 720,1280 0,1280" fill="url(#fl)"/>
+      <polygon points="0,561 720,561 720,1280 0,1280" fill="url(#spill3)"/>
+      <g stroke="#000" stroke-opacity=".35" stroke-width="2">
+        <line x1="360" y1="561" x2="360" y2="1280"/><line x1="200" y1="561" x2="-200" y2="1280"/><line x1="520" y1="561" x2="920" y2="1280"/>
+        <line x1="60" y1="561" x2="-700" y2="1280"/><line x1="660" y1="561" x2="1420" y2="1280"/>
+        <line x1="0" y1="640" x2="720" y2="640"/><line x1="0" y1="780" x2="720" y2="780"/><line x1="0" y1="1010" x2="720" y2="1010"/>
+      </g>
+      <!-- shadow cast INTO the room -->
+      <g id="shadow" opacity="0" filter="url(#blur)">
+        <g id="shadowTilt" transform-origin="360 561">
+          <path d="M325 561 L395 561 L470 900 L520 1030 L470 1060 L430 1050 L420 1120 C430 1200 400 1290 360 1290 C320 1290 290 1200 300 1120 L290 1050 L250 1060 L200 1030 L250 900 Z" fill="#000" opacity=".88"/>
+        </g>
+      </g>
+    </svg>
+  </div>
+
+  <div id="big"></div>
+  <div id="black"></div>
+  <div id="title"><div class="s">الساكن الأخير</div><div class="n">01</div></div>
+  <canvas id="grain" width="410" height="690"></canvas>
+  <div id="vig"></div>
+  <div id="subs"></div>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const ease=x=>x<.5?2*x*x:1-Math.pow(-2*x+2,2)/2;
+const ramp=(t,a,b)=>clamp((t-a)/(b-a));
+// fade window: in over fi, out over fo
+const win=(t,a,b,fi=.5,fo=.5)=>Math.min(ramp(t,a,a+fi), 1-ramp(t,b-fo,b));
+
+const DURATION=93;
+
+// scene windows [id, start, end, fadeIn, fadeOut]
+const scenes=[
+  ['s_narr',0,5.1,.01,.4],
+  ['s_room',5,9.1,.4,.25],
+  ['s_lock',9,12.1,.15,.2],
+  ['s_door',12,20.1,.2,.2],
+  ['s_lock',20,24.1,.15,.2],
+  ['s_chatA',24,30.1,.2,.2],
+  ['s_room',30,36.1,.2,.2],
+  ['s_call',36,48.1,.2,.05],
+  ['s_door',48,54.1,.05,.05],
+  ['s_call',54,57.1,.05,.2],
+  ['s_chatC',57,67.1,.2,.3],
+  ['s_door',67,72.1,.3,.4],
+  ['s_floor',72,87,.6,.01],
+];
+
+// subtitles [start,end,text,speaker]
+const subs=[
+ [0.2,2.6,'أمي كانت تكلمني من ورا باب غرفتي…'],
+ [2.6,5,'وفي نفس الوقت، كانت تكلمني بالجوال من المستشفى.'],
+ [5.2,7.4,'أول ليلة لنا في العمارة الجديدة.'],
+ [7.4,10,'صحيت الساعة 3:17 الفجر…'],
+ [10,12,'على ثلاث دقات على باب غرفتي.'],
+ [12.2,15.4,'طق… طق… طق…'],
+ [16,19.5,'«نواف، افتح الباب.»','صوت أمي — من ورا الباب'],
+ [20,23.5,'كنت بقوم… بس جوالي اهتز.'],
+ [24.6,29.6,'رسالة من أمي.'],
+ [30,31.8,'وقفت مكاني.'],
+ [31.8,35.8,'«نواف، افتح… أدري إنك صاحي.»','من ورا الباب'],
+ [36,41.5,'اتصلت على أمي. ردت.'],
+ [42,44.8,'«يمه… أنتِ بالبيت؟»','نواف'],
+ [44.8,47.8,'«لا يا وليدي، وش فيك؟»','أمي — بالجوال'],
+ [48,50.8,'وقبل ما أتكلم… سمعت صوتها من ورا الباب يقول نفس الجملة:'],
+ [50.8,52.5,'«لا يا وليدي، وش فيك؟»','من ورا الباب'],
+ [52.5,54.4,'نفس الصوت. بنفس التوقيت.'],
+ [54.5,57,'قفلت الخط من الخوف.'],
+ [57,59.4,'بعدها بثواني، وصلتني رسالة من رقم ما أعرفه.'],
+ [63,67,'وبعدها رسالة ثانية.'],
+ [67.2,71.6,'بس أنا… كنت أطالع أصلًا.'],
+ [72.5,75.5,'كان فيه ظل شخص واقف عند الباب.'],
+ [76,77.6,'المشكلة؟'],
+ [78.4,80.8,'الظل كان من جهتي أنا.'],
+ [81.2,83.6,'يعني اللي كان يطرق…'],
+ [84,86.8,'كان واقف داخل الغرفة.'],
+];
+
+// big overlays
+const bigs=[
+ [60.2,62.6,'لا تفتح الباب.'],
+ [65,66.8,'ولا تطالع تحت الباب.'],
+];
+
+// grain
+const gc=$('grain').getContext('2d');
+const noiseFrames=[];
+(function makeNoise(){
+  let seed=7;const rnd=()=>{seed=(seed*16807)%2147483647;return seed/2147483647};
+  for(let f=0;f<6;f++){const im=gc.createImageData(410,690);for(let i=0;i<im.data.length;i+=4){const v=rnd()*255|0;im.data[i]=im.data[i+1]=im.data[i+2]=v;im.data[i+3]=255}noiseFrames.push(im)}
+})();
+$('grain').style.width='820px';$('grain').style.height='1380px';
+
+let lastSub='';
+function seek(t){
+  // scenes: compute opacity per id (max over windows)
+  const op={};
+  for(const [id,a,b,fi,fo] of scenes){const o=win(t,a,b,fi,fo);op[id]=Math.max(op[id]||0,o)}
+  document.querySelectorAll('.scene').forEach(el=>el.style.opacity=op[el.id]||0);
+
+  // narrator slow push
+  $('narrFig').setAttribute('transform',`translate(${360-360*(1+t*.012)} ${(1-(1+t*.012))*700}) scale(${1+t*.012})`);
+
+  // room: first window slow push; second window push toward door
+  let rs=1, rx=0, ry=0;
+  if(t<10){rs=1+ramp(t,5,9)*.04}
+  else {const k=ease(ramp(t,30,36));rs=1.05+k*.35;rx=-370*(rs-1)+0;ry=-640*(rs-1)}
+  if(t<10){rx=-360*(rs-1);ry=-640*(rs-1)}
+  $('roomCam').setAttribute('transform',`translate(${rx} ${ry}) scale(${rs})`);
+  // mirror reflection lags (blink)
+  $('mirrorRefl').setAttribute('opacity', (t>7.6&&t<8.1)?.55:0);
+
+  // lock screen: notification + vibration
+  const vib=(t>20.4&&t<21.2)||(t>21.6&&t<22.4);
+  $('lockInner').style.transform=vib?`translate(${Math.sin(t*140)*6}px,${Math.cos(t*170)*3}px)`:'none';
+  $('lockNotif').style.opacity=t>20.4&&t<25?1:0;
+  $('lockInner').style.filter=t<12?`brightness(${.4+ramp(t,9,9.6)*.6})`:'none';
+
+  // door: knock shakes, slow push
+  let dsc=1, dy=0, shake=0;
+  for(const k of [12.3,13.3,14.3]){const d=t-k;if(d>=0&&d<.12)shake=(1-d/.12)*5}
+  if(t>=12&&t<20){dsc=1+ramp(t,15.5,20)*.06}
+  if(t>=48&&t<54){dsc=1.08+ramp(t,48,54)*.05}
+  if(t>=67&&t<72.2){dsc=1.1;dy=-ease(ramp(t,67.5,72))*520}
+  $('doorG').parentNode.setAttribute('style',`transform-origin:360px 1100px;transform:translateY(${dy}px) scale(${dsc}) translateX(${shake*Math.sin(t*300)}px)`);
+
+  // chat A message appear
+  $('chatA2').style.opacity=ramp(t,24.4,24.7);
+
+  // call state
+  let st='جاري الاتصال…';
+  if(t>=40.2&&t<54.4){const s=Math.floor(t-40.2)+1;st='00:'+String(s).padStart(2,'0')}
+  if(t>=54.4)st='انتهت المكالمة';
+  $('callSt').textContent=st;
+
+  // unknown chat
+  $('c1').style.opacity=ramp(t,57.8,58.1);
+  $('c2t').style.opacity=(t>61&&t<63.4)?1:0;
+  $('c2t').style.display=(t<63.4)?'block':'none';
+  $('c2').style.opacity=ramp(t,63.4,63.7);
+  $('c2').style.display=(t>=63.4)?'block':'none';
+
+  // floor shadow
+  const sh=ramp(t,73,76);
+  $('shadow').setAttribute('opacity',(sh*0.95).toFixed(3));
+  const tilt=ease(ramp(t,79.5,82.5))*-4.5;
+  $('shadowTilt').setAttribute('transform',`rotate(${tilt} 360 561) scale(1 ${0.9+0.1*sh})`);
+  $('s_floor').style.transform=`scale(${1+ramp(t,72,87)*.05})`;
+
+  // black + title
+  $('black').style.opacity=t>=86.95?1:0;
+  $('title').style.opacity=win(t,88.6,92.8,.6,.8);
+
+  // big
+  let bh='',bo=0;for(const [a,b,h] of bigs){const o=win(t,a,b,.25,.3);if(o>0){bh=h;bo=o}}
+  if($('big').innerHTML!==bh)$('big').innerHTML=bh;$('big').style.opacity=bo;
+
+  // subs
+  let s=null;for(const x of subs){if(t>=x[0]&&t<x[1])s=x}
+  const html=s?((s[3]?`<span class="who">${s[3]}</span>`:'')+`<span class="${s[2].startsWith('«')?'q':''}">${s[2]}</span>`):'';
+  if(html!==lastSub){$('subs').innerHTML=html;lastSub=html}
+  $('subs').style.opacity=(t>=86.95)?0:1;
+
+  // grain
+  const f=Math.floor(t*24)%6;gc.putImageData(noiseFrames[f],0,0);
+  $('grain').style.transform=`translate(${(f*37)%50}px,${(f*53)%50}px)`;
+  $('grain').style.opacity=t>=86.95?0.04:0.09;
+}
+window.seek=seek;window.DURATION=DURATION;
+
+// live playback when opened directly (not when rendering)
+if(!location.search.includes('render')){
+  let t0=null;const loop=ts=>{if(t0===null)t0=ts;const t=((ts-t0)/1000)%DURATION;seek(t);requestAnimationFrame(loop)};
+  document.fonts.ready.then(()=>requestAnimationFrame(loop));
+} else seek(0);
+</script>
+</body>
+</html>
