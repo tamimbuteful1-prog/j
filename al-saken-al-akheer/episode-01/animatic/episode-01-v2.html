@@ -1,0 +1,593 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>الساكن الأخير 01</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@400;600;800;900&family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:#000;width:720px;height:1280px;overflow:hidden}
+  #stage{position:relative;width:720px;height:1280px;overflow:hidden;background:#000}
+  .scene{position:absolute;inset:0;opacity:0}
+  .scene>svg{position:absolute;inset:0;width:720px;height:1280px;overflow:visible}
+  /* phone */
+  .ph{position:absolute;width:330px;height:680px;border-radius:46px;background:#050607;border:3px solid #23292d;box-shadow:0 0 0 2px #0b0d0f,0 30px 80px rgba(0,0,0,.8),0 0 160px rgba(120,170,210,.18);overflow:hidden;font-family:'Tajawal',sans-serif;direction:rtl}
+  .scr{position:absolute;inset:10px;border-radius:36px;overflow:hidden;background:#0b1014}
+  .sb{display:flex;justify-content:space-between;padding:12px 22px 0;font-size:14px;color:#c9d1d5;direction:ltr;font-weight:600}
+  .hd{display:flex;align-items:center;gap:10px;padding:14px 16px 12px;background:#10171b;border-bottom:1px solid #1b2328}
+  .av{width:38px;height:38px;border-radius:50%;background:#26313a;color:#8c9aa2;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700}
+  .nm{font-size:18px;font-weight:800;color:#e9eef1}
+  .sub{font-size:12px;color:#7e8b92}
+  .ms{padding:14px 12px;display:flex;flex-direction:column;gap:10px}
+  .dy{align-self:center;background:#182127;color:#8c99a0;font-size:11px;padding:3px 10px;border-radius:8px}
+  .bb{align-self:flex-start;max-width:86%;background:#1e2a31;color:#eef3f5;font-size:17px;line-height:1.55;padding:9px 12px 20px;border-radius:14px 14px 14px 4px;position:relative}
+  .bb .tm{position:absolute;left:10px;bottom:4px;font-size:10px;color:#86949b;direction:ltr}
+  .bb mark{background:none;color:#f1d58e}
+  .wr{margin:10px 12px 0;background:#2a2316;color:#d6b26a;font-size:12px;padding:7px 10px;border-radius:10px;text-align:center}
+  .ty{align-self:flex-start;background:#1e2a31;color:#93a1a8;font-size:13px;padding:8px 12px;border-radius:12px}
+  .call{position:absolute;inset:0;background:linear-gradient(#1b262d,#06090b);text-align:center}
+  .call .w{margin-top:150px;font-size:40px;font-weight:800;color:#eef3f5}
+  .call .s{margin-top:10px;font-size:20px;color:#9fb0b8;direction:ltr}
+  .call .bt{position:absolute;bottom:90px;width:100%;display:flex;justify-content:center;gap:34px}
+  .call .b{width:64px;height:64px;border-radius:50%;background:#26323a;color:#cfd8dc;font-size:12px;display:flex;align-items:center;justify-content:center}
+  .call .e{background:#c0392b;color:#fff}
+  /* overlays */
+  #caps{position:absolute;left:36px;right:36px;bottom:300px;text-align:center;font-family:'Noto Kufi Arabic',sans-serif;font-weight:800;font-size:44px;line-height:1.55;color:#fff;text-shadow:0 3px 10px rgba(0,0,0,.95),0 0 26px rgba(0,0,0,.85)}
+  #caps .y{color:#f0d58c}
+  #caps .r{color:#c23b32}
+  #caps .q{font-weight:600;color:#f4ead4}
+  #zoomtxt{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Noto Kufi Arabic';font-weight:900;font-size:86px;color:#f2f2f2;opacity:0;text-shadow:0 0 40px #000,0 0 12px #000}
+  #grain{position:absolute;inset:-60px;opacity:.07;mix-blend-mode:screen;pointer-events:none}
+  #vig{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 85% 70% at center,transparent 45%,rgba(0,0,0,.8) 100%),linear-gradient(to top,rgba(0,0,0,.6) 0,transparent 420px)}
+  #lbx{position:absolute;inset:0;pointer-events:none}
+  #black{position:absolute;inset:0;background:#000;opacity:0}
+  #title{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:'Noto Kufi Arabic'}
+  #title .a{font-size:74px;font-weight:900;color:#e8e8e8;opacity:0}
+  #title .b{font-size:32px;font-weight:600;color:#8a8a8a;margin-top:26px;opacity:0;font-family:'Noto Kufi Arabic'}
+</style>
+</head>
+<body>
+<div id="stage">
+
+<!-- ============ DEFS shared ============ -->
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <radialGradient id="gBulb" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#ffd58a" stop-opacity=".9"/><stop offset=".35" stop-color="#e2a64e" stop-opacity=".35"/><stop offset="1" stop-color="#e2a64e" stop-opacity="0"/></radialGradient>
+    <radialGradient id="gSpill" cx="50%" cy="0%" r="100%"><stop offset="0" stop-color="#f3c068" stop-opacity=".75"/><stop offset=".5" stop-color="#b9873d" stop-opacity=".18"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>
+    <radialGradient id="gPhone" cx="50%" cy="100%" r="80%"><stop offset="0" stop-color="#cfe3f5" stop-opacity=".75"/><stop offset=".55" stop-color="#7fa6c8" stop-opacity=".22"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>
+    <linearGradient id="gWall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0b1015"/><stop offset="1" stop-color="#151c21"/></linearGradient>
+    <linearGradient id="gSideL" x1="0" x2="1"><stop offset="0" stop-color="#06090c"/><stop offset="1" stop-color="#10161b"/></linearGradient>
+    <linearGradient id="gSideR" x1="1" x2="0"><stop offset="0" stop-color="#070a0d"/><stop offset="1" stop-color="#11171c"/></linearGradient>
+    <linearGradient id="gFloor" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#16140f"/><stop offset="1" stop-color="#050505"/></linearGradient>
+    <linearGradient id="gWood" x1="0" x2="1"><stop offset="0" stop-color="#18130e"/><stop offset=".5" stop-color="#231c15"/><stop offset="1" stop-color="#16110c"/></linearGradient>
+    <linearGradient id="gHood" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1f272e"/><stop offset="1" stop-color="#0d1115"/></linearGradient>
+    <linearGradient id="gSkin" x1="0" x2="1"><stop offset="0" stop-color="#4a3428"/><stop offset=".55" stop-color="#7a5944"/><stop offset="1" stop-color="#8d6a52"/></linearGradient>
+    <radialGradient id="gLampFloor" cx="70%" cy="80%" r="75%"><stop offset="0" stop-color="#e7b25e" stop-opacity=".55"/><stop offset=".6" stop-color="#9c7339" stop-opacity=".18"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>
+    <linearGradient id="gMoon" x1="1" x2="0"><stop offset="0" stop-color="#5a7fa6" stop-opacity=".45"/><stop offset="1" stop-color="#5a7fa6" stop-opacity="0"/></linearGradient>
+    <linearGradient id="gSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#03060a"/><stop offset=".6" stop-color="#0b1621"/><stop offset="1" stop-color="#1a2532"/></linearGradient>
+    <linearGradient id="gCone" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffcf7a" stop-opacity=".35"/><stop offset="1" stop-color="#ffcf7a" stop-opacity="0"/></linearGradient>
+    <filter id="fBlur6"><feGaussianBlur stdDeviation="6"/></filter>
+    <filter id="fBlur14"><feGaussianBlur stdDeviation="14"/></filter>
+    <filter id="fBlur3"><feGaussianBlur stdDeviation="3"/></filter>
+    <filter id="fDof"><feGaussianBlur stdDeviation="5"/></filter>
+    <clipPath id="eyeL"><path d="M276 572 Q305 548 336 570 Q306 586 276 572Z"/></clipPath>
+    <clipPath id="eyeR"><path d="M390 570 Q420 548 450 572 Q420 586 390 570Z"/></clipPath>
+    <clipPath id="eyeP"><path d="M300 560 Q318 548 338 558 Q320 570 300 560Z"/></clipPath>
+  </defs>
+</svg>
+
+<!-- ============ ROOM (one fixed layout, reused everywhere) ============ -->
+<script type="text/x-svg" id="tRoom">
+  <g class="L0">
+    <!-- back wall -->
+    <rect x="-200" y="120" width="1120" height="680" fill="url(#gWall)"/>
+    <!-- side walls -->
+    <polygon points="-200,0 120,250 120,800 -200,1400" fill="url(#gSideL)"/>
+    <polygon points="920,0 600,250 600,800 920,1400" fill="url(#gSideR)"/>
+    <polygon points="-200,0 920,0 600,250 120,250" fill="#07090b"/>
+    <!-- window on right wall -->
+    <polygon points="640,330 760,290 760,610 640,600" fill="#16283a"/>
+    <polygon points="640,330 760,290 760,610 640,600" fill="none" stroke="#090c0f" stroke-width="8"/>
+    <line x1="700" y1="312" x2="700" y2="606" stroke="#090c0f" stroke-width="6"/>
+    <!-- mirror on left wall -->
+    <g><polygon points="40,330 92,350 92,700 40,740" fill="#3a2a1b"/><polygon points="48,345 86,360 86,690 48,724" fill="#121a20"/><polygon class="mirrorRefl" points="58,520 78,524 78,640 58,650" fill="#05080a" opacity="0"/></g>
+  </g>
+  <g class="L1">
+    <!-- floor -->
+    <polygon points="120,800 600,800 920,1400 -200,1400" fill="url(#gFloor)"/>
+    <g stroke="#000" stroke-opacity=".35" stroke-width="2"><line x1="240" y1="800" x2="60" y2="1400"/><line x1="360" y1="800" x2="360" y2="1400"/><line x1="480" y1="800" x2="660" y2="1400"/><line x1="-200" y1="900" x2="920" y2="900"/><line x1="-200" y1="1060" x2="920" y2="1060"/></g>
+    <!-- moonlight on floor -->
+    <polygon points="600,800 760,760 920,1100 700,1150" fill="url(#gMoon)" opacity=".5"/>
+    <!-- door -->
+    <rect x="296" y="520" width="128" height="280" fill="url(#gWood)" stroke="#060504" stroke-width="5"/>
+    <rect x="306" y="534" width="108" height="110" fill="none" stroke="#0f0c09" stroke-width="2"/>
+    <rect x="306" y="660" width="108" height="128" fill="none" stroke="#0f0c09" stroke-width="2"/>
+    <circle cx="308" cy="668" r="5" fill="#5b4a33"/>
+    <!-- light leaking around door edges -->
+    <g class="doorLeak"><rect x="293" y="520" width="3" height="280" fill="#f0bb60" opacity=".45"/><rect x="424" y="520" width="3" height="280" fill="#f0bb60" opacity=".35"/>
+    <rect class="gap" x="296" y="797" width="128" height="4" fill="#ffd27a"/>
+    <ellipse class="gapSpill" cx="360" cy="806" rx="140" ry="26" fill="url(#gSpill)"/></g>
+    <polygon points="300,800 430,800 640,1000 560,1060 300,900" fill="url(#gLampFloor)"/>
+    <!-- the impossible shadow (from inside the room toward the door) -->
+    <g class="roomShadow" opacity="0" filter="url(#fBlur6)">
+      <path class="rsPath" d="M560 1010 C 545 1000 520 990 505 975 L 410 860 C 400 845 392 828 388 812 L 400 800 L 345 800 C 352 818 362 838 372 856 L 470 985 C 480 1000 500 1016 520 1024 Z" fill="#000" opacity="1"/>
+    </g>
+    <!-- boxes (left front) -->
+    <g transform="translate(-30,980)"><rect x="0" y="0" width="190" height="150" fill="#33291e"/><rect x="0" y="0" width="190" height="20" fill="#3e3326"/><rect x="25" y="-110" width="150" height="110" fill="#2d241a"/>
+      <text x="95" y="92" text-anchor="middle" font-family="Tajawal" font-size="24" fill="#120e0a" font-weight="800">غرفة نواف</text>
+      <text x="100" y="-48" text-anchor="middle" font-family="Tajawal" font-size="22" fill="#120e0a" font-weight="800">كتب</text></g>
+  </g>
+  <g class="L2">
+    <!-- nightstand + lamp (right, behind bed head) -->
+    <rect x="590" y="900" width="110" height="120" fill="#17120d"/><rect x="584" y="892" width="122" height="12" fill="#211a13"/>
+    <rect x="630" y="860" width="40" height="32" rx="3" fill="#0d0f10"/><text x="650" y="882" text-anchor="middle" font-family="Tajawal" font-size="14" fill="#7fe0a0" opacity=".7" direction="ltr">03:17</text>
+    <ellipse class="lampGlow" cx="610" cy="860" rx="150" ry="140" fill="url(#gBulb)" opacity=".35"/>
+    <!-- bed (right-front) -->
+    <path d="M330 1060 L 720 1000 L 900 1000 L 900 1400 L 300 1400 Z" fill="#101215"/>
+    <path d="M320 1050 L 720 990 L 900 990 L 900 1030 L 330 1100 Z" fill="#1c2026"/>
+    <path d="M600 960 L 760 940 L 780 1000 L 610 1012 Z" fill="#2a2f36"/>
+    <!-- sleeping nawaf -->
+    <g class="sleepN" opacity="0">
+      <path d="M380 1060 C 420 1020 560 1000 640 1000 C 690 1000 700 1040 690 1060 Z" fill="#232a33"/>
+      <ellipse cx="660" cy="985" rx="30" ry="24" fill="#0a0a0a"/>
+    </g>
+    <!-- sitting nawaf (back/3-4 view, facing the door) -->
+    <g class="sitN" opacity="0">
+      <path d="M470 1095 C 470 1040 490 1000 530 990 L 590 990 C 630 1000 645 1040 645 1095 Z" fill="url(#gHood)"/>
+      <rect x="545" y="965" width="28" height="30" fill="#4a3428"/>
+      <ellipse cx="559" cy="945" rx="34" ry="40" fill="#5c4233"/>
+      <path d="M523 945 C 520 905 545 895 562 896 C 585 897 600 915 594 950 C 590 930 575 920 560 921 C 542 922 530 932 523 945Z" fill="#070707"/>
+      <ellipse cx="559" cy="935" rx="35" ry="34" fill="#080808" opacity=".92"/>
+      <ellipse class="sitGlow" cx="545" cy="1010" rx="60" ry="30" fill="#bcd7ee" opacity="0" filter="url(#fBlur6)"/>
+    </g>
+    <ellipse class="bedPhone" cx="470" cy="1060" rx="22" ry="8" fill="#cfe6ff" opacity="0" filter="url(#fBlur3)"/>
+  </g>
+</script>
+
+<!-- ============ NAWAF FACE (front 3/4) ============ -->
+<script type="text/x-svg" id="tFace">
+  <g class="faceRoot">
+    <!-- hoodie & neck -->
+    <path d="M150 1300 C 160 980 230 900 300 880 L 420 880 C 500 900 570 980 580 1300Z" fill="url(#gHood)"/>
+    <path d="M300 880 C 320 930 400 930 420 880 L 410 820 L 310 820 Z" fill="#3c2a20"/>
+    <path d="M285 885 C 300 960 420 960 435 885 C 420 905 300 905 285 885Z" fill="#141a1f"/>
+    <g class="head">
+      <ellipse cx="236" cy="590" rx="18" ry="34" fill="#4a3428"/>
+      <ellipse cx="486" cy="590" rx="16" ry="32" fill="#6b4d3b"/>
+      <path d="M362 392 C 452 392 492 460 490 570 C 488 660 452 735 402 768 C 382 780 342 780 322 768 C 272 735 236 660 234 570 C 232 460 272 392 362 392Z" fill="url(#gSkin)"/>
+      <!-- shading side -->
+      <path d="M362 392 C 300 400 240 460 234 570 C 236 660 272 735 322 768 C 300 700 290 620 300 540 C 305 470 330 420 362 392Z" fill="#000" opacity=".28"/>
+      <!-- hair -->
+      <path d="M226 560 C 214 430 290 352 372 354 C 466 356 512 430 498 556 C 486 488 458 450 410 446 C 360 442 312 456 282 476 C 258 494 240 522 226 560Z" fill="#0a0908"/>
+      <path d="M300 430 C 340 400 420 398 460 430 C 430 420 360 418 300 430Z" fill="#1b1916"/>
+      <!-- brows -->
+      <path class="browL" d="M272 532 Q302 516 336 528" stroke="#0d0b09" stroke-width="9" fill="none" stroke-linecap="round"/>
+      <path class="browR" d="M392 528 Q424 516 452 532" stroke="#0d0b09" stroke-width="9" fill="none" stroke-linecap="round"/>
+      <!-- eyes -->
+      <g clip-path="url(#eyeL)"><rect x="270" y="540" width="70" height="50" fill="#d8d3cb"/><g class="irisL"><circle cx="306" cy="568" r="11" fill="#2a1c12"/><circle cx="306" cy="568" r="5" fill="#050302"/><circle cx="302" cy="564" r="2.5" fill="#fff" opacity=".8"/></g><rect class="lidL" x="270" y="540" width="70" height="0" fill="#5f4535"/></g>
+      <g clip-path="url(#eyeR)"><rect x="384" y="540" width="70" height="50" fill="#d8d3cb"/><g class="irisR"><circle cx="420" cy="568" r="11" fill="#2a1c12"/><circle cx="420" cy="568" r="5" fill="#050302"/><circle cx="416" cy="564" r="2.5" fill="#fff" opacity=".8"/></g><rect class="lidR" x="384" y="540" width="70" height="0" fill="#7a5944"/></g>
+      <path d="M276 572 Q305 548 336 570" stroke="#120c08" stroke-width="3" fill="none"/>
+      <path d="M390 570 Q420 548 450 572" stroke="#120c08" stroke-width="3" fill="none"/>
+      <!-- nose -->
+      <path d="M368 590 C 366 630 356 652 344 664 C 354 672 372 672 384 664" stroke="#3a281e" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <!-- mouth -->
+      <path d="M328 716 Q362 709 396 716" stroke="#2b1a14" stroke-width="5" fill="none" stroke-linecap="round"/>
+      <ellipse class="mouth" cx="362" cy="716" rx="22" ry="0" fill="#1a0e0a"/>
+      <!-- stubble shadow -->
+      <path d="M300 720 C 320 770 400 770 424 720 C 410 760 320 760 300 720Z" fill="#000" opacity=".12"/>
+    </g>
+    <!-- light layers -->
+    <rect class="phoneLight" x="0" y="300" width="720" height="1000" fill="url(#gPhone)" opacity="0" style="mix-blend-mode:screen"/>
+    <rect class="blueAmb" x="0" y="0" width="720" height="1280" fill="#163049" opacity=".32" style="mix-blend-mode:multiply"/>
+  </g>
+</script>
+
+<!-- ============ SCENES ============ -->
+
+<!-- S: door (close) -->
+<div class="scene" id="s_door"><svg viewBox="0 0 720 1280"><g class="cam">
+  <rect x="-200" y="-200" width="1120" height="1700" fill="#06080a"/>
+  <g class="dl">
+    <rect x="100" y="0" width="520" height="1110" fill="url(#gWood)" stroke="#040302" stroke-width="12"/>
+    <rect x="140" y="60" width="440" height="440" fill="none" stroke="#0e0b08" stroke-width="6"/>
+    <rect x="140" y="560" width="440" height="510" fill="none" stroke="#0e0b08" stroke-width="6"/>
+    <rect x="136" y="560" width="24" height="76" rx="6" fill="#4d3f2c"/><circle cx="148" cy="602" r="15" fill="#6b5a40"/>
+    <rect x="94" y="0" width="6" height="1110" fill="#f0bb60" class="edge" opacity=".35"/>
+    <rect x="620" y="0" width="6" height="1110" fill="#f0bb60" class="edge" opacity=".3"/>
+  </g>
+  <rect x="-200" y="1110" width="1120" height="400" fill="#0b0a08"/>
+  <rect class="dgap" x="100" y="1104" width="520" height="10" fill="#ffd27a"/>
+  <ellipse class="dspill" cx="360" cy="1120" rx="380" ry="110" fill="url(#gSpill)"/>
+  <!-- something behind the door: two dark interruptions in the gap -->
+  <g class="behind" opacity="0"><rect x="300" y="1103" width="40" height="12" fill="#000"/><rect x="380" y="1103" width="40" height="12" fill="#000"/></g>
+  <g class="dust" opacity="0"></g>
+</g></svg></div>
+
+<!-- S: face -->
+<div class="scene" id="s_face"><svg viewBox="0 0 720 1280"><rect width="720" height="1280" fill="#05080b"/><g class="bgRoom" opacity=".55" filter="url(#fDof)"></g><g class="cam"></g></svg></div>
+
+<!-- S: face lying (eyes open) -->
+<div class="scene" id="s_lie"><svg viewBox="0 0 720 1280"><rect width="720" height="1280" fill="#06090c"/>
+  <g class="cam"><ellipse cx="360" cy="700" rx="520" ry="330" fill="#1b2027"/><g class="faceHolder"></g>
+  <path d="M-100 860 C 100 800 300 840 420 900 C 560 960 700 930 820 900 L 820 1400 L -100 1400 Z" fill="#1d232b"/>
+  <path d="M-100 860 C 100 800 300 840 420 900 C 560 960 700 930 820 900" stroke="#2b333d" stroke-width="10" fill="none"/></g></svg></div>
+
+<!-- S: exterior -->
+<div class="scene" id="s_ext"><svg viewBox="0 0 720 1280">
+  <rect width="720" height="1280" fill="url(#gSky)"/>
+  <g class="x0"><circle cx="120" cy="140" r="1.5" fill="#9ab"/><circle cx="560" cy="90" r="1.2" fill="#9ab"/><circle cx="420" cy="210" r="1" fill="#9ab"/><circle cx="660" cy="260" r="1.3" fill="#9ab"/>
+    <path d="M-100 760 L -100 600 L 0 600 L 0 560 L 90 560 L 90 640 L 160 640 L 160 520 L 220 520 L 220 700 L 300 700 L 300 610 L 380 610 L 380 560 L 430 540 L 480 560 L 480 680 L 560 680 L 560 580 L 640 580 L 640 650 L 820 650 L 820 760 Z" fill="#0c131b"/>
+    <rect x="404" y="420" width="4" height="120" fill="#0c131b"/><circle cx="406" cy="420" r="3" fill="#b33" opacity=".6"/></g>
+  <g class="x1"><path d="M-100 900 L -100 700 L 60 700 L 60 650 L 140 650 L 140 900 Z" fill="#0a0f15"/><path d="M560 900 L 560 690 L 700 690 L 700 640 L 820 640 L 820 900 Z" fill="#0a0f15"/>
+    <g fill="#e2b25c" opacity=".35"><rect x="20" y="730" width="12" height="16"/><rect x="600" y="720" width="12" height="16"/><rect x="740" y="680" width="12" height="16"/></g></g>
+  <g class="x2">
+    <!-- the old building -->
+    <rect x="150" y="300" width="420" height="760" fill="#141b20"/>
+    <rect x="150" y="300" width="420" height="22" fill="#1b232a"/>
+    <g fill="#0b0f12">
+      <rect x="190" y="360" width="70" height="90"/><rect x="325" y="360" width="70" height="90"/><rect x="460" y="360" width="70" height="90"/>
+      <rect x="190" y="500" width="70" height="90"/><rect x="325" y="500" width="70" height="90"/><rect x="460" y="500" width="70" height="90"/>
+      <rect x="190" y="640" width="70" height="90"/><rect x="325" y="640" width="70" height="90"/><rect x="460" y="640" width="70" height="90"/>
+      <rect x="190" y="780" width="70" height="90"/><rect x="325" y="780" width="70" height="90"/><rect x="460" y="780" width="70" height="90"/>
+    </g>
+    <rect class="nWin" x="325" y="500" width="70" height="90" fill="#d8a656" opacity=".45"/>
+    <rect x="325" y="500" width="70" height="90" fill="url(#gBulb)" opacity=".25"/>
+    <g stroke="#0a0d10" stroke-width="3"><line x1="150" y1="470" x2="570" y2="470"/><line x1="150" y1="610" x2="570" y2="610"/><line x1="150" y1="750" x2="570" y2="750"/><line x1="150" y1="890" x2="570" y2="890"/></g>
+    <rect x="310" y="940" width="100" height="120" fill="#0a0d10"/><rect x="310" y="940" width="100" height="6" fill="#d8a656" opacity=".25"/>
+    <rect x="160" y="400" width="20" height="10" fill="#2b3238"/><rect x="540" y="540" width="24" height="14" fill="#2b3238"/>
+  </g>
+  <g class="x3">
+    <rect x="-100" y="1060" width="920" height="300" fill="#0b0c0d"/><rect x="-100" y="1060" width="920" height="8" fill="#1a1c1e"/>
+    <!-- street lamp with volumetric cone -->
+    <rect x="600" y="620" width="10" height="460" fill="#0e1012"/><path d="M605 620 Q 605 600 570 600 L 540 600" stroke="#0e1012" stroke-width="8" fill="none"/>
+    <polygon points="530,606 556,606 700,1080 380,1080" fill="url(#gCone)"/>
+    <ellipse cx="543" cy="606" rx="40" ry="20" fill="url(#gBulb)"/>
+    <ellipse cx="545" cy="1078" rx="170" ry="24" fill="#ffcf7a" opacity=".12"/>
+  </g>
+  <g class="x4">
+    <!-- palm silhouette foreground -->
+    <path d="M60 1400 C 70 1200 80 1000 100 820" stroke="#020304" stroke-width="26" fill="none"/>
+    <g fill="#020304"><path d="M100 820 C 40 780 -40 790 -90 840 C -20 800 40 805 100 830Z"/><path d="M100 820 C 160 770 240 770 290 820 C 230 790 160 795 100 830Z"/><path d="M100 820 C 80 750 30 700 -30 690 C 40 720 80 760 96 826Z"/><path d="M100 820 C 130 750 190 710 250 705 C 190 735 140 770 104 828Z"/><path d="M100 820 C 110 760 100 700 80 660 C 120 700 125 760 106 826Z"/></g>
+  </g>
+</svg></div>
+
+<!-- S: room wide -->
+<div class="scene" id="s_room"><svg viewBox="0 0 720 1280"><g class="cam"></g><rect class="darkCorner" x="0" y="0" width="720" height="1280" fill="#000" opacity="0"/></svg></div>
+
+<!-- S: clock / nightstand -->
+<div class="scene" id="s_clock"><svg viewBox="0 0 720 1280"><g class="cam">
+  <rect x="-200" y="-200" width="1120" height="1700" fill="#07090b"/>
+  <ellipse cx="200" cy="420" rx="420" ry="420" fill="url(#gBulb)" opacity=".18"/>
+  <rect x="-200" y="860" width="1120" height="500" fill="#17120d"/><rect x="-200" y="850" width="1120" height="20" fill="#241c14"/>
+  <g class="shk1"><rect x="160" y="620" width="400" height="232" rx="22" fill="#0b0d0e"/><rect x="178" y="640" width="364" height="192" rx="12" fill="#030504"/>
+    <text x="360" y="790" text-anchor="middle" font-family="Tajawal" font-weight="300" font-size="150" fill="#7fe0a0" direction="ltr" style="letter-spacing:-2px">03:17</text>
+    <text x="520" y="690" text-anchor="end" font-family="Tajawal" font-weight="700" font-size="26" fill="#7fe0a0" direction="ltr">AM</text>
+    <ellipse cx="360" cy="736" rx="240" ry="140" fill="#7fe0a0" opacity=".06" filter="url(#fBlur14)"/></g>
+  <g class="shk2"><rect x="590" y="690" width="70" height="162" rx="8" fill="#9fb3bf" opacity=".18"/><rect class="water" x="594" y="740" width="62" height="108" fill="#8fb0c6" opacity=".22"/><ellipse class="ripple" cx="625" cy="740" rx="30" ry="4" fill="none" stroke="#cfe" stroke-opacity="0" stroke-width="2"/></g>
+  <g class="shk3"><rect x="40" y="800" width="90" height="52" rx="10" fill="#0f1215"/><rect x="48" y="806" width="74" height="40" rx="6" fill="#050608"/></g>
+</g></svg></div>
+
+<!-- S: over the shoulder -->
+<div class="scene" id="s_ots"><svg viewBox="0 0 720 1280"><g class="bg"></g><g class="fg">
+  <path d="M-120 1400 C -110 1180 -60 1080 40 1040 C 120 1010 200 1020 240 1060 C 290 1110 320 1250 330 1400 Z" fill="#0d1115"/>
+  <ellipse cx="80" cy="900" rx="150" ry="170" fill="#050505"/>
+  <ellipse cx="208" cy="920" rx="20" ry="40" fill="#2a1d16"/>
+  <path d="M-60 880 C -50 760 40 720 100 726 C 170 732 230 790 226 900 C 200 820 140 790 80 792 C 10 795 -40 840 -60 880Z" fill="#0b0b0b"/>
+  <ellipse class="otsGlow" cx="160" cy="1080" rx="200" ry="120" fill="#bcd7ee" opacity="0" filter="url(#fBlur14)"/>
+</g></svg></div>
+
+<!-- S: phone close -->
+<div class="scene" id="s_phone"><div class="pcam" style="position:absolute;inset:0">
+  <svg viewBox="0 0 720 1280"><rect width="720" height="1280" fill="#04070a"/><ellipse cx="360" cy="620" rx="380" ry="460" fill="#9cc2e2" opacity=".07" filter="url(#fBlur14)"/>
+    <!-- hand behind -->
+    <path d="M180 1400 C 190 1200 200 1080 230 1010 L 520 1010 C 560 1080 560 1200 560 1400 Z" fill="#3b2a20"/>
+  </svg>
+  <div class="ph" id="phone" style="left:195px;top:280px">
+    <div class="scr" id="scr"></div>
+  </div>
+  <svg viewBox="0 0 720 1280" style="position:absolute;inset:0;pointer-events:none">
+    <!-- fingers wrapping the phone sides -->
+    <path d="M196 760 C 168 770 160 820 176 850 C 186 868 200 866 206 850 Z" fill="#5a4031"/>
+    <path d="M196 840 C 166 852 160 900 176 930 C 186 948 200 946 206 930 Z" fill="#53392c"/>
+    <path d="M524 800 C 556 812 562 870 544 900 C 532 916 518 912 514 896 Z" fill="#4a3428"/>
+    <path d="M300 1010 C 330 980 380 975 420 990 C 400 1020 340 1030 300 1010Z" fill="#5f4535"/>
+  </svg>
+</div></div>
+
+<!-- S: side profile on the call -->
+<div class="scene" id="s_side"><svg viewBox="0 0 720 1280"><rect width="720" height="1280" fill="#05080b"/>
+  <g class="bgS" opacity=".5" filter="url(#fDof)"><rect x="40" y="380" width="150" height="520" fill="#1c1611"/><rect x="34" y="890" width="162" height="10" fill="#f0bb60" opacity=".6"/></g>
+  <g class="cam">
+    <path d="M250 1400 C 260 1050 330 930 420 900 L 560 900 C 640 930 700 1060 720 1400Z" fill="url(#gHood)"/>
+    <path d="M380 760 L 480 760 L 500 910 L 400 920 Z" fill="#3a281f"/>
+    <g class="sHead">
+      <path d="M300 470 C 300 420 350 390 410 392 C 480 395 520 450 520 530 C 520 600 505 650 480 690 L 470 760 L 400 790 L 340 782 C 326 760 322 740 324 722 C 304 718 294 708 296 694 C 290 686 292 676 298 670 C 288 664 290 652 296 648 C 280 640 268 626 274 614 C 284 598 296 588 298 572 C 296 540 300 500 300 470Z" fill="url(#gSkin)"/>
+      <path d="M296 506 C 288 420 350 380 424 384 C 506 392 538 456 526 548 C 516 520 500 500 474 492 C 424 474 360 484 296 506Z" fill="#0a0908"/>
+      <path d="M306 538 Q 326 528 346 534" stroke="#0d0b09" stroke-width="7" fill="none" stroke-linecap="round"/>
+      <g clip-path="url(#eyeP)"><rect x="296" y="545" width="46" height="30" fill="#d0cbc2"/><circle class="sIris" cx="312" cy="560" r="7" fill="#1e140e"/><rect class="sLid" x="296" y="545" width="46" height="0" fill="#6a4c3b"/></g>
+      <path d="M300 560 Q318 548 338 558" stroke="#120c08" stroke-width="3" fill="none"/>
+      <path class="sMouth" d="M300 676 Q 312 680 326 676" stroke="#2b1a14" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <ellipse cx="452" cy="600" rx="22" ry="36" fill="#5c4233"/>
+    </g>
+    <!-- hand + phone at ear -->
+    <g class="sHand">
+      <rect x="440" y="520" width="56" height="150" rx="12" fill="#0b0d0f" transform="rotate(-12 468 595)"/>
+      <rect x="446" y="528" width="44" height="134" rx="8" fill="#9cc2e2" opacity=".25" transform="rotate(-12 468 595)"/>
+      <path d="M470 640 C 520 640 560 700 560 760 L 560 920 L 470 920 C 470 860 460 800 450 760 C 440 720 440 670 470 640Z" fill="#4e382b"/>
+      <path d="M446 610 C 430 616 428 640 440 650 L 470 646 Z" fill="#5a4031"/>
+    </g>
+    <rect class="sGlow" x="200" y="420" width="400" height="420" fill="url(#gPhone)" opacity=".35" style="mix-blend-mode:screen"/>
+    <rect x="0" y="0" width="720" height="1280" fill="#163049" opacity=".3" style="mix-blend-mode:multiply"/>
+  </g>
+</svg></div>
+
+<!-- S: floor level -->
+<div class="scene" id="s_floor"><svg viewBox="0 0 720 1280"><g class="cam">
+  <rect x="-1200" y="-400" width="3200" height="2400" fill="#050607"/>
+  <!-- door bottom + wall -->
+  <rect x="-1200" y="-400" width="3200" height="760" fill="#0c1014"/>
+  <rect x="120" y="-200" width="480" height="560" fill="url(#gWood)"/>
+  <rect class="fgap" x="120" y="352" width="480" height="14" fill="#ffd47e"/>
+  <rect x="-1200" y="340" width="1320" height="22" fill="#14100b"/><rect x="600" y="340" width="1400" height="22" fill="#14100b"/>
+  <!-- floor plane -->
+  <polygon points="-1200,366 2000,366 2000,2000 -1200,2000" fill="url(#gFloor)"/>
+  <polygon points="120,366 600,366 1100,1400 -380,1400" fill="url(#gSpill)" opacity=".8"/>
+  <g stroke="#000" stroke-opacity=".4" stroke-width="2">
+    <line x1="360" y1="366" x2="360" y2="2000"/><line x1="200" y1="366" x2="-300" y2="2000"/><line x1="520" y1="366" x2="1020" y2="2000"/><line x1="40" y1="366" x2="-900" y2="2000"/><line x1="680" y1="366" x2="1620" y2="2000"/>
+    <line x1="-1200" y1="430" x2="2000" y2="430"/><line x1="-1200" y1="560" x2="2000" y2="560"/><line x1="-1200" y1="800" x2="2000" y2="800"/><line x1="-1200" y1="1240" x2="2000" y2="1240"/>
+  </g>
+  <!-- shadow: head end at the door gap, body running back INTO the room, two feet near the camera -->
+  <g class="fshadow" opacity="0" filter="url(#fBlur6)">
+    <path class="fsPath" d="M330 366 C 320 380 318 400 330 420 L 300 520 C 280 640 250 800 230 1000 L 200 1300 C 190 1420 170 1540 150 1640 L 330 1640 C 350 1500 360 1400 365 1300 L 380 1300 C 385 1400 395 1500 420 1640 L 600 1640 C 570 1540 545 1420 535 1300 L 500 1000 C 480 800 450 640 430 520 L 400 420 C 412 400 410 380 400 366 Z" fill="#000" opacity=".92"/>
+  </g>
+</g></svg></div>
+
+<div id="zoomtxt"></div>
+<div id="black"></div>
+<div id="title"><div class="a">الساكن الأخير</div><div class="b">الحلقة الأولى — لا ترد</div></div>
+<canvas id="grain" width="420" height="700"></canvas>
+<div id="vig"></div>
+<div id="caps"></div>
+</div>
+
+<script>
+const $=s=>document.querySelector(s), $$=s=>document.querySelectorAll(s);
+const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const ramp=(t,a,b)=>clamp((t-a)/(b-a));
+const ease=x=>x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;
+const eo=x=>1-Math.pow(1-x,3);
+const lerp=(a,b,k)=>a+(b-a)*k;
+const DURATION=92.5;
+
+// --- instantiate templates ---
+function inst(tplId,target){target.innerHTML+=document.getElementById(tplId).textContent;}
+inst('tRoom',$('#s_room .cam'));
+inst('tRoom',$('#s_ots .bg'));
+inst('tRoom',$('#s_face .bgRoom'));
+inst('tFace',$('#s_face .cam'));
+inst('tFace',$('#s_lie .faceHolder'));
+$('#s_lie .faceHolder').setAttribute('transform','translate(820,180) rotate(78) scale(.95)');
+
+// handheld micro-motion (deterministic)
+const hh=(t,amp=1)=>[amp*(Math.sin(t*1.3)*1.6+Math.sin(t*2.9+1)*.8), amp*(Math.sin(t*1.1+2)*1.4+Math.sin(t*3.3)*.6)];
+function setT(el,s){if(el)el.setAttribute('transform',s)}
+function cam(el,{x=0,y=0,s=1,r=0,ox=360,oy=640}){setT(el,`translate(${ox+x} ${oy+y}) rotate(${r}) scale(${s}) translate(${-ox} ${-oy})`)}
+
+// ------------- face rig -------------
+function faceRig(root,{open=1,lookX=0,lookY=0,brow=0,mouth=0,phone=0,turn=0,breath=0}){
+  const lidH=(1-open)*50;
+  root.querySelectorAll('.lidL,.lidR').forEach(l=>{l.setAttribute('height',lidH);});
+  root.querySelectorAll('.irisL,.irisR').forEach(g=>setT(g,`translate(${lookX*12} ${lookY*7})`));
+  setT(root.querySelector('.browL'),`translate(0 ${-brow*10})`);
+  setT(root.querySelector('.browR'),`translate(0 ${-brow*10})`);
+  root.querySelector('.mouth').setAttribute('ry',mouth*10);
+  root.querySelector('.phoneLight').setAttribute('opacity',phone);
+  setT(root.querySelector('.head'),`translate(${turn*14} ${breath*3}) rotate(${turn*2} 362 600)`);
+}
+const blink=(t,period=4.2,off=0)=>{const p=((t+off)%period);return p<.14?Math.abs(p-.07)/.07:1};
+
+// ------------- scene timeline -------------
+// each entry: [sceneId, start, end, fn(localT, globalT)]
+const TL=[];
+const S=(id,a,b,fn)=>TL.push({id,a,b,fn});
+
+// 1 — door hook (behind door shadow), 0–2.6
+S('s_door',0,2.6,(l,t)=>{const c=$('#s_door .cam');const [hx,hy]=hh(t,.6);cam(c,{s:1.18+l*.025,x:hx,y:-80+hy,oy:1000});
+  $('#s_door .behind').setAttribute('opacity',.85);setT($('#s_door .behind'),`translate(${Math.sin(t*.9)*6} 0)`);
+  doorLight(1);});
+// phone on call in hand, 2.6–3.85
+S('s_phone',2.6,3.85,(l,t)=>{phoneScreen('call',{sec:7+Math.floor(t-2.6)});phoneCam(1.0+l*.03,0,0);});
+// face push to eyes, 3.85–6.25
+S('s_face',3.85,6.3,(l,t)=>{const c=$('#s_face .cam');cam(c,{s:1.15+ease(ramp(l,0,2.4))*.75,oy:570,y:0});
+  faceRig($('#s_face'),{open:1,lookX:-.5,brow:.6,phone:.55,breath:Math.sin(t*2)});$('#s_face .bgRoom').setAttribute('opacity',.35);});
+// exterior, 6.3–9.95
+S('s_ext',6.3,10.0,(l,t)=>{const k=ease(ramp(l,0,3.7));
+  const sc=[1,1.05,1.1+k*.9,1.15+k*1.1,1.3+k*1.6];
+  ['x0','x1','x2','x3','x4'].forEach((n,i)=>{const g=$(`#s_ext .${n}`);setT(g,`translate(360 545) scale(${sc[i]}) translate(-360 -545) translate(${[0,-6,0,-30*k,-120*k][i]} 0)`)});
+  $('#s_ext .nWin').setAttribute('opacity',.4+.08*Math.sin(t*7)*Math.sin(t*3.1));});
+// interior sleeping wide, 9.95–11.0
+S('s_room',10.0,11.05,(l,t)=>{roomState({sleep:1,sit:0});cam($('#s_room .cam'),{s:1.08-l*.03,oy:900});doorLight(1);});
+// clock, 11.0–13.55
+S('s_clock',11.05,13.6,(l,t)=>{cam($('#s_clock .cam'),{s:1.05+l*.04,oy:740});clockShake(t);});
+// eyes open lying, 13.55–15.72
+S('s_lie',13.6,15.72,(l,t)=>{cam($('#s_lie .cam'),{s:1.25+l*.04,oy:620,x:-40});
+  faceRig($('#s_lie'),{open:ease(ramp(l,.5,1.8))*.9,lookX:ramp(l,1.6,2.1)*-.8,brow:.2,phone:0});});
+// knock 1&2 → clock/nightstand shake, knock 3 → door
+S('s_clock',15.72,16.95,(l,t)=>{cam($('#s_clock .cam'),{s:1.35,oy:780,x:-110});clockShake(t);});
+S('s_door',16.95,17.8,(l,t)=>{cam($('#s_door .cam'),{s:1.0,oy:640});doorLight(1);$('#s_door .behind').setAttribute('opacity',0);knockShake($('#s_door .dl'),t);});
+// OTS 17.8–23.6 (turn head, mom voice, starts to rise)
+S('s_ots',17.8,23.65,(l,t)=>{const rise=ease(ramp(t,21.3,23.2));const [hx,hy]=hh(t,.5);
+  cam($('#s_ots .bg'),{s:2.0+l*.05,ox:360,oy:700,x:hx,y:-40+hy});
+  setT($('#s_ots .fg'),`translate(${-ease(ramp(t,17.8,18.6))*30} ${-rise*90})`);
+  $('#s_ots .otsGlow').setAttribute('opacity',ramp(t,23.4,23.65)*.6);
+  doorLight(1);roomState({sleep:0,sit:0});});
+// phone vibrates — face lit, 23.65–24.85
+S('s_face',23.65,24.85,(l,t)=>{cam($('#s_face .cam'),{s:1.35,oy:600,x:Math.sin(t*90)*1.5});
+  faceRig($('#s_face'),{open:.85,lookY:.8,lookX:0,brow:.2,phone:.3+ramp(l,0,.3)*.5});$('#s_face .bgRoom').setAttribute('opacity',.45);});
+// phone close message, 24.85–30.6
+S('s_phone',24.85,30.6,(l,t)=>{phoneScreen('mom',{show:ramp(t,26.4,26.7)});phoneCam(1.05+ease(ramp(l,0,5.7))*.25,0,-40*ease(ramp(l,1.6,5.7)));});
+// face push to eyes, freeze, 30.6–33.0
+S('s_face',30.6,33.05,(l,t)=>{const k=ease(ramp(l,0,2.0));cam($('#s_face .cam'),{s:1.3+k*.85,oy:570});
+  faceRig($('#s_face'),{open:lerp(.75,1,ramp(l,0,1)),lookX:lerp(0,-.6,ramp(l,.6,1.2)),lookY:lerp(.7,0,ramp(l,0,.8)),brow:lerp(.1,.8,ramp(l,0,1.2)),phone:.75});$('#s_face .bgRoom').setAttribute('opacity',.4);});
+// door static, light dims as something moves, 33.0–37.45
+S('s_door',33.05,37.5,(l,t)=>{cam($('#s_door .cam'),{s:1.0+ease(ramp(l,0,4.4))*.18,oy:1000});$('#s_door .behind').setAttribute('opacity',0);
+  const dim=1-.55*ramp(t,34.6,35.4)*(1-ramp(t,36.6,37.3));doorLight(dim);});
+// side profile, call, 37.45–49.9
+S('s_side',37.5,49.92,(l,t)=>{const up=eo(ramp(t,37.5,38.4));
+  setT($('#s_side .sHand'),`translate(${(1-up)*60} ${(1-up)*420})`);
+  const talk=(t>41.3&&t<42.7)?Math.abs(Math.sin(t*16))*.9:0;
+  $('#s_side .sMouth').setAttribute('d',`M300 676 Q 312 ${680+talk*10} 326 676`);
+  const bl=blink(t,3.7,.4);$('#s_side .sLid').setAttribute('height',(1-bl)*30+(t>45.7?0:0));
+  setT($('#s_side .sIris'),`translate(${t>46.9?-3:0} 0)`);
+  const push=ease(ramp(t,45.7,49.9));const [hx,hy]=hh(t,t<45.7?.6:0);
+  cam($('#s_side .cam'),{s:1.0+push*.35,ox:330,oy:560,x:hx,y:hy});
+  $('#s_side .sGlow').setAttribute('opacity',.35+.05*Math.sin(t*5));});
+// both voices — door, camera stopped, 49.92–51.6
+S('s_door',49.92,51.62,(l,t)=>{cam($('#s_door .cam'),{s:1.12,oy:1000});doorLight(1);$('#s_door .behind').setAttribute('opacity',0);});
+// face freeze shock, 51.6–54.45
+S('s_face',51.62,54.45,(l,t)=>{cam($('#s_face .cam'),{s:1.75,oy:580});
+  faceRig($('#s_face'),{open:1,lookX:-.7,brow:1,mouth:.25,phone:.6,breath:0});$('#s_face .bgRoom').setAttribute('opacity',.3);});
+// high wide — small in the dark room, 54.45–57.5
+S('s_room',54.45,57.55,(l,t)=>{roomState({sleep:0,sit:1});cam($('#s_room .cam'),{s:.82,oy:560,y:120});doorLight(.9);
+  const on=t>56.3?1:0;$('#s_room .sitGlow').setAttribute('opacity',on*.75);$('#s_room .bedPhone').setAttribute('opacity',0);});
+// unknown message, 57.5–63.9
+S('s_phone',57.55,63.95,(l,t)=>{phoneScreen('unk',{m1:ramp(t,60.8,61.1),typing:0,m2:0});
+  const z=ease(ramp(t,62.55,63.4));phoneCam(1.05+z*.95,-z*10,-z*380);});
+// eyes rise to door, 63.9–65.5
+S('s_face',63.95,65.55,(l,t)=>{cam($('#s_face .cam'),{s:1.55,oy:580,x:Math.abs(Math.sin(t*80))*(t<64.5&&t>64.03?2:0)});
+  faceRig($('#s_face'),{open:1,lookY:lerp(.8,-.2,eo(ramp(t,63.95,64.6))),lookX:lerp(0,-.7,eo(ramp(t,63.95,64.6))),brow:.8,phone:.55+(t>64.03&&t<64.9?.25:0)});});
+// second message, 65.5–67.4
+S('s_phone',65.55,67.43,(l,t)=>{phoneScreen('unk',{m1:1,typing:0,m2:ramp(t,65.58,65.85)});phoneCam(1.15,0,-60);});
+// looks down slowly, 67.4–68.65
+S('s_face',67.43,68.66,(l,t)=>{cam($('#s_face .cam'),{s:1.6,oy:580});
+  faceRig($('#s_face'),{open:lerp(1,.75,ramp(l,0,1)),lookY:lerp(-.1,1,ease(ramp(l,0,1.1))),lookX:-.3,brow:.6,phone:.55,turn:0});
+  setT($('#s_face .head'),`translate(0 ${ease(ramp(l,0,1.2))*14}) rotate(${-ease(ramp(l,0,1.2))*2} 362 600)`);});
+// floor: gap, then shadow, then slow pull back to reveal direction 68.65–78.0
+S('s_floor',68.66,78.0,(l,t)=>{const appear=ramp(t,70.2,71.6);
+  $('#s_floor .fshadow').setAttribute('opacity',appear*.95);
+  const rev=ease(ramp(t,72.55,77.6));
+  cam($('#s_floor .cam'),{s:lerp(1.9,.62,rev),ox:360,oy:lerp(380,700,rev),y:lerp(-260,120,rev),x:0});
+  $('#s_floor .fgap').setAttribute('opacity',.95+.05*Math.sin(t*9));});
+// realization — look at shadow, to light, back; slow orbit; 78.0–83.5
+S('s_face',78.0,83.55,(l,t)=>{const orb=ease(ramp(l,0,5.5));
+  cam($('#s_face .cam'),{s:1.45+orb*.15,oy:600,x:orb*-40,r:orb*-1.2});
+  const bg=$('#s_face .bgRoom');setT(bg,`translate(${orb*90} 0)`);bg.setAttribute('opacity',.25);
+  let lx=-.4,ly=.9;
+  if(t>78.9){lx=lerp(-.4,.9,eo(ramp(t,78.9,79.4)));ly=lerp(.9,-.3,eo(ramp(t,78.9,79.4)))}
+  if(t>80.0){lx=lerp(.9,-.4,eo(ramp(t,80.0,80.5)));ly=lerp(-.3,.9,eo(ramp(t,80.0,80.5)))}
+  faceRig($('#s_face'),{open:1,lookX:lx,lookY:ly,brow:lerp(.6,1,ramp(t,80.6,82)),mouth:ramp(t,81,82.5)*.2,phone:.5,turn:t>78.9&&t<80.3?.6:0});});
+// final reveal wide, 83.55–86.6 + push into the dark behind him
+S('s_room',83.55,86.62,(l,t)=>{roomState({sleep:0,sit:1});doorLight(.95);
+  const sh=$('#s_room .roomShadow');sh.setAttribute('opacity',ramp(t,83.6,84.1)*.95);
+  const sway=Math.sin((t-83.6)*1.1)*ramp(t,84.4,85)*1.0;
+  setT(sh.querySelector('.rsPath'),`translate(560 1010) skewX(${sway*3}) translate(-560 -1010)`);
+  $('#s_room .sitGlow').setAttribute('opacity',.55);
+  const push=ease(ramp(t,85.2,86.6));
+  cam($('#s_room .cam'),{s:1.0+push*.9,ox:640,oy:930,y:40});
+  $('#s_room .darkCorner').setAttribute('opacity',push*.55);});
+
+// ------------- helpers used by scenes -------------
+function doorLight(k){
+  $$('.gap,.dgap,.fgap').forEach(e=>e.setAttribute('opacity',k));
+  $$('.gapSpill,.dspill').forEach(e=>e.setAttribute('opacity',k));
+  $$('.doorLeak rect,.edge').forEach(e=>e.style.opacity=k*.9);
+}
+function roomState({sleep,sit}){$$('.sleepN').forEach(e=>e.setAttribute('opacity',sleep));$$('.sitN').forEach(e=>e.setAttribute('opacity',sit));}
+const KN=[15.76,16.43,17.11,32.7];
+function knockAmt(t){let a=0;for(const k of KN){const d=t-k;if(d>=0&&d<.18)a=Math.max(a,(1-d/.18)*(k===32.7?.3:1))}return a}
+function knockShake(el,t){const a=knockAmt(t);setT(el,`translate(${a*Math.sin(t*400)*5} ${a*2})`)}
+function clockShake(t){const a=knockAmt(t);['.shk1','.shk2','.shk3'].forEach((s,i)=>setT($('#s_clock '+s),`translate(${a*Math.sin(t*300+i)*4} ${-a*3*(i===2?1:.4)})`));
+  const r=$('#s_clock .ripple');let rr=0;for(const k of KN){const d=t-k;if(d>=0&&d<.9)rr=1-d/.9}
+  r.setAttribute('stroke-opacity',rr*.8);r.setAttribute('rx',30-rr*10);}
+function phoneCam(s,x,y){const p=$('#s_phone .pcam');p.style.transformOrigin='360px 620px';p.style.transform=`translate(${x}px,${y}px) scale(${s})`}
+
+let lastScreen='';
+function phoneScreen(kind,o){
+  let h='';
+  const sb='<div class="sb"><span>3:17</span><span>23% ▮▯ ·ıl</span></div>';
+  if(kind==='call'){h=`<div class="call"><div class="w">أمي</div><div class="s">00:${String(o.sec).padStart(2,'0')}</div><div class="bt"><div class="b">كتم</div><div class="b e">إنهاء</div><div class="b">مكبر</div></div></div>`}
+  if(kind==='mom'){h=`${sb}<div class="hd"><div class="av">م</div><div><div class="nm">أمي</div><div class="sub">آخر ظهور 3:16 ص</div></div></div>
+    <div class="ms"><div class="dy">أمس</div><div class="bb">وصلنا العمارة؟ قول لأبوك يجيب الكراتين اللي بالسيارة<span class="tm">10:42 م</span></div><div class="dy">اليوم</div>
+    <div class="bb" style="opacity:${o.show};transform:scale(${.94+.06*o.show})">أنا وأبوك في المستشفى، بنرجع الصباح، لا تنسى تقفل الباب<span class="tm">3:16 ص</span></div></div>`}
+  if(kind==='unk'){h=`${sb}<div class="hd"><div class="av">؟</div><div><div class="nm" style="direction:ltr;text-align:right">+966 50 000 0317</div><div class="sub">رقم غير معروف</div></div></div><div class="wr">هذا الرقم ليس ضمن جهات الاتصال</div>
+    <div class="ms"><div class="bb" style="opacity:${o.m1};transform:scale(${.94+.06*o.m1})">لا تفتح الباب…<br>هو للحين <mark>ما يعرف شكلك.</mark><span class="tm">3:17 ص</span></div>
+    <div class="bb" style="opacity:${o.m2};transform:scale(${.94+.06*o.m2})">ولا تطالع تحت الباب.<span class="tm">3:17 ص</span></div></div>`}
+  if(h!==lastScreen){$('#scr').innerHTML=h;lastScreen=h}
+}
+
+// ------------- captions (synced to the narration) -------------
+// [start,end,html]   y = pale yellow, r = dark red, q = quoted voice
+const CAPS=[
+ [0.00,1.10,'أمي كانت تكلمني…'],[1.10,2.40,'من <span class="y">وراء باب غرفتي</span>'],
+ [2.67,3.60,'وفي نفس الوقت،'],[3.85,4.85,'كانت تكلمني بالجوال'],[4.85,6.10,'من <span class="y">المستشفى</span>.'],
+ [6.39,7.75,'خلوني أقول لكم وش صار.'],
+ [8.07,8.90,'أول ليلة لنا'],[8.90,10.00,'في العمارة الجديدة…'],
+ [10.29,11.40,'صحيت الساعة'],[11.40,13.30,'<span class="y">03:17</span> الفجر.'],
+ [13.60,14.45,'على ثلاث دقات'],[14.45,15.45,'على باب غرفتي.'],
+ [15.76,16.40,'<span class="y">طق…</span>'],[16.43,17.08,'<span class="y">طق… طق…</span>'],[17.11,17.75,'<span class="y">طق… طق… طق…</span>'],
+ [17.82,19.10,'سمعت صوت أمي تقول:'],[19.42,20.20,'<span class="q">«نواف…</span>'],[20.20,21.00,'<span class="q">«نواف… افتح الباب.»</span>'],
+ [21.30,22.40,'كنت بقوم أفتح…'],[22.64,23.40,'لكن فجأة،'],[23.68,24.60,'جوالي اهتز.'],
+ [24.86,26.20,'رسالة من أمي تقول:'],[26.46,27.80,'أنا وأبوك في المستشفى،'],[28.11,29.10,'بنرجع الصباح،'],[29.35,30.60,'لا تنسى تقفل الباب.'],
+ [30.93,31.60,'هنا…'],[31.67,32.75,'هنا <span class="y">تجمدت مكاني</span>.'],
+ [33.04,34.45,'رجع الصوت من وراء الباب:'],[34.74,36.10,'<span class="q">«نواف… افتح،</span>'],[36.30,37.30,'<span class="q">أدري إنك صاحي.»</span>'],
+ [37.54,39.25,'مسكت جوالي واتصلت على أمي.'],[39.59,40.20,'ردت.'],
+ [40.43,41.05,'قلت لها:'],[41.34,42.00,'«يمه…'],[42.00,42.80,'«يمه… أنتِ بالبيت؟»'],
+ [43.05,43.60,'قالت:'],[43.83,44.80,'<span class="q">«لا يا وليدي،</span>'],[44.80,45.45,'<span class="q">«لا يا وليدي، وش فيك؟»</span>'],
+ [45.71,46.80,'وفي نفس اللحظة…'],[46.96,48.30,'سمعت صوتها من وراء الباب'],[48.30,49.70,'يقول <span class="y">نفس الجملة!</span>'],
+ [49.92,50.94,'<span class="r">«لا يا وليدي،</span>'],[50.94,51.65,'<span class="r">«لا يا وليدي، وش فيك؟»</span>'],
+ [51.83,52.95,'<span class="y">نفس الصوت…</span>'],[53.05,54.30,'<span class="y">بنفس التوقيت.</span>'],
+ [54.48,56.10,'قفلت الجوال من الخوف.'],
+ [56.30,57.40,'بعدها بثواني'],[57.61,59.45,'وصلتني رسالة من رقم مجهول.'],
+ [59.68,60.55,'مكتوب فيها:'],[60.82,61.95,'«لا تفتح الباب…'],[62.14,63.80,'هو للحين <span class="y">ما يعرف شكلك</span>.»'],
+ [64.03,65.35,'وبعدها رسالة ثانية:'],[65.58,67.20,'«ولا <span class="y">تطالع تحت الباب</span>.»'],
+ [67.43,68.40,'لكن المشكلة…'],[68.65,70.00,'إني كنت أطالع أصلًا.'],
+ [70.17,71.10,'وشفت ظل شخص'],[71.10,72.30,'واقف عند الباب.'],
+ [72.55,73.70,'لكن فيه شيء'],[73.70,75.00,'ما استوعبته إلا بعد ثواني.'],
+ [75.27,76.40,'الظل ما كان جاي'],[76.40,77.80,'من تحت الباب إلى غرفتي…'],
+ [78.01,79.40,'الظل كان يبدأ <span class="y">من داخل الغرفة</span>،'],[79.40,80.45,'ومتجه للباب.'],
+ [80.65,81.90,'يعني الشخص اللي'],[82.00,83.45,'يعني الشخص اللي كان يطرق…'],
+ [83.60,86.55,'كان واقف <span class="r">داخل غرفتي!</span>'],
+];
+let lastCap=-1;
+function caps(t){
+  let i=-1;for(let k=0;k<CAPS.length;k++){if(t>=CAPS[k][0]&&t<CAPS[k][1])i=k}
+  const el=$('#caps');
+  if(i!==lastCap){el.innerHTML=i>=0?CAPS[i][2]:'';lastCap=i}
+  if(i>=0){const k=eo(ramp(t,CAPS[i][0],CAPS[i][0]+.18));el.style.opacity=k;el.style.transform=`scale(${.9+.1*k})`;}
+  else el.style.opacity=0;
+}
+
+// ------------- grain -------------
+const gc=$('#grain').getContext('2d');const NF=[];
+(()=>{let s=317;const r=()=>{s=(s*16807)%2147483647;return s/2147483647};for(let f=0;f<8;f++){const im=gc.createImageData(420,700);for(let i=0;i<im.data.length;i+=4){const v=r()*255|0;im.data[i]=im.data[i+1]=im.data[i+2]=v;im.data[i+3]=255}NF.push(im)}})();
+$('#grain').style.width='840px';$('#grain').style.height='1400px';
+
+// ------------- master seek -------------
+function seek(t){
+  // hard cuts: exactly one scene visible (crossfade only into/out of exterior)
+  let active=null;for(const s of TL){if(t>=s.a&&t<s.b)active=s}
+  $$('.scene').forEach(e=>e.style.opacity=0);
+  if(active){const el=document.getElementById(active.id);let o=1;
+    if(active.id==='s_ext')o=Math.min(ramp(t,active.a,active.a+.6),1-ramp(t,active.b-.35,active.b));
+    if(active.id==='s_room'&&active.a===10.0)o=ramp(t,10.0,10.35);
+    el.style.opacity=o;active.fn(t-active.a,t);}
+  // mirror reflection lag (rewatch detail)
+  $$('.mirrorRefl').forEach(e=>e.setAttribute('opacity',(t>55.2&&t<55.55)?.6:0));
+  // zoom text
+  const z=$('#zoomtxt');z.textContent='';z.style.opacity=0;
+  // black + title
+  const blk=t>=86.62;$('#black').style.opacity=blk?1:0;
+  $('#title .a').style.opacity=Math.min(ramp(t,87.7,88.4),1-ramp(t,91.8,92.4));
+  $('#title .b').style.opacity=Math.min(ramp(t,88.9,89.6),1-ramp(t,91.8,92.4));
+  caps(t); $('#caps').style.visibility=blk?'hidden':'visible';
+  // grain
+  const f=Math.floor(t*30)%8;gc.putImageData(NF[f],0,0);$('#grain').style.transform=`translate(${(f*37)%60}px,${(f*53)%60}px)`;
+  $('#grain').style.opacity=blk?.03:.07;
+}
+window.seek=seek;window.DURATION=DURATION;
+if(!location.search.includes('render')){let t0=null;const loop=ts=>{if(t0===null)t0=ts;seek(((ts-t0)/1000)%DURATION);requestAnimationFrame(loop)};document.fonts.ready.then(()=>requestAnimationFrame(loop));}
+else seek(0);
+</script>
+</body>
+</html>

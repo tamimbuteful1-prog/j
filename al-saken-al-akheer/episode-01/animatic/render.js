@@ -4,13 +4,13 @@ const { chromium } = require('playwright');
 const { spawn } = require('child_process');
 const path = require('path');
 
-const FPS = 24;
-const [audio, out] = process.argv.slice(2);
+const [audio, out, html = 'episode-01.html', fpsArg = '24'] = process.argv.slice(2);
+const FPS = +fpsArg;
 
 (async () => {
   const browser = await chromium.launch();
-  const page = await browser.newPage({ viewport: { width: 720, height: 1280 } });
-  await page.goto('file://' + path.resolve(__dirname, 'episode-01.html') + '?render');
+  const page = await browser.newPage({ viewport: { width: 720, height: 1280 }, deviceScaleFactor: 1.5 });
+  await page.goto('file://' + path.resolve(__dirname, html) + '?render');
   await page.evaluate(() => document.fonts.ready);
   await page.waitForTimeout(1500);
   const dur = await page.evaluate(() => window.DURATION);
@@ -18,8 +18,8 @@ const [audio, out] = process.argv.slice(2);
   const ff = spawn('ffmpeg', ['-y', '-loglevel', 'error',
     '-f', 'image2pipe', '-framerate', String(FPS), '-c:v', 'mjpeg', '-i', '-',
     '-i', audio,
-    '-vf', 'scale=1080:1920:flags=lanczos',
-    '-c:v', 'libx264', '-preset', 'medium', '-crf', '20', '-pix_fmt', 'yuv420p',
+    '-vf', 'scale=1080:1920:flags=lanczos', '-r', String(FPS),
+    '-c:v', 'libx264', '-preset', 'medium', '-crf', '24', '-tune', 'grain', '-pix_fmt', 'yuv420p',
     '-c:a', 'aac', '-b:a', '192k', '-shortest', '-movflags', '+faststart', out],
     { stdio: ['pipe', 'inherit', 'inherit'] });
 
