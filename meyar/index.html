@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!--CSP-->
+    <meta name="referrer" content="no-referrer" />
+    <meta name="description" content="معيار: أداة مساعدة لمراجعة النص قبل النشر وفهم المراجع النظامية المرتبطة به، وفق مراجع محددة ومعروضة." />
+    <title>معيار</title>
+    <link rel="icon" href="data:," />
+  </head>
+  <body>
+    <a class="skip" href="#main">تخطَّ إلى المحتوى</a>
+    <header class="site">
+      <div class="wrap">
+        <h1>معيار</h1>
+        <p class="tagline">راجع نصك وافهم المراجع النظامية المرتبطة به قبل النشر</p>
+        <p class="disclaimer" role="note">تقييم مساعد وفق المراجع المعروضة، وليس حكمًا قانونيًا نهائيًا.</p>
+      </div>
+    </header>
+
+    <main id="main" class="wrap">
+      <noscript><p class="alert">تحتاج هذه الصفحة إلى تفعيل JavaScript.</p></noscript>
+
+      <section class="card" aria-labelledby="mode-h">
+        <h2 id="mode-h"><span class="step">1</span> طريقة الاستخدام</h2>
+        <div class="seg" role="radiogroup" aria-labelledby="mode-h" id="mode-group">
+          <button type="button" role="radio" aria-checked="true" data-mode="api">باستخدام مفتاح API</button>
+          <button type="button" role="radio" aria-checked="false" data-mode="manual">بدون مفتاح: تجهيز طلب للنسخ إلى مساعدي</button>
+        </div>
+
+        <div id="api-panel">
+          <div class="seg provider" role="radiogroup" aria-label="مزود الذكاء الاصطناعي" id="provider-group">
+            <button type="button" role="radio" aria-checked="false" data-provider="openai">أستخدم ChatGPT / OpenAI</button>
+            <button type="button" role="radio" aria-checked="true" data-provider="anthropic">أستخدم Claude</button>
+          </div>
+          <p class="status-note" id="integration-status"></p>
+
+          <div class="field">
+            <label for="api-key">مفتاح API</label>
+            <div class="key-row">
+              <input id="api-key" type="password" autocomplete="off" autocapitalize="off" spellcheck="false" inputmode="text" dir="ltr" placeholder="الصق مفتاحك هنا" />
+              <button type="button" class="btn secondary" id="toggle-key" aria-pressed="false">إظهار</button>
+              <button type="button" class="btn secondary" id="clear-key">مسح المفتاح</button>
+            </div>
+            <p class="hint">
+              <a id="key-link" href="https://platform.claude.com/settings/keys" target="_blank" rel="noopener noreferrer">إنشاء مفتاح API</a>
+              — يُنشأ المفتاح لدى المزود وقد يتطلب تسجيل الدخول هناك، أما معيار نفسه فلا يحتاج تسجيل دخول.
+            </p>
+            <details class="explain">
+              <summary>ما هو مفتاح API؟</summary>
+              <p>مفتاح API يتيح لهذه الصفحة إرسال طلبك إلى مزود الذكاء الاصطناعي عبر حسابك. قد تحتاج إلى تفعيل الفوترة أو إضافة رصيد. استخدام API له فوترة منفصلة عن اشتراك تطبيق المحادثة.</p>
+              <p>يبقى المفتاح في ذاكرة هذه الصفحة فقط: لا يُحفظ في المتصفح، ويُمسح عند إعادة تحميل الصفحة أو الضغط على «مسح المفتاح»، ولا يُرسل إلا إلى عنوان المزود الرسمي في ترويسة المصادقة.</p>
+            </details>
+          </div>
+
+          <div class="field">
+            <label for="model">النموذج</label>
+            <div class="key-row">
+              <select id="model"></select>
+              <button type="button" class="btn secondary" id="list-models">جلب النماذج المتاحة لحسابي</button>
+            </div>
+            <p class="hint" id="model-note"></p>
+          </div>
+        </div>
+
+        <div id="manual-intro" hidden>
+          <p>في هذا المسار يبحث معيار في المراجع محليًا ويجهّز نصًا يحتوي على التعليمات ونصك والمقاطع النظامية ذات الصلة. تنسخه وتلصقه في مساعدك بنفسك.</p>
+        </div>
+      </section>
+
+      <section class="card" aria-labelledby="task-h">
+        <h2 id="task-h"><span class="step">2</span> المهمة</h2>
+        <div class="seg" role="radiogroup" aria-labelledby="task-h" id="task-group">
+          <button type="button" role="radio" aria-checked="true" data-task="check">فحص نص</button>
+          <button type="button" role="radio" aria-checked="false" data-task="question">اسأل معيار</button>
+        </div>
+
+        <div class="field">
+          <label for="user-text" id="input-label">الصق النص الذي تنوي نشره</label>
+          <textarea id="user-text" rows="8" maxlength="6000"></textarea>
+          <p class="hint counter" id="counter" aria-live="polite"></p>
+        </div>
+
+        <details class="context">
+          <summary>سياق اختياري يساعد على دقة المراجعة</summary>
+          <div class="grid3">
+            <div class="field">
+              <label for="ctx-venue">أين سيُنشر المحتوى؟</label>
+              <select id="ctx-venue">
+                <option value="">غير محدد</option>
+                <option value="social">منصة تواصل اجتماعي</option>
+                <option value="web">موقع إلكتروني أو مدونة</option>
+                <option value="print">صحيفة أو مجلة أو مطبوعة</option>
+                <option value="broadcast">قناة تلفزيونية أو إذاعية</option>
+                <option value="audio">بودكاست أو محتوى صوتي</option>
+                <option value="video">فيلم أو فيديو</option>
+                <option value="outdoor">إعلان في مكان عام أو لوحة</option>
+                <option value="other">أخرى</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="ctx-ad">هل يتضمن إعلانًا تجاريًا؟</label>
+              <select id="ctx-ad">
+                <option value="">غير محدد</option>
+                <option value="yes">نعم</option>
+                <option value="no">لا</option>
+                <option value="unsure">غير متأكد</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="ctx-license">هل لديك إذن أو ترخيص ذو صلة؟</label>
+              <select id="ctx-license">
+                <option value="">غير محدد</option>
+                <option value="yes">نعم</option>
+                <option value="no">لا</option>
+                <option value="unsure">غير متأكد</option>
+                <option value="na">لا ينطبق</option>
+              </select>
+            </div>
+          </div>
+          <p class="hint">لا تُدخل معلومات شخصية. هذه الإجابات تُرسل كما هي ضمن الطلب ولا يتحقق منها معيار.</p>
+        </details>
+
+        <div id="consent-box" class="consent">
+          <p>سيُرسل النص والمراجع المختارة إلى المزود الذي اخترته لمعالجتها وفق سياساته. يُستخدم المفتاح مؤقتًا داخل هذه الصفحة. إدخال المفتاح في المتصفح لا يخلو من مخاطر.</p>
+          <label class="check"><input type="checkbox" id="consent" /> فهمت، وأوافق على الإرسال</label>
+        </div>
+
+        <div class="actions">
+          <button type="button" class="btn primary" id="run">افحص النص</button>
+          <button type="button" class="btn secondary" id="cancel" hidden>إلغاء الطلب</button>
+        </div>
+        <p class="hint" id="cancel-note" hidden>الإلغاء يوقف انتظار الاستجابة، لكنه لا يضمن إلغاء تكلفة ما عالجه المزود بالفعل.</p>
+      </section>
+
+      <section id="output" aria-live="polite"></section>
+
+      <section class="card" aria-labelledby="refs-h">
+        <h2 id="refs-h">المراجع وحدود التغطية</h2>
+        <div id="coverage"></div>
+      </section>
+    </main>
+
+    <footer class="site-foot wrap">
+      <p>معيار موقع ثابت: لا حسابات ولا قاعدة بيانات للمستخدمين ولا أدوات تتبع. عند استخدام مفتاح API يُرسل الطلب من متصفحك مباشرة إلى المزود الذي تختاره.</p>
+    </footer>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
