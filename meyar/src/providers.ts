@@ -22,7 +22,7 @@ export const INTEGRATION_STATUS: Record<ProviderId, string> = {
   anthropic:
     'تم التحقق من إمكانية الاتصال المباشر من المتصفح بطلب حقيقي إلى خادم Anthropic (بمفتاح غير صالح عمدًا، فأعاد خطأ مصادقة مقروءًا). لم يُختبر تحليل كامل بمفتاح صالح.',
   openai:
-    'التكامل مكتوب لكنه لم يُختبر: تعذّر الوصول إلى api.openai.com من بيئة الإعداد، فلم نتحقق من دعم الاتصال المباشر من المتصفح ولا من شكل الطلب. إن فشل الاتصال فاستخدم مسار النسخ اليدوي.',
+    'جلب قائمة النماذج من المتصفح مباشرة نجح من حساب مستخدم حقيقي. أما طلب التحليل الكامل فلم يُختبر بعد في بيئة الإعداد.',
 };
 
 // ------------------------------------------------------------- key (memory only)
@@ -59,8 +59,8 @@ export const ERROR_MESSAGES: Record<ErrorKind, string> = {
   billing: 'يبدو أن الحساب لا يملك رصيدًا كافيًا أو توجد مشكلة في الفوترة. فعّل الفوترة أو أضف رصيدًا لدى المزود.',
   rate_limit: 'تم تجاوز حدود الاستخدام أو سقف الإنفاق مؤقتًا. انتظر قليلًا ثم أعد المحاولة يدويًا.',
   network: 'تعذّر الاتصال بالشبكة. تحقق من اتصالك بالإنترنت ثم أعد المحاولة.',
-  cors: 'تعذّر الاتصال المباشر بالمزود من المتصفح (قد يكون السبب حجب الاتصال المباشر من المتصفح، أو شبكة تمنع النطاق). استخدم مسار «بدون مفتاح» لنسخ الطلب يدويًا.',
-  model_unavailable: 'النموذج المختار غير متاح لحسابك أو اسمه غير صحيح. اختر نموذجًا آخر.',
+  cors: 'تعذّر الاتصال المباشر بالمزود من المتصفح (قد يكون السبب حجب الاتصال المباشر من المتصفح، أو شبكة أو إضافة متصفح تمنع النطاق). جرّب شبكة أخرى أو عطّل إضافات حجب المحتوى لهذه الصفحة.',
+  model_unavailable: 'لم يُعثر على نموذج مناسب متاح لحسابك لدى هذا المزود. تأكد من تفعيل الوصول إلى النماذج في حسابك.',
   too_long: 'الطلب أطول من الحد المسموح. اختصر النص أو قلّل المراجع.',
   overloaded: 'خدمة المزود مزدحمة حاليًا. أعد المحاولة لاحقًا.',
   unreadable: 'وصلت استجابة غير قابلة للقراءة أو لا تطابق البنية المطلوبة، فلم تُعرض. يمكنك إعادة المحاولة يدويًا (قد يُحتسب الطلب ضمن التكلفة).',
@@ -207,4 +207,77 @@ export async function listModels(provider: ProviderId, signal: AbortSignal): Pro
     .map((m) => m.id)
     .filter((id) => /^[A-Za-z0-9._:-]+$/.test(id))
     .sort();
+}
+
+// ------------------------------------------------------------- automatic model choice
+export interface ProviderCfg {
+  verification: string;
+  default: string | null;
+  models: { id: string; label: string; structured_output: boolean }[];
+  max_output_tokens: number;
+}
+
+// Variants that are not general text-analysis models, or that are unusually expensive.
+const OPENAI_EXCLUDE =
+  /(audio|realtime|transcribe|tts|image|search|codex|instruct|embedding|moderation|dall|whisper|preview|nano|oss|computer|research|-pro\b)/;
+
+/** Pick the strongest general GPT model from the ids the user's own account lists. */
+export function pickOpenAIModel(ids: string[]): string | null {
+  let best: { id: string; s: number } | null = null;
+  for (const id of ids) {
+    if (OPENAI_EXCLUDE.test(id)) continue;
+    const m = id.match(/^gpt-(\d+(?:\.\d+)?)(?:-(mini|chat-latest))?$/);
+    if (!m) continue;
+    const s = parseFloat(m[1]) * 10 + (m[2] === undefined ? 3 : m[2] === 'chat-latest' ? 2 : 0);
+    if (!best || s > best.s) best = { id, s };
+  }
+  return best?.id ?? null;
+}
+
+/** Pick a Claude model: the configured default if the account lists it, else a
+ *  model from the configured preference list, else the newest Sonnet listed. */
+export function pickAnthropicModel(ids: string[], cfg: ProviderCfg): string | null {
+  const prefs = [cfg.default, ...cfg.models.map((m) => m.id)].filter(Boolean) as string[];
+  for (const p of prefs) if (ids.includes(p)) return p;
+  return ids.find((id) => id.includes('sonnet')) ?? ids[0] ?? null;
+}
+
+const resolved: Partial<Record<ProviderId, string>> = {};
+export function forgetModels() {
+  delete resolved.anthropic;
+  delete resolved.openai;
+}
+
+/**
+ * Decide which model to use, without asking the user. Listing models is a free
+ * request and happens only as part of the user's explicit "run" click.
+ * - Claude: the verified default from models.json; the account's model list is
+ *   consulted only if the default is not available.
+ * - OpenAI: no names were verified at build time, so the account's own model
+ *   list is used to pick the strongest general GPT model.
+ */
+export async function resolveModel(
+  provider: ProviderId,
+  cfg: ProviderCfg,
+  signal: AbortSignal,
+): Promise<{ model: string; structured: boolean }> {
+  const structuredFor = (id: string) =>
+    provider === 'openai' ? true : cfg.models.find((m) => m.id === id)?.structured_output ?? false;
+  if (resolved[provider]) return { model: resolved[provider]!, structured: structuredFor(resolved[provider]!) };
+  let model: string | null = null;
+  if (provider === 'anthropic') {
+    model = cfg.default;
+    try {
+      const ids = await listModels(provider, signal);
+      model = pickAnthropicModel(ids, cfg) ?? model;
+    } catch (e) {
+      // Model listing is only a check; fall back to the verified default unless the key itself is bad.
+      if (e instanceof ProviderError && ['invalid_key', 'billing', 'aborted', 'network'].includes(e.kind)) throw e;
+    }
+  } else {
+    model = cfg.default || pickOpenAIModel(await listModels(provider, signal));
+  }
+  if (!model) throw new ProviderError('model_unavailable');
+  resolved[provider] = model;
+  return { model, structured: structuredFor(model) };
 }

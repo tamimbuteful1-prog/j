@@ -1,6 +1,6 @@
 import './styles.css';
 import { SearchIndex, sourceLabel } from './search';
-import { buildManualPackage, buildPayload } from './prompt';
+import { buildPayload } from './prompt';
 import {
   callModel,
   clearKey,
@@ -8,9 +8,11 @@ import {
   hasKey,
   INTEGRATION_STATUS,
   KEY_PAGES,
-  listModels,
   ProviderError,
+  resolveModel,
+  forgetModels,
   setKey,
+  type ProviderCfg,
   type ProviderId,
 } from './providers';
 import { extractJson, InvalidOutputError, parseResult, verifyResult } from './verify';
@@ -75,20 +77,12 @@ interface ModelsConfig {
   openai: ProviderCfg;
   limits: { max_input_chars: number; max_reference_chars: number; max_references: number };
 }
-interface ProviderCfg {
-  verification: string;
-  default: string | null;
-  models: { id: string; label: string; structured_output: boolean }[];
-  max_output_tokens: number;
-}
 
 const state = {
-  mode: 'api' as 'api' | 'manual',
   provider: 'anthropic' as ProviderId,
   task: 'check' as Task,
   busy: false,
   controller: null as AbortController | null,
-  fetchedModels: { anthropic: [] as string[], openai: [] as string[] },
 };
 
 let corpus: Corpus;
@@ -111,10 +105,6 @@ async function init() {
     return;
   }
   $<HTMLTextAreaElement>('user-text').maxLength = cfg.limits.max_input_chars;
-  bindRadio('mode-group', 'mode', (v) => {
-    state.mode = v as 'api' | 'manual';
-    refresh();
-  });
   bindRadio('provider-group', 'provider', (v) => {
     state.provider = v as ProviderId;
     refresh();
@@ -139,7 +129,7 @@ async function init() {
     clearKey();
     keyInput.type = 'password';
     $('toggle-key').textContent = 'إظهار';
-    state.fetchedModels = { anthropic: [], openai: [] };
+    forgetModels();
     refresh();
     keyInput.focus();
   });
@@ -149,7 +139,6 @@ async function init() {
     clearKey();
   });
 
-  $('list-models').addEventListener('click', onListModels);
   const ta = $<HTMLTextAreaElement>('user-text');
   ta.addEventListener('input', updateCounter);
   $('run').addEventListener('click', onRun);
@@ -184,36 +173,13 @@ function bindRadio(groupId: string, attr: string, onChange: (v: string) => void)
 }
 
 function refresh() {
-  const api = state.mode === 'api';
-  $('api-panel').hidden = !api;
-  $('manual-intro').hidden = api;
-  $('consent-box').hidden = !api;
   $('integration-status').textContent = INTEGRATION_STATUS[state.provider];
   const link = $<HTMLAnchorElement>('key-link');
   link.href = KEY_PAGES[state.provider];
   link.textContent = state.provider === 'openai' ? 'إنشاء مفتاح API لدى OpenAI' : 'إنشاء مفتاح API لدى Anthropic (Claude)';
   $('input-label').textContent =
     state.task === 'check' ? 'الصق النص الذي تنوي نشره' : 'اكتب سؤالك عن النشر أو المحتوى الإعلامي';
-  $('run').textContent = !api
-    ? 'جهّز الطلب والمراجع'
-    : state.task === 'check'
-      ? 'افحص النص'
-      : 'أجب عن السؤال';
-  renderModelSelect();
-}
-
-function renderModelSelect() {
-  const sel = $<HTMLSelectElement>('model');
-  const pc = cfg[state.provider];
-  const prev = sel.value;
-  const opts: HTMLOptionElement[] = pc.models.map((m) => h('option', { value: m.id }, m.label));
-  for (const id of state.fetchedModels[state.provider])
-    if (!pc.models.some((m) => m.id === id)) opts.push(h('option', { value: id }, `${id} (من حسابك)`));
-  if (!opts.length) opts.push(h('option', { value: '' }, 'لا توجد نماذج متحقق منها — اجلب النماذج من حسابك'));
-  sel.replaceChildren(...opts);
-  const want = [prev, pc.default].find((v) => v && [...sel.options].some((o) => o.value === v));
-  if (want) sel.value = want;
-  $('model-note').textContent = pc.verification;
+  $('run').textContent = state.task === 'check' ? 'افحص النص' : 'أجب عن السؤال';
 }
 
 function updateCounter() {
@@ -243,28 +209,6 @@ function setBusy(b: boolean) {
 }
 
 // ------------------------------------------------------------------ actions
-async function onListModels() {
-  const out = $('output');
-  if (!hasKey()) {
-    out.replaceChildren(h('p', { class: 'alert warn' }, 'أدخل مفتاح API أولًا.'));
-    return;
-  }
-  const btn = $<HTMLButtonElement>('list-models');
-  btn.disabled = true;
-  const ac = new AbortController();
-  try {
-    state.fetchedModels[state.provider] = await listModels(state.provider, ac.signal);
-    renderModelSelect();
-    out.replaceChildren(
-      h('p', { class: 'alert info' }, `تم جلب ${state.fetchedModels[state.provider].length} نموذجًا متاحًا لحسابك (طلب قائمة النماذج لا يُنفّذ تحليلًا).`),
-    );
-  } catch (e) {
-    out.replaceChildren(errorBox(e));
-  } finally {
-    btn.disabled = false;
-  }
-}
-
 function errorBox(e: unknown): HTMLElement {
   if (e instanceof ProviderError) {
     const extra = e.status ? ` (رمز الاستجابة ${e.status}${e.providerType ? '، النوع ' + e.providerType : ''})` : '';
@@ -290,17 +234,9 @@ async function onRun() {
   const ctx = readContext();
   const r = index.retrieve(state.task, text, ctx, cfg.limits.max_references, cfg.limits.max_reference_chars);
 
-  if (state.mode === 'manual') {
-    renderManual(text, ctx, r);
-    return;
-  }
   if (!hasKey()) {
-    out.replaceChildren(h('p', { class: 'alert warn', role: 'alert' }, 'أدخل مفتاح API، أو اختر مسار «بدون مفتاح».'));
-    return;
-  }
-  const model = $<HTMLSelectElement>('model').value;
-  if (!model) {
-    out.replaceChildren(h('p', { class: 'alert warn', role: 'alert' }, 'اختر نموذجًا (أو اجلب النماذج المتاحة لحسابك).'));
+    out.replaceChildren(h('p', { class: 'alert warn', role: 'alert' }, 'أدخل مفتاح API أولًا.'));
+    $('api-key').focus();
     return;
   }
   if (!$<HTMLInputElement>('consent').checked) {
@@ -313,19 +249,21 @@ async function onRun() {
     renderNoCoverage(text, ctx, r);
     return;
   }
-  await sendToModel(text, ctx, r, model);
+  await sendToModel(text, ctx, r);
 }
 
-async function sendToModel(text: string, ctx: UserContext, r: Retrieval, model: string) {
+async function sendToModel(text: string, ctx: UserContext, r: Retrieval) {
+  if (state.busy) return;
   const out = $('output');
   const pc = cfg[state.provider];
-  const structured = pc.models.find((m) => m.id === model)?.structured_output ?? state.provider === 'openai';
   const payload = buildPayload(corpus, state.task, text, ctx, r);
   setBusy(true);
-  out.replaceChildren(h('p', { class: 'alert info' }, 'جارٍ إرسال الطلب إلى المزود وانتظار النتيجة… (طلب واحد)'));
+  out.replaceChildren(h('p', { class: 'alert info' }, 'جارٍ إرسال الطلب إلى المزود وانتظار النتيجة… (طلب تحليل واحد)'));
   state.controller = new AbortController();
   const task = state.task;
   try {
+    // The model is chosen automatically (see resolveModel); no user selection needed.
+    const { model, structured } = await resolveModel(state.provider, pc, state.controller.signal);
     const res = await callModel(state.provider, model, payload, pc.max_output_tokens, structured, state.controller.signal);
     if (res.truncated) throw new ProviderError('unreadable');
     const parsed = parseResult(extractJson(res.text));
@@ -388,7 +326,7 @@ function referencesBlock(r: Retrieval, title = 'المراجع التي أُرس
 function renderNoCoverage(text: string, ctx: UserContext, r: Retrieval) {
   const out = $('output');
   const send = h('button', { type: 'button', class: 'btn secondary' }, 'أرسل إلى المزود رغم ذلك');
-  send.addEventListener('click', () => sendToModel(text, ctx, r, $<HTMLSelectElement>('model').value));
+  send.addEventListener('click', () => sendToModel(text, ctx, r));
   out.replaceChildren(
     h(
       'div',
@@ -398,34 +336,6 @@ function renderNoCoverage(text: string, ctx: UserContext, r: Retrieval) {
       h('p', { class: 'hint' }, 'هذه النتيجة صادرة عن البحث المحلي في معيار وليست تحليلًا من نموذج ذكاء اصطناعي. عدم العثور على نص لا يعني أن التصرف مسموح أو متوافق؛ قد يكون الموضوع خارج نطاق المراجع الستة، أو يحتاج صياغة مختلفة للسؤال، أو مراجعة أوسع.'),
       h('div', { class: 'actions' }, send),
     ),
-  );
-}
-
-function renderManual(text: string, ctx: UserContext, r: Retrieval) {
-  const out = $('output');
-  const pkg = buildManualPackage(corpus, state.task, text, ctx, r);
-  out.replaceChildren(
-    h(
-      'div',
-      { class: 'card' },
-      h('h3', {}, 'الطلب جاهز للنسخ'),
-      r.matched === 0
-        ? h('p', { class: 'alert warn' }, 'تنبيه: لم يعثر البحث المحلي على مقاطع مطابقة كافية. قد يكون الموضوع خارج نطاق المراجع المتاحة.')
-        : r.weak
-          ? h('p', { class: 'alert warn' }, 'تنبيه: تطابق البحث مع المراجع ضعيف؛ قد تكون المراجع غير كافية.')
-          : null,
-      h('p', {}, 'الصق الطلب داخل مساعدك. ستظهر الإجابة هناك، ويخضع الاستخدام لحدود حسابك وخطتك.'),
-      h('p', { class: 'hint' }, 'لا يرتبط معيار بحسابك لدى أي مساعد، ولا ينقل الملفات ولا يعيد الإجابة إلى هذه الصفحة. لا يُضاف نصك إلى أي رابط.'),
-      h(
-        'div',
-        { class: 'actions' },
-        copyButton(() => pkg, 'نسخ الطلب والمراجع'),
-        h('a', { class: 'btn secondary', href: 'https://chatgpt.com/', target: '_blank', rel: 'noopener noreferrer' }, 'فتح ChatGPT'),
-        h('a', { class: 'btn secondary', href: 'https://claude.ai/new', target: '_blank', rel: 'noopener noreferrer' }, 'فتح Claude'),
-      ),
-      h('details', {}, h('summary', {}, 'مراجعة نص الطلب قبل النسخ'), h('pre', { class: 'package' }, pkg)),
-    ),
-    referencesBlock(r, 'المراجع المضمّنة في الطلب'),
   );
 }
 
