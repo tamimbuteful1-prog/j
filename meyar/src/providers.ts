@@ -22,7 +22,7 @@ export const INTEGRATION_STATUS: Record<ProviderId, string> = {
   anthropic:
     'تم التحقق من إمكانية الاتصال المباشر من المتصفح بطلب حقيقي إلى خادم Anthropic (بمفتاح غير صالح عمدًا، فأعاد خطأ مصادقة مقروءًا). لم يُختبر تحليل كامل بمفتاح صالح.',
   openai:
-    'جلب قائمة النماذج من المتصفح مباشرة نجح من حساب مستخدم حقيقي. أما طلب التحليل الكامل فلم يُختبر بعد في بيئة الإعداد.',
+    'الاتصال المباشر من المتصفح يعمل: جلب قائمة النماذج نجح، ووصل طلب التحليل إلى OpenAI وأعاد ردًّا مقروءًا (رسالة نقص رصيد). لم تُختبر بعد نتيجة تحليل كاملة.',
 };
 
 // ------------------------------------------------------------- key (memory only)
@@ -85,7 +85,15 @@ function classify(provider: ProviderId, status: number, body: unknown): Provider
   const safeType = (type || code).replace(/[^a-z_]/g, '').slice(0, 40);
   let kind: ErrorKind = 'server';
   if (status === 401) kind = 'invalid_key';
-  else if (status === 402 || type === 'billing_error' || code === 'insufficient_quota' || msg.includes('credit balance')) kind = 'billing';
+  else if (
+    status === 402 ||
+    type === 'billing_error' ||
+    type === 'insufficient_quota' || // OpenAI puts it in `type` (and sometimes `code`)
+    code === 'insufficient_quota' ||
+    msg.includes('credit balance') ||
+    msg.includes('exceeded your current quota')
+  )
+    kind = 'billing';
   else if (status === 403) kind = 'permission';
   else if (status === 404 || code === 'model_not_found') kind = 'model_unavailable';
   else if (status === 413 || code === 'context_length_exceeded' || msg.includes('too long') || msg.includes('maximum context')) kind = 'too_long';

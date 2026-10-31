@@ -225,6 +225,8 @@ async function run(browser) {
     ['permission (403)', { status: 403, body: { type: 'error', error: { type: 'permission_error', message: 'no' } } }, 'صلاحية'],
     ['billing (402)', { status: 402, body: { type: 'error', error: { type: 'billing_error', message: 'x' } } }, 'رصيدًا'],
     ['billing (400 credit balance)', { status: 400, body: { type: 'error', error: { type: 'invalid_request_error', message: 'Your credit balance is too low' } } }, 'رصيدًا'],
+    ['OpenAI no credit (429 insufficient_quota)', { status: 429, provider: 'openai', body: { error: { message: 'You exceeded your current quota, please check your plan and billing details.', type: 'insufficient_quota', param: null, code: 'insufficient_quota' } } }, 'رصيدًا'],
+    ['OpenAI no credit (type only)', { status: 429, provider: 'openai', body: { error: { message: 'x', type: 'insufficient_quota', code: null } } }, 'رصيدًا'],
     ['rate limit (429)', { status: 429, body: { type: 'error', error: { type: 'rate_limit_error', message: 'x' } } }, 'حدود الاستخدام'],
     ['model not found (404)', { status: 404, body: { type: 'error', error: { type: 'not_found_error', message: 'model' } } }, 'لم يُعثر على نموذج'],
     ['too long (413)', { status: 413, body: { type: 'error', error: { type: 'request_too_large', message: 'x' } } }, 'أطول من الحد'],
@@ -232,9 +234,13 @@ async function run(browser) {
   ];
   for (const [name, resp, expect] of errorCases) {
     const { page, ctx } = await freshPage(browser);
-    await page.route('https://api.anthropic.com/**', (route) =>
-      route.fulfill({ status: resp.status, contentType: 'application/json', body: resp.raw && isList(route) ? modelsList.body : resp.raw || JSON.stringify(resp.body) }),
+    const host = resp.provider === 'openai' ? 'https://api.openai.com/**' : 'https://api.anthropic.com/**';
+    await page.route(host, (route) =>
+      resp.provider === 'openai' && isList(route)
+        ? route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ data: [{ id: 'gpt-5' }, { id: 'gpt-5-chat-latest' }] }) })
+        : route.fulfill({ status: resp.status, contentType: 'application/json', body: resp.raw && isList(route) ? modelsList.body : resp.raw || JSON.stringify(resp.body) }),
     );
+    if (resp.provider === 'openai') await page.click('[data-provider=openai]');
     await fill(page, { text: 'إعلان عن منتج تجميل' });
     await page.click('#run');
     await page.waitForSelector('#output .alert.bad');
