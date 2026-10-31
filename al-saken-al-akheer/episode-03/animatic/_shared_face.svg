@@ -1,0 +1,36 @@
+<script type="text/x-svg" id="tFace">
+  <g class="faceRoot">
+    <!-- hoodie & neck -->
+    <path d="M150 1300 C 160 980 230 900 300 880 L 420 880 C 500 900 570 980 580 1300Z" fill="url(#gHood)"/>
+    <path d="M300 880 C 320 930 400 930 420 880 L 410 820 L 310 820 Z" fill="#3c2a20"/>
+    <path d="M285 885 C 300 960 420 960 435 885 C 420 905 300 905 285 885Z" fill="#141a1f"/>
+    <g class="head">
+      <ellipse cx="236" cy="590" rx="18" ry="34" fill="#4a3428"/>
+      <ellipse cx="486" cy="590" rx="16" ry="32" fill="#6b4d3b"/>
+      <path d="M362 392 C 452 392 492 460 490 570 C 488 660 452 735 402 768 C 382 780 342 780 322 768 C 272 735 236 660 234 570 C 232 460 272 392 362 392Z" fill="url(#gSkin)"/>
+      <!-- shading side -->
+      <path d="M362 392 C 300 400 240 460 234 570 C 236 660 272 735 322 768 C 300 700 290 620 300 540 C 305 470 330 420 362 392Z" fill="#000" opacity=".28"/>
+      <!-- hair -->
+      <path d="M226 560 C 214 430 290 352 372 354 C 466 356 512 430 498 556 C 486 488 458 450 410 446 C 360 442 312 456 282 476 C 258 494 240 522 226 560Z" fill="#0a0908"/>
+      <path d="M300 430 C 340 400 420 398 460 430 C 430 420 360 418 300 430Z" fill="#1b1916"/>
+      <!-- brows -->
+      <path class="browL" d="M272 532 Q302 516 336 528" stroke="#0d0b09" stroke-width="9" fill="none" stroke-linecap="round"/>
+      <path class="browR" d="M392 528 Q424 516 452 532" stroke="#0d0b09" stroke-width="9" fill="none" stroke-linecap="round"/>
+      <!-- eyes -->
+      <g clip-path="url(#eyeL)"><rect x="270" y="540" width="70" height="50" fill="#d8d3cb"/><g class="irisL"><circle cx="306" cy="568" r="11" fill="#2a1c12"/><circle cx="306" cy="568" r="5" fill="#050302"/><circle cx="302" cy="564" r="2.5" fill="#fff" opacity=".8"/></g><rect class="lidL" x="270" y="540" width="70" height="0" fill="#5f4535"/></g>
+      <g clip-path="url(#eyeR)"><rect x="384" y="540" width="70" height="50" fill="#d8d3cb"/><g class="irisR"><circle cx="420" cy="568" r="11" fill="#2a1c12"/><circle cx="420" cy="568" r="5" fill="#050302"/><circle cx="416" cy="564" r="2.5" fill="#fff" opacity=".8"/></g><rect class="lidR" x="384" y="540" width="70" height="0" fill="#7a5944"/></g>
+      <path d="M276 572 Q305 548 336 570" stroke="#120c08" stroke-width="3" fill="none"/>
+      <path d="M390 570 Q420 548 450 572" stroke="#120c08" stroke-width="3" fill="none"/>
+      <!-- nose -->
+      <path d="M368 590 C 366 630 356 652 344 664 C 354 672 372 672 384 664" stroke="#3a281e" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <!-- mouth -->
+      <path class="mline" d="M328 716 Q362 709 396 716" stroke="#2b1a14" stroke-width="5" fill="none" stroke-linecap="round"/>
+      <ellipse class="mouth" cx="362" cy="716" rx="22" ry="0" fill="#1a0e0a"/>
+      <!-- stubble shadow -->
+      <path d="M300 720 C 320 770 400 770 424 720 C 410 760 320 760 300 720Z" fill="#000" opacity=".12"/>
+    </g>
+    <!-- light layers -->
+    <rect class="phoneLight" x="0" y="300" width="720" height="1000" fill="url(#gPhone)" opacity="0" style="mix-blend-mode:screen"/>
+    <rect class="blueAmb" x="0" y="0" width="720" height="1280" fill="#163049" opacity=".32" style="mix-blend-mode:multiply"/>
+  </g>
+</script>

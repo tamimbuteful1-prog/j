@@ -1,0 +1,601 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>الساكن الأخير 03</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@400;600;800;900&family=Tajawal:wght@300;400;500;700;800&family=IBM+Plex+Mono:wght@500&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:#000;width:720px;height:1280px;overflow:hidden}
+  #stage{position:relative;width:720px;height:1280px;overflow:hidden;background:#000}
+  .scene{position:absolute;inset:0;opacity:0}
+  .scene>svg,.full{position:absolute;inset:0;width:720px;height:1280px;overflow:visible}
+  .cctvLook{filter:grayscale(1) sepia(.35) hue-rotate(55deg) saturate(.9) contrast(1.15) brightness(1.05)}
+  .sepia{filter:sepia(.85) contrast(.9) brightness(.85)}
+  #caps{position:absolute;left:34px;right:34px;bottom:250px;text-align:center;font-family:'Noto Kufi Arabic',sans-serif;font-weight:800;font-size:42px;line-height:1.55;color:#fff;text-shadow:0 3px 10px rgba(0,0,0,.95),0 0 26px rgba(0,0,0,.85)}
+  #caps .y{color:#f0d58c} #caps .r{color:#d0473d} #caps .q{color:#f4ead4;font-weight:600}
+  #grain{position:absolute;inset:-60px;opacity:.07;mix-blend-mode:screen;pointer-events:none}
+  #vig{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 85% 70% at center,transparent 45%,rgba(0,0,0,.8) 100%),linear-gradient(to top,rgba(0,0,0,.55) 0,transparent 380px)}
+  #black{position:absolute;inset:0;background:#000;opacity:0}
+  #title{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:'Noto Kufi Arabic'}
+  #title .a{font-size:74px;font-weight:900;color:#e8e8e8;opacity:0}
+  #title .b{font-size:32px;font-weight:600;color:#8a8a8a;margin-top:26px;opacity:0}
+  /* phone */
+  .ph{position:absolute;width:340px;height:700px;border-radius:48px;background:#050607;border:3px solid #23292d;box-shadow:0 0 0 2px #0b0d0f,0 30px 80px rgba(0,0,0,.8),0 0 160px rgba(120,170,210,.16);overflow:hidden;font-family:'Tajawal',sans-serif;direction:rtl}
+  .scr{position:absolute;inset:10px;border-radius:38px;overflow:hidden;background:radial-gradient(120% 80% at 50% 30%,#16222b 0%,#05080a 70%)}
+  .ldate{position:absolute;top:90px;width:100%;text-align:center;font-size:24px;color:#cbd5da;font-weight:700}
+  .ltime{position:absolute;top:120px;width:100%;text-align:center;font-size:120px;font-weight:300;color:#eef3f5;direction:ltr;letter-spacing:-3px}
+  .feedIn{position:absolute;left:0;right:0;top:120px;height:430px;overflow:hidden;background:#000}
+  /* plaque under photos */
+  .plq{font-family:'Amiri',serif}
+</style>
+</head>
+<body>
+<div id="stage">
+{{DEFS}}
+{{TROOM}}
+{{TFACE}}
+
+<!-- full-body Nawaf (front + back view, run cycle). feet at (0,0), ~630 units tall -->
+<script type="text/x-svg" id="tBody">
+  <g class="body">
+    <ellipse cx="0" cy="4" rx="80" ry="14" fill="#000" opacity=".45"/>
+    <g class="legL"><rect x="-44" y="-250" width="38" height="248" rx="10" fill="#14171b"/><ellipse cx="-26" cy="-4" rx="26" ry="10" fill="#0a0a0a"/></g>
+    <g class="legR"><rect x="6" y="-250" width="38" height="248" rx="10" fill="#121519"/><ellipse cx="26" cy="-4" rx="26" ry="10" fill="#0a0a0a"/></g>
+    <path d="M-70 -455 C -78 -380 -74 -300 -64 -230 L 64 -230 C 74 -300 78 -380 70 -455 C 40 -478 -40 -478 -70 -455Z" fill="url(#gHood)"/>
+    <path class="hoodTie" d="M-30 -470 C -20 -440 20 -440 30 -470" stroke="#0b0f13" stroke-width="8" fill="none"/>
+    <g class="armL"><path d="M-70 -450 C -92 -400 -98 -320 -92 -250 L -72 -250 C -70 -320 -64 -390 -56 -440Z" fill="#1a2128"/><ellipse cx="-82" cy="-242" rx="14" ry="18" fill="#5c4233"/></g>
+    <g class="armR"><path d="M70 -450 C 92 -400 98 -320 92 -250 L 72 -250 C 70 -320 64 -390 56 -440Z" fill="#1a2128"/><ellipse cx="82" cy="-242" rx="14" ry="18" fill="#5c4233"/></g>
+    <rect x="-14" y="-500" width="28" height="34" fill="#4a3428"/>
+    <g class="bhead">
+      <ellipse cx="0" cy="-548" rx="46" ry="58" fill="url(#gSkin)"/>
+      <g class="bface">
+        <path d="M-50 -556 C -54 -610 -20 -632 4 -630 C 34 -628 56 -604 50 -556 C 44 -584 26 -594 2 -594 C -22 -594 -40 -584 -50 -556Z" fill="#0a0908"/>
+        <ellipse cx="-17" cy="-548" rx="7" ry="4" fill="#d8d3cb"/><ellipse cx="17" cy="-548" rx="7" ry="4" fill="#d8d3cb"/>
+        <circle class="bi" cx="-17" cy="-548" r="3" fill="#120c08"/><circle class="bi" cx="17" cy="-548" r="3" fill="#120c08"/>
+        <path d="M-26 -560 Q-17 -566 -8 -561" stroke="#0d0b09" stroke-width="3" fill="none"/><path d="M8 -561 Q17 -566 26 -560" stroke="#0d0b09" stroke-width="3" fill="none"/>
+        <path d="M2 -540 L -4 -522 L 6 -522" stroke="#3a281e" stroke-width="2.5" fill="none"/>
+        <path d="M-12 -508 Q0 -510 12 -508" stroke="#2b1a14" stroke-width="3" fill="none" stroke-linecap="round"/>
+      </g>
+      <g class="bback" opacity="0"><path d="M-48 -540 C -54 -612 -20 -634 2 -632 C 30 -630 56 -606 48 -540 C 40 -500 -40 -500 -48 -540Z" fill="#0a0908"/><ellipse cx="-47" cy="-548" rx="7" ry="13" fill="#3e2b21"/><ellipse cx="47" cy="-548" rx="7" ry="13" fill="#3e2b21"/></g>
+    </g>
+  </g>
+</script>
+
+<!-- ============ SCENES ============ -->
+
+<!-- elevator floor display close-up -->
+<div class="scene" id="s_disp"><svg viewBox="0 0 720 1280"><g class="cam">
+  <rect x="-200" y="-200" width="1120" height="1700" fill="#1a1e22"/>
+  <rect x="-200" y="-200" width="1120" height="1700" fill="url(#gWall)" opacity=".6"/>
+  <g stroke="#2a3036" stroke-width="2" opacity=".6"><line x1="-200" y1="380" x2="920" y2="380"/><line x1="-200" y1="900" x2="920" y2="900"/></g>
+  <rect x="150" y="430" width="420" height="300" rx="16" fill="#0b0d0f" stroke="#3b4248" stroke-width="10"/>
+  <rect x="170" y="450" width="380" height="260" rx="8" fill="#050505"/>
+  <text class="dArrow" x="210" y="610" text-anchor="middle" font-family="Tajawal" font-size="70" fill="#f0a640">▼</text>
+  <text class="dNum" x="400" y="660" text-anchor="middle" font-family="IBM Plex Mono" font-size="220" fill="#f0a640" direction="ltr">5</text>
+  <ellipse class="dGlow" cx="360" cy="580" rx="260" ry="190" fill="#f0a640" opacity=".14" filter="url(#fBlur14)"/>
+  <rect class="dFlick" x="170" y="450" width="380" height="260" fill="#000" opacity="0"/>
+</g></svg></div>
+
+<!-- elevator interior (facing the doors) -->
+<div class="scene" id="s_elev"><svg viewBox="0 0 720 1280"><g class="cam">
+  <rect x="-200" y="-200" width="1120" height="1700" fill="#15191c"/>
+  <!-- outside, visible when doors open -->
+  <g class="outside">
+    <rect x="230" y="380" width="260" height="620" fill="#030404"/>
+    <g class="zeroPeek" opacity="0">
+      <polygon points="230,380 490,380 400,600 320,600" fill="#050606"/>
+      <polygon points="230,380 320,600 320,740 230,1000" fill="#17130f"/>
+      <polygon points="490,380 400,600 400,740 490,1000" fill="#120f0c"/>
+      <rect x="320" y="600" width="80" height="140" fill="#0b0a08"/>
+      <polygon points="320,740 400,740 490,1000 230,1000" fill="#2a251d"/>
+      <ellipse class="zl1" cx="360" cy="470" rx="40" ry="16" fill="url(#gBulb)" opacity=".6"/>
+      <ellipse class="zl2" cx="360" cy="580" rx="22" ry="9" fill="url(#gBulb)" opacity=".4"/>
+      <rect x="345" y="650" width="34" height="90" fill="#000"/><rect x="362" y="650" width="4" height="90" fill="#5a4a33" opacity=".5"/>
+      <ellipse cx="360" cy="860" rx="160" ry="60" fill="#c9c2b0" opacity=".08" filter="url(#fBlur14)"/>
+    </g>
+  </g>
+  <!-- walls -->
+  <polygon points="-200,-200 230,300 230,1000 -200,1500" fill="#30363b"/>
+  <polygon points="920,-200 490,300 490,1000 920,1500" fill="#2a2f34"/>
+  <polygon points="-200,-200 920,-200 490,300 230,300" fill="#101315"/>
+  <rect x="230" y="300" width="260" height="80" fill="#2c3237"/>
+  <rect x="200" y="1000" width="320" height="10" fill="#4a5056"/>
+  <polygon points="230,1000 490,1000 920,1500 -200,1500" fill="#1d1f21"/>
+  <g stroke="#454c52" stroke-width="2" opacity=".5"><line x1="-200" y1="1200" x2="920" y2="1200"/><line x1="100" y1="1000" x2="-100" y2="1500"/><line x1="620" y1="1000" x2="820" y2="1500"/></g>
+  <!-- doors -->
+  <g class="doorL"><rect x="230" y="380" width="130" height="620" fill="#4a5157"/><rect x="236" y="390" width="118" height="600" fill="#535a60"/><line x1="358" y1="380" x2="358" y2="1000" stroke="#25292c" stroke-width="3"/></g>
+  <g class="doorR"><rect x="360" y="380" width="130" height="620" fill="#474e54"/><rect x="366" y="390" width="118" height="600" fill="#50575d"/><line x1="362" y1="380" x2="362" y2="1000" stroke="#25292c" stroke-width="3"/></g>
+  <!-- display -->
+  <rect x="310" y="318" width="100" height="48" rx="4" fill="#060606"/>
+  <text class="eNum" x="372" y="356" text-anchor="middle" font-family="IBM Plex Mono" font-size="40" fill="#f0a640" direction="ltr">5</text>
+  <text x="330" y="354" text-anchor="middle" font-family="Tajawal" font-size="22" fill="#f0a640">▼</text>
+  <!-- panel on the right wall -->
+  <polygon points="560,560 610,520 610,800 560,820" fill="#3c4247" stroke="#55606a" stroke-width="2"/>
+  <g fill="#262b2f"><circle cx="585" cy="580" r="9"/><circle cx="585" cy="615" r="9"/><circle cx="585" cy="650" r="9"/><circle cx="585" cy="685" r="9"/><circle cx="585" cy="720" r="9"/><circle class="gLit" cx="585" cy="755" r="9"/></g>
+  <!-- ceiling light -->
+  <rect x="240" y="-20" width="240" height="30" fill="#cfe2e8" class="ceil"/>
+  <polygon class="ceilBeam" points="240,10 480,10 700,1300 20,1300" fill="#cfe2e8" opacity=".07"/>
+  <g class="nav"></g>
+  <rect class="flick" x="-200" y="-200" width="1120" height="1700" fill="#000" opacity="0"/>
+</g></svg></div>
+
+<!-- elevator button panel close-up -->
+<div class="scene" id="s_panel"><svg viewBox="0 0 720 1280"><g class="cam">
+  <rect x="-200" y="-200" width="1120" height="1700" fill="#2c3237"/>
+  <rect x="160" y="200" width="400" height="880" rx="20" fill="#3d444a" stroke="#5a646d" stroke-width="6"/>
+  <g font-family="IBM Plex Mono" font-size="40" text-anchor="middle" fill="#cfd6db" direction="ltr">
+    <g class="btns"></g>
+  </g>
+  <g class="hand"><path d="M720 900 C 640 880 560 880 520 860 C 480 840 470 820 488 808 C 510 800 560 820 600 820 C 650 820 700 790 760 780 Z" fill="#5f4535"/>
+    <path d="M520 860 C 470 870 430 862 420 848 C 412 834 430 826 452 828 C 480 830 505 834 530 840 Z" fill="#6b4d3b"/>
+    <path d="M760 760 L 900 760 L 900 1100 L 700 1100 C 700 980 720 860 760 780Z" fill="url(#gHood)"/></g>
+</g></svg></div>
+
+<!-- elevator shaft B-roll -->
+<div class="scene" id="s_shaft"><svg viewBox="0 0 720 1280"><g class="cam">
+  <rect x="-200" y="-200" width="1120" height="1700" fill="#07090a"/>
+  <g class="slits"></g>
+  <g stroke="#3b3f42" stroke-width="7" class="cables"><line x1="300" y1="-200" x2="300" y2="1500"/><line x1="330" y1="-200" x2="330" y2="1500"/><line x1="390" y1="-200" x2="390" y2="1500"/><line x1="420" y1="-200" x2="420" y2="1500"/></g>
+  <g class="cableMarks"></g>
+  <rect x="-200" y="-200" width="160" height="1700" fill="#0c0f11"/><rect x="760" y="-200" width="160" height="1700" fill="#0c0f11"/>
+  <g class="rail" stroke="#202528" stroke-width="18"><line x1="80" y1="-200" x2="80" y2="1500"/><line x1="640" y1="-200" x2="640" y2="1500"/></g>
+  <g class="railBolts"></g>
+  <rect class="carTop" x="140" y="1100" width="440" height="400" fill="#1c2023"/><rect x="140" y="1100" width="440" height="16" fill="#2b3034"/>
+  <ellipse cx="360" cy="1100" rx="200" ry="40" fill="#f0a640" opacity=".05" filter="url(#fBlur14)"/>
+</g></svg></div>
+
+<!-- building exterior B-roll (episode 1 look) -->
+<div class="scene" id="s_ext"><svg viewBox="0 0 720 1280">
+  <rect width="720" height="1280" fill="url(#gSky)"/>
+  <g class="x1"><path d="M-100 900 L -100 700 L 60 700 L 60 650 L 140 650 L 140 900 Z" fill="#0a0f15"/><path d="M560 900 L 560 690 L 700 690 L 700 640 L 820 640 L 820 900 Z" fill="#0a0f15"/></g>
+  <g class="x2">
+    <rect x="150" y="300" width="420" height="760" fill="#141b20"/><rect x="150" y="300" width="420" height="22" fill="#1b232a"/>
+    <g fill="#0b0f12"><rect x="190" y="360" width="70" height="90"/><rect x="325" y="360" width="70" height="90"/><rect x="460" y="360" width="70" height="90"/><rect x="190" y="500" width="70" height="90"/><rect x="460" y="500" width="70" height="90"/><rect x="190" y="640" width="70" height="90"/><rect x="325" y="640" width="70" height="90"/><rect x="460" y="640" width="70" height="90"/><rect x="190" y="780" width="70" height="90"/><rect x="325" y="780" width="70" height="90"/><rect x="460" y="780" width="70" height="90"/></g>
+    <rect class="nWin" x="325" y="500" width="70" height="90" fill="#d8a656" opacity=".45"/>
+    <rect x="310" y="940" width="100" height="120" fill="#0a0d10"/>
+    <!-- the floor that shouldn't exist: a faint glow under the ground line -->
+    <rect class="under" x="300" y="1062" width="120" height="6" fill="#f0a640" opacity="0"/>
+  </g>
+  <g class="x3"><rect x="-100" y="1060" width="920" height="300" fill="#0b0c0d"/><rect x="600" y="620" width="10" height="460" fill="#0e1012"/><polygon points="530,606 556,606 700,1080 380,1080" fill="url(#gCone)"/><ellipse cx="543" cy="606" rx="40" ry="20" fill="url(#gBulb)"/></g>
+  <g class="x4"><path d="M60 1400 C 70 1200 80 1000 100 820" stroke="#020304" stroke-width="26" fill="none"/><g fill="#020304"><path d="M100 820 C 40 780 -40 790 -90 840 C -20 800 40 805 100 830Z"/><path d="M100 820 C 160 770 240 770 290 820 C 230 790 160 795 100 830Z"/><path d="M100 820 C 80 750 30 700 -30 690 C 40 720 80 760 96 826Z"/><path d="M100 820 C 130 750 190 710 250 705 C 190 735 140 770 104 828Z"/></g></g>
+</svg></div>
+
+<!-- flashback: phone with the double in the feed -->
+<div class="scene" id="s_phone"><div class="pcam" style="position:absolute;inset:0;transform-origin:360px 640px">
+  <svg viewBox="0 0 720 1280" class="full"><rect width="720" height="1280" fill="#04070a"/><ellipse cx="360" cy="620" rx="380" ry="460" fill="#9cc2e2" opacity=".07" filter="url(#fBlur14)"/>
+    <path d="M180 1400 C 190 1200 200 1080 230 1010 L 520 1010 C 560 1080 560 1200 560 1400 Z" fill="#3b2a20"/></svg>
+  <div class="ph" style="left:190px;top:270px"><div class="scr" id="scr">
+    <div class="feedIn" id="feedIn"><svg viewBox="0 360 720 960" class="cctvLook" style="width:314px;height:418px"><g class="frcam"></g></svg>
+      <div style="position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(0,0,0,.2) 0 2px,transparent 2px 4px)"></div>
+      <div style="position:absolute;left:8px;top:6px;font:500 11px 'IBM Plex Mono';color:#d9f2dc;direction:ltr">● CAM 01</div></div>
+    <div id="lock" style="position:absolute;inset:0;opacity:0"><div class="ldate">الأربعاء، 18 نوفمبر</div><div class="ltime">3:24</div></div>
+  </div></div>
+  <svg viewBox="0 0 720 1280" class="full" style="pointer-events:none">
+    <path d="M192 770 C 164 780 156 830 172 860 C 182 878 196 876 202 860 Z" fill="#5a4031"/><path d="M192 850 C 162 862 156 910 172 940 C 182 958 196 956 202 940 Z" fill="#53392c"/>
+    <path d="M532 810 C 564 822 570 880 552 910 C 540 926 526 922 522 906 Z" fill="#4a3428"/></svg>
+</div></div>
+
+<!-- face (real Nawaf) with switchable backgrounds -->
+<div class="scene" id="s_face"><svg viewBox="0 0 720 1280"><rect width="720" height="1280" fill="#05080b"/>
+  <g class="bgRoom" opacity=".35" filter="url(#fDof)"></g>
+  <g class="bgElev" opacity="0"><rect width="720" height="1280" fill="#2a3035"/><rect x="0" y="0" width="720" height="60" fill="#cfe2e8" opacity=".5" filter="url(#fBlur14)"/><rect x="60" y="200" width="160" height="900" fill="#3a4147" filter="url(#fDof)"/></g>
+  <g class="bgZero" opacity="0"><rect width="720" height="1280" fill="#0d0b09"/><ellipse cx="200" cy="200" rx="160" ry="60" fill="url(#gBulb)" opacity=".4" filter="url(#fDof)"/><rect x="420" y="380" width="200" height="300" fill="#2a2116" filter="url(#fDof)"/><rect x="460" y="420" width="120" height="160" fill="#7a6a50" opacity=".4" filter="url(#fDof)"/></g>
+  <g class="cam"></g>
+  <rect class="tint" width="720" height="1280" fill="#000" opacity="0" style="mix-blend-mode:multiply"/>
+  <rect class="redLight" width="720" height="1280" fill="#b0281c" opacity="0" style="mix-blend-mode:screen"/>
+</svg></div>
+
+<!-- room: run to the door -->
+<div class="scene" id="s_room"><svg viewBox="0 0 720 1280"><g class="cam"></g></svg></div>
+
+<!-- hallway of his floor with the elevator at the end -->
+<div class="scene" id="s_hall"><svg viewBox="0 0 720 1280"><g class="cam">
+  <rect x="-200" y="-200" width="1120" height="1700" fill="#07090b"/>
+  <polygon points="-200,-200 920,-200 450,400 270,400" fill="#06080a"/>
+  <polygon points="-200,-200 270,400 270,840 -200,1500" fill="#11171c"/>
+  <polygon points="920,-200 450,400 450,840 920,1500" fill="#0d1216"/>
+  <rect x="270" y="400" width="180" height="440" fill="#151c21"/>
+  <polygon points="270,840 450,840 920,1500 -200,1500" fill="url(#gFloor)"/>
+  <!-- elevator at the end -->
+  <rect x="300" y="560" width="120" height="280" fill="#2c3237"/>
+  <g class="hDoorL"><rect x="304" y="566" width="56" height="274" fill="#4a5157"/></g><g class="hDoorR"><rect x="360" y="566" width="56" height="274" fill="#474e54"/></g>
+  <rect x="330" y="530" width="60" height="22" fill="#050505"/><text class="hNum" x="360" y="548" text-anchor="middle" font-family="IBM Plex Mono" font-size="18" fill="#f0a640" direction="ltr">3</text>
+  <rect x="428" y="690" width="12" height="22" rx="3" fill="#3a4045"/><circle class="hBtn" cx="434" cy="701" r="4" fill="#555"/>
+  <!-- ceiling lamp -->
+  <rect x="330" y="300" width="60" height="10" fill="#2a2a24"/><ellipse class="hLamp" cx="360" cy="312" rx="80" ry="40" fill="url(#gBulb)" opacity=".55"/>
+  <polygon points="335,312 385,312 560,1100 160,1100" fill="url(#gCone)" opacity=".45"/>
+  <!-- his apartment door (left, open) -->
+  <polygon points="40,420 150,470 150,1010 40,1110" fill="#1a1510"/><polygon points="150,470 210,500 210,980 150,1010" fill="#e7b25e" opacity=".12"/>
+  <g class="hNav"></g>
+</g></svg></div>
+
+<!-- hall call button close-up -->
+<div class="scene" id="s_btn"><svg viewBox="0 0 720 1280"><g class="cam">
+  <rect x="-200" y="-200" width="1120" height="1700" fill="#1b2125"/>
+  <rect x="-200" y="-200" width="560" height="1700" fill="#4a5157"/><rect x="350" y="-200" width="20" height="1700" fill="#25292c"/>
+  <rect x="440" y="440" width="160" height="320" rx="18" fill="#3a4045" stroke="#5a646d" stroke-width="5"/>
+  <circle cx="520" cy="600" r="50" fill="#262b2f" stroke="#6b757e" stroke-width="5"/><text x="520" y="616" text-anchor="middle" font-family="Tajawal" font-size="44" fill="#9aa4ab">▼</text>
+  <circle class="bLit" cx="520" cy="600" r="70" fill="#f0a640" opacity="0" filter="url(#fBlur6)"/>
+  <g class="finger"><path d="M900 860 C 760 820 640 760 590 700 C 560 664 580 640 610 652 C 660 676 720 720 820 740 Z" fill="#5f4535"/><path d="M900 820 L 1000 820 L 1000 1200 L 760 1200 C 780 1000 820 900 900 820Z" fill="url(#gHood)"/></g>
+</g></svg></div>
+
+<!-- floor zero corridor (long, burnt) -->
+<div class="scene" id="s_zero"><svg viewBox="0 0 720 1280"><g class="cam">
+  <rect x="-400" y="-400" width="1520" height="2100" fill="#060504"/>
+  <g class="zFar">
+    <rect x="320" y="520" width="80" height="150" fill="#0d0b09"/>
+    <rect class="zDoor" x="340" y="555" width="40" height="115" fill="#1e1710"/>
+    <rect x="356" y="555" width="6" height="115" fill="#000"/>
+    <ellipse class="zL3" cx="360" cy="505" rx="18" ry="6" fill="url(#gBulb)" opacity=".5"/>
+  </g>
+  <g class="zMid">
+    <polygon points="-400,-400 320,520 320,670 -400,1700" fill="#16110d"/>
+    <polygon points="1120,-400 400,520 400,670 1120,1700" fill="#120e0b"/>
+    <polygon points="-400,-400 1120,-400 400,520 320,520" fill="#070605"/>
+    <polygon points="320,670 400,670 1120,1700 -400,1700" fill="#2b261e"/>
+    <!-- soot patches -->
+    <g fill="#000" opacity=".55" filter="url(#fBlur14)"><ellipse cx="120" cy="420" rx="120" ry="200"/><ellipse cx="250" cy="560" rx="40" ry="80"/><ellipse cx="560" cy="380" rx="90" ry="220"/><ellipse cx="460" cy="600" rx="30" ry="60"/><ellipse cx="20" cy="900" rx="140" ry="160"/></g>
+    <!-- photo frames on the left wall, in perspective -->
+    <g class="zFrames"><polygon points="160,470 220,490 220,560 160,548" fill="#3a2b1b"/><polygon points="250,540 278,550 278,584 250,578" fill="#3a2b1b"/><polygon points="292,574 306,578 306,596 292,594" fill="#3a2b1b"/><polygon points="20,400 110,432 110,540 20,526" fill="#3a2b1b"/>
+      <polygon points="168,480 212,496 212,552 168,542" fill="#8a7a5a" opacity=".45"/><polygon points="30,412 100,438 100,532 30,520" fill="#8a7a5a" opacity=".45"/></g>
+    <!-- lamps -->
+    <ellipse class="zL1" cx="360" cy="260" rx="90" ry="30" fill="url(#gBulb)" opacity=".6"/>
+    <polygon class="zB1" points="330,268 390,268 520,900 200,900" fill="url(#gCone)" opacity=".35"/>
+    <ellipse class="zL2" cx="360" cy="430" rx="40" ry="14" fill="url(#gBulb)" opacity=".5"/>
+    <!-- dust on the floor -->
+    <ellipse cx="360" cy="980" rx="320" ry="90" fill="#cfc6b0" opacity=".08" filter="url(#fBlur14)"/>
+  </g>
+  <g class="zFog"><ellipse cx="200" cy="900" rx="380" ry="80" fill="#9a958a" opacity=".07" filter="url(#fBlur14)"/><ellipse cx="560" cy="760" rx="300" ry="60" fill="#9a958a" opacity=".06" filter="url(#fBlur14)"/></g>
+  <g class="zNav"></g>
+  <g class="zElev" opacity="0"><rect x="-400" y="-400" width="1520" height="2100" fill="none"/>
+    <polygon points="-400,-400 150,-400 150,1700 -400,1700" fill="#2f353a"/><polygon points="570,-400 1120,-400 1120,1700 570,1700" fill="#2a2f34"/>
+    <rect x="150" y="-400" width="420" height="140" fill="#2c3237"/><rect x="150" y="1180" width="420" height="520" fill="#1d1f21"/></g>
+  <rect class="zFlick" x="-400" y="-400" width="1520" height="2100" fill="#000" opacity="0"/>
+</g></svg></div>
+
+<!-- floor dust + footprints B-roll -->
+<div class="scene" id="s_dust"><svg viewBox="0 0 720 1280"><g class="cam">
+  <rect x="-200" y="-200" width="1120" height="1700" fill="#2a251d"/>
+  <rect x="-200" y="-200" width="1120" height="1700" fill="#000" opacity=".35"/>
+  <g fill="#1a1611" opacity=".7">
+    <ellipse cx="260" cy="1100" rx="30" ry="62" transform="rotate(-8 260 1100)"/><ellipse cx="380" cy="960" rx="28" ry="58" transform="rotate(6 380 960)"/>
+    <ellipse cx="290" cy="810" rx="26" ry="52" transform="rotate(-6 290 810)"/><ellipse cx="390" cy="680" rx="22" ry="46" transform="rotate(5 390 680)"/>
+    <ellipse cx="310" cy="560" rx="20" ry="40"/><ellipse cx="390" cy="460" rx="18" ry="34"/><ellipse cx="330" cy="370" rx="15" ry="28"/></g>
+  <ellipse cx="380" cy="500" rx="360" ry="300" fill="#e7b25e" opacity=".12" filter="url(#fBlur14)"/>
+  <g class="motes"></g>
+</g></svg></div>
+
+<!-- the open apartment door at the end -->
+<div class="scene" id="s_door0"><svg viewBox="0 0 720 1280"><g class="cam">
+  <rect x="-200" y="-200" width="1120" height="1700" fill="#0f0c09"/>
+  <g fill="#000" opacity=".5" filter="url(#fBlur14)"><ellipse cx="100" cy="300" rx="200" ry="300"/><ellipse cx="640" cy="500" rx="160" ry="380"/></g>
+  <rect x="180" y="200" width="360" height="900" fill="#000"/>
+  <g class="leaf"><polygon points="220,200 540,200 540,1100 220,1100" fill="#2a2016"/><polygon points="240,230 520,230 520,600 240,600" fill="none" stroke="#1a130c" stroke-width="5"/><circle cx="250" cy="660" r="12" fill="#5b4a33"/></g>
+  <rect x="160" y="180" width="20" height="940" fill="#1c160f"/><rect x="540" y="180" width="20" height="940" fill="#1c160f"/>
+  <rect x="-200" y="1100" width="1120" height="400" fill="#2b261e"/>
+  <ellipse cx="360" cy="140" rx="200" ry="60" fill="url(#gBulb)" opacity=".35" class="dLamp"/>
+  <g class="shadowIn" opacity="0" filter="url(#fBlur14)"><ellipse cx="205" cy="520" rx="22" ry="34" fill="#1a1a1a"/><rect x="185" y="550" width="40" height="300" rx="16" fill="#1a1a1a"/></g>
+</g></svg></div>
+
+<!-- photo wall -->
+<div class="scene" id="s_wall"><svg viewBox="0 0 720 1280"><g class="cam">
+  <rect x="-200" y="-200" width="3400" height="1700" fill="#1a140f"/>
+  <g fill="#000" opacity=".5" filter="url(#fBlur14)"><ellipse cx="200" cy="200" rx="300" ry="200"/><ellipse cx="900" cy="1000" rx="300" ry="300"/><ellipse cx="1700" cy="300" rx="400" ry="260"/><ellipse cx="2500" cy="900" rx="300" ry="300"/></g>
+  <g class="frames"></g>
+  <g class="spot"><ellipse class="spotE" cx="360" cy="560" rx="300" ry="420" fill="#e7b25e" opacity=".16" filter="url(#fBlur14)"/></g>
+  <g class="wNav"></g>
+</g><rect class="wDark" width="720" height="1280" fill="#000" opacity="0"/></svg></div>
+
+<!-- Nawaf's own photograph -->
+<div class="scene" id="s_photo"><svg viewBox="0 0 720 1280"><g class="cam">
+  <rect x="-200" y="-200" width="1120" height="1700" fill="#16110c"/>
+  <rect x="120" y="170" width="480" height="640" fill="#3a2b1b"/><rect x="140" y="190" width="440" height="600" fill="#2a1f14"/>
+  <svg x="150" y="200" width="420" height="580" viewBox="150 330 420 580" class="sepia"><rect x="0" y="0" width="720" height="1280" fill="#3a3530"/><g class="pface"></g></svg>
+  <rect x="150" y="200" width="420" height="580" fill="#c9b48a" opacity=".12"/>
+  <g fill="#d8cdb8" opacity=".14"><circle cx="200" cy="260" r="3"/><circle cx="420" cy="320" r="2"/><circle cx="520" cy="700" r="3"/><circle cx="260" cy="600" r="2"/><circle cx="480" cy="230" r="2"/></g>
+  <rect x="160" y="850" width="400" height="230" fill="#b9a67e"/><rect x="170" y="860" width="380" height="210" fill="#cdb98f"/>
+  <g class="plq" text-anchor="middle" fill="#2a1e12">
+    <text class="pl1" x="360" y="930" font-size="54" font-weight="700">نواف خالد</text>
+    <text class="pl2" x="360" y="992" font-size="34">تاريخ الاختفاء:</text>
+    <text class="pl3" x="360" y="1048" font-size="38" font-weight="700">الخميس — 03:17 فجرًا</text>
+  </g>
+  <g class="reach" opacity="0"><path d="M720 760 C 640 740 590 720 560 690 C 540 670 550 650 576 658 C 620 672 660 690 760 700Z" fill="#5f4535"/><path d="M760 690 L 900 690 L 900 1100 L 700 1100 C 700 950 720 820 760 720Z" fill="url(#gHood)"/></g>
+</g></svg></div>
+
+<!-- trembling hands B-roll -->
+<div class="scene" id="s_hands"><svg viewBox="0 0 720 1280"><g class="cam">
+  <rect x="-200" y="-200" width="1120" height="1700" fill="#0d0b09"/>
+  <ellipse cx="360" cy="500" rx="300" ry="300" fill="#e7b25e" opacity=".06" filter="url(#fBlur14)"/>
+  <g class="hl"><path d="M120 1300 C 130 1100 160 980 200 900 L 290 900 C 300 1000 300 1120 300 1300Z" fill="url(#gHood)"/><path d="M205 905 C 190 820 200 760 230 730 C 260 710 300 730 296 780 L 288 905Z" fill="#5a4031"/><path d="M230 735 C 226 690 240 660 256 662 C 270 664 268 700 262 740Z" fill="#664a39"/></g>
+  <g class="hr"><path d="M600 1300 C 590 1100 560 980 520 900 L 430 900 C 420 1000 420 1120 420 1300Z" fill="url(#gHood)"/><path d="M515 905 C 530 820 520 760 490 730 C 460 710 420 730 424 780 L 432 905Z" fill="#53392c"/><path d="M490 735 C 494 690 480 660 464 662 C 450 664 452 700 458 740Z" fill="#5f4535"/></g>
+</g></svg></div>
+
+<div id="black"></div>
+<div id="title"><div class="a">الساكن الأخير</div><div class="b">الحلقة الثالثة — الدور صفر</div></div>
+<canvas id="grain" width="420" height="700"></canvas>
+<div id="vig"></div>
+<div id="caps"></div>
+</div>
+
+<script src="timeline.js"></script>
+<script>
+const $=s=>document.querySelector(s), $$=s=>document.querySelectorAll(s);
+const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const ramp=(t,a,b)=>clamp((t-a)/(b-a));
+const ease=x=>x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;
+const eo=x=>1-Math.pow(1-x,3);
+const lerp=(a,b,k)=>a+(b-a)*k;
+const A=i=>SEG[i].a, B=i=>SEG[i].b;
+const END_CUT=B(76)+2.6;
+const DURATION=END_CUT+6.2;
+const svgNS='http://www.w3.org/2000/svg';
+
+function inst(id,target){target.innerHTML+=document.getElementById(id).textContent}
+inst('tRoom',$('#s_room .cam'));inst('tRoom',$('#s_face .bgRoom'));inst('tFace',$('#s_face .cam'));
+inst('tRoom',$('#s_phone .frcam'));$('#s_phone .frcam').innerHTML+='<g class="rdbl"></g>';inst('tBody',$('#s_phone .rdbl'));
+$('#s_phone .rdbl').setAttribute('transform','translate(470 1050) scale(.42)');
+$$('#s_phone .sitN,#s_phone .sleepN').forEach(e=>e.setAttribute('opacity',0));
+inst('tFace',$('#s_photo .pface'));
+$('#s_room .cam').innerHTML+='<g class="runner"></g>';inst('tBody',$('#s_room .runner'));
+$('#s_elev .nav').innerHTML='<g class="nb"></g>';inst('tBody',$('#s_elev .nb'));
+$('#s_hall .hNav').innerHTML='<g class="nb"></g>';inst('tBody',$('#s_hall .nb'));
+$('#s_zero .zNav').innerHTML='<g class="nb"></g>';inst('tBody',$('#s_zero .zNav .nb'));
+$('#s_wall .wNav').innerHTML='<g class="nb"></g>';inst('tBody',$('#s_wall .nb'));
+$$('.sleepN').forEach(e=>e.setAttribute('opacity',0));
+$$('#s_photo .blueAmb').forEach(e=>e.setAttribute('opacity',0));
+
+// panel buttons: G,1..5 — no zero
+(()=>{const g=$('#s_panel .btns');const labels=['5','4','3','2','1','G'];labels.forEach((l,i)=>{const y=330+i*120;
+  g.innerHTML+=`<circle cx="300" cy="${y}" r="44" fill="#262b2f" stroke="#6b757e" stroke-width="4" class="pb pb${l}"/><text x="300" y="${y+14}">${l}</text>`;
+  g.innerHTML+=`<circle class="pglow pg${l}" cx="300" cy="${y}" r="58" fill="#f0a640" opacity="0" filter="url(#fBlur6)"/>`});
+  g.innerHTML+=`<text x="440" y="344" font-size="30" fill="#8a949b">◀▶</text><text x="440" y="464" font-size="30" fill="#8a949b">▶◀</text><text x="440" y="584" font-size="34" fill="#c46">🔔</text>`;})();
+// shaft details
+(()=>{const s=$('#s_shaft .slits');for(let i=0;i<14;i++){s.innerHTML+=`<rect x="-40" y="${i*180-400}" width="800" height="6" fill="#f0a640" opacity=".08"/>`}
+  const m=$('#s_shaft .cableMarks');for(let i=0;i<30;i++){m.innerHTML+=`<rect x="${[296,326,386,416][i%4]}" y="${i*90-600}" width="8" height="18" fill="#6a6f73" opacity=".5"/>`}
+  const b=$('#s_shaft .railBolts');for(let i=0;i<20;i++){b.innerHTML+=`<rect x="70" y="${i*140-500}" width="20" height="10" fill="#33393e"/><rect x="630" y="${i*140-450}" width="20" height="10" fill="#33393e"/>`}})();
+// dust motes
+(()=>{const m=$('#s_dust .motes');let s=5;const r=()=>{s=(s*16807)%2147483647;return s/2147483647};for(let i=0;i<60;i++)m.innerHTML+=`<circle class="mote" data-x="${r()*720}" data-y="${r()*1280}" data-s="${.2+r()*.8}" r="${1+r()*2.5}" fill="#efe3c6" opacity="${.15+r()*.4}"/>`})();
+
+// photo wall: missing residents (all different), 7 years ago
+const PEOPLE=[
+ {name:'سالم ناصر',hair:'short',skin:'#8a6a52',extra:''},
+ {name:'منيرة حمد',hair:'scarf',skin:'#a07a5e',extra:''},
+ {name:'عبدالله سعيد',hair:'shemagh',skin:'#6f5240',extra:'beard'},
+ {name:'ريم فهد',hair:'scarf2',skin:'#9a765c',extra:''},
+ {name:'أبو صالح',hair:'bald',skin:'#7a5a44',extra:'beard'},
+];
+(()=>{const g=$('#s_wall .frames');PEOPLE.forEach((p,i)=>{const x=200+i*560,y=260;
+  let hair='';
+  if(p.hair==='short')hair=`<path d="M-62 -10 C -66 -80 -20 -104 4 -102 C 40 -100 66 -76 62 -10 C 52 -50 30 -60 0 -60 C -30 -60 -52 -50 -62 -10Z" fill="#141210"/>`;
+  if(p.hair==='scarf')hair=`<path d="M-80 120 C -96 0 -80 -110 0 -112 C 80 -110 96 0 80 120 C 60 60 50 -40 0 -44 C -50 -40 -60 60 -80 120Z" fill="#2b2622"/>`;
+  if(p.hair==='scarf2')hair=`<path d="M-80 120 C -96 0 -80 -110 0 -112 C 80 -110 96 0 80 120 C 60 60 50 -40 0 -44 C -50 -40 -60 60 -80 120Z" fill="#4a4038"/>`;
+  if(p.hair==='shemagh')hair=`<path d="M-84 130 C -100 0 -84 -116 0 -118 C 84 -116 100 0 84 130 C 64 60 56 -46 0 -50 C -56 -46 -64 60 -84 130Z" fill="#d9d2c4"/><path d="M-70 -70 C -30 -96 30 -96 70 -70 L 66 -56 C 30 -78 -30 -78 -66 -56Z" fill="#1a1a1a"/>`;
+  if(p.hair==='bald')hair=`<path d="M-62 -10 C -64 -40 -60 -60 -50 -66 C -56 -40 -58 -20 -62 -10Z M62 -10 C 64 -40 60 -60 50 -66 C 56 -40 58 -20 62 -10Z" fill="#555"/>`;
+  const beard=p.extra==='beard'?`<path d="M-50 40 C -40 100 40 100 50 40 C 30 70 -30 70 -50 40Z" fill="#2a2420"/>`:'';
+  g.innerHTML+=`<g transform="translate(${x} ${y})">
+   <rect x="0" y="0" width="320" height="420" fill="#3a2b1b"/><rect x="16" y="16" width="288" height="388" fill="#4a4036"/>
+   <g transform="translate(160 230)" class="sepia"><path d="M-110 180 C -100 110 -60 90 0 90 C 60 90 100 110 110 180Z" fill="#2a2a2a"/>
+     <ellipse cx="0" cy="0" rx="62" ry="80" fill="${p.skin}"/>${hair}<ellipse cx="-22" cy="0" rx="8" ry="5" fill="#1a1410"/><ellipse cx="22" cy="0" rx="8" ry="5" fill="#1a1410"/><path d="M-16 50 Q0 54 16 50" stroke="#3a2418" stroke-width="4" fill="none"/>${beard}</g>
+   <rect x="16" y="16" width="288" height="388" fill="#c9b48a" opacity=".18"/>
+   <rect x="20" y="450" width="280" height="150" fill="#b9a67e"/>
+   <text x="160" y="505" text-anchor="middle" font-family="Amiri" font-size="40" font-weight="700" fill="#2a1e12">${p.name}</text>
+   <text x="160" y="562" text-anchor="middle" font-family="Amiri" font-size="28" fill="#3a2a18">اختفى: 17 نوفمبر 2019</text></g>`;});})();
+
+function setT(el,s){if(el)el.setAttribute('transform',s)}
+function cam(el,{x=0,y=0,s=1,r=0,ox=360,oy=640}){setT(el,`translate(${ox+x} ${oy+y}) rotate(${r}) scale(${s}) translate(${-ox} ${-oy})`)}
+const blink=(t,period=4.2,off=0)=>{const p=((t+off)%period);return p<.14?Math.abs(p-.07)/.07:1};
+const flick=(t,seed=1)=>{const v=Math.sin(t*37*seed)*Math.sin(t*11.3+seed)*Math.sin(t*3.1);return v>.55?.75:(v>.4?.3:0)};
+
+function faceRig(root,{open=1,lookX=0,lookY=0,brow=0,mouth=0,phone=0,turn=0,breath=0,smile=0}){
+  root.querySelectorAll('.lidL,.lidR').forEach(l=>l.setAttribute('height',(1-open)*50));
+  root.querySelectorAll('.irisL,.irisR').forEach(g=>setT(g,`translate(${lookX*12} ${lookY*7})`));
+  root.querySelectorAll('.browL,.browR').forEach(g=>setT(g,`translate(0 ${-brow*10})`));
+  root.querySelector('.mouth').setAttribute('ry',mouth*10);
+  root.querySelector('.mline').setAttribute('d',`M${328-smile*10} ${716-smile*10} Q362 ${709+smile*18} ${396+smile*10} ${716-smile*10}`);
+  root.querySelector('.phoneLight').setAttribute('opacity',phone);
+  setT(root.querySelector('.head'),`translate(${turn*14} ${breath*3}) rotate(${turn*2} 362 600)`);
+}
+function faceBg(which,{amb=.32,tint=0,red=0}={}){
+  $('#s_face .bgRoom').setAttribute('opacity',which==='room'?.35:0);$('#s_face .bgElev').setAttribute('opacity',which==='elev'?1:0);$('#s_face .bgZero').setAttribute('opacity',which==='zero'?1:0);
+  $$('#s_face .blueAmb').forEach(e=>e.setAttribute('opacity',amb));$('#s_face .tint').setAttribute('opacity',tint);$('#s_face .redLight').setAttribute('opacity',red);
+}
+// body rig: run cycle, back/front view, arm press
+function bodyRig(g,{run=0,phase=0,back=0,press=0,shade=0,lookX=0}){
+  const sw=Math.sin(phase)*run;
+  setT(g.querySelector('.legL'),`rotate(${sw*28} -25 -250)`);setT(g.querySelector('.legR'),`rotate(${-sw*28} 25 -250)`);
+  setT(g.querySelector('.armL'),`rotate(${-sw*30} -64 -440)`);setT(g.querySelector('.armR'),`rotate(${sw*30-press*120} 64 -440)`);
+  g.querySelector('.bback').setAttribute('opacity',back);g.querySelector('.bface').setAttribute('opacity',1-back);
+  g.querySelector('.hoodTie').setAttribute('opacity',1-back);
+  g.querySelectorAll('.bi').forEach(e=>e.setAttribute('transform',`translate(${lookX*3} 0)`));
+}
+function place(g,x,y,s,bob=0){setT(g,`translate(${x} ${y-bob}) scale(${s})`)}
+function dispNum(sel,v,color='#f0a640'){$$(sel).forEach(e=>{if(e.textContent!==v)e.textContent=v;e.setAttribute('fill',color)})}
+
+// ---------- timeline ----------
+const TL=[];const S=(id,a,b,fn)=>TL.push({id,a,b,fn});
+
+// 0–3 hook: display 5→0, face, shaft stop
+S('s_disp',0,A(2),(l,t)=>{const n=['5','4','3','2','1'][Math.min(4,Math.floor(l/0.55))];const z=t>A(1)+.7;
+  dispNum('#s_disp .dNum',z?'0':n,z?'#d0362a':'#f0a640');$('#s_disp .dGlow').setAttribute('fill',z?'#d0362a':'#f0a640');
+  $('#s_disp .dFlick').setAttribute('opacity',flick(t,2)*.8);cam($('#s_disp .cam'),{s:1.1+ease(ramp(l,0,A(2)))*.25,oy:580})});
+S('s_face',A(2),A(3)+.8,(l,t)=>{faceBg('elev',{amb:.25,red:.12});cam($('#s_face .cam'),{s:1.75+l*.03,oy:570});
+  faceRig($('#s_face'),{open:1,lookY:-.8,brow:1,mouth:.15});$('#s_face .tint').setAttribute('opacity',flick(t,3)*.6)});
+S('s_shaft',A(3)+.8,A(4)-.25,(l,t)=>{const v=1-ease(ramp(t,A(3)+.8,B(3)+.4));shaftMove(t,v*900);cam($('#s_shaft .cam'),{s:1,y:ramp(t,B(3)+.3,B(3)+.45)*8*Math.sin(t*60)})});
+// 4 — B-roll: the building at night (a faint glow below the ground floor)
+S('s_ext',A(4)-.1,A(5),(l,t)=>{const k=ease(ramp(l,0,A(5)-A(4)));setT($('#s_ext .x2'),`translate(360 700) scale(${1.05+k*.12}) translate(-360 -700)`);setT($('#s_ext .x4'),`translate(${-k*60} 0) scale(${1+k*.1})`);
+  $('#s_ext .under').setAttribute('opacity',.25+.2*Math.sin(t*3))});
+// 5 — flashback: the double on the phone
+S('s_phone',A(5),A(6),(l,t)=>{$('#lock').style.opacity=0;$('#feedIn').style.opacity=1;$('#s_phone .pcam').style.transform=`scale(${1.05+l*.03})`;
+  const g=$('#s_phone .rdbl');bodyRig(g,{});setT(g.querySelector('.bhead'),`translate(0 0)`)});
+// 6 — his face, backing away without turning
+S('s_face',A(6),A(7),(l,t)=>{faceBg('room');cam($('#s_face .cam'),{s:1.5-ease(ramp(l,0,2.5))*.12,oy:600,y:ease(ramp(l,0,2.5))*30});
+  faceRig($('#s_face'),{open:1,lookX:Math.sin(t*5)*.4,lookY:.4,brow:.9,phone:.55,breath:Math.sin(t*6)})});
+// 7–8 — gets up and runs to the door (tracking)
+S('s_room',A(7),A(9),(l,t)=>{const g=$('#s_room .runner');roomState($('#s_room'),{sit:0});
+  const up=ease(ramp(t,A(7),A(7)+1.2));const run=ramp(t,A(8)-.6,A(8));const k=ease(ramp(t,A(8)-.6,B(8)));
+  const x=lerp(560,360,k),y=lerp(1060,812,k),s=lerp(.62,.32,k);bodyRig(g,{run,phase:t*12,back:1});
+  place(g,x,y,s*(0.85+0.15*up),Math.abs(Math.sin(t*12))*run*14);
+  cam($('#s_room .cam'),{s:lerp(1.15,1.5,k),ox:lerp(560,380,k),oy:lerp(950,780,k)});
+  $$('#s_room .gap').forEach(e=>e.setAttribute('opacity',1));
+  const open=ramp(t,B(8)-.5,B(8));$$('#s_room .doorLeak rect').forEach(e=>e.style.opacity=.9);
+  $('#s_room .cam').querySelectorAll('rect[fill="url(#gWood)"]').forEach(e=>e.setAttribute('opacity',1-open*.85))});
+// 9–10 — hallway: runs to the elevator; presses the button
+S('s_hall',A(9),A(10)+1.2,(l,t)=>{$('#s_hall').style.filter='';setT($('#s_hall .hDoorL'),'');setT($('#s_hall .hDoorR'),'');const g=$('#s_hall .nb');const k=ease(ramp(t,A(9),A(10)+1.0));
+  bodyRig(g,{run:1-ramp(t,A(10)+.6,A(10)+1),phase:t*12,back:1});place(g,lerp(300,360,k),lerp(1300,860,k),lerp(1.4,.42,k),Math.abs(Math.sin(t*12))*12*(1-k));
+  cam($('#s_hall .cam'),{s:1+k*.25,oy:700});dispNum('#s_hall .hNum','3');$('#s_hall .hLamp').setAttribute('opacity',.55-flick(t,4)*.4)});
+S('s_btn',A(10)+1.2,A(11),(l,t)=>{const p=[.1,.55,1.0,1.4].some(x=>l>x&&l<x+.18);setT($('#s_btn .finger'),`translate(${p?-14:0} ${p?-10:0})`);
+  $('#s_btn .bLit').setAttribute('opacity',l>.2?.6:0);cam($('#s_btn .cam'),{s:1.05,ox:520,oy:600,x:Math.sin(t*9)*2})});
+// 11 — inside: presses G, doors close
+S('s_panel',A(11),A(12),(l,t)=>{const pr=ease(ramp(l,.4,.9))*(1-ease(ramp(l,1.2,1.6)));setT($('#s_panel .hand'),`translate(${-pr*150} ${-pr*-50+ -pr*-0})`);
+  $$('#s_panel .pglow').forEach(e=>e.setAttribute('opacity',0));$('#s_panel .pgG').setAttribute('opacity',l>.85?.7:0);cam($('#s_panel .cam'),{s:1.15,ox:300,oy:880})});
+// 12 — elevator wide, doors closing, starts moving; breath calms
+S('s_elev',A(12),A(13),(l,t)=>{elevDoors(1-ease(ramp(l,0,.8)));dispNum('#s_elev .eNum','5');elevNav(t,{});$('#s_elev .zeroPeek').setAttribute('opacity',0);
+  cam($('#s_elev .cam'),{s:1.0+l*.03,oy:700,y:Math.sin(t*40)*.8})});
+// 13–16 — the numbers, synced to the voice
+S('s_disp',A(13),A(15),(l,t)=>{dispNum('#s_disp .dNum',t<A(14)?'4':'3');$('#s_disp .dGlow').setAttribute('fill','#f0a640');$('#s_disp .dFlick').setAttribute('opacity',0);cam($('#s_disp .cam'),{s:1.15,oy:580,y:Math.sin(t*30)*1})});
+S('s_face',A(15),A(16),(l,t)=>{faceBg('elev',{amb:.25});cam($('#s_face .cam'),{s:1.5,oy:580});faceRig($('#s_face'),{open:lerp(1,.8,ramp(l,0,1)),lookY:-.7,brow:.3,breath:Math.sin(t*2)})});
+S('s_disp',A(16),A(17),(l,t)=>{dispNum('#s_disp .dNum','1');cam($('#s_disp .cam'),{s:1.2,oy:580,y:Math.sin(t*30)*1})});
+// 17–19 — it didn't stop: shaft B-roll, puzzled look, display flickers
+S('s_shaft',A(17),A(18),(l,t)=>{shaftMove(t,700);cam($('#s_shaft .cam'),{s:1.1,y:Math.sin(t*40)*1.5})});
+S('s_elev',A(18),A(19),(l,t)=>{elevDoors(0);dispNum('#s_elev .eNum','1');elevNav(t,{lookUp:1});cam($('#s_elev .cam'),{s:1.35+l*.05,oy:480,y:Math.sin(t*40)})});
+S('s_disp',A(19),A(20),(l,t)=>{dispNum('#s_disp .dNum',Math.floor(t*8)%2?'1':'');$('#s_disp .dFlick').setAttribute('opacity',0);cam($('#s_disp .cam'),{s:1.2,oy:580})});
+// 20–23 — a strange sign… zero (red), slow push; red light on his face
+S('s_disp',A(20),B(23)+.3,(l,t)=>{let v='',c='#f0a640';if(t<A(22)){v=['?','█','',''][Math.floor(t*10)%4]}else if(t<A(23))v='';else{v='0';c='#d0362a'}
+  dispNum('#s_disp .dNum',v,c);$('#s_disp .dGlow').setAttribute('fill',c);$('#s_disp .dFlick').setAttribute('opacity',t<A(23)?flick(t,5)*.7:0);
+  cam($('#s_disp .cam'),{s:1.1+ease(ramp(t,A(20),B(23)+.3))*.7,oy:600})});
+S('s_face',B(23)+.3,A(24)+.2,(l,t)=>{faceBg('elev',{amb:.4,red:.35});cam($('#s_face .cam'),{s:1.8,oy:568});faceRig($('#s_face'),{open:1,lookY:-.9,brow:1})});
+// 24–26 — no basement, no zero button
+S('s_panel',A(24)+.2,A(27),(l,t)=>{const k=ease(ramp(t,A(25),B(26)));setT($('#s_panel .hand'),`translate(${-150} ${lerp(-560,60,k)})`);$('#s_panel .pgG').setAttribute('opacity',.7);
+  cam($('#s_panel .cam'),{s:1.0+k*.1,ox:300,oy:640})});
+// 27–28 — arrival chime, doors open slowly onto darkness
+S('s_elev',A(27),A(29),(l,t)=>{elevDoors(ease(ramp(t,A(28),A(29)+.2)));dispNum('#s_elev .eNum','0','#d0362a');$('#s_elev .zeroPeek').setAttribute('opacity',1);elevNav(t,{});
+  zeroFlick(t,'#s_elev .zl1','#s_elev .zl2');cam($('#s_elev .cam'),{s:1.05+l*.02,oy:700})});
+// 29–30 — the corridor: camera moves forward, Nawaf stays in the doorway
+S('s_zero',A(29),A(31),(l,t)=>{const k=ease(ramp(t,A(29),A(31)));zeroCam(lerp(0,.35,k));$('#s_zero .zElev').setAttribute('opacity',1-ramp(t,A(29),A(29)+2.5));
+  zNav({x:360,y:1250,s:1.2,back:1,op:1-ramp(t,A(29)+1.5,A(29)+2.5)});zeroFlick(t)});
+// 31–33 — B-roll: dust, old footprints, motes in the light
+S('s_dust',A(31),A(34),(l,t)=>{cam($('#s_dust .cam'),{s:1.05+l*.03,oy:700,y:-l*10});motes(t)});
+// 34–35 — the open apartment door at the end, barely moving, creak
+S('s_zero',A(34),A(35)+.8,(l,t)=>{const k=ease(ramp(t,A(34),A(35)+.8));zeroCam(lerp(.4,.75,k));zNav({op:0});zeroFlick(t)});
+S('s_door0',A(35)+.8,A(36),(l,t)=>{setT($('#s_door0 .leaf'),`translate(${ramp(t,A(35)+1.2,A(35)+2.4)*-26} 0)`);cam($('#s_door0 .cam'),{s:1.0+l*.03,oy:640});$('#s_door0 .shadowIn').setAttribute('opacity',0)});
+// 36–40 — wants to go back… the voice calls him
+S('s_zero',A(36),A(38),(l,t)=>{zeroCam(.15);zNav({x:360,y:lerp(1120,1180,ease(ramp(t,A(36),A(37)+.5))),s:1.05,back:0,op:1,lookX:-.5});zeroFlick(t)});
+S('s_face',A(38),A(39)+.2,(l,t)=>{faceBg('zero');cam($('#s_face .cam'),{s:1.6,oy:570});faceRig($('#s_face'),{open:1,lookX:.2,lookY:-.3,brow:.9,breath:0})});
+S('s_door0',A(39)+.2,A(41),(l,t)=>{setT($('#s_door0 .leaf'),'translate(-26 0)');cam($('#s_door0 .cam'),{s:1.05+ease(ramp(l,0,3))*.25,oy:600});$('#s_door0 .dLamp').setAttribute('opacity',.35-flick(t,2)*.25)});
+// 41–42 — looks left and right: no one
+S('s_face',A(41),A(42),(l,t)=>{faceBg('zero');cam($('#s_face .cam'),{s:1.5,oy:580,x:Math.sin(l*3)*20});faceRig($('#s_face'),{open:1,lookX:Math.sin(l*3.4)*1.0,brow:.7,turn:Math.sin(l*3.4)*.8})});
+S('s_zero',A(42),A(43),(l,t)=>{zeroCam(.2+l*.02);zNav({op:0});zeroFlick(t)});
+// 43 — the walls are full of old photos
+S('s_zero',A(43),A(44),(l,t)=>{const k=ease(ramp(t,A(43),A(44)));zeroCam(.2,{x:lerp(0,260,k),y:lerp(0,120,k),s:lerp(1,1.6,k)});zNav({op:0});zeroFlick(t)});
+// 44–46 — close: each photo a person, a name and a disappearance date — all 7 years ago
+S('s_wall',A(44),A(47),(l,t)=>{const k=ease(ramp(t,A(44),A(47)));const x=lerp(0,-1680,k);cam($('#s_wall .cam'),{s:1.0,x,ox:360,oy:640});
+  const near=Math.round(-x/560);const sx=200+near*560+160;$('#s_wall .spotE').setAttribute('cx',sx);setT($('#s_wall .spot'),'');$('#s_wall .nb').setAttribute('opacity',0);
+  $('#s_wall .wDark').setAttribute('opacity',0)});
+// 47–48 — tracking behind him along the wall, stops at the last photo (not shown yet)
+S('s_wall',A(47),A(49),(l,t)=>{const k=ease(ramp(t,A(47),A(48)+.8));const x=lerp(-1500,-2240,k);cam($('#s_wall .cam'),{s:1.15,x,ox:360,oy:640});
+  const g=$('#s_wall .nb');g.setAttribute('opacity',1);bodyRig(g,{run:.35*(1-ramp(t,A(48)+.6,A(48)+.9)),phase:t*6,back:1});place(g,-x+360+40,1350,1.25,Math.abs(Math.sin(t*6))*4);
+  $('#s_wall .spotE').setAttribute('cx',-x+360);$('#s_wall .wDark').setAttribute('opacity',ramp(t,A(48)+.4,A(49))*.5)});
+// 49–50 — eyes widen
+S('s_face',A(49),A(51),(l,t)=>{faceBg('zero',{tint:.2});const k=ease(ramp(t,A(49),A(51)));cam($('#s_face .cam'),{s:1.6+k*.7,oy:568});faceRig($('#s_face'),{open:lerp(.9,1,k),lookY:.1,brow:lerp(.4,1.1,k),mouth:k*.2})});
+// 51–53 — the photo: me
+S('s_photo',A(51),A(53)+1.4,(l,t)=>{const k=ease(ramp(t,A(51),A(53)));cam($('#s_photo .cam'),{s:lerp(1.35,1.15,k),oy:lerp(500,560,k)});faceRig($('#s_photo'),{open:1});
+  $('#s_photo .reach').setAttribute('opacity',ramp(t,A(53),A(53)+.6));setT($('#s_photo .reach'),`translate(${-ease(ramp(t,A(53),A(53)+1.4))*80} 0)`);plaque(0,0,0)});
+S('s_face',A(53)+1.4,A(54),(l,t)=>{faceBg('zero');cam($('#s_face .cam'),{s:1.2,oy:800,y:-60});faceRig($('#s_face'),{open:1,lookY:1,brow:.8})});
+// 54–57 — the plaque, line by line
+S('s_photo',A(54),A(58),(l,t)=>{const k=ease(ramp(t,A(54),A(55)));cam($('#s_photo .cam'),{s:lerp(1.2,1.9,k),oy:lerp(600,990,k)});faceRig($('#s_photo'),{open:1});$('#s_photo .reach').setAttribute('opacity',0);
+  plaque(t>=A(55)?1:0,t>=A(56)?1:0,t>=A(57)?1:0)});
+// 58–60 — the phone says Wednesday… the photo says Thursday… tomorrow
+S('s_phone',A(58),A(60),(l,t)=>{$('#feedIn').style.opacity=0;$('#lock').style.opacity=1;$('#s_phone .pcam').style.transform=`scale(${lerp(1.0,1.5,ease(ramp(l,0,A(60)-A(58))))}) translateY(${lerp(0,140,ease(ramp(l,0,A(60)-A(58))))}px)`});
+S('s_photo',A(60),B(60)-.6,(l,t)=>{cam($('#s_photo .cam'),{s:2.6,oy:1045});plaque(1,1,1)});
+S('s_face',B(60)-.6,A(61),(l,t)=>{faceBg('zero',{tint:.15});cam($('#s_face .cam'),{s:2.4,oy:568});faceRig($('#s_face'),{open:1,lookX:0,brow:1.1})});
+// 61–63 — runs back; the doors close just before he gets there
+S('s_zero',A(61),A(63),(l,t)=>{zeroCamBack(t);zeroFlick(t)});
+S('s_hall',A(63),A(64),(l,t)=>{const g=$('#s_hall .nb');const k=ease(ramp(t,A(63),A(63)+.9));const close=ease(ramp(t,A(63),A(63)+.55));
+  setT($('#s_hall .hDoorL'),`translate(${-(1-close)*56} 0)`);setT($('#s_hall .hDoorR'),`translate(${(1-close)*56} 0)`);dispNum('#s_hall .hNum','0','#d0362a');
+  bodyRig(g,{run:1-ramp(t,A(63)+.6,A(63)+.9),phase:t*12,back:1});place(g,360,lerp(1100,900,k),lerp(.9,.5,k),Math.abs(Math.sin(t*12))*10*(1-k));
+  cam($('#s_hall .cam'),{s:1.25,oy:720,y:t>A(63)+.55&&t<A(63)+.7?6:0});$('#s_hall .hLamp').setAttribute('opacity',.3);$('#s_hall').style.filter='sepia(.5) brightness(.75)'});
+// 64 — the button doesn't respond
+S('s_btn',A(64),A(65),(l,t)=>{const p=[.1,.45,.8,1.2,1.6].some(x=>l>x&&l<x+.15);setT($('#s_btn .finger'),`translate(${p?-14:0} ${p?-10:0})`);$('#s_btn .bLit').setAttribute('opacity',0);
+  cam($('#s_btn .cam'),{s:1.05,ox:520,oy:600,x:(p?Math.sin(t*80)*3:0)})});
+// 65–70 — footsteps from the apartment; static shot behind him, slow push into the dark
+S('s_zero',A(65),A(71),(l,t)=>{const k=ease(ramp(t,A(67),A(71)));zeroCam(lerp(.1,.55,k));zNav({x:250,y:1300,s:1.3,back:1,op:1-ramp(t,A(69),A(70))});zeroFlick(t)});
+// 71 — B-roll: trembling hands
+S('s_hands',A(71),A(72)+.3,(l,t)=>{const tr=Math.sin(t*45)*2.5+Math.sin(t*31)*1.5;setT($('#s_hands .hl'),`translate(${tr} ${-tr*.4})`);setT($('#s_hands .hr'),`translate(${-tr} ${tr*.4})`);
+  cam($('#s_hands .cam'),{s:1.05,oy:900,y:-ease(ramp(l,0,2))*120})});
+// 72–73 — "don't run, Nawaf… you came back a day early" — tilt up to the face, recognition
+S('s_face',A(72)+.3,A(74),(l,t)=>{faceBg('zero',{tint:.1});const k=ease(ramp(l,0,1.6));cam($('#s_face .cam'),{s:1.5,oy:lerp(800,580,k)});
+  faceRig($('#s_face'),{open:lerp(1,.88,ramp(t,A(73),B(73))),lookX:.3,lookY:-.2,brow:lerp(.9,.5,ramp(t,A(73),B(73))),breath:Math.sin(t*7)*.5})});
+// 74–76 — "…the voice was my father's": extreme close, then toward the dark door, a vague shadow, cut
+S('s_face',A(74),B(76)+.5,(l,t)=>{faceBg('zero',{tint:.2});cam($('#s_face .cam'),{s:2.5,oy:568});faceRig($('#s_face'),{open:t>A(76)?1:.9,lookX:.2,brow:t>A(76)?1.2:.8,mouth:t>A(76)?.2:0})});
+S('s_door0',B(76)+.5,END_CUT,(l,t)=>{setT($('#s_door0 .leaf'),'translate(-26 0)');const k=ease(ramp(t,B(76)+.5,END_CUT));cam($('#s_door0 .cam'),{s:1.1+k*.5,ox:220,oy:560});
+  $('#s_door0 .shadowIn').setAttribute('opacity',ramp(t,B(76)+1.3,END_CUT-.3)*.8);$('#s_door0 .dLamp').setAttribute('opacity',.3)});
+
+// ---------- helpers ----------
+function roomState(root,{sit=0}){root.querySelectorAll('.sitN').forEach(e=>e.setAttribute('opacity',sit));root.querySelectorAll('.sitGlow').forEach(e=>e.setAttribute('opacity',0))}
+function shaftMove(t,speed){const off=(t*speed)%180;setT($('#s_shaft .slits'),`translate(0 ${-off})`);setT($('#s_shaft .cableMarks'),`translate(0 ${-(t*speed)%90})`);setT($('#s_shaft .railBolts'),`translate(0 ${-(t*speed)%140})`)}
+function elevDoors(open){setT($('#s_elev .doorL'),`translate(${-open*130} 0)`);setT($('#s_elev .doorR'),`translate(${open*130} 0)`)}
+function elevNav(t,{lookUp=0}){const g=$('#s_elev .nb');bodyRig(g,{back:1});place(g,360,1250,1.12,Math.sin(t*2)*2);setT(g.querySelector('.bhead'),`translate(0 ${-lookUp*6}) rotate(0)`);
+  $('#s_elev .flick').setAttribute('opacity',flick(t,1.7)*.35);$('#s_elev .ceil').setAttribute('opacity',1-flick(t,1.7)*.6)}
+function zeroFlick(t,a='#s_zero .zL1',b='#s_zero .zL2'){const f=flick(t,2.3);$$(a).forEach(e=>e.setAttribute('opacity',.6-f*.55));$$(b).forEach(e=>e.setAttribute('opacity',.5-flick(t,3.1)*.4));
+  const beam=$('#s_zero .zB1');if(beam)beam.setAttribute('opacity',.35-f*.3);const z=$('#s_zero .zFlick');if(z)z.setAttribute('opacity',f*.25);
+  setT($('#s_zero .zFog'),`translate(${Math.sin(t*.2)*40} 0)`)}
+function zeroCam(depth,{x=0,y=0,s=1}={}){ // depth 0..1 = dolly toward the far door, layered parallax
+  setT($('#s_zero .zFar'),`translate(360 600) scale(${(1+depth*2.2)*s}) translate(${-360+x*.4} ${-600+y*.4})`);
+  setT($('#s_zero .zMid'),`translate(360 600) scale(${(1+depth*1.4)*s}) translate(${-360+x} ${-600+y})`);
+  setT($('#s_zero .zFog'),`translate(360 600) scale(${1+depth*1.9}) translate(-360 -600)`);setT($('#s_zero .zElev'),`translate(360 640) scale(${1+depth*.8}) translate(-360 -640)`)}
+function zeroCamBack(t){ // tracking him running back to the elevator; doors close just before he reaches it
+  const k=ease(ramp(t,A(61),A(63)+.4));zNav({x:360,y:lerp(1500,980,k),s:lerp(1.6,.6,k),back:1,op:1,run:1-ramp(t,A(63)+.3,A(63)+.6)});zeroCam(0,{});
+  const g=$('#s_zero .zElev');g.setAttribute('opacity',0);
+  setT($('#s_zero .zMid'),'translate(360 600) scale(1) translate(-360 -600) rotate(180 360 600)');setT($('#s_zero .zFar'),'translate(0 0)');
+  // draw the elevator at the far end using the far group: reuse the door rect as closing elevator doors
+  const close=ease(ramp(t,A(62)+.2,A(63)+.35));$('#s_zero .zDoor').setAttribute('fill','#4a5157');$('#s_zero .zDoor').setAttribute('width',40*close);$('#s_zero .zDoor').setAttribute('x',340+20*(1-close));
+  cam($('#s_zero .cam'),{s:1.0,y:Math.sin(t*14)*3*(1-ramp(t,A(63)+.3,A(63)+.5)),oy:640});}
+function zNav({x=360,y=1250,s=1.1,back=1,op=1,run=0,lookX=0}){const g=$('#s_zero .zNav .nb');g.setAttribute('opacity',op);bodyRig(g,{back,run,phase:performance.now?CUR*12:0,lookX});place(g,x,y,s,Math.abs(Math.sin(CUR*12))*run*12)}
+function motes(t){$$('#s_dust .mote').forEach(m=>{const x=+m.dataset.x+Math.sin(t*.3*+m.dataset.s+ +m.dataset.y)*20,y=(+m.dataset.y-t*14*+m.dataset.s)%1280;m.setAttribute('cx',x);m.setAttribute('cy',y<0?y+1280:y)})}
+function plaque(a=1,b=1,c=1){$('#s_photo .pl1').setAttribute('opacity',a);$('#s_photo .pl2').setAttribute('opacity',b);$('#s_photo .pl3').setAttribute('opacity',c);
+  $('#s_photo .pl3').setAttribute('fill',c&&CUR>A(60)-.1?'#7a1a12':'#2a1e12')}
+
+// ---------- captions ----------
+const HL={23:'r',46:'y',52:'r',56:'y',57:'y',60:'r',76:'r',3:'y'};
+const POP=new Set([23,52,60,76]);
+const CAPS=[];
+SEG.forEach((s,i)=>{const words=s.text.split(' ');const cls=HL[i]||'';
+  const wrap=txt=>cls?`<span class="${cls}">${txt}</span>`:(txt.startsWith('«')||txt.endsWith('»')?`<span class="q">${txt}</span>`:txt);
+  const nextA=i+1<SEG.length?SEG[i+1].a:s.b+1.2;const end=Math.min(nextA-.05,s.b+.55);
+  if(words.length>6){let cut=words.findIndex(w=>w.endsWith('،')||w.endsWith('…'))+1;if(cut<=0||cut>=words.length)cut=Math.ceil(words.length/2);
+    const p1=words.slice(0,cut).join(' '),p2=words.slice(cut).join(' ');const mid=s.a+(s.b-s.a)*(p1.length/(p1.length+p2.length));
+    CAPS.push([s.a,mid,wrap(p1),i]);CAPS.push([mid,end,wrap(p2),i]);}else CAPS.push([s.a,end,wrap(s.text),i]);});
+let lastCap=-1;
+function caps(t){let k=-1;for(let j=0;j<CAPS.length;j++){if(t>=CAPS[j][0]&&t<CAPS[j][1])k=j}
+  const el=$('#caps');if(k!==lastCap){el.innerHTML=k>=0?CAPS[k][2]:'';lastCap=k}
+  if(k>=0){const e=eo(ramp(t,CAPS[k][0],CAPS[k][0]+.22));const pop=POP.has(CAPS[k][3]);el.style.opacity=e;el.style.transform=`scale(${pop?lerp(1.25,1.08,e):(.92+.08*e)})`}else el.style.opacity=0}
+
+// ---------- grain ----------
+const gc=$('#grain').getContext('2d');const NF=[];
+(()=>{let s=31;const r=()=>{s=(s*16807)%2147483647;return s/2147483647};for(let f=0;f<6;f++){const im=gc.createImageData(420,700);for(let i=0;i<im.data.length;i+=4){const v=r()*255|0;im.data[i]=im.data[i+1]=im.data[i+2]=v;im.data[i+3]=255}NF.push(im)}})();
+$('#grain').style.width='840px';$('#grain').style.height='1400px';
+
+let CUR=0;
+function seek(t){CUR=t;
+  let active=null;for(const s of TL){if(t>=s.a&&t<s.b)active=s}
+  $$('.scene').forEach(e=>e.style.opacity=0);
+  if(active){const el=document.getElementById(active.id);el.style.opacity=1;
+    // reset shared state that some scenes change
+    if(active.id==='s_zero'){$('#s_zero .zDoor').setAttribute('fill','#1e1710');$('#s_zero .zDoor').setAttribute('width',40);$('#s_zero .zDoor').setAttribute('x',340);cam($('#s_zero .cam'),{});$('#s_zero .zElev').setAttribute('opacity',0)}
+    active.fn(t-active.a,t);}
+  const flash=(t>A(4)-.25&&t<A(4)-.1);
+  const blk=t>=END_CUT||flash;$('#black').style.opacity=blk?1:0;
+  $('#title .a').style.opacity=Math.min(ramp(t,END_CUT+1.0,END_CUT+1.7),1-ramp(t,DURATION-.7,DURATION-.1));
+  $('#title .b').style.opacity=Math.min(ramp(t,END_CUT+2.2,END_CUT+2.9),1-ramp(t,DURATION-.7,DURATION-.1));
+  caps(t);$('#caps').style.visibility=t>=END_CUT?'hidden':'visible';
+  const top=active&&active.id==='s_photo';$('#caps').style.bottom=top?'auto':'250px';$('#caps').style.top=top?'90px':'auto';
+  const f=Math.floor(t*30)%6;gc.putImageData(NF[f],0,0);$('#grain').style.transform=`translate(${(f*37)%60}px,${(f*53)%60}px)`;
+}
+window.seek=seek;window.DURATION=DURATION;
+if(!location.search.includes('render')){let t0=null;const loop=ts=>{if(t0===null)t0=ts;seek(((ts-t0)/1000)%DURATION);requestAnimationFrame(loop)};document.fonts.ready.then(()=>requestAnimationFrame(loop));}
+else seek(0);
+</script>
+</body>
+</html>
