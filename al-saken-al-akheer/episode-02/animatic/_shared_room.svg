@@ -1,0 +1,66 @@
+<script type="text/x-svg" id="tRoom">
+  <g class="L0">
+    <!-- back wall -->
+    <rect x="-200" y="120" width="1120" height="680" fill="url(#gWall)"/>
+    <!-- side walls -->
+    <polygon points="-200,0 120,250 120,800 -200,1400" fill="url(#gSideL)"/>
+    <polygon points="920,0 600,250 600,800 920,1400" fill="url(#gSideR)"/>
+    <polygon points="-200,0 920,0 600,250 120,250" fill="#07090b"/>
+    <!-- window on right wall -->
+    <polygon points="640,330 760,290 760,610 640,600" fill="#16283a"/>
+    <polygon points="640,330 760,290 760,610 640,600" fill="none" stroke="#090c0f" stroke-width="8"/>
+    <line x1="700" y1="312" x2="700" y2="606" stroke="#090c0f" stroke-width="6"/>
+    <!-- mirror on left wall -->
+    <g><polygon points="40,330 92,350 92,700 40,740" fill="#3a2a1b"/><polygon points="48,345 86,360 86,690 48,724" fill="#121a20"/><polygon class="mirrorRefl" points="58,520 78,524 78,640 58,650" fill="#05080a" opacity="0"/></g>
+  </g>
+  <g class="L1">
+    <!-- floor -->
+    <polygon points="120,800 600,800 920,1400 -200,1400" fill="url(#gFloor)"/>
+    <g stroke="#000" stroke-opacity=".35" stroke-width="2"><line x1="240" y1="800" x2="60" y2="1400"/><line x1="360" y1="800" x2="360" y2="1400"/><line x1="480" y1="800" x2="660" y2="1400"/><line x1="-200" y1="900" x2="920" y2="900"/><line x1="-200" y1="1060" x2="920" y2="1060"/></g>
+    <!-- moonlight on floor -->
+    <polygon points="600,800 760,760 920,1100 700,1150" fill="url(#gMoon)" opacity=".5"/>
+    <!-- door -->
+    <rect x="296" y="520" width="128" height="280" fill="url(#gWood)" stroke="#060504" stroke-width="5"/>
+    <rect x="306" y="534" width="108" height="110" fill="none" stroke="#0f0c09" stroke-width="2"/>
+    <rect x="306" y="660" width="108" height="128" fill="none" stroke="#0f0c09" stroke-width="2"/>
+    <circle cx="308" cy="668" r="5" fill="#5b4a33"/>
+    <!-- light leaking around door edges -->
+    <g class="doorLeak"><rect x="293" y="520" width="3" height="280" fill="#f0bb60" opacity=".45"/><rect x="424" y="520" width="3" height="280" fill="#f0bb60" opacity=".35"/>
+    <rect class="gap" x="296" y="797" width="128" height="4" fill="#ffd27a"/>
+    <ellipse class="gapSpill" cx="360" cy="806" rx="140" ry="26" fill="url(#gSpill)"/></g>
+    <polygon points="300,800 430,800 640,1000 560,1060 300,900" fill="url(#gLampFloor)"/>
+    <!-- the impossible shadow (from inside the room toward the door) -->
+    <g class="roomShadow" opacity="0" filter="url(#fBlur6)">
+      <path class="rsPath" d="M560 1010 C 545 1000 520 990 505 975 L 410 860 C 400 845 392 828 388 812 L 400 800 L 345 800 C 352 818 362 838 372 856 L 470 985 C 480 1000 500 1016 520 1024 Z" fill="#000" opacity="1"/>
+    </g>
+    <!-- boxes (left front) -->
+    <g transform="translate(-30,980)"><rect x="0" y="0" width="190" height="150" fill="#33291e"/><rect x="0" y="0" width="190" height="20" fill="#3e3326"/><rect x="25" y="-110" width="150" height="110" fill="#2d241a"/>
+      <text x="95" y="92" text-anchor="middle" font-family="Tajawal" font-size="24" fill="#120e0a" font-weight="800">غرفة نواف</text>
+      <text x="100" y="-48" text-anchor="middle" font-family="Tajawal" font-size="22" fill="#120e0a" font-weight="800">كتب</text></g>
+  </g>
+  <g class="L2">
+    <!-- nightstand + lamp (right, behind bed head) -->
+    <rect x="590" y="900" width="110" height="120" fill="#17120d"/><rect x="584" y="892" width="122" height="12" fill="#211a13"/>
+    <rect x="630" y="860" width="40" height="32" rx="3" fill="#0d0f10"/><text x="650" y="882" text-anchor="middle" font-family="Tajawal" font-size="14" fill="#7fe0a0" opacity=".7" direction="ltr">03:17</text>
+    <ellipse class="lampGlow" cx="610" cy="860" rx="150" ry="140" fill="url(#gBulb)" opacity=".35"/>
+    <!-- bed (right-front) -->
+    <path d="M330 1060 L 720 1000 L 900 1000 L 900 1400 L 300 1400 Z" fill="#101215"/>
+    <path d="M320 1050 L 720 990 L 900 990 L 900 1030 L 330 1100 Z" fill="#1c2026"/>
+    <path d="M600 960 L 760 940 L 780 1000 L 610 1012 Z" fill="#2a2f36"/>
+    <!-- sleeping nawaf -->
+    <g class="sleepN" opacity="0">
+      <path d="M380 1060 C 420 1020 560 1000 640 1000 C 690 1000 700 1040 690 1060 Z" fill="#232a33"/>
+      <ellipse cx="660" cy="985" rx="30" ry="24" fill="#0a0a0a"/>
+    </g>
+    <!-- sitting nawaf (back/3-4 view, facing the door) -->
+    <g class="sitN" opacity="0">
+      <path d="M470 1095 C 470 1040 490 1000 530 990 L 590 990 C 630 1000 645 1040 645 1095 Z" fill="url(#gHood)"/>
+      <rect x="545" y="965" width="28" height="30" fill="#4a3428"/>
+      <ellipse cx="559" cy="945" rx="34" ry="40" fill="#5c4233"/>
+      <path d="M523 945 C 520 905 545 895 562 896 C 585 897 600 915 594 950 C 590 930 575 920 560 921 C 542 922 530 932 523 945Z" fill="#070707"/>
+      <ellipse cx="559" cy="935" rx="35" ry="34" fill="#080808" opacity=".92"/>
+      <ellipse class="sitGlow" cx="545" cy="1010" rx="60" ry="30" fill="#bcd7ee" opacity="0" filter="url(#fBlur6)"/>
+    </g>
+    <ellipse class="bedPhone" cx="470" cy="1060" rx="22" ry="8" fill="#cfe6ff" opacity="0" filter="url(#fBlur3)"/>
+  </g>
+</script>
