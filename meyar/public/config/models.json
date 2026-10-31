@@ -1,0 +1,27 @@
+{
+  "_note": "قائمة النماذج قابلة للتحديث دون إعادة بناء الموقع. لا يمكن تغيير عناوين API من هنا؛ العناوين ثابتة في الكود. حدّث هذا الملف بعد التحقق من الأسماء في الوثائق الرسمية.",
+  "checked_on": "2026-10-31",
+  "anthropic": {
+    "source": "https://platform.claude.com/docs/en/models/overview",
+    "verification": "تحقق من أسماء النماذج من صفحة النماذج الرسمية بتاريخ 2026-10-31.",
+    "default": "claude-sonnet-5-5",
+    "models": [
+      { "id": "claude-sonnet-5-5", "label": "Claude Sonnet 5.5", "structured_output": false },
+      { "id": "claude-haiku-5-5", "label": "Claude Haiku 5.5 (أسرع وأقل تكلفة)", "structured_output": true },
+      { "id": "claude-opus-5-5", "label": "Claude Opus 5.5 (أعلى قدرة وأعلى تكلفة)", "structured_output": false }
+    ],
+    "max_output_tokens": 3000
+  },
+  "openai": {
+    "source": "https://platform.openai.com/docs/models",
+    "verification": "لم يُتحقق من أسماء نماذج OpenAI لأن الوصول إلى وثائقها كان محجوبًا في بيئة الإعداد. لذلك لا توجد نماذج افتراضية: استخدم زر «جلب النماذج المتاحة لحسابي» أو أضف الأسماء هنا بعد التحقق.",
+    "default": null,
+    "models": [],
+    "max_output_tokens": 3000
+  },
+  "limits": {
+    "max_input_chars": 6000,
+    "max_reference_chars": 18000,
+    "max_references": 12
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "name": "meyar",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "refs": "bash scripts/extract_all.sh && python3 -I scripts/build_corpus.py",
+    "corpus": "python3 -I scripts/build_corpus.py",
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:e2e": "node tests/e2e.cjs"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3",
+    "vite": "^6.4.5",
+    "vitest": "^3.2.7"
+  }
+}
