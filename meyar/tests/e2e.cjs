@@ -146,11 +146,14 @@ async function run(browser) {
     await ctx.close();
   }
 
-  // 3. Manual path (no key) — the shipped config hides the API path
+  // 3. Shipped config shows the API path; manual path (api_enabled=false) still works
   {
-    const { page, providerRequests, ctx } = await freshPage(browser, { apiEnabled: 'real', permissions: ['clipboard-read', 'clipboard-write'] });
-    ok('shipped config: API section hidden, no key field visible', (await page.isHidden('#api-card')) && (await page.isHidden('#api-key')) && (await page.isHidden('#consent-box')));
-    ok('shipped config: manual explanation shown', await page.isVisible('#manual-intro'));
+    const shipped = await freshPage(browser, { apiEnabled: 'real' });
+    ok('shipped config: API path shown, manual path hidden', (await shipped.page.isVisible('#api-key')) && (await shipped.page.isHidden('#manual-intro')) && (await shipped.page.textContent('#run')).includes('افحص النص'));
+    await shipped.ctx.close();
+    const { page, providerRequests, ctx } = await freshPage(browser, { apiEnabled: false, permissions: ['clipboard-read', 'clipboard-write'] });
+    ok('api_enabled=false: API section hidden, no key field visible', (await page.isHidden('#api-card')) && (await page.isHidden('#api-key')) && (await page.isHidden('#consent-box')));
+    ok('api_enabled=false: manual explanation shown', await page.isVisible('#manual-intro'));
     ok('run button says prepare request', (await page.textContent('#run')).includes('جهّز الطلب'));
     await page.fill('#user-text', 'اشترِ الآن سجائر إلكترونية بنكهة الفراولة مع خصم 50%');
     await page.click('#run');
@@ -168,7 +171,7 @@ async function run(browser) {
     await ctx.close();
   }
   {
-    const { page, providerRequests, ctx } = await freshPage(browser, { apiEnabled: 'real', viewport: { width: 375, height: 812 }, isMobile: true, hasTouch: true });
+    const { page, providerRequests, ctx } = await freshPage(browser, { apiEnabled: false, viewport: { width: 375, height: 812 }, isMobile: true, hasTouch: true });
     await page.click('[data-task=question]');
     await page.fill('#user-text', 'كم نسبة ضريبة القيمة المضافة على العقارات التجارية؟');
     await page.click('#run');
