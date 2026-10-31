@@ -22,7 +22,7 @@
     <main id="main" class="wrap">
       <noscript><p class="alert">تحتاج هذه الصفحة إلى تفعيل JavaScript.</p></noscript>
 
-      <section class="card" aria-labelledby="mode-h">
+      <section class="card" aria-labelledby="mode-h" id="api-card">
         <h2 id="mode-h"><span class="step">1</span> المزود ومفتاح API</h2>
 
         <div id="api-panel">
@@ -56,7 +56,10 @@
       </section>
 
       <section class="card" aria-labelledby="task-h">
-        <h2 id="task-h"><span class="step">2</span> المهمة</h2>
+        <h2 id="task-h"><span class="step" id="task-step">2</span> المهمة</h2>
+        <div id="manual-intro" class="status-note" hidden>
+          <p>يبحث معيار في المراجع داخل متصفحك ويجهّز طلبًا كاملًا (التعليمات ونصك والمواد ذات الصلة). تنسخه وتلصقه في ChatGPT أو Claude، فيُحتسب على اشتراكك هناك دون مفتاح API ودون أي رصيد إضافي.</p>
+        </div>
         <div class="seg" role="radiogroup" aria-labelledby="task-h" id="task-group">
           <button type="button" role="radio" aria-checked="true" data-task="check">فحص نص</button>
           <button type="button" role="radio" aria-checked="false" data-task="question">اسأل معيار</button>

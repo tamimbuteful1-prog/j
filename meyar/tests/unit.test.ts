@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { SearchIndex } from '../src/search';
 import { findInSource, normalizeArabic, tokenize } from '../src/text';
 import { extractJson, parseResult, verifyResult, InvalidOutputError } from '../src/verify';
-import { buildPayload, RESULT_SCHEMA } from '../src/prompt';
+import { buildManualPackage, buildPayload, RESULT_SCHEMA } from '../src/prompt';
 import { pickAnthropicModel, pickOpenAIModel } from '../src/providers';
 import type { Corpus } from '../src/types';
 
@@ -140,6 +140,19 @@ describe('prompt building', () => {
     expect(p).not.toMatch(/sk-|api[_-]?key/i);
   });
 
+});
+
+describe('manual package', () => {
+  it('includes instructions, user text, references and coverage limits, and no key', () => {
+    const r = idx.retrieve('check', 'سجائر إلكترونية', ctx, 12, 18000);
+    const pkg = buildManualPackage(corpus, 'check', 'نص فيه سجائر إلكترونية', ctx, r);
+    expect(pkg).toContain('أنت مساعد لمراجعة المحتوى');
+    expect(pkg).toContain('نص فيه سجائر إلكترونية');
+    expect(pkg).toContain('[R1]');
+    expect(pkg).toContain('حدود التغطية');
+    expect(pkg).toContain('ليس حكمًا قانونيًا نهائيًا');
+    expect(pkg).not.toMatch(/sk-|api[_-]?key/i);
+  });
 });
 
 describe('automatic model choice', () => {

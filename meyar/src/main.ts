@@ -1,6 +1,6 @@
 import './styles.css';
 import { SearchIndex, sourceLabel } from './search';
-import { buildPayload } from './prompt';
+import { buildManualPackage, buildPayload } from './prompt';
 import {
   callModel,
   clearKey,
@@ -73,6 +73,8 @@ const CATEGORY_LABELS: Record<string, string> = {
 
 // ------------------------------------------------------------------ state
 interface ModelsConfig {
+  /** false = API path hidden; only the copy-to-assistant path is offered. */
+  api_enabled?: boolean;
   anthropic: ProviderCfg;
   openai: ProviderCfg;
   limits: { max_input_chars: number; max_reference_chars: number; max_references: number };
@@ -172,14 +174,21 @@ function bindRadio(groupId: string, attr: string, onChange: (v: string) => void)
   });
 }
 
+const apiEnabled = () => cfg.api_enabled !== false;
+
 function refresh() {
+  const api = apiEnabled();
+  $('api-card').hidden = !api;
+  $('consent-box').hidden = !api;
+  $('manual-intro').hidden = api;
+  $('task-step').textContent = api ? '2' : '1';
   $('integration-status').textContent = INTEGRATION_STATUS[state.provider];
   const link = $<HTMLAnchorElement>('key-link');
   link.href = KEY_PAGES[state.provider];
   link.textContent = state.provider === 'openai' ? 'إنشاء مفتاح API لدى OpenAI' : 'إنشاء مفتاح API لدى Anthropic (Claude)';
   $('input-label').textContent =
     state.task === 'check' ? 'الصق النص الذي تنوي نشره' : 'اكتب سؤالك عن النشر أو المحتوى الإعلامي';
-  $('run').textContent = state.task === 'check' ? 'افحص النص' : 'أجب عن السؤال';
+  $('run').textContent = !api ? 'جهّز الطلب والمراجع' : state.task === 'check' ? 'افحص النص' : 'أجب عن السؤال';
 }
 
 function updateCounter() {
@@ -234,6 +243,10 @@ async function onRun() {
   const ctx = readContext();
   const r = index.retrieve(state.task, text, ctx, cfg.limits.max_references, cfg.limits.max_reference_chars);
 
+  if (!apiEnabled()) {
+    renderManual(text, ctx, r);
+    return;
+  }
   if (!hasKey()) {
     out.replaceChildren(h('p', { class: 'alert warn', role: 'alert' }, 'أدخل مفتاح API أولًا.'));
     $('api-key').focus();
@@ -336,6 +349,34 @@ function renderNoCoverage(text: string, ctx: UserContext, r: Retrieval) {
       h('p', { class: 'hint' }, 'هذه النتيجة صادرة عن البحث المحلي في معيار وليست تحليلًا من نموذج ذكاء اصطناعي. عدم العثور على نص لا يعني أن التصرف مسموح أو متوافق؛ قد يكون الموضوع خارج نطاق المراجع الستة، أو يحتاج صياغة مختلفة للسؤال، أو مراجعة أوسع.'),
       h('div', { class: 'actions' }, send),
     ),
+  );
+}
+
+function renderManual(text: string, ctx: UserContext, r: Retrieval) {
+  const out = $('output');
+  const pkg = buildManualPackage(corpus, state.task, text, ctx, r);
+  out.replaceChildren(
+    h(
+      'div',
+      { class: 'card' },
+      h('h3', {}, 'الطلب جاهز للنسخ'),
+      r.matched === 0
+        ? h('p', { class: 'alert warn' }, 'تنبيه: لم يعثر البحث المحلي على مقاطع مطابقة كافية. قد يكون الموضوع خارج نطاق المراجع المتاحة.')
+        : r.weak
+          ? h('p', { class: 'alert warn' }, 'تنبيه: تطابق البحث مع المراجع ضعيف؛ قد تكون المراجع غير كافية.')
+          : null,
+      h('p', {}, 'الصق الطلب داخل مساعدك. ستظهر الإجابة هناك، ويخضع الاستخدام لحدود حسابك وخطتك.'),
+      h('p', { class: 'hint' }, 'لا يرتبط معيار بحسابك لدى أي مساعد، ولا ينقل الملفات ولا يعيد الإجابة إلى هذه الصفحة. لا يُضاف نصك إلى أي رابط.'),
+      h(
+        'div',
+        { class: 'actions' },
+        copyButton(() => pkg, 'نسخ الطلب والمراجع'),
+        h('a', { class: 'btn secondary', href: 'https://chatgpt.com/', target: '_blank', rel: 'noopener noreferrer' }, 'فتح ChatGPT'),
+        h('a', { class: 'btn secondary', href: 'https://claude.ai/new', target: '_blank', rel: 'noopener noreferrer' }, 'فتح Claude'),
+      ),
+      h('details', {}, h('summary', {}, 'مراجعة نص الطلب قبل النسخ'), h('pre', { class: 'package' }, pkg)),
+    ),
+    referencesBlock(r, 'المراجع المضمّنة في الطلب'),
   );
 }
 

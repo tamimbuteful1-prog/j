@@ -69,9 +69,19 @@ async function main() {
   process.exit(failed.length ? 1 : 0);
 }
 
+// apiEnabled: 'real' keeps the shipped config; true/false overrides api_enabled for the test.
 async function freshPage(browser, opts = {}) {
-  const ctx = await browser.newContext({ ...opts });
+  const { apiEnabled = true, ...ctxOpts } = opts;
+  const ctx = await browser.newContext({ ...ctxOpts });
   const page = await ctx.newPage();
+  if (apiEnabled !== 'real') {
+    await page.route('**/config/models.json', async (route) => {
+      const res = await route.fetch();
+      const cfg = await res.json();
+      cfg.api_enabled = apiEnabled;
+      route.fulfill({ response: res, body: JSON.stringify(cfg) });
+    });
+  }
   const providerRequests = [];
   const consoleMsgs = [];
   const dialogs = [];
@@ -133,6 +143,39 @@ async function run(browser) {
     await page.reload();
     await page.waitForSelector('#coverage table', { state: 'attached' });
     ok('key gone after reload', (await page.inputValue('#api-key')) === '');
+    await ctx.close();
+  }
+
+  // 3. Manual path (no key) — the shipped config hides the API path
+  {
+    const { page, providerRequests, ctx } = await freshPage(browser, { apiEnabled: 'real', permissions: ['clipboard-read', 'clipboard-write'] });
+    ok('shipped config: API section hidden, no key field visible', (await page.isHidden('#api-card')) && (await page.isHidden('#api-key')) && (await page.isHidden('#consent-box')));
+    ok('shipped config: manual explanation shown', await page.isVisible('#manual-intro'));
+    ok('run button says prepare request', (await page.textContent('#run')).includes('جهّز الطلب'));
+    await page.fill('#user-text', 'اشترِ الآن سجائر إلكترونية بنكهة الفراولة مع خصم 50%');
+    await page.click('#run');
+    await page.waitForSelector('pre.package', { state: 'attached' });
+    const pkg = await page.textContent('pre.package');
+    ok('manual package contains instructions, user text, references, coverage', pkg.includes('أنت مساعد لمراجعة المحتوى') && pkg.includes('سجائر إلكترونية') && pkg.includes('[R1]') && pkg.includes('حدود التغطية'));
+    ok('manual package cites tobacco rule', pkg.includes('التبغ'));
+    await page.click('text=نسخ الطلب والمراجع');
+    const clip = await page.evaluate(() => navigator.clipboard.readText());
+    ok('copy button copies the package', clip === pkg);
+    const links = await page.$$eval('#output a.btn', (as) => as.map((a) => a.href));
+    ok('links to ChatGPT and Claude, without user content in URL', links.includes('https://chatgpt.com/') && links.includes('https://claude.ai/new') && !links.some((l) => l.includes('%')));
+    ok('manual path makes no provider request', providerRequests.length === 0);
+    await page.screenshot({ path: path.join(SHOTS, 'manual-desktop.png'), fullPage: true });
+    await ctx.close();
+  }
+  {
+    const { page, providerRequests, ctx } = await freshPage(browser, { apiEnabled: 'real', viewport: { width: 375, height: 812 }, isMobile: true, hasTouch: true });
+    await page.click('[data-task=question]');
+    await page.fill('#user-text', 'كم نسبة ضريبة القيمة المضافة على العقارات التجارية؟');
+    await page.click('#run');
+    await page.waitForSelector('pre.package', { state: 'attached' });
+    ok('manual: out-of-scope question warns about weak coverage', (await page.textContent('#output')).includes('لم يعثر البحث المحلي') && providerRequests.length === 0);
+    ok('manual on mobile: no horizontal scroll', (await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth)) <= 0);
+    await page.screenshot({ path: path.join(SHOTS, 'mobile-manual.png'), fullPage: true });
     await ctx.close();
   }
 
@@ -301,7 +344,7 @@ async function run(browser) {
 
   // 10. Mobile layout
   {
-    const { page, ctx } = await freshPage(browser, { viewport: { width: 375, height: 812 }, isMobile: true, hasTouch: true });
+    const { page, ctx } = await freshPage(browser, { apiEnabled: 'real', viewport: { width: 375, height: 812 }, isMobile: true, hasTouch: true });
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
     ok('no horizontal scroll at 375px', overflow <= 0, String(overflow));
     const small = await page.$$eval('button, select, input, textarea', (els) =>
