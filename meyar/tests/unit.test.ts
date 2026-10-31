@@ -3,7 +3,8 @@ import { describe, expect, it } from 'vitest';
 import { SearchIndex } from '../src/search';
 import { findInSource, normalizeArabic, tokenize } from '../src/text';
 import { extractJson, parseResult, verifyResult, InvalidOutputError } from '../src/verify';
-import { buildManualPackage, buildPayload, RESULT_SCHEMA } from '../src/prompt';
+import { buildPayload, RESULT_SCHEMA } from '../src/prompt';
+import { pickAnthropicModel, pickOpenAIModel } from '../src/providers';
 import type { Corpus } from '../src/types';
 
 const corpus: Corpus = JSON.parse(readFileSync(new URL('../public/data/corpus.json', import.meta.url), 'utf8'));
@@ -138,10 +139,19 @@ describe('prompt building', () => {
     expect(json.user_input).toContain('<script>');
     expect(p).not.toMatch(/sk-|api[_-]?key/i);
   });
-  it('manual package includes references and coverage limits', () => {
-    const pkg = buildManualPackage(corpus, 'check', 'نص', ctx, r);
-    expect(pkg).toContain('[R1]');
-    expect(pkg).toContain('حدود التغطية');
-    expect(pkg).toContain('ليس حكمًا قانونيًا نهائيًا');
+
+});
+
+describe('automatic model choice', () => {
+  it('picks the strongest general GPT model from the account list', () => {
+    expect(pickOpenAIModel(['gpt-5-chat-latest', 'gpt-5-mini', 'gpt-5', 'gpt-4o', 'gpt-5-pro', 'gpt-realtime', 'text-embedding-3-large'])).toBe('gpt-5');
+    expect(pickOpenAIModel(['gpt-5-chat-latest', 'gpt-4.1'])).toBe('gpt-5-chat-latest');
+    expect(pickOpenAIModel(['gpt-5.1', 'gpt-5'])).toBe('gpt-5.1');
+    expect(pickOpenAIModel(['whisper-1', 'dall-e-3'])).toBeNull();
+  });
+  it('prefers the configured Claude default when the account lists it', () => {
+    const cfg = { verification: '', default: 'claude-sonnet-5-5', models: [{ id: 'claude-sonnet-5-5', label: '', structured_output: false }, { id: 'claude-haiku-5-5', label: '', structured_output: true }], max_output_tokens: 1 };
+    expect(pickAnthropicModel(['claude-haiku-5-5', 'claude-sonnet-5-5'], cfg)).toBe('claude-sonnet-5-5');
+    expect(pickAnthropicModel(['claude-haiku-5-5'], cfg)).toBe('claude-haiku-5-5');
   });
 });

@@ -48,6 +48,10 @@ const anthropicOk = (obj) => ({
   }),
 });
 
+// GET /v1/models (free listing used for automatic model choice)
+const modelsList = { status: 200, contentType: 'application/json', body: JSON.stringify({ data: [{ id: 'claude-sonnet-5-5' }, { id: 'claude-haiku-5-5' }] }) };
+const isList = (route) => route.request().method() === 'GET';
+
 async function main() {
   const server = spawn(path.join(ROOT, 'node_modules/.bin/vite'), ['preview', '--port', String(PORT), '--strictPort'], { cwd: ROOT, stdio: 'ignore' });
   await new Promise((r) => setTimeout(r, 2500));
@@ -77,7 +81,7 @@ async function freshPage(browser, opts = {}) {
   });
   page.on('console', (m) => consoleMsgs.push(m.text()));
   page.on('request', (r) => {
-    if (/api\.(anthropic|openai)\.com/.test(r.url())) providerRequests.push(r);
+    if (/api\.(anthropic|openai)\.com/.test(r.url()) && r.method() === 'POST') providerRequests.push(r);
   });
   await page.goto(URL);
   await page.waitForSelector('#coverage table', { state: 'attached' });
@@ -132,31 +136,12 @@ async function run(browser) {
     await ctx.close();
   }
 
-  // 3. Manual path (no key)
-  {
-    const { page, providerRequests, ctx } = await freshPage(browser, { permissions: ['clipboard-read', 'clipboard-write'] });
-    await page.click('[data-mode=manual]');
-    await page.fill('#user-text', 'اشترِ الآن سجائر إلكترونية بنكهة الفراولة مع خصم 50%');
-    await page.click('#run');
-    await page.waitForSelector('pre.package', { state: 'attached' });
-    const pkg = await page.textContent('pre.package');
-    ok('manual package contains instructions, user text, references, coverage', pkg.includes('أنت مساعد لمراجعة المحتوى') && pkg.includes('سجائر إلكترونية') && pkg.includes('[R1]') && pkg.includes('حدود التغطية'));
-    ok('manual package cites tobacco rule', pkg.includes('التبغ'));
-    await page.click('text=نسخ الطلب والمراجع');
-    const clip = await page.evaluate(() => navigator.clipboard.readText());
-    ok('copy button copies the package', clip === pkg);
-    const links = await page.$$eval('#output a.btn', (as) => as.map((a) => a.href));
-    ok('links to ChatGPT and Claude, without user content in URL', links.includes('https://chatgpt.com/') && links.includes('https://claude.ai/new') && !links.some((l) => l.includes('%')));
-    ok('manual path makes no provider request', providerRequests.length === 0);
-    await page.screenshot({ path: path.join(SHOTS, 'manual-desktop.png'), fullPage: true });
-    await ctx.close();
-  }
-
   // 4. API path with fixture: valid citation, request shape, key only in header
   {
     const { page, providerRequests, ctx } = await freshPage(browser, { permissions: ['clipboard-read', 'clipboard-write'] });
     let captured;
     await page.route('https://api.anthropic.com/**', async (route) => {
+      if (isList(route)) return route.fulfill(modelsList);
       captured = route.request();
       await new Promise((r) => setTimeout(r, 400));
       route.fulfill({ ...anthropicOk(fixture()), headers: { 'access-control-allow-origin': '*' } });
@@ -167,7 +152,8 @@ async function run(browser) {
     await page.waitForSelector('.verdict');
     const h = captured.headers();
     const body = captured.postData();
-    ok('only one request sent despite double click', providerRequests.length === 1, String(providerRequests.length));
+    ok('only one analysis request sent despite double click', providerRequests.length === 1, String(providerRequests.length));
+    ok('model chosen automatically (no model picker in page)', JSON.parse(captured.postData()).model === 'claude-sonnet-5-5' && (await page.$$('#model, [data-mode]')).length === 0);
     ok('request goes to official endpoint', captured.url() === 'https://api.anthropic.com/v1/messages');
     ok('key sent only in x-api-key header', h['x-api-key'] === FAKE_KEY && !body.includes('TESTKEY'));
     ok('browser-access header present', h['anthropic-dangerous-direct-browser-access'] === 'true');
@@ -197,7 +183,7 @@ async function run(browser) {
   {
     const { page, dialogs, ctx } = await freshPage(browser);
     await page.route('https://api.anthropic.com/**', (route) =>
-      route.fulfill(
+      isList(route) ? route.fulfill(modelsList) : route.fulfill(
         anthropicOk(
           fixture({
             summary: '<img src=x onerror="alert(1)"><script>alert(2)</script>',
@@ -240,14 +226,14 @@ async function run(browser) {
     ['billing (402)', { status: 402, body: { type: 'error', error: { type: 'billing_error', message: 'x' } } }, 'رصيدًا'],
     ['billing (400 credit balance)', { status: 400, body: { type: 'error', error: { type: 'invalid_request_error', message: 'Your credit balance is too low' } } }, 'رصيدًا'],
     ['rate limit (429)', { status: 429, body: { type: 'error', error: { type: 'rate_limit_error', message: 'x' } } }, 'حدود الاستخدام'],
-    ['model not found (404)', { status: 404, body: { type: 'error', error: { type: 'not_found_error', message: 'model' } } }, 'النموذج المختار غير متاح'],
+    ['model not found (404)', { status: 404, body: { type: 'error', error: { type: 'not_found_error', message: 'model' } } }, 'لم يُعثر على نموذج'],
     ['too long (413)', { status: 413, body: { type: 'error', error: { type: 'request_too_large', message: 'x' } } }, 'أطول من الحد'],
     ['unreadable output', { status: 200, raw: JSON.stringify({ content: [{ type: 'text', text: 'هذا ليس JSON' }], usage: {} }) }, 'غير قابلة للقراءة'],
   ];
   for (const [name, resp, expect] of errorCases) {
     const { page, ctx } = await freshPage(browser);
     await page.route('https://api.anthropic.com/**', (route) =>
-      route.fulfill({ status: resp.status, contentType: 'application/json', body: resp.raw || JSON.stringify(resp.body) }),
+      route.fulfill({ status: resp.status, contentType: 'application/json', body: resp.raw && isList(route) ? modelsList.body : resp.raw || JSON.stringify(resp.body) }),
     );
     await fill(page, { text: 'إعلان عن منتج تجميل' });
     await page.click('#run');
@@ -270,8 +256,9 @@ async function run(browser) {
   // 7. Cancel
   {
     const { page, ctx } = await freshPage(browser);
-    await page.route('https://api.anthropic.com/**', async () => {
-      /* never answers */
+    await page.route('https://api.anthropic.com/**', async (route) => {
+      if (isList(route)) return route.fulfill(modelsList);
+      /* analysis request never answers */
     });
     await fill(page, { text: 'إعلان عن منتج تجميل' });
     await page.click('#run');
@@ -316,12 +303,6 @@ async function run(browser) {
     );
     ok('touch targets ≥ 38px tall', small === 0, String(small));
     await page.screenshot({ path: path.join(SHOTS, 'mobile.png'), fullPage: true });
-    await page.click('[data-mode=manual]');
-    await page.fill('#user-text', 'هل يلزم الإشارة إلى أن المادة إعلانية عند نشر إعلان تحريري في صحيفة؟');
-    await page.click('[data-task=question]');
-    await page.click('#run');
-    await page.waitForSelector('pre.package', { state: 'attached' });
-    await page.screenshot({ path: path.join(SHOTS, 'mobile-manual.png'), fullPage: true });
     await ctx.close();
   }
 
