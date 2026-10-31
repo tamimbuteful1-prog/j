@@ -54,7 +54,9 @@ npm run build
 npm run preview
 ```
 
-**النشر:** ارفع محتويات `dist/` كما هي إلى أي استضافة ملفات ثابتة، مثل GitHub Pages أو Cloudflare Pages أو Netlify أو خادم ويب عادي. المسارات نسبية (`base: './'`)، فيعمل الموقع من أي مجلد فرعي. نسخة بناء جاهزة موجودة في `meyar/dist/`.
+**النشر على Vercel:** من لوحة Vercel اختر Add New ← Project ← Import للمستودع، واضبط **Root Directory** على `meyar`، ثم Deploy. ملف `meyar/vercel.json` يحدد أوامر البناء ومجلد الإخراج وترويسات الأمان (CSP مع `frame-ancestors 'none'`، و`nosniff`، و`no-referrer`، و`X-Frame-Options: DENY`، و`Permissions-Policy`، و`HSTS`).
+
+**النشر على استضافة أخرى:** ارفع محتويات `dist/` كما هي إلى أي استضافة ملفات ثابتة، مثل GitHub Pages أو Cloudflare Pages أو Netlify أو خادم ويب عادي. المسارات نسبية (`base: './'`)، فيعمل الموقع من أي مجلد فرعي. نسخة بناء جاهزة موجودة في `meyar/dist/`.
 
 ملاحظة: سياسة CSP مضمّنة في `index.html` عبر وسم `meta`. إذا كانت الاستضافة تسمح بترويسات HTTP، فيُستحسن إضافة الترويسات التالية من جهة الاستضافة، لأن وسم `meta` لا يدعمها:
 - `Content-Security-Policy` بالقيمة نفسها مع إضافة `frame-ancestors 'none'`.
