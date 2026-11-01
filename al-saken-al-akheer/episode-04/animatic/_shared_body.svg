@@ -1,0 +1,24 @@
+<script type="text/x-svg" id="tBody">
+  <g class="body">
+    <ellipse cx="0" cy="4" rx="80" ry="14" fill="#000" opacity=".45"/>
+    <g class="legL"><rect x="-44" y="-250" width="38" height="248" rx="10" fill="#14171b"/><ellipse cx="-26" cy="-4" rx="26" ry="10" fill="#0a0a0a"/></g>
+    <g class="legR"><rect x="6" y="-250" width="38" height="248" rx="10" fill="#121519"/><ellipse cx="26" cy="-4" rx="26" ry="10" fill="#0a0a0a"/></g>
+    <path d="M-70 -455 C -78 -380 -74 -300 -64 -230 L 64 -230 C 74 -300 78 -380 70 -455 C 40 -478 -40 -478 -70 -455Z" fill="url(#gHood)"/>
+    <path class="hoodTie" d="M-30 -470 C -20 -440 20 -440 30 -470" stroke="#0b0f13" stroke-width="8" fill="none"/>
+    <g class="armL"><path d="M-70 -450 C -92 -400 -98 -320 -92 -250 L -72 -250 C -70 -320 -64 -390 -56 -440Z" fill="#1a2128"/><ellipse cx="-82" cy="-242" rx="14" ry="18" fill="#5c4233"/></g>
+    <g class="armR"><path d="M70 -450 C 92 -400 98 -320 92 -250 L 72 -250 C 70 -320 64 -390 56 -440Z" fill="#1a2128"/><ellipse cx="82" cy="-242" rx="14" ry="18" fill="#5c4233"/></g>
+    <rect x="-14" y="-500" width="28" height="34" fill="#4a3428"/>
+    <g class="bhead">
+      <ellipse cx="0" cy="-548" rx="46" ry="58" fill="url(#gSkin)"/>
+      <g class="bface">
+        <path d="M-50 -556 C -54 -610 -20 -632 4 -630 C 34 -628 56 -604 50 -556 C 44 -584 26 -594 2 -594 C -22 -594 -40 -584 -50 -556Z" fill="#0a0908"/>
+        <ellipse cx="-17" cy="-548" rx="7" ry="4" fill="#d8d3cb"/><ellipse cx="17" cy="-548" rx="7" ry="4" fill="#d8d3cb"/>
+        <circle class="bi" cx="-17" cy="-548" r="3" fill="#120c08"/><circle class="bi" cx="17" cy="-548" r="3" fill="#120c08"/>
+        <path d="M-26 -560 Q-17 -566 -8 -561" stroke="#0d0b09" stroke-width="3" fill="none"/><path d="M8 -561 Q17 -566 26 -560" stroke="#0d0b09" stroke-width="3" fill="none"/>
+        <path d="M2 -540 L -4 -522 L 6 -522" stroke="#3a281e" stroke-width="2.5" fill="none"/>
+        <path d="M-12 -508 Q0 -510 12 -508" stroke="#2b1a14" stroke-width="3" fill="none" stroke-linecap="round"/>
+      </g>
+      <g class="bback" opacity="0"><path d="M-48 -540 C -54 -612 -20 -634 2 -632 C 30 -630 56 -606 48 -540 C 40 -500 -40 -500 -48 -540Z" fill="#0a0908"/><ellipse cx="-47" cy="-548" rx="7" ry="13" fill="#3e2b21"/><ellipse cx="47" cy="-548" rx="7" ry="13" fill="#3e2b21"/></g>
+    </g>
+  </g>
+</script>
