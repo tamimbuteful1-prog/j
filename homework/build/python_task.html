@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>التاسك الشامل – بايثون</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="cover">
+  <h1>التاسك الشامل – بايثون</h1>
+  <p style="font-size:15pt;text-align:center">مشكلة: فاتورة المقصف</p>
+  <div class="meta">
+    <div><b>الاسم:</b> تميم تركي الحارثي</div>
+    <div><b>الكلاس:</b> ______</div>
+    <div><b>المادة:</b> بايثون</div>
+    <div><b>التاريخ:</b> 1 نوفمبر 2026</div>
+  </div>
+  <p class="small" style="margin-top:30px;text-align:center">هذا الملف فيه الأجزاء المكتوبة (أ، ب، ج، د، و، ز + السؤال الأخير).<br>الجزء هـ (البرنامج) في ملف <span class="ltr">.py</span> منفصل.</p>
+</div>
+
+<!-- ===================== الجزء أ ===================== -->
+<h2>الجزء أ: التجزئة</h2>
+
+<h3>1) المشاكل الفرعية</h3>
+<p>قسمت مشكلة الفاتورة إلى خمس مشاكل فرعية. كل وحدة لها شغلة وحدة بس:</p>
+<table>
+  <tr><th style="width:8%">#</th><th style="width:24%">اسم الوحدة</th><th>المدخلات</th><th>المخرجات</th></tr>
+  <tr><td>1</td><td>قراءة المدخلات</td><td>اللي يكتبه المستخدم: اسم الطالب، عدد السندويتشات وسعرها، عدد العصائر وسعرها، نسبة الخصم</td><td>متغيرات جاهزة بالنوع الصح (أعداد <code>int</code> وأسعار <code>float</code>)</td></tr>
+  <tr><td>2</td><td>حساب المجموع</td><td>عدد وسعر السندويتشات، عدد وسعر العصائر</td><td>المجموع قبل الخصم</td></tr>
+  <tr><td>3</td><td>حساب الخصم</td><td>المجموع قبل الخصم، نسبة الخصم</td><td>قيمة الخصم، والمجموع بعد الخصم</td></tr>
+  <tr><td>4</td><td>حساب الضريبة والنهائي</td><td>المجموع بعد الخصم، نسبة الضريبة 15%</td><td>قيمة الضريبة، والمبلغ النهائي</td></tr>
+  <tr><td>5</td><td>طباعة الفاتورة</td><td>اسم الطالب وكل المبالغ اللي فوق</td><td>فاتورة مرتبة، كل مبلغ برقمين بعد الفاصلة ومعه «ريال / SAR»</td></tr>
+</table>
+
+<h3>2) مين يعتمد على مين</h3>
+<div class="fig">
+<svg width="660" height="230" viewBox="0 0 660 230" xmlns="http://www.w3.org/2000/svg" font-family="Noto Naskh Arabic, DejaVu Sans" font-size="14">
+  <defs><marker id="ar" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0,0 L10,4 L0,8 z" fill="#123a5c"/></marker></defs>
+  <!-- boxes right to left -->
+  <g fill="#e3ecf4" stroke="#123a5c" stroke-width="1.5">
+    <rect x="540" y="80" width="110" height="50" rx="8"/>
+    <rect x="410" y="80" width="110" height="50" rx="8"/>
+    <rect x="280" y="80" width="110" height="50" rx="8"/>
+    <rect x="150" y="80" width="110" height="50" rx="8"/>
+    <rect x="10"  y="80" width="120" height="50" rx="8"/>
+  </g>
+  <g text-anchor="middle" fill="#111">
+    <text x="595" y="102">1. المدخلات</text><text x="595" y="121" font-size="11">أعداد، أسعار، خصم</text>
+    <text x="465" y="102">2. المجموع</text><text x="465" y="121" font-size="11">قبل الخصم</text>
+    <text x="335" y="102">3. الخصم</text><text x="335" y="121" font-size="11">قيمته + بعد الخصم</text>
+    <text x="205" y="102">4. الضريبة</text><text x="205" y="121" font-size="11">+ المبلغ النهائي</text>
+    <text x="70"  y="102">5. الطباعة</text><text x="70" y="121" font-size="11">الفاتورة</text>
+  </g>
+  <g stroke="#123a5c" stroke-width="1.8" fill="none" marker-end="url(#ar)">
+    <line x1="540" y1="105" x2="522" y2="105"/>
+    <line x1="410" y1="105" x2="392" y2="105"/>
+    <line x1="280" y1="105" x2="262" y2="105"/>
+    <line x1="150" y1="105" x2="132" y2="105"/>
+    <!-- 1 -> 3 : discount percent -->
+    <path d="M595,80 C595,30 335,30 335,78"/>
+    <!-- 1 -> 5 : student name -->
+    <path d="M595,130 C595,215 70,215 70,132"/>
+  </g>
+  <g font-size="11" fill="#555" text-anchor="middle">
+    <text x="465" y="40">نسبة الخصم تروح مباشرة للوحدة 3</text>
+    <text x="330" y="205">اسم الطالب يروح مباشرة للطباعة (والمبالغ كلها توصلها من 2 و 3 و 4)</text>
+  </g>
+</svg>
+<div class="cap">السهم معناه «يعتمد على»: مثلا الضريبة (4) ما تنحسب إلا بعد ما يطلع المجموع بعد الخصم (3).</div>
+</div>
+
+<h3>3) هل تجزئتي صحيحة؟</h3>
+<ul>
+  <li><b>غطت كل المشكلة؟</b> نعم. كل شي مطلوب بالفاتورة (المجموع، الخصم، بعد الخصم، الضريبة، النهائي، الطباعة) له وحدة تطلعه، والمدخلات كلها لها وحدة تقراها.</li>
+  <li><b>فيه جزئين يسوون نفس الشي؟</b> لا. كل وحدة لها شغلة مختلفة: وحدة تقرا، ووحدة تجمع، ووحدة تخصم، ووحدة تضيف الضريبة، ووحدة تطبع. ما فيه حساب يتكرر في وحدتين.</li>
+  <li><b>كل جزء أقدر أختبره لحاله؟</b> نعم. مثلا أقدر أعطي وحدة الخصم مجموع 15 وخصم 20% وأتأكد إنها تطلع 3.00 و 12.00 بدون ما أحتاج باقي البرنامج. ووحدة الضريبة أعطيها 12.00 وأتأكد إنها تطلع 1.80.</li>
+</ul>
+
+<h3>4) حركات التفكير الحاسوبي الأربع من المشكلة</h3>
+<table>
+  <tr><th style="width:22%">الحركة</th><th>مثال من مشكلة الفاتورة</th></tr>
+  <tr><td>التجزئة</td><td>قسمت الفاتورة الكبيرة إلى 5 مشاكل صغيرة (مدخلات، مجموع، خصم، ضريبة، طباعة).</td></tr>
+  <tr><td>التعرف على الأنماط</td><td>حساب السندويتشات وحساب العصائر نفس النمط بالضبط: <b>العدد × السعر</b>. وكمان الخصم والضريبة نفس النمط: <b>المبلغ × (النسبة ÷ 100)</b>.</td></tr>
+  <tr><td>التجريد</td><td>تجاهلت التفاصيل اللي ما تأثر على الحساب، مثل نوع السندويتش أو نكهة العصير أو وقت الطلب. اللي يهمني بس: العدد والسعر.</td></tr>
+  <tr><td>تصميم الخوارزمية</td><td>كتبت خطوات مرتبة: اقرا المدخلات ← احسب المجموع ← احسب الخصم ← احسب الضريبة ← اطبع (موجودة بالجزء ب).</td></tr>
+</table>
+
+<!-- ===================== الجزء ب ===================== -->
+<h2>الجزء ب: الخوارزمية والشيفرة الزائفة</h2>
+<h3>1 و 2) الخوارزمية</h3>
+<pre>
+START
+  // Sub-problem 1: read inputs
+  INPUT student_name
+  INPUT sandwich_count          // whole number
+  INPUT sandwich_price          // SAR
+  INPUT juice_count             // whole number
+  INPUT juice_price             // SAR
+  INPUT discount_percent        // e.g. 20 means 20%
+  SET vat_percent = 15
+
+  // Sub-problem 2: subtotal
+  SET sandwiches_cost = sandwich_count * sandwich_price
+  SET juices_cost     = juice_count * juice_price
+  SET subtotal        = sandwiches_cost + juices_cost
+
+  // Sub-problem 3: discount  (decision from Part C)
+  IF discount_percent > 50 THEN
+      OUTPUT "Warning: discount is more than 50%"
+  END IF
+  SET discount_amount = subtotal * (discount_percent / 100)
+  SET after_discount  = subtotal - discount_amount
+
+  // Sub-problem 4: VAT and final total
+  SET vat_amount  = after_discount * (vat_percent / 100)
+  SET final_total = after_discount + vat_amount
+
+  // Sub-problem 5: print (every amount with 2 decimals + "SAR")
+  OUTPUT student_name
+  OUTPUT subtotal, discount_amount, after_discount, vat_amount, final_total
+END
+</pre>
+<p><b>ليش هي دقيقة وما فيها غموض؟</b> كل خطوة فيها عملية وحدة واضحة، وكل متغير له اسم يوضح وش فيه، والترتيب ثابت (ما فيه خطوة تستخدم قيمة قبل ما تنحسب)، وعدد الخطوات محدود وتخلص عند <code>END</code>. فلو أي شخص نفذها حرفيا بيطلع له نفس الناتج.</p>
+
+<h3>3) نفذتها بنفسي على مثال التحقق</h3>
+<p>المدخلات: 2 ساندويتش بـ 4.50، و 3 عصير بـ 2.00، وخصم 20%.</p>
+<table>
+  <tr><th>الخطوة</th><th>الحساب</th><th>الناتج</th></tr>
+  <tr><td>sandwiches_cost</td><td class="ltr">2 × 4.50</td><td>9.00</td></tr>
+  <tr><td>juices_cost</td><td class="ltr">3 × 2.00</td><td>6.00</td></tr>
+  <tr><td>subtotal</td><td class="ltr">9.00 + 6.00</td><td>15.00</td></tr>
+  <tr><td>IF 20 &gt; 50 ؟</td><td>لا</td><td>ما يطبع تنبيه</td></tr>
+  <tr><td>discount_amount</td><td class="ltr">15.00 × (20 ÷ 100)</td><td>3.00</td></tr>
+  <tr><td>after_discount</td><td class="ltr">15.00 − 3.00</td><td>12.00</td></tr>
+  <tr><td>vat_amount</td><td class="ltr">12.00 × (15 ÷ 100)</td><td>1.80</td></tr>
+  <tr><td>final_total</td><td class="ltr">12.00 + 1.80</td><td><b>13.80</b></td></tr>
+</table>
+<p class="ok">نعم، وصلت لـ 13.80 ريال، نفس الناتج المطلوب.</p>
+
+<!-- ===================== الجزء ج ===================== -->
+<h2 class="pb">الجزء ج: المخطط الانسيابي</h2>
+<div class="fig">
+<svg width="520" height="880" viewBox="0 0 520 880" xmlns="http://www.w3.org/2000/svg" font-family="Noto Naskh Arabic, DejaVu Sans" font-size="13">
+  <defs><marker id="a2" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0,0 L10,4 L0,8 z" fill="#222"/></marker></defs>
+  <g stroke="#222" stroke-width="1.5">
+    <!-- start -->
+    <ellipse cx="260" cy="30" rx="70" ry="22" fill="#d9f2e3"/>
+    <!-- input parallelogram -->
+    <polygon points="140,80 420,80 390,170 110,170" fill="#e3ecf4"/>
+    <!-- process subtotal -->
+    <rect x="135" y="200" width="250" height="60" fill="#fff3d6"/>
+    <!-- decision -->
+    <polygon points="260,290 380,350 260,410 140,350" fill="#fde2e2"/>
+    <!-- warning output -->
+    <polygon points="20,390 150,390 130,440 0,440" fill="#e3ecf4" transform="translate(5,0)"/>
+    <!-- process discount -->
+    <rect x="135" y="460" width="250" height="60" fill="#fff3d6"/>
+    <!-- process vat -->
+    <rect x="135" y="550" width="250" height="60" fill="#fff3d6"/>
+    <!-- output invoice -->
+    <polygon points="140,640 420,640 390,730 110,730" fill="#e3ecf4"/>
+    <!-- end -->
+    <ellipse cx="260" cy="790" rx="70" ry="22" fill="#d9f2e3"/>
+  </g>
+  <g text-anchor="middle" fill="#111">
+    <text x="260" y="35">بداية</text>
+    <text x="265" y="100" font-weight="700">إدخال</text>
+    <text x="265" y="120">اسم الطالب، عدد وسعر السندويتش</text>
+    <text x="265" y="140">عدد وسعر العصير، نسبة الخصم</text>
+    <text x="265" y="160" font-size="11">(vat = 15)</text>
+    <text x="260" y="225" font-weight="700">معالجة</text>
+    <text x="260" y="247">المجموع = (عدد × سعر) + (عدد × سعر)</text>
+    <text x="260" y="345" font-weight="700">قرار</text>
+    <text x="260" y="365">هل الخصم &gt; 50؟</text>
+    <text x="73" y="420">إخراج: تنبيه</text>
+    <text x="260" y="482" font-weight="700">معالجة</text>
+    <text x="260" y="500">الخصم = المجموع × (النسبة ÷ 100)</text>
+    <text x="260" y="515">بعد الخصم = المجموع − الخصم</text>
+    <text x="260" y="572" font-weight="700">معالجة</text>
+    <text x="260" y="590">الضريبة = بعد الخصم × (15 ÷ 100)</text>
+    <text x="260" y="605">النهائي = بعد الخصم + الضريبة</text>
+    <text x="265" y="670" font-weight="700">إخراج</text>
+    <text x="265" y="692">الفاتورة: الاسم، المجموع، الخصم،</text>
+    <text x="265" y="712">بعد الخصم، الضريبة، النهائي (+ ريال)</text>
+    <text x="260" y="795">نهاية</text>
+  </g>
+  <g stroke="#222" stroke-width="1.5" fill="none" marker-end="url(#a2)">
+    <line x1="260" y1="52" x2="260" y2="78"/>
+    <line x1="260" y1="170" x2="260" y2="198"/>
+    <line x1="260" y1="260" x2="260" y2="288"/>
+    <!-- no -->
+    <line x1="260" y1="410" x2="260" y2="458"/>
+    <!-- yes -> warning -->
+    <polyline points="140,350 75,350 75,388"/>
+    <!-- warning -> join -->
+    <polyline points="75,440 75,445 75,450 254,450"/>
+    <line x1="260" y1="520" x2="260" y2="548"/>
+    <line x1="260" y1="610" x2="260" y2="638"/>
+    <line x1="260" y1="730" x2="260" y2="766"/>
+  </g>
+  <g font-size="12" font-weight="700">
+    <text x="110" y="340" fill="#a11">نعم</text>
+    <text x="270" y="435" fill="#12703a">لا</text>
+  </g>
+</svg>
+<div class="cap">الرموز: الشكل البيضاوي = بداية/نهاية، متوازي الأضلاع = إدخال/إخراج، المستطيل = معالجة، المعين = قرار.</div>
+</div>
+<h3>3) المخطط والشيفرة الزائفة متطابقين</h3>
+<table>
+  <tr><th>الترتيب</th><th>بالشيفرة الزائفة (الجزء ب)</th><th>بالمخطط</th></tr>
+  <tr><td>1</td><td><code>START</code></td><td>بداية</td></tr>
+  <tr><td>2</td><td>6 أوامر <code>INPUT</code> + <code>SET vat_percent = 15</code></td><td>شكل الإدخال</td></tr>
+  <tr><td>3</td><td><code>SET</code> المجموع</td><td>معالجة: المجموع</td></tr>
+  <tr><td>4</td><td><code>IF discount_percent &gt; 50</code> ← <code>OUTPUT</code> تنبيه</td><td>القرار + إخراج التنبيه</td></tr>
+  <tr><td>5</td><td><code>SET</code> الخصم وبعد الخصم</td><td>معالجة: الخصم</td></tr>
+  <tr><td>6</td><td><code>SET</code> الضريبة والنهائي</td><td>معالجة: الضريبة</td></tr>
+  <tr><td>7</td><td><code>OUTPUT</code> الفاتورة</td><td>شكل الإخراج</td></tr>
+  <tr><td>8</td><td><code>END</code></td><td>نهاية</td></tr>
+</table>
+<p>نفس الخطوات ونفس الترتيب. والقرار حطيته قبل حساب الخصم، وهذا نفس مكان التعليق <code># TODO: warn if discount &gt; 50</code> في البرنامج.</p>
+
+<!-- ===================== الجزء د ===================== -->
+<h2>الجزء د: التتبع والكفاءة</h2>
+<h3>1) جدول التتبع</h3>
+<table>
+  <tr><th>الخطوة</th><th>السطر</th><th>a</th><th>b</th><th>المخرجات</th></tr>
+  <tr><td>1</td><td class="ltr">SET a = 5</td><td>5</td><td>—</td><td></td></tr>
+  <tr><td>2</td><td class="ltr">SET b = 3</td><td>5</td><td>3</td><td></td></tr>
+  <tr><td>3</td><td class="ltr">SET a = a + b</td><td>8</td><td>3</td><td></td></tr>
+  <tr><td>4</td><td class="ltr">SET b = a - b</td><td>8</td><td>5</td><td></td></tr>
+  <tr><td>5</td><td class="ltr">SET a = a - b</td><td>3</td><td>5</td><td></td></tr>
+  <tr><td>6</td><td class="ltr">OUTPUT a, b</td><td>3</td><td>5</td><td class="ltr">3, 5</td></tr>
+</table>
+<p><b>وش تطبع؟</b> <span class="ltr">3, 5</span></p>
+<p><b>وش سوت بالمتغيرين؟</b> بدلت قيمهم: <code>a</code> كانت 5 وصارت 3، و <code>b</code> كانت 3 وصارت 5. والحلو إنها بدلتهم بدون ما تحتاج متغير ثالث مؤقت، بس بالجمع والطرح.</p>
+
+<h3>2) البحث عن الرقم 32 في قائمة مرتبة من 1 إلى 32</h3>
+<p><b>طريقة «افحص الكل»:</b> أبدأ من أول رقم وأفحص واحد واحد: 1، 2، 3، ... إلى 32. الرقم 32 آخر واحد، فأحتاج <b>32 خطوة</b> (هذي أسوأ حالة).</p>
+<p><b>طريقة «احذف النص»:</b> كل مرة أشوف الرقم اللي بالنص، ولأن 32 أكبر منه أحذف النص الأصغر:</p>
+<table>
+  <tr><th>الخطوة</th><th>الباقي</th><th>الرقم اللي بالنص</th><th>القرار</th></tr>
+  <tr><td>1</td><td>1 – 32</td><td>16</td><td>32 أكبر ← أحذف 1–16</td></tr>
+  <tr><td>2</td><td>17 – 32</td><td>24</td><td>32 أكبر ← أحذف 17–24</td></tr>
+  <tr><td>3</td><td>25 – 32</td><td>28</td><td>32 أكبر ← أحذف 25–28</td></tr>
+  <tr><td>4</td><td>29 – 32</td><td>30</td><td>32 أكبر ← أحذف 29–30</td></tr>
+  <tr><td>5</td><td>31 – 32</td><td>31</td><td>32 أكبر ← أحذف 31</td></tr>
+  <tr><td>6</td><td>32</td><td>32</td><td class="ok">لقيته</td></tr>
+</table>
+<p>يعني تقريبا <b>6 خطوات</b> بس بدل 32 (القائمة تنقسم على 2 خمس مرات: 32 ← 16 ← 8 ← 4 ← 2 ← 1).</p>
+<p><b>ليش «احذف النص» تحتاج قائمة مرتبة؟</b> لأني لما أشوف الرقم اللي بالنص وأقول «32 أكبر منه، فأكيد هو بالنص الثاني» هذا الكلام صحيح بس إذا الأرقام مرتبة. لو القائمة ملخبطة، ممكن يكون 32 بالنص اللي حذفته، فبحذفه بالغلط وما ألقاه.</p>
+
+<h3>3) أبعاد جودة الخوارزمية على خوارزمية الفاتورة</h3>
+<table>
+  <tr><th style="width:18%">البعد</th><th>تقييمي لخوارزمية الفاتورة</th></tr>
+  <tr><td>الصحة</td><td>صحيحة: جربتها على مثال التحقق وطلعت 13.80 ريال بالضبط.</td></tr>
+  <tr><td>الوضوح</td><td>واضحة: أسماء المتغيرات تشرح نفسها (subtotal، vat_amount) وكل خطوة لها تعليق يربطها بالمشكلة الفرعية.</td></tr>
+  <tr><td>الكفاءة</td><td>كفؤة: عدد الخطوات ثابت (تقريبا 15 خطوة) مهما كانت الأرقام، وما فيها تكرار ما له داعي.</td></tr>
+  <tr><td>المتانة</td><td>ضعيفة شوي: لو المستخدم كتب كلمة بدل رقم يطلع خطأ ويوقف البرنامج، وتقبل أرقام سالبة. تحتاج تحقق من المدخلات.</td></tr>
+</table>
+
+<!-- ===================== الجزء و ===================== -->
+<h2 class="pb">الجزء و: الاختبار</h2>
+<p>شغلت البرنامج ثلاث مرات. هذي النتائج:</p>
+<table>
+  <tr><th style="width:12%">الحالة</th><th style="width:30%">المدخلات</th><th style="width:20%">المتوقع</th><th>اللي صار فعليا</th></tr>
+  <tr><td>طبيعية</td><td>مثال التحقق: Faris، 2 ساندويتش بـ 4.50، 3 عصير بـ 2.00، خصم 20</td><td class="ltr">13.80 SAR</td><td><span class="ltr">Total: 13.80 SAR</span> <span class="ok">✔ مطابق</span></td></tr>
+  <tr><td>حدية</td><td>Faris، 2 ساندويتش بـ 4.50، <b>0</b> عصير بـ 2.00، خصم <b>0</b></td><td>المجموع 9.00، خصم 0.00، ضريبة 1.35، النهائي <span class="ltr">10.35 SAR</span></td><td><span class="ltr">Total: 10.35 SAR</span> <span class="ok">✔ مطابق</span> (الصفر ما خرب شي)</td></tr>
+  <tr><td>غير صالحة</td><td>كتبت <code>three</code> بدل عدد السندويتشات</td><td>يطلع خطأ لأن <code>three</code> مو رقم</td><td>البرنامج وقف وطلع <code>ValueError</code> <span class="bad">✘ توقف</span></td></tr>
+</table>
+
+<h3>صورة التشغيلة 1 (طبيعية)</h3>
+<pre class="term">Student name: Faris
+Number of sandwiches (whole number, e.g. 2): 2
+Type before conversion: &lt;class 'str'&gt;
+Type after conversion:  &lt;class 'int'&gt;
+Sandwich price in SAR (e.g. 4.50): 4.50
+Number of juices (whole number, e.g. 3): 3
+Juice price in SAR (e.g. 2.00): 2.00
+Discount percent (e.g. 10 means 10%): 20
+
+----- Canteen Invoice -----
+Student: Faris
+Subtotal:            15.00 SAR
+Discount (20%):      3.00 SAR
+After discount:      12.00 SAR
+VAT (15%):           1.80 SAR
+Total:               13.80 SAR
+---------------------------</pre>
+
+<h3>صورة التشغيلة 2 (حدية)</h3>
+<pre class="term">Student name: Faris
+Number of sandwiches (whole number, e.g. 2): 2
+Type before conversion: &lt;class 'str'&gt;
+Type after conversion:  &lt;class 'int'&gt;
+Sandwich price in SAR (e.g. 4.50): 4.50
+Number of juices (whole number, e.g. 3): 0
+Juice price in SAR (e.g. 2.00): 2.00
+Discount percent (e.g. 10 means 10%): 0
+
+----- Canteen Invoice -----
+Student: Faris
+Subtotal:            9.00 SAR
+Discount (0%):       0.00 SAR
+After discount:      9.00 SAR
+VAT (15%):           1.35 SAR
+Total:               10.35 SAR
+---------------------------</pre>
+
+<h3>صورة التشغيلة 3 (غير صالحة)</h3>
+<pre class="term">Student name: Faris
+Number of sandwiches (whole number, e.g. 2): three
+Type before conversion: &lt;class 'str'&gt;
+Traceback (most recent call last):
+  File "تميم_الحارثي_الكلاس_بايثون.py", line 19, in &lt;module&gt;
+    sandwich_count = int(sandwich_count_text)          # explicit int() for counts
+ValueError: invalid literal for int() with base 10: 'three'</pre>
+
+<h3>شرح الحالة الثالثة</h3>
+<p><b>اسم الخطأ:</b> <code>ValueError</code>، وهو خطأ وقت التشغيل (Runtime).</p>
+<p><b>ليش طلع مع إن <code>input()</code> شغال؟</b> لأن <code>input()</code> فعلا اشتغل صح: هو دايم يرجع اللي كتبه المستخدم كنص (<code>str</code>)، وأخذ النص <code>"three"</code> بدون مشكلة (وهذا واضح من سطر <code>Type before conversion: &lt;class 'str'&gt;</code>). المشكلة صارت بالسطر اللي بعده: <code>int()</code> يحاول يحول النص لعدد صحيح، وهو يعرف يحول نص مثل <code>"3"</code> بس ما يفهم الكلمة الإنجليزية <code>"three"</code>، فيطلع <code>ValueError</code> ويوقف البرنامج.</p>
+
+<!-- ===================== الجزء ز ===================== -->
+<h2 class="pb">الجزء ز: اصطياد الأخطاء</h2>
+
+<h3>البرنامج 1: المفروض يرحب بالطالب</h3>
+<pre>name = input("Your name: ")
+print("Welcome, " name)</pre>
+<p><b>توقعي:</b> ما بيشتغل أصلا، لأن بين النص <code>"Welcome, "</code> والمتغير <code>name</code> ما فيه <code>+</code> ولا فاصلة.</p>
+<p><b>لما شغلته:</b></p>
+<pre class="term">  File "b1.py", line 2
+    print("Welcome, " name)
+          ^^^^^^^^^^^^^^^^
+SyntaxError: invalid syntax. Perhaps you forgot a comma?</pre>
+<p><b>التصليح:</b></p>
+<pre>name = input("Your name: ")
+print("Welcome, " + name)</pre>
+<pre class="term">Your name: Tamim
+Welcome, Tamim</pre>
+
+<h3>البرنامج 2: المفروض يطبع عمر الطالب السنة الجاية</h3>
+<pre>age = input("Your age in years: ")
+next_year = age + 1
+print(f"Next year you will be {next_year}")</pre>
+<p><b>توقعي:</b> بيسأل عن العمر عادي، بعدين يطلع خطأ لأن <code>age</code> نص وأنا أجمع عليه رقم 1.</p>
+<p><b>لما شغلته:</b></p>
+<pre class="term">Your age in years: 16
+Traceback (most recent call last):
+  File "b2.py", line 2, in &lt;module&gt;
+    next_year = age + 1
+                ~~~~^~~
+TypeError: can only concatenate str (not "int") to str</pre>
+<p><b>التصليح:</b> أحول المدخل لعدد صحيح بـ <code>int()</code>:</p>
+<pre>age = int(input("Your age in years: "))
+next_year = age + 1
+print(f"Next year you will be {next_year}")</pre>
+<pre class="term">Your age in years: 16
+Next year you will be 17</pre>
+
+<h3>البرنامج 3: المفروض يطبع 54.00 SAR</h3>
+<pre>price = 20
+quantity = 3
+discount = 10
+total = price * quantity - discount / 100
+print(f"Total after discount: {total:.2f} SAR")</pre>
+<p><b>توقعي:</b> بيشتغل بدون أي رسالة خطأ، بس الرقم بيطلع غلط، لأن بايثون يسوي القسمة والضرب قبل الطرح، فيطرح 0.1 ريال بس بدل 10%.</p>
+<p><b>لما شغلته:</b></p>
+<pre class="term">Total after discount: 59.90 SAR</pre>
+<p>الحساب اللي صار: <span class="ltr">60 − (10 / 100) = 60 − 0.1 = 59.90</span>، والصحيح: <span class="ltr">60 − (60 × 10%) = 54.00</span>.</p>
+<p><b>التصليح:</b> أحسب الخصم من المجموع، وأحط أقواس:</p>
+<pre>price = 20
+quantity = 3
+discount = 10
+total = (price * quantity) * (1 - discount / 100)
+print(f"Total after discount: {total:.2f} SAR")</pre>
+<pre class="term">Total after discount: 54.00 SAR</pre>
+
+<h3>سجل الأخطاء</h3>
+<table>
+  <tr><th style="width:9%">البرنامج</th><th style="width:13%">نوع الخطأ</th><th>السبب</th><th>التصليح</th><th style="width:22%">الدليل (المخرجات بعد التصليح)</th></tr>
+  <tr><td>1</td><td>Syntax</td><td>ناقص <code>+</code> (أو فاصلة) بين النص والمتغير داخل <code>print</code>، فبايثون ما يقدر يقرا السطر أصلا.</td><td><code>print("Welcome, " + name)</code></td><td class="ltr">Welcome, Tamim</td></tr>
+  <tr><td>2</td><td>Runtime</td><td><code>input()</code> يرجع نص، والبرنامج حاول يجمع نص مع رقم ← <code>TypeError</code>.</td><td><code>age = int(input(...))</code></td><td class="ltr">Next year you will be 17</td></tr>
+  <tr><td>3</td><td>Logic</td><td>ترتيب العمليات: القسمة صارت أول، فانطرح 0.1 بدل 10% من المجموع. البرنامج اشتغل بس الناتج غلط (59.90).</td><td><code>total = (price * quantity) * (1 - discount / 100)</code></td><td class="ltr">Total after discount: 54.00 SAR</td></tr>
+</table>
+
+<h2>السؤال الأخير</h2>
+<p><b>قرار تصميم خذيته وليش:</b> حطيت لكل خطوة حساب متغير وسيط خاص فيها (<code>subtotal</code>، <code>discount_amount</code>، <code>after_discount</code>، <code>vat_amount</code>، <code>final_total</code>) بدل ما أكتب كل الحساب بسطر واحد طويل. ليش؟ لأن كل متغير يطابق مشكلة فرعية من الجزء أ، فلو طلع رقم غلط بالفاتورة أعرف بسرعة أي خطوة فيها المشكلة، وكمان الفاتورة تحتاج تطبع كل هالقيم أصلا. وحطيت نسبة الضريبة بمتغير ثابت <code>VAT_RATE = 15</code> عشان لو تغيرت الضريبة أعدلها بمكان واحد.</p>
+<p><b>تحسين أبغى أضيفه لو عندي وقت أكثر:</b> أخلي البرنامج متين أكثر: لو المستخدم كتب كلمة مثل <code>three</code> أو رقم سالب، ما يوقف البرنامج، بل يطلع له رسالة واضحة ويطلب منه يكتب الرقم مرة ثانية. وأبرمج كمان التنبيه اللي محجوز بالتعليق <code>TODO</code> لما يكون الخصم أكبر من 50%.</p>
+
+</body>
+</html>

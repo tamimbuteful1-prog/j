@@ -1,0 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;700&family=Noto+Sans+Mono&display=swap');
+@page { size: A4; margin: 16mm 15mm 16mm 15mm; }
+html { direction: rtl; }
+body { font-family: 'Noto Naskh Arabic', 'DejaVu Sans', serif; font-size: 12.5pt; line-height: 1.75; color: #1b1b1b; background: #fff; margin: 0; }
+h1 { font-size: 20pt; margin: 0 0 4px; color: #123a5c; }
+h2 { font-size: 15pt; color: #fff; background: #123a5c; padding: 4px 12px; border-radius: 4px; margin: 22px 0 10px; break-after: avoid; }
+h3 { font-size: 13pt; color: #123a5c; margin: 14px 0 6px; break-after: avoid; }
+p { margin: 4px 0 8px; text-align: justify; }
+table { width: 100%; border-collapse: collapse; margin: 8px 0 12px; font-size: 11pt; break-inside: avoid; }
+th, td { border: 1px solid #8aa0b4; padding: 5px 7px; vertical-align: top; text-align: right; }
+th { background: #e3ecf4; }
+code, pre, .ltr { direction: ltr; unicode-bidi: isolate; font-family: 'Noto Sans Mono', 'DejaVu Sans Mono', monospace; }
+code { font-size: 10.5pt; background: #f1f3f5; padding: 0 3px; border-radius: 3px; }
+pre { text-align: left; background: #f4f6f8; border: 1px solid #d0d7de; border-radius: 6px; padding: 8px 12px; font-size: 10pt; line-height: 1.5; white-space: pre-wrap; break-inside: avoid; margin: 6px 0 10px; }
+pre.term { background: #0f1720; color: #d8e1e8; border-color: #0f1720; }
+pre.term .cap { color: #7fb4e0; }
+.cover { height: 250mm; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; break-after: page; }
+.cover h1 { font-size: 28pt; margin-bottom: 18px; }
+.cover .meta { font-size: 14pt; line-height: 2.1; }
+.cover .meta b { color: #123a5c; }
+.note { border-right: 4px solid #c58b00; background: #fff8e6; padding: 6px 12px; margin: 8px 0; font-size: 11pt; }
+.ok { color: #12703a; font-weight: 700; }
+.bad { color: #a11; font-weight: 700; }
+ul, ol { margin: 4px 0 8px; padding-right: 22px; }
+li { margin: 2px 0; }
+.fig { text-align: center; margin: 8px 0 12px; break-inside: avoid; }
+.fig .cap { font-size: 10.5pt; color: #555; }
+.small { font-size: 10.5pt; color: #555; }
+.pb { break-before: page; }
