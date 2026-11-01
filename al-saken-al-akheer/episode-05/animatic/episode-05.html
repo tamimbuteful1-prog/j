@@ -1,0 +1,772 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>الساكن الأخير 05</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@400;600;800;900&family=Tajawal:wght@300;400;500;700;800&family=IBM+Plex+Mono:wght@500&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:#000;width:720px;height:1280px;overflow:hidden}
+  #stage{position:relative;width:720px;height:1280px;overflow:hidden;background:#000}
+  .scene{position:absolute;inset:0;opacity:0}
+  .scene>svg,.full{position:absolute;inset:0;width:720px;height:1280px;overflow:visible}
+  .sepia{filter:sepia(.85) contrast(.92) brightness(.9)}
+  .fb{filter:sepia(.55) saturate(.8) contrast(1.05) brightness(.85)}
+  #caps{position:absolute;left:34px;right:34px;bottom:250px;text-align:center;font-family:'Noto Kufi Arabic',sans-serif;font-weight:800;font-size:42px;line-height:1.55;color:#fff;text-shadow:0 3px 10px rgba(0,0,0,.95),0 0 26px rgba(0,0,0,.85)}
+  #caps .y{color:#f0d58c} #caps .r{color:#d0473d} #caps .q{color:#f4ead4;font-weight:600}
+  #grain{position:absolute;inset:-60px;opacity:.07;mix-blend-mode:screen;pointer-events:none}
+  #vig{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 85% 70% at center,transparent 45%,rgba(0,0,0,.8) 100%),linear-gradient(to top,rgba(0,0,0,.55) 0,transparent 380px)}
+  #fbVig{position:absolute;inset:0;pointer-events:none;opacity:0;background:radial-gradient(ellipse 70% 60% at center,transparent 40%,rgba(30,18,8,.85) 100%)}
+  #fbTag{position:absolute;top:110px;left:0;right:0;text-align:center;font-family:'Tajawal';font-weight:700;font-size:26px;color:#e9d7b0;opacity:0;letter-spacing:2px}
+  #black{position:absolute;inset:0;background:#000;opacity:0}
+  #title{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:'Noto Kufi Arabic'}
+  #title .a{font-size:74px;font-weight:900;color:#e8e8e8;opacity:0}
+  #title .b{font-size:32px;font-weight:600;color:#8a8a8a;margin-top:26px;opacity:0}
+  #ask{position:absolute;left:0;right:0;top:210px;display:flex;flex-direction:column;align-items:center;gap:24px;font-family:'Noto Kufi Arabic';pointer-events:none}
+  #ask .qq{font-size:66px;font-weight:900;color:#f2f2f2;text-shadow:0 0 30px #000,0 4px 12px #000;opacity:0}
+  #ask .op{width:580px;padding:18px 24px;border:2px solid rgba(240,213,140,.55);border-radius:18px;background:rgba(8,10,12,.75);color:#f4ead4;font-size:36px;font-weight:800;text-align:center;opacity:0;box-shadow:0 10px 40px rgba(0,0,0,.6)}
+  #ask .op.b{border-color:rgba(208,71,61,.6)}
+  #ask .cm{font-family:'Tajawal';font-size:30px;font-weight:700;color:#c9d1d5;opacity:0;margin-top:6px}
+  .ph{position:absolute;width:340px;height:700px;border-radius:48px;background:#050607;border:3px solid #23292d;box-shadow:0 0 0 2px #0b0d0f,0 30px 80px rgba(0,0,0,.8),0 0 160px rgba(120,170,210,.16);overflow:hidden;font-family:'Tajawal',sans-serif;direction:rtl}
+  .scr{position:absolute;inset:10px;border-radius:38px;overflow:hidden;background:#000}
+  .scr>div{position:absolute;inset:0;opacity:0}
+  .psb{position:absolute;top:0;left:0;right:0;display:flex;justify-content:space-between;padding:12px 24px 0;font-size:14px;color:#d5dcdf;direction:ltr;font-weight:700;z-index:5}
+  .call{background:linear-gradient(#1b262d,#06090b);text-align:center}
+  .call .w{margin-top:150px;font-size:44px;font-weight:800;color:#eef3f5}
+  .call .s{margin-top:10px;font-size:20px;color:#9fb0b8;direction:ltr}
+  .call .bt2{position:absolute;bottom:90px;width:100%;display:flex;justify-content:center;gap:34px}
+  .call .g{width:64px;height:64px;border-radius:50%;background:#26323a;color:#cfd8dc;font-size:12px;display:flex;align-items:center;justify-content:center}
+  .selfie{background:#000}
+  .selfie .vf{position:absolute;left:0;right:0;top:70px;bottom:150px;overflow:hidden}
+  .selfie .modes{position:absolute;bottom:110px;width:100%;text-align:center;color:#e9c46a;font-size:14px;font-weight:700}
+  .selfie .shut{position:absolute;bottom:26px;left:50%;width:68px;height:68px;margin-left:-34px;border-radius:50%;border:5px solid #fff;background:rgba(255,255,255,.9)}
+  .selfie .flip{position:absolute;bottom:40px;right:34px;width:42px;height:42px;border-radius:50%;background:#2b2f33;color:#fff;font-size:20px;display:flex;align-items:center;justify-content:center}
+  .gal{background:#000}.gal .bar{position:absolute;top:44px;left:0;right:0;text-align:center;color:#e9eef1;font-size:16px;font-weight:700}
+  .gal .ph1{position:absolute;left:0;right:0;top:150px;height:330px;overflow:hidden;background:#111}
+  .clockFace{font-family:'Tajawal'}
+</style>
+</head>
+<body>
+<div id="stage">
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <radialGradient id="gBulb" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#ffd58a" stop-opacity=".9"/><stop offset=".35" stop-color="#e2a64e" stop-opacity=".35"/><stop offset="1" stop-color="#e2a64e" stop-opacity="0"/></radialGradient>
+    <radialGradient id="gSpill" cx="50%" cy="0%" r="100%"><stop offset="0" stop-color="#f3c068" stop-opacity=".75"/><stop offset=".5" stop-color="#b9873d" stop-opacity=".18"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>
+    <radialGradient id="gPhone" cx="50%" cy="100%" r="80%"><stop offset="0" stop-color="#cfe3f5" stop-opacity=".75"/><stop offset=".55" stop-color="#7fa6c8" stop-opacity=".22"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>
+    <linearGradient id="gWall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0b1015"/><stop offset="1" stop-color="#151c21"/></linearGradient>
+    <linearGradient id="gSideL" x1="0" x2="1"><stop offset="0" stop-color="#06090c"/><stop offset="1" stop-color="#10161b"/></linearGradient>
+    <linearGradient id="gSideR" x1="1" x2="0"><stop offset="0" stop-color="#070a0d"/><stop offset="1" stop-color="#11171c"/></linearGradient>
+    <linearGradient id="gFloor" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#16140f"/><stop offset="1" stop-color="#050505"/></linearGradient>
+    <linearGradient id="gWood" x1="0" x2="1"><stop offset="0" stop-color="#18130e"/><stop offset=".5" stop-color="#231c15"/><stop offset="1" stop-color="#16110c"/></linearGradient>
+    <linearGradient id="gHood" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1f272e"/><stop offset="1" stop-color="#0d1115"/></linearGradient>
+    <linearGradient id="gSkin" x1="0" x2="1"><stop offset="0" stop-color="#4a3428"/><stop offset=".55" stop-color="#7a5944"/><stop offset="1" stop-color="#8d6a52"/></linearGradient>
+    <radialGradient id="gLampFloor" cx="70%" cy="80%" r="75%"><stop offset="0" stop-color="#e7b25e" stop-opacity=".55"/><stop offset=".6" stop-color="#9c7339" stop-opacity=".18"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>
+    <linearGradient id="gMoon" x1="1" x2="0"><stop offset="0" stop-color="#5a7fa6" stop-opacity=".45"/><stop offset="1" stop-color="#5a7fa6" stop-opacity="0"/></linearGradient>
+    <linearGradient id="gSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#03060a"/><stop offset=".6" stop-color="#0b1621"/><stop offset="1" stop-color="#1a2532"/></linearGradient>
+    <linearGradient id="gCone" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffcf7a" stop-opacity=".35"/><stop offset="1" stop-color="#ffcf7a" stop-opacity="0"/></linearGradient>
+    <filter id="fBlur6"><feGaussianBlur stdDeviation="6"/></filter>
+    <filter id="fBlur14"><feGaussianBlur stdDeviation="14"/></filter>
+    <filter id="fBlur3"><feGaussianBlur stdDeviation="3"/></filter>
+    <filter id="fDof"><feGaussianBlur stdDeviation="5"/></filter>
+    <clipPath id="eyeL"><path d="M276 572 Q305 548 336 570 Q306 586 276 572Z"/></clipPath>
+    <clipPath id="eyeR"><path d="M390 570 Q420 548 450 572 Q420 586 390 570Z"/></clipPath>
+    <clipPath id="eyeP"><path d="M300 560 Q318 548 338 558 Q320 570 300 560Z"/></clipPath>
+  </defs>
+</svg>
+<script type="text/x-svg" id="tRoom">
+  <g class="L0">
+    <!-- back wall -->
+    <rect x="-200" y="120" width="1120" height="680" fill="url(#gWall)"/>
+    <!-- side walls -->
+    <polygon points="-200,0 120,250 120,800 -200,1400" fill="url(#gSideL)"/>
+    <polygon points="920,0 600,250 600,800 920,1400" fill="url(#gSideR)"/>
+    <polygon points="-200,0 920,0 600,250 120,250" fill="#07090b"/>
+    <!-- window on right wall -->
+    <polygon points="640,330 760,290 760,610 640,600" fill="#16283a"/>
+    <polygon points="640,330 760,290 760,610 640,600" fill="none" stroke="#090c0f" stroke-width="8"/>
+    <line x1="700" y1="312" x2="700" y2="606" stroke="#090c0f" stroke-width="6"/>
+    <!-- mirror on left wall -->
+    <g><polygon points="40,330 92,350 92,700 40,740" fill="#3a2a1b"/><polygon points="48,345 86,360 86,690 48,724" fill="#121a20"/><polygon class="mirrorRefl" points="58,520 78,524 78,640 58,650" fill="#05080a" opacity="0"/></g>
+  </g>
+  <g class="L1">
+    <!-- floor -->
+    <polygon points="120,800 600,800 920,1400 -200,1400" fill="url(#gFloor)"/>
+    <g stroke="#000" stroke-opacity=".35" stroke-width="2"><line x1="240" y1="800" x2="60" y2="1400"/><line x1="360" y1="800" x2="360" y2="1400"/><line x1="480" y1="800" x2="660" y2="1400"/><line x1="-200" y1="900" x2="920" y2="900"/><line x1="-200" y1="1060" x2="920" y2="1060"/></g>
+    <!-- moonlight on floor -->
+    <polygon points="600,800 760,760 920,1100 700,1150" fill="url(#gMoon)" opacity=".5"/>
+    <!-- door -->
+    <rect x="296" y="520" width="128" height="280" fill="url(#gWood)" stroke="#060504" stroke-width="5"/>
+    <rect x="306" y="534" width="108" height="110" fill="none" stroke="#0f0c09" stroke-width="2"/>
+    <rect x="306" y="660" width="108" height="128" fill="none" stroke="#0f0c09" stroke-width="2"/>
+    <circle cx="308" cy="668" r="5" fill="#5b4a33"/>
+    <!-- light leaking around door edges -->
+    <g class="doorLeak"><rect x="293" y="520" width="3" height="280" fill="#f0bb60" opacity=".45"/><rect x="424" y="520" width="3" height="280" fill="#f0bb60" opacity=".35"/>
+    <rect class="gap" x="296" y="797" width="128" height="4" fill="#ffd27a"/>
+    <ellipse class="gapSpill" cx="360" cy="806" rx="140" ry="26" fill="url(#gSpill)"/></g>
+    <polygon points="300,800 430,800 640,1000 560,1060 300,900" fill="url(#gLampFloor)"/>
+    <!-- the impossible shadow (from inside the room toward the door) -->
+    <g class="roomShadow" opacity="0" filter="url(#fBlur6)">
+      <path class="rsPath" d="M560 1010 C 545 1000 520 990 505 975 L 410 860 C 400 845 392 828 388 812 L 400 800 L 345 800 C 352 818 362 838 372 856 L 470 985 C 480 1000 500 1016 520 1024 Z" fill="#000" opacity="1"/>
+    </g>
+    <!-- boxes (left front) -->
+    <g transform="translate(-30,980)"><rect x="0" y="0" width="190" height="150" fill="#33291e"/><rect x="0" y="0" width="190" height="20" fill="#3e3326"/><rect x="25" y="-110" width="150" height="110" fill="#2d241a"/>
+      <text x="95" y="92" text-anchor="middle" font-family="Tajawal" font-size="24" fill="#120e0a" font-weight="800">غرفة نواف</text>
+      <text x="100" y="-48" text-anchor="middle" font-family="Tajawal" font-size="22" fill="#120e0a" font-weight="800">كتب</text></g>
+  </g>
+  <g class="L2">
+    <!-- nightstand + lamp (right, behind bed head) -->
+    <rect x="590" y="900" width="110" height="120" fill="#17120d"/><rect x="584" y="892" width="122" height="12" fill="#211a13"/>
+    <rect x="630" y="860" width="40" height="32" rx="3" fill="#0d0f10"/><text x="650" y="882" text-anchor="middle" font-family="Tajawal" font-size="14" fill="#7fe0a0" opacity=".7" direction="ltr">03:17</text>
+    <ellipse class="lampGlow" cx="610" cy="860" rx="150" ry="140" fill="url(#gBulb)" opacity=".35"/>
+    <!-- bed (right-front) -->
+    <path d="M330 1060 L 720 1000 L 900 1000 L 900 1400 L 300 1400 Z" fill="#101215"/>
+    <path d="M320 1050 L 720 990 L 900 990 L 900 1030 L 330 1100 Z" fill="#1c2026"/>
+    <path d="M600 960 L 760 940 L 780 1000 L 610 1012 Z" fill="#2a2f36"/>
+    <!-- sleeping nawaf -->
+    <g class="sleepN" opacity="0">
+      <path d="M380 1060 C 420 1020 560 1000 640 1000 C 690 1000 700 1040 690 1060 Z" fill="#232a33"/>
+      <ellipse cx="660" cy="985" rx="30" ry="24" fill="#0a0a0a"/>
+    </g>
+    <!-- sitting nawaf (back/3-4 view, facing the door) -->
+    <g class="sitN" opacity="0">
+      <path d="M470 1095 C 470 1040 490 1000 530 990 L 590 990 C 630 1000 645 1040 645 1095 Z" fill="url(#gHood)"/>
+      <rect x="545" y="965" width="28" height="30" fill="#4a3428"/>
+      <ellipse cx="559" cy="945" rx="34" ry="40" fill="#5c4233"/>
+      <path d="M523 945 C 520 905 545 895 562 896 C 585 897 600 915 594 950 C 590 930 575 920 560 921 C 542 922 530 932 523 945Z" fill="#070707"/>
+      <ellipse cx="559" cy="935" rx="35" ry="34" fill="#080808" opacity=".92"/>
+      <ellipse class="sitGlow" cx="545" cy="1010" rx="60" ry="30" fill="#bcd7ee" opacity="0" filter="url(#fBlur6)"/>
+    </g>
+    <ellipse class="bedPhone" cx="470" cy="1060" rx="22" ry="8" fill="#cfe6ff" opacity="0" filter="url(#fBlur3)"/>
+  </g>
+</script>
+<script type="text/x-svg" id="tFace">
+  <g class="faceRoot">
+    <!-- hoodie & neck -->
+    <path d="M150 1300 C 160 980 230 900 300 880 L 420 880 C 500 900 570 980 580 1300Z" fill="url(#gHood)"/>
+    <path d="M300 880 C 320 930 400 930 420 880 L 410 820 L 310 820 Z" fill="#3c2a20"/>
+    <path d="M285 885 C 300 960 420 960 435 885 C 420 905 300 905 285 885Z" fill="#141a1f"/>
+    <g class="head">
+      <ellipse cx="236" cy="590" rx="18" ry="34" fill="#4a3428"/>
+      <ellipse cx="486" cy="590" rx="16" ry="32" fill="#6b4d3b"/>
+      <path d="M362 392 C 452 392 492 460 490 570 C 488 660 452 735 402 768 C 382 780 342 780 322 768 C 272 735 236 660 234 570 C 232 460 272 392 362 392Z" fill="url(#gSkin)"/>
+      <!-- shading side -->
+      <path d="M362 392 C 300 400 240 460 234 570 C 236 660 272 735 322 768 C 300 700 290 620 300 540 C 305 470 330 420 362 392Z" fill="#000" opacity=".28"/>
+      <!-- hair -->
+      <path d="M226 560 C 214 430 290 352 372 354 C 466 356 512 430 498 556 C 486 488 458 450 410 446 C 360 442 312 456 282 476 C 258 494 240 522 226 560Z" fill="#0a0908"/>
+      <path d="M300 430 C 340 400 420 398 460 430 C 430 420 360 418 300 430Z" fill="#1b1916"/>
+      <!-- brows -->
+      <path class="browL" d="M272 532 Q302 516 336 528" stroke="#0d0b09" stroke-width="9" fill="none" stroke-linecap="round"/>
+      <path class="browR" d="M392 528 Q424 516 452 532" stroke="#0d0b09" stroke-width="9" fill="none" stroke-linecap="round"/>
+      <!-- eyes -->
+      <g clip-path="url(#eyeL)"><rect x="270" y="540" width="70" height="50" fill="#d8d3cb"/><g class="irisL"><circle cx="306" cy="568" r="11" fill="#2a1c12"/><circle cx="306" cy="568" r="5" fill="#050302"/><circle cx="302" cy="564" r="2.5" fill="#fff" opacity=".8"/></g><rect class="lidL" x="270" y="540" width="70" height="0" fill="#5f4535"/></g>
+      <g clip-path="url(#eyeR)"><rect x="384" y="540" width="70" height="50" fill="#d8d3cb"/><g class="irisR"><circle cx="420" cy="568" r="11" fill="#2a1c12"/><circle cx="420" cy="568" r="5" fill="#050302"/><circle cx="416" cy="564" r="2.5" fill="#fff" opacity=".8"/></g><rect class="lidR" x="384" y="540" width="70" height="0" fill="#7a5944"/></g>
+      <path d="M276 572 Q305 548 336 570" stroke="#120c08" stroke-width="3" fill="none"/>
+      <path d="M390 570 Q420 548 450 572" stroke="#120c08" stroke-width="3" fill="none"/>
+      <!-- nose -->
+      <path d="M368 590 C 366 630 356 652 344 664 C 354 672 372 672 384 664" stroke="#3a281e" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <!-- mouth -->
+      <path class="mline" d="M328 716 Q362 709 396 716" stroke="#2b1a14" stroke-width="5" fill="none" stroke-linecap="round"/>
+      <ellipse class="mouth" cx="362" cy="716" rx="22" ry="0" fill="#1a0e0a"/>
+      <!-- stubble shadow -->
+      <path d="M300 720 C 320 770 400 770 424 720 C 410 760 320 760 300 720Z" fill="#000" opacity=".12"/>
+    </g>
+    <!-- light layers -->
+    <rect class="phoneLight" x="0" y="300" width="720" height="1000" fill="url(#gPhone)" opacity="0" style="mix-blend-mode:screen"/>
+    <rect class="blueAmb" x="0" y="0" width="720" height="1280" fill="#163049" opacity=".32" style="mix-blend-mode:multiply"/>
+  </g>
+</script>
+<script type="text/x-svg" id="tBody">
+  <g class="body">
+    <ellipse cx="0" cy="4" rx="80" ry="14" fill="#000" opacity=".45"/>
+    <g class="legL"><rect x="-44" y="-250" width="38" height="248" rx="10" fill="#14171b"/><ellipse cx="-26" cy="-4" rx="26" ry="10" fill="#0a0a0a"/></g>
+    <g class="legR"><rect x="6" y="-250" width="38" height="248" rx="10" fill="#121519"/><ellipse cx="26" cy="-4" rx="26" ry="10" fill="#0a0a0a"/></g>
+    <path d="M-70 -455 C -78 -380 -74 -300 -64 -230 L 64 -230 C 74 -300 78 -380 70 -455 C 40 -478 -40 -478 -70 -455Z" fill="url(#gHood)"/>
+    <path class="hoodTie" d="M-30 -470 C -20 -440 20 -440 30 -470" stroke="#0b0f13" stroke-width="8" fill="none"/>
+    <g class="armL"><path d="M-70 -450 C -92 -400 -98 -320 -92 -250 L -72 -250 C -70 -320 -64 -390 -56 -440Z" fill="#1a2128"/><ellipse cx="-82" cy="-242" rx="14" ry="18" fill="#5c4233"/></g>
+    <g class="armR"><path d="M70 -450 C 92 -400 98 -320 92 -250 L 72 -250 C 70 -320 64 -390 56 -440Z" fill="#1a2128"/><ellipse cx="82" cy="-242" rx="14" ry="18" fill="#5c4233"/></g>
+    <rect x="-14" y="-500" width="28" height="34" fill="#4a3428"/>
+    <g class="bhead">
+      <ellipse cx="0" cy="-548" rx="46" ry="58" fill="url(#gSkin)"/>
+      <g class="bface">
+        <path d="M-50 -556 C -54 -610 -20 -632 4 -630 C 34 -628 56 -604 50 -556 C 44 -584 26 -594 2 -594 C -22 -594 -40 -584 -50 -556Z" fill="#0a0908"/>
+        <ellipse cx="-17" cy="-548" rx="7" ry="4" fill="#d8d3cb"/><ellipse cx="17" cy="-548" rx="7" ry="4" fill="#d8d3cb"/>
+        <circle class="bi" cx="-17" cy="-548" r="3" fill="#120c08"/><circle class="bi" cx="17" cy="-548" r="3" fill="#120c08"/>
+        <path d="M-26 -560 Q-17 -566 -8 -561" stroke="#0d0b09" stroke-width="3" fill="none"/><path d="M8 -561 Q17 -566 26 -560" stroke="#0d0b09" stroke-width="3" fill="none"/>
+        <path d="M2 -540 L -4 -522 L 6 -522" stroke="#3a281e" stroke-width="2.5" fill="none"/>
+        <path d="M-12 -508 Q0 -510 12 -508" stroke="#2b1a14" stroke-width="3" fill="none" stroke-linecap="round"/>
+      </g>
+      <g class="bback" opacity="0"><path d="M-48 -540 C -54 -612 -20 -634 2 -632 C 30 -630 56 -606 48 -540 C 40 -500 -40 -500 -48 -540Z" fill="#0a0908"/><ellipse cx="-47" cy="-548" rx="7" ry="13" fill="#3e2b21"/><ellipse cx="47" cy="-548" rx="7" ry="13" fill="#3e2b21"/></g>
+    </g>
+  </g>
+</script>
+<!-- ===== the group photograph (two versions share everything except the father) ===== -->
+<svg width="0" height="0" style="position:absolute"><defs>
+  <mask id="dustMask"><rect x="0" y="0" width="600" height="420" fill="white"/><ellipse class="wipeE" cx="300" cy="200" rx="0" ry="0" fill="black" filter="url(#fBlur14)"/></mask>
+  <g id="gpBase"></g>
+  <g id="gpFather"></g>
+  <g id="gpScratches"><g stroke="#f4e9d0" stroke-opacity=".25" stroke-width="1.2" fill="none"><path d="M40 20 L 90 400"/><path d="M520 0 L 470 260"/><path d="M300 30 Q 310 120 290 210"/><path d="M0 330 L 600 300"/></g>
+    <g fill="#f4e9d0" opacity=".2"><circle cx="80" cy="90" r="2"/><circle cx="430" cy="60" r="1.5"/><circle cx="560" cy="380" r="2"/><circle cx="210" cy="300" r="1.5"/></g></g>
+  <g id="gpWith"><use href="#gpBase"/><use href="#gpFather"/><use href="#gpScratches"/></g>
+  <g id="gpWithout"><use href="#gpBase"/><use href="#gpScratches"/></g>
+</defs></svg>
+
+<div class="scene" id="s_shoulder"><svg viewBox="0 0 720 1280"><g class="cam">
+  <rect x="-200" y="-200" width="1120" height="1700" fill="#090807"/>
+  <ellipse cx="560" cy="300" rx="220" ry="120" fill="url(#gBulb)" opacity=".18" filter="url(#fDof)"/>
+  <ellipse cx="300" cy="520" rx="360" ry="380" fill="#3a4a5a" opacity=".35" filter="url(#fBlur14)"/>
+  <!-- Nawaf from behind-right: back of head, ear, shoulder -->
+  <path d="M-200 1500 C -160 1060 40 900 300 880 C 520 870 700 940 900 1100 L 900 1500Z" fill="url(#gHood)"/>
+  <path d="M300 880 C 380 878 470 890 560 920" stroke="#2a333b" stroke-width="6" fill="none"/>
+  <ellipse cx="220" cy="560" rx="230" ry="300" fill="#0a0908"/>
+  <path d="M120 820 C 150 880 260 900 330 870 L 320 760 L 140 760Z" fill="#3a281f"/>
+  <ellipse cx="420" cy="600" rx="34" ry="62" fill="#4a3428"/>
+  <!-- the hand (adult man, white sleeve) -->
+  <g class="hand">
+    <path d="M900 520 C 820 560 720 640 640 720 L 700 780 C 780 700 860 640 940 610Z" fill="#e9e4da"/>
+    <path d="M640 720 L 700 780" stroke="#c9c2b5" stroke-width="8"/>
+    <path d="M650 730 C 600 760 560 800 540 850 C 530 880 548 900 576 890 L 600 880 C 590 910 600 930 624 925 L 640 912 C 640 940 660 950 680 940 L 692 926 C 700 948 720 950 734 936 C 760 900 760 840 700 780Z" fill="#6b4b38"/>
+    <path d="M560 880 C 548 900 560 918 580 912" stroke="#3e2b20" stroke-width="3" fill="none"/>
+  </g>
+</g></svg></div>
+<div class="scene" id="s_side"><svg viewBox="0 0 720 1280"><rect width="720" height="1280" fill="#05080b"/>
+  <g class="bgS" opacity=".5" filter="url(#fDof)"><rect x="40" y="380" width="150" height="520" fill="#1c1611"/><rect x="34" y="890" width="162" height="10" fill="#f0bb60" opacity=".6"/></g>
+  <g class="cam">
+    <path d="M250 1400 C 260 1050 330 930 420 900 L 560 900 C 640 930 700 1060 720 1400Z" fill="url(#gHood)"/>
+    <path d="M380 760 L 480 760 L 500 910 L 400 920 Z" fill="#3a281f"/>
+    <g class="sHead">
+      <path d="M300 470 C 300 420 350 390 410 392 C 480 395 520 450 520 530 C 520 600 505 650 480 690 L 470 760 L 400 790 L 340 782 C 326 760 322 740 324 722 C 304 718 294 708 296 694 C 290 686 292 676 298 670 C 288 664 290 652 296 648 C 280 640 268 626 274 614 C 284 598 296 588 298 572 C 296 540 300 500 300 470Z" fill="url(#gSkin)"/>
+      <path d="M296 506 C 288 420 350 380 424 384 C 506 392 538 456 526 548 C 516 520 500 500 474 492 C 424 474 360 484 296 506Z" fill="#0a0908"/>
+      <path d="M306 538 Q 326 528 346 534" stroke="#0d0b09" stroke-width="7" fill="none" stroke-linecap="round"/>
+      <g clip-path="url(#eyeP)"><rect x="296" y="545" width="46" height="30" fill="#d0cbc2"/><circle class="sIris" cx="312" cy="560" r="7" fill="#1e140e"/><rect class="sLid" x="296" y="545" width="46" height="0" fill="#6a4c3b"/></g>
+      <path d="M300 560 Q318 548 338 558" stroke="#120c08" stroke-width="3" fill="none"/>
+      <path class="sMouth" d="M300 676 Q 312 680 326 676" stroke="#2b1a14" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <ellipse cx="452" cy="600" rx="22" ry="36" fill="#5c4233"/>
+    </g>
+    <!-- hand + phone at ear -->
+    <g class="sHand">
+      <rect x="440" y="520" width="56" height="150" rx="12" fill="#0b0d0f" transform="rotate(-12 468 595)"/>
+      <rect x="446" y="528" width="44" height="134" rx="8" fill="#9cc2e2" opacity=".25" transform="rotate(-12 468 595)"/>
+      <path d="M470 640 C 520 640 560 700 560 760 L 560 920 L 470 920 C 470 860 460 800 450 760 C 440 720 440 670 470 640Z" fill="#4e382b"/>
+      <path d="M446 610 C 430 616 428 640 440 650 L 470 646 Z" fill="#5a4031"/>
+    </g>
+    <rect class="sGlow" x="200" y="420" width="400" height="420" fill="url(#gPhone)" opacity=".35" style="mix-blend-mode:screen"/>
+    <rect x="0" y="0" width="720" height="1280" fill="#163049" opacity=".3" style="mix-blend-mode:multiply"/>
+  </g>
+</svg></div>
+<div class="scene" id="s_face"><svg viewBox="0 0 720 1280"><rect width="720" height="1280" fill="#05080b"/>
+  <g class="bgRoom" opacity=".35" filter="url(#fDof)"></g>
+  <g class="bgElev" opacity="0"><rect width="720" height="1280" fill="#2a3035"/><rect x="0" y="0" width="720" height="60" fill="#cfe2e8" opacity=".5" filter="url(#fBlur14)"/><rect x="60" y="200" width="160" height="900" fill="#3a4147" filter="url(#fDof)"/></g>
+  <g class="bgZero" opacity="0"><rect width="720" height="1280" fill="#0d0b09"/><ellipse cx="200" cy="200" rx="160" ry="60" fill="url(#gBulb)" opacity=".4" filter="url(#fDof)"/><rect x="420" y="380" width="200" height="300" fill="#2a2116" filter="url(#fDof)"/><rect x="460" y="420" width="120" height="160" fill="#7a6a50" opacity=".4" filter="url(#fDof)"/></g>
+  <g class="cam"></g>
+  <rect class="tint" width="720" height="1280" fill="#000" opacity="0" style="mix-blend-mode:multiply"/>
+  <rect class="redLight" width="720" height="1280" fill="#b0281c" opacity="0" style="mix-blend-mode:screen"/>
+</svg></div>
+<div class="scene" id="s_hands"><svg viewBox="0 0 720 1280"><g class="cam">
+  <rect x="-200" y="-200" width="1120" height="1700" fill="#0d0b09"/>
+  <ellipse cx="360" cy="500" rx="300" ry="300" fill="#e7b25e" opacity=".06" filter="url(#fBlur14)"/>
+  <g class="hl"><path d="M120 1300 C 130 1100 160 980 200 900 L 290 900 C 300 1000 300 1120 300 1300Z" fill="url(#gHood)"/><path d="M205 905 C 190 820 200 760 230 730 C 260 710 300 730 296 780 L 288 905Z" fill="#5a4031"/><path d="M230 735 C 226 690 240 660 256 662 C 270 664 268 700 262 740Z" fill="#664a39"/></g>
+  <g class="hr"><path d="M600 1300 C 590 1100 560 980 520 900 L 430 900 C 420 1000 420 1120 420 1300Z" fill="url(#gHood)"/><path d="M515 905 C 530 820 520 760 490 730 C 460 710 420 730 424 780 L 432 905Z" fill="#53392c"/><path d="M490 735 C 494 690 480 660 464 662 C 450 664 452 700 458 740Z" fill="#5f4535"/></g>
+</g></svg></div>
+<div class="scene" id="s_zero"><svg viewBox="0 0 720 1280"><g class="cam">
+  <rect x="-400" y="-400" width="1520" height="2100" fill="#060504"/>
+  <g class="zFar">
+    <rect x="320" y="520" width="80" height="150" fill="#0d0b09"/>
+    <rect class="zDoor" x="340" y="555" width="40" height="115" fill="#1e1710"/>
+    <rect x="356" y="555" width="6" height="115" fill="#000"/>
+    <ellipse class="zL3" cx="360" cy="505" rx="18" ry="6" fill="url(#gBulb)" opacity=".5"/>
+  </g>
+  <g class="zMid">
+    <polygon points="-400,-400 320,520 320,670 -400,1700" fill="#16110d"/>
+    <polygon points="1120,-400 400,520 400,670 1120,1700" fill="#120e0b"/>
+    <polygon points="-400,-400 1120,-400 400,520 320,520" fill="#070605"/>
+    <polygon points="320,670 400,670 1120,1700 -400,1700" fill="#2b261e"/>
+    <!-- soot patches -->
+    <g fill="#000" opacity=".55" filter="url(#fBlur14)"><ellipse cx="120" cy="420" rx="120" ry="200"/><ellipse cx="250" cy="560" rx="40" ry="80"/><ellipse cx="560" cy="380" rx="90" ry="220"/><ellipse cx="460" cy="600" rx="30" ry="60"/><ellipse cx="20" cy="900" rx="140" ry="160"/></g>
+    <!-- photo frames on the left wall, in perspective -->
+    <g class="zFrames"><polygon points="160,470 220,490 220,560 160,548" fill="#3a2b1b"/><polygon points="250,540 278,550 278,584 250,578" fill="#3a2b1b"/><polygon points="292,574 306,578 306,596 292,594" fill="#3a2b1b"/><polygon points="20,400 110,432 110,540 20,526" fill="#3a2b1b"/>
+      <polygon points="168,480 212,496 212,552 168,542" fill="#8a7a5a" opacity=".45"/><polygon points="30,412 100,438 100,532 30,520" fill="#8a7a5a" opacity=".45"/></g>
+    <!-- lamps -->
+    <ellipse class="zL1" cx="360" cy="260" rx="90" ry="30" fill="url(#gBulb)" opacity=".6"/>
+    <polygon class="zB1" points="330,268 390,268 520,900 200,900" fill="url(#gCone)" opacity=".35"/>
+    <ellipse class="zL2" cx="360" cy="430" rx="40" ry="14" fill="url(#gBulb)" opacity=".5"/>
+    <!-- dust on the floor -->
+    <ellipse cx="360" cy="980" rx="320" ry="90" fill="#cfc6b0" opacity=".08" filter="url(#fBlur14)"/>
+  </g>
+  <g class="zFog"><ellipse cx="200" cy="900" rx="380" ry="80" fill="#9a958a" opacity=".07" filter="url(#fBlur14)"/><ellipse cx="560" cy="760" rx="300" ry="60" fill="#9a958a" opacity=".06" filter="url(#fBlur14)"/></g>
+  <g class="zNav"></g>
+  <g class="zElev" opacity="0"><rect x="-400" y="-400" width="1520" height="2100" fill="none"/>
+    <polygon points="-400,-400 150,-400 150,1700 -400,1700" fill="#2f353a"/><polygon points="570,-400 1120,-400 1120,1700 570,1700" fill="#2a2f34"/>
+    <rect x="150" y="-400" width="420" height="140" fill="#2c3237"/><rect x="150" y="1180" width="420" height="520" fill="#1d1f21"/></g>
+  <rect class="zFlick" x="-400" y="-400" width="1520" height="2100" fill="#000" opacity="0"/>
+</g></svg></div>
+<div class="scene" id="s_hall"><svg viewBox="0 0 720 1280"><g class="cam">
+  <rect x="-200" y="-200" width="1120" height="1700" fill="#07090b"/>
+  <polygon points="-200,-200 920,-200 450,400 270,400" fill="#06080a"/>
+  <polygon points="-200,-200 270,400 270,840 -200,1500" fill="#11171c"/>
+  <polygon points="920,-200 450,400 450,840 920,1500" fill="#0d1216"/>
+  <rect x="270" y="400" width="180" height="440" fill="#151c21"/>
+  <polygon points="270,840 450,840 920,1500 -200,1500" fill="url(#gFloor)"/>
+  <!-- elevator at the end -->
+  <rect x="300" y="560" width="120" height="280" fill="#2c3237"/>
+  <g class="hDoorL"><rect x="304" y="566" width="56" height="274" fill="#4a5157"/></g><g class="hDoorR"><rect x="360" y="566" width="56" height="274" fill="#474e54"/></g>
+  <rect x="330" y="530" width="60" height="22" fill="#050505"/><text class="hNum" x="360" y="548" text-anchor="middle" font-family="IBM Plex Mono" font-size="18" fill="#f0a640" direction="ltr">3</text>
+  <rect x="428" y="690" width="12" height="22" rx="3" fill="#3a4045"/><circle class="hBtn" cx="434" cy="701" r="4" fill="#555"/>
+  <!-- ceiling lamp -->
+  <rect x="330" y="300" width="60" height="10" fill="#2a2a24"/><ellipse class="hLamp" cx="360" cy="312" rx="80" ry="40" fill="url(#gBulb)" opacity=".55"/>
+  <polygon points="335,312 385,312 560,1100 160,1100" fill="url(#gCone)" opacity=".45"/>
+  <!-- his apartment door (left, open) -->
+  <polygon points="40,420 150,470 150,1010 40,1110" fill="#1a1510"/><polygon points="150,470 210,500 210,980 150,1010" fill="#e7b25e" opacity=".12"/>
+  <g class="hNav"></g>
+</g></svg></div>
+<div class="scene" id="s_ext"><svg viewBox="0 0 720 1280">
+  <rect width="720" height="1280" fill="url(#gSky)"/>
+  <g class="x1"><path d="M-100 900 L -100 700 L 60 700 L 60 650 L 140 650 L 140 900 Z" fill="#0a0f15"/><path d="M560 900 L 560 690 L 700 690 L 700 640 L 820 640 L 820 900 Z" fill="#0a0f15"/></g>
+  <g class="x2">
+    <rect x="150" y="300" width="420" height="760" fill="#141b20"/><rect x="150" y="300" width="420" height="22" fill="#1b232a"/>
+    <g fill="#0b0f12"><rect x="190" y="360" width="70" height="90"/><rect x="325" y="360" width="70" height="90"/><rect x="460" y="360" width="70" height="90"/><rect x="190" y="500" width="70" height="90"/><rect x="460" y="500" width="70" height="90"/><rect x="190" y="640" width="70" height="90"/><rect x="325" y="640" width="70" height="90"/><rect x="460" y="640" width="70" height="90"/><rect x="190" y="780" width="70" height="90"/><rect x="325" y="780" width="70" height="90"/><rect x="460" y="780" width="70" height="90"/></g>
+    <rect class="nWin" x="325" y="500" width="70" height="90" fill="#d8a656" opacity=".45"/>
+    <rect x="310" y="940" width="100" height="120" fill="#0a0d10"/>
+    <!-- the floor that shouldn't exist: a faint glow under the ground line -->
+    <rect class="under" x="300" y="1062" width="120" height="6" fill="#f0a640" opacity="0"/>
+  </g>
+  <g class="x3"><rect x="-100" y="1060" width="920" height="300" fill="#0b0c0d"/><rect x="600" y="620" width="10" height="460" fill="#0e1012"/><polygon points="530,606 556,606 700,1080 380,1080" fill="url(#gCone)"/><ellipse cx="543" cy="606" rx="40" ry="20" fill="url(#gBulb)"/></g>
+  <g class="x4"><path d="M60 1400 C 70 1200 80 1000 100 820" stroke="#020304" stroke-width="26" fill="none"/><g fill="#020304"><path d="M100 820 C 40 780 -40 790 -90 840 C -20 800 40 805 100 830Z"/><path d="M100 820 C 160 770 240 770 290 820 C 230 790 160 795 100 830Z"/><path d="M100 820 C 80 750 30 700 -30 690 C 40 720 80 760 96 826Z"/><path d="M100 820 C 130 750 190 710 250 705 C 190 735 140 770 104 828Z"/></g></g>
+</svg></div>
+
+<!-- phone close-ups: active call / selfie camera / the saved photo -->
+<svg width="0" height="0" style="position:absolute"><defs><linearGradient id="gSleeve" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d9d3c6" stop-opacity="0"/><stop offset=".55" stop-color="#d9d3c6" stop-opacity=".85"/><stop offset="1" stop-color="#e4dfd4"/></linearGradient></defs></svg>
+<div class="scene" id="s_pcl"><div class="pcam" style="position:absolute;inset:0;transform-origin:360px 640px">
+  <svg viewBox="0 0 720 1280" class="full"><rect width="720" height="1280" fill="#06070a"/><ellipse cx="360" cy="620" rx="380" ry="460" fill="#9cc2e2" opacity=".07" filter="url(#fBlur14)"/>
+    <path d="M180 1400 C 190 1200 200 1080 230 1010 L 520 1010 C 560 1080 560 1200 560 1400 Z" fill="#3b2a20"/></svg>
+  <div class="ph" style="left:190px;top:270px"><div class="scr">
+    <div class="call" id="sAct"><div class="w">أبوي</div><div class="s" id="callT">01:20</div><div class="bt2"><div class="g">كتم</div><div class="g" style="background:#c0392b;color:#fff">إنهاء</div><div class="g">مكبر</div></div></div>
+    <div class="selfie" id="sSelf"><div class="psb"><span>3:34</span><span>17% ▮▯ ·ıl</span></div>
+      <div class="vf"><svg viewBox="0 0 720 1280" preserveAspectRatio="xMidYMid slice" style="width:100%;height:100%;transform:scaleX(-1)"><rect width="720" height="1280" fill="#0f0c09"/>
+        <g class="selfBg"><polygon points="0,0 720,0 470,420 250,420" fill="#070605"/><polygon points="0,0 250,420 250,700 0,1280" fill="#16110d"/><polygon points="720,0 470,420 470,700 720,1280" fill="#120e0b"/><rect x="250" y="420" width="220" height="280" fill="#0b0a08"/><ellipse cx="360" cy="380" rx="60" ry="20" fill="url(#gBulb)" opacity=".4"/></g>
+        <g class="selfFace" transform="translate(360 700) scale(.95) translate(-362 -600)"></g></svg></div>
+      <div class="modes">فيديو &nbsp; <span style="color:#f2c94c">صورة</span></div><div class="shut"></div><div class="flip">⟲</div></div>
+    <div class="gal" id="sGal"><div class="psb"><span>3:41</span><span>16% ▮▯ ·ıl</span></div><div class="bar">الصور · اليوم</div>
+      <div class="ph1"><svg viewBox="0 0 600 420" style="width:314px;height:220px;position:absolute;top:55px" class="sepia"><use href="#gpWith"/></svg></div></div>
+  </div></div>
+</div></div>
+
+<!-- emergency stair door at the end of floor zero / stairwell -->
+<div class="scene" id="s_exit"><svg viewBox="0 0 720 1280"><g class="cam">
+  <rect x="-200" y="-200" width="1120" height="1700" fill="#0f0c09"/>
+  <g fill="#000" opacity=".5" filter="url(#fBlur14)"><ellipse cx="80" cy="400" rx="200" ry="300"/><ellipse cx="660" cy="600" rx="160" ry="380"/></g>
+  <rect x="210" y="300" width="300" height="760" fill="#000"/>
+  <g class="stairPeek" opacity="0"><rect x="210" y="300" width="300" height="760" fill="#1c2420"/><polygon points="210,1060 510,880 510,920 210,1100" fill="#2a332e"/><polygon points="210,900 510,720 510,760 210,940" fill="#26302b"/><polygon points="210,740 510,560 510,600 210,780" fill="#222b26"/><ellipse cx="360" cy="420" rx="120" ry="60" fill="#8fe0a8" opacity=".15" filter="url(#fBlur14)"/></g>
+  <g class="exitLeaf"><rect x="210" y="300" width="300" height="760" fill="#3c4a44"/><rect x="230" y="320" width="260" height="720" fill="none" stroke="#2c3732" stroke-width="5"/>
+    <rect x="240" y="640" width="240" height="22" rx="6" fill="#9aa39e"/><rect x="320" y="420" width="80" height="120" fill="#1a201d"/></g>
+  <rect x="190" y="280" width="20" height="800" fill="#2a2a26"/><rect x="510" y="280" width="20" height="800" fill="#2a2a26"/>
+  <rect x="270" y="200" width="180" height="60" rx="6" fill="#0d3a22"/><text x="360" y="242" text-anchor="middle" font-family="Tajawal" font-weight="800" font-size="32" fill="#9ff0bd">مخرج طوارئ</text>
+  <ellipse cx="360" cy="230" rx="200" ry="80" fill="#5fd38c" opacity=".12" filter="url(#fBlur14)"/>
+  <rect x="-200" y="1060" width="1120" height="400" fill="#2b261e"/>
+  <g class="nv"></g>
+</g></svg></div>
+
+<div class="scene" id="s_stairs"><svg viewBox="0 0 720 1280"><g class="cam">
+  <rect x="-300" y="-600" width="1320" height="2600" fill="#141a17"/>
+  <g class="flights"></g>
+  <g class="nv"></g>
+  <ellipse cx="360" cy="200" rx="260" ry="120" fill="#8fe0a8" opacity=".1" filter="url(#fBlur14)"/>
+</g></svg></div>
+
+<!-- fist on the apartment door (outside) -->
+<div class="scene" id="s_knockOut"><svg viewBox="0 0 720 1280"><g class="cam">
+  <rect x="-200" y="-200" width="1120" height="1700" fill="#0b0f12"/>
+  <rect x="60" y="0" width="600" height="1280" fill="url(#gWood)"/><rect x="100" y="60" width="520" height="500" fill="none" stroke="#0e0b08" stroke-width="6"/>
+  <circle cx="360" cy="300" r="10" fill="#c9b27a"/><text x="360" y="380" text-anchor="middle" font-family="IBM Plex Mono" font-size="40" fill="#b8a06a" direction="ltr">301</text>
+  <g class="fist"><path d="M900 900 C 760 860 640 820 560 780 C 520 760 500 720 520 690 C 540 660 600 650 640 660 C 700 680 780 720 900 760Z" fill="#5f4535"/><path d="M900 760 L 1000 760 L 1000 1100 L 760 1100 C 780 980 840 860 900 800Z" fill="url(#gHood)"/></g>
+</g></svg></div>
+
+<!-- the living room (fixed layout): door with locks on the right, chair on the left, lamp -->
+<div class="scene" id="s_living"><svg viewBox="0 0 720 1280"><g class="cam">
+  <rect x="-300" y="-200" width="1320" height="1700" fill="#1a1612"/>
+  <rect x="-300" y="-200" width="1320" height="1000" fill="#211b15"/>
+  <rect x="-300" y="800" width="1320" height="700" fill="#15110d"/>
+  <rect x="-300" y="790" width="1320" height="14" fill="#2a2219"/>
+  <!-- window (night) -->
+  <rect x="-200" y="260" width="200" height="300" fill="#0e1823"/><line x1="-100" y1="260" x2="-100" y2="560" stroke="#211b15" stroke-width="8"/>
+  <!-- the front door (right) -->
+  <g class="frontDoor"><rect x="470" y="300" width="230" height="500" fill="#2a2016" stroke="#0e0b08" stroke-width="6"/>
+    <rect x="490" y="320" width="190" height="200" fill="none" stroke="#1a130c" stroke-width="4"/>
+    <circle cx="585" cy="400" r="7" fill="#c9b27a"/>
+    <rect class="lock1" x="490" y="520" width="26" height="14" rx="3" fill="#b8a06a"/><rect class="lock2" x="490" y="580" width="26" height="14" rx="3" fill="#b8a06a"/>
+    <path class="chain" d="M500 470 C 520 490 540 490 560 470" stroke="#9a9a90" stroke-width="4" fill="none"/>
+    <circle cx="500" cy="560" r="10" fill="#c9b27a"/></g>
+  <rect x="470" y="796" width="230" height="6" fill="#e7b25e" opacity=".5" class="underDoor"/>
+  <ellipse class="doorShadow" cx="585" cy="812" rx="70" ry="10" fill="#000" opacity="0"/>
+  <!-- lamp + chair (left) -->
+  <rect x="40" y="520" width="12" height="280" fill="#2b241c"/><path d="M10 520 L 82 520 L 66 460 L 26 460Z" fill="#d9b27a"/>
+  <ellipse class="lampG" cx="46" cy="520" rx="320" ry="300" fill="url(#gBulb)" opacity=".4"/>
+  <path d="M80 820 L 80 640 C 80 610 100 600 130 600 L 290 600 C 320 600 330 610 330 640 L 330 820Z" fill="#3a2a22"/><rect x="70" y="700" width="270" height="70" rx="20" fill="#4a362b"/>
+  <g class="dad"></g>
+  <g class="nav"></g>
+  <rect class="dim" x="-300" y="-200" width="1320" height="1700" fill="#000" opacity="0"/>
+</g></svg></div>
+
+<!-- door locks close-up -->
+<div class="scene" id="s_locks"><svg viewBox="0 0 720 1280"><g class="cam">
+  <rect x="-200" y="-200" width="1120" height="1700" fill="#1a130c"/>
+  <rect x="300" y="-200" width="620" height="1700" fill="url(#gWood)"/><rect x="290" y="-200" width="14" height="1700" fill="#0e0b08"/>
+  <g class="bolt1"><rect x="320" y="380" width="140" height="80" rx="10" fill="#b8a06a"/><rect class="b1" x="230" y="405" width="100" height="30" rx="4" fill="#d4c08a"/><circle cx="420" cy="420" r="20" fill="#8e7a4a"/></g>
+  <g class="bolt2"><rect x="320" y="700" width="140" height="80" rx="10" fill="#b8a06a"/><rect class="b2" x="230" y="725" width="100" height="30" rx="4" fill="#d4c08a"/><circle cx="420" cy="740" r="20" fill="#8e7a4a"/></g>
+  <g class="lhand"><path d="M900 520 C 760 500 640 470 560 440 C 520 425 470 430 460 450 C 452 470 480 480 520 480 C 600 500 760 560 900 600Z" fill="#6b4b38"/><path d="M900 470 L 1000 470 L 1000 700 L 880 700 C 880 620 880 540 900 500Z" fill="#e9e4da"/></g>
+</g></svg></div>
+
+<!-- father: face close-up (his own design, consistent) -->
+<div class="scene" id="s_dad"><svg viewBox="0 0 720 1280"><rect width="720" height="1280" fill="#100c09"/>
+  <g class="dbg" opacity=".5" filter="url(#fDof)"><rect x="-200" y="-200" width="1120" height="1700" fill="#211b15"/><ellipse cx="80" cy="500" rx="300" ry="300" fill="url(#gBulb)" opacity=".5"/></g>
+  <g class="cam"></g>
+  <rect class="halfShade" width="720" height="1280" fill="url(#gHalf)" opacity="0"/>
+  <defs><linearGradient id="gHalf" x1="0" x2="1"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset=".45" stop-color="#000" stop-opacity=".1"/><stop offset=".62" stop-color="#000" stop-opacity=".85"/></linearGradient></defs>
+</svg></div>
+
+<!-- wall clock (four hours) -->
+<div class="scene" id="s_clock"><svg viewBox="0 0 720 1280"><g class="cam">
+  <rect x="-200" y="-200" width="1120" height="1700" fill="#1b1611"/>
+  <circle cx="360" cy="560" r="250" fill="#e6dccb" stroke="#3a2b1b" stroke-width="22"/>
+  <g class="ticks"></g>
+  <g class="clockFace" text-anchor="middle" font-size="44" fill="#2a2016" font-weight="700"><text x="360" y="365">12</text><text x="560" y="575">3</text><text x="360" y="790">6</text><text x="160" y="575">9</text></g>
+  <line class="hh" x1="360" y1="560" x2="360" y2="420" stroke="#1a130c" stroke-width="14" stroke-linecap="round"/>
+  <line class="mh" x1="360" y1="560" x2="360" y2="350" stroke="#1a130c" stroke-width="8" stroke-linecap="round"/>
+  <circle cx="360" cy="560" r="14" fill="#1a130c"/>
+  <rect class="dayLight" x="-200" y="-200" width="1120" height="1700" fill="#cfe0ef" opacity="0" style="mix-blend-mode:screen"/>
+</g></svg></div>
+
+<!-- the elevator opening on floor zero's return (from outside) -->
+<div class="scene" id="s_elevOut"><svg viewBox="0 0 720 1280"><g class="cam">
+  <rect x="-200" y="-200" width="1120" height="1700" fill="#15191c"/>
+  <rect x="-200" y="-200" width="1120" height="1700" fill="#2a251c" opacity=".35"/>
+  <rect x="130" y="200" width="460" height="900" fill="#262b2f"/>
+  <!-- interior -->
+  <g class="inside"><rect x="160" y="260" width="400" height="840" fill="#3a4147"/><rect x="160" y="260" width="400" height="30" fill="#e3eef2" opacity=".75"/>
+    <polygon points="160,290 560,290 560,1100 160,1100" fill="url(#gWall)" opacity=".35"/>
+    <rect x="160" y="1000" width="400" height="100" fill="#1d1f21"/>
+    <rect class="backDark" x="160" y="290" width="400" height="720" fill="#000" opacity=".55"/>
+    <g class="kid2"></g><g class="kid1"></g></g>
+  <g class="eL"><rect x="160" y="260" width="200" height="840" fill="#4a5157"/><rect x="168" y="270" width="184" height="820" fill="#535a60"/></g>
+  <g class="eR"><rect x="360" y="260" width="200" height="840" fill="#474e54"/><rect x="368" y="270" width="184" height="820" fill="#50575d"/></g>
+  <rect x="300" y="140" width="120" height="50" rx="4" fill="#060606"/><text x="360" y="180" text-anchor="middle" font-family="IBM Plex Mono" font-size="44" fill="#d0362a" direction="ltr">0</text>
+  <rect x="-200" y="1100" width="1120" height="400" fill="#1a1612"/>
+</g></svg></div>
+
+<!-- final composite: Nawaf inside / father in the middle / the closed door -->
+<div class="scene" id="s_final"><svg viewBox="0 0 720 1280"><g class="cam">
+  <rect x="-300" y="-200" width="1320" height="1700" fill="#120e0b"/>
+  <rect x="-300" y="800" width="1320" height="700" fill="#0d0a08"/>
+  <rect x="420" y="300" width="230" height="500" fill="#2a2016" stroke="#0e0b08" stroke-width="6"/><circle cx="535" cy="560" r="8" fill="#c9b27a"/>
+  <rect x="420" y="796" width="230" height="6" fill="#e7b25e" opacity=".6"/>
+  <g class="fShadow" filter="url(#fBlur6)"><rect x="500" y="795" width="26" height="8" fill="#000"/><rect x="545" y="795" width="26" height="8" fill="#000"/></g>
+  <ellipse cx="535" cy="830" rx="140" ry="30" fill="#e7b25e" opacity=".12" filter="url(#fBlur14)"/>
+  <ellipse cx="80" cy="500" rx="300" ry="300" fill="url(#gBulb)" opacity=".3"/>
+  <g class="fN"></g><g class="fD"></g>
+</g></svg></div>
+
+<div id="fbVig"></div><div id="fbTag">قبل سبع سنوات</div>
+<div id="black"></div>
+<div id="ask"><div class="qq">مين نواف الحقيقي؟</div><div class="op a">نواف اللي داخل البيت 🏠</div><div class="op b">نواف اللي خلف الباب 🚪</div><div class="cm">اكتب اختيارك بالتعليقات</div></div>
+<div id="title"><div class="a">الساكن الأخير</div><div class="b">الحلقة الخامسة — أبوي يعرف</div></div>
+<canvas id="grain" width="420" height="700"></canvas>
+<div id="vig"></div>
+<div id="caps"></div>
+</div>
+
+<script src="timeline.js"></script>
+<script>
+const $=s=>document.querySelector(s), $$=s=>document.querySelectorAll(s);
+const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const ramp=(t,a,b)=>clamp((t-a)/(b-a));
+const ease=x=>x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;
+const eo=x=>1-Math.pow(1-x,3);
+const lerp=(a,b,k)=>a+(b-a)*k;
+const A=i=>SEG[i].a, B=i=>SEG[i].b;
+const VO_END=B(88);
+const ASK_END=VO_END+5.0;
+const DURATION=ASK_END+5.2;
+function setT(el,s){if(el)el.setAttribute('transform',s)}
+function cam(el,{x=0,y=0,s=1,r=0,ox=360,oy=640}){setT(el,`translate(${ox+x} ${oy+y}) rotate(${r}) scale(${s}) translate(${-ox} ${-oy})`)}
+const flick=(t,seed=1)=>{const v=Math.sin(t*37*seed)*Math.sin(t*11.3+seed)*Math.sin(t*3.1);return v>.55?.75:(v>.4?.3:0)};
+const blink=(t,period=4.2,off=0)=>{const p=((t+off)%period);return p<.14?Math.abs(p-.07)/.07:1};
+const txt=id=>document.getElementById(id).textContent;
+
+function person({x,y,s=1,skin='#7a5a44',hair='',beard='',cloth='#d9d2c4',cloth2='#bfb7a8',extra=''}){
+  return `<g transform="translate(${x} ${y}) scale(${s})">
+    <path d="M-62 260 C -60 120 -40 92 0 90 C 40 92 60 120 62 260Z" fill="${cloth}"/>
+    <path d="M-20 92 L 0 140 L 20 92" fill="${cloth2}"/>
+    <rect x="-12" y="58" width="24" height="36" fill="${skin}" opacity=".9"/>
+    <ellipse cx="0" cy="20" rx="34" ry="44" fill="${skin}"/>${hair}
+    <ellipse cx="-12" cy="16" rx="4.5" ry="3" fill="#1a1410"/><ellipse cx="12" cy="16" rx="4.5" ry="3" fill="#1a1410"/>
+    <path d="M-17 6 Q-12 3 -7 6 M7 6 Q12 3 17 6" stroke="#1a1410" stroke-width="2.4" fill="none"/>
+    <path d="M1 22 L -3 34 L 4 34" stroke="#3a281e" stroke-width="2" fill="none"/>
+    <path d="M-9 46 Q0 49 9 46" stroke="#3a2418" stroke-width="2.6" fill="none"/>${beard}${extra}</g>`;
+}
+const HAIR_SHORT=`<path d="M-36 10 C -38 -34 -12 -48 2 -47 C 24 -46 38 -30 36 10 C 30 -14 18 -20 0 -20 C -18 -20 -30 -14 -36 10Z" fill="#141210"/>`;
+const HAIR_BALD=`<path d="M-35 14 C -36 -6 -32 -18 -26 -22 C -30 -6 -32 6 -35 14Z M35 14 C 36 -6 32 -18 26 -22 C 30 -6 32 6 35 14Z" fill="#9a9a9a"/>`;
+const HAIR_FATHER=`<path d="M-36 8 C -38 -34 -12 -48 2 -47 C 24 -46 38 -30 36 8 C 30 -14 18 -22 0 -22 C -18 -22 -30 -14 -36 8Z" fill="#1d1a17"/><path d="M-36 8 C -36 -4 -34 -10 -31 -14 L -29 4Z M36 8 C 36 -4 34 -10 31 -14 L 29 4Z" fill="#8f8a84"/>`;
+const BEARD_GREY=`<path d="M-30 30 C -26 70 26 70 30 30 C 18 50 -18 50 -30 30Z" fill="#cfcac2"/><path d="M-12 40 Q0 37 12 40" stroke="#cfcac2" stroke-width="5" fill="none"/>`;
+const BEARD_FATHER=`<path d="M-30 30 C -26 66 26 66 30 30 C 18 48 -18 48 -30 30Z" fill="#221c18"/><path d="M-13 39 Q0 35 13 39" stroke="#221c18" stroke-width="5" fill="none"/>`;
+
+(function buildPhoto(){
+  // the building behind them (same facade as episode 1 exterior)
+  let b=`<rect width="600" height="420" fill="#c9c2b2"/><rect x="0" y="0" width="600" height="220" fill="#ded7c6"/>
+   <rect x="90" y="20" width="420" height="300" fill="#8d877a"/>`;
+  for(let r=0;r<3;r++)for(let c=0;c<3;c++)b+=`<rect x="${130+c*135}" y="${40+r*85}" width="62" height="56" fill="#3f3b35"/>`;
+  b+=`<rect x="260" y="270" width="80" height="60" fill="#2c2924"/><rect x="0" y="320" width="600" height="100" fill="#a49d8d"/>`;
+  b+=person({x:110,y:170,s:1,skin:'#7a5a44',hair:HAIR_BALD,beard:BEARD_GREY,cloth:'#9c968c',cloth2:'#86817a'});          // Abu Saleh
+  b+=person({x:225,y:165,s:1,skin:'#8a6a52',hair:HAIR_SHORT,cloth:'#3b3f44',cloth2:'#2c3035'});                       // unknown young man
+  // young Nawaf (15) — derived from Nawaf's own face design
+  b+=`<g class="kid" transform="translate(470 196) scale(.205) translate(-362 -580) scale(1 .97)">${document.getElementById('tFace').textContent}</g>`;
+  $('#gpBase').innerHTML=b;
+  // the father (only in one version) + his hand on Nawaf's shoulder
+  $('#gpFather').innerHTML=person({x:360,y:150,s:1.06,skin:'#7a5844',hair:HAIR_FATHER,beard:BEARD_FATHER,cloth:'#ece7dc',cloth2:'#d6d0c3'})+
+    `<path d="M396 260 C 420 262 440 268 452 276 L 448 290 C 432 284 414 280 394 280Z" fill="#ece7dc"/><ellipse cx="458" cy="284" rx="14" ry="9" fill="#6b4b38"/>`;
+})();
+$$('#gpBase .blueAmb,#gpBase .phoneLight').forEach(e=>e.setAttribute('opacity',0));
+
+// ---------- character sheets ----------
+// Father (≈50): Nawaf's face construction + grey temples, beard, moustache, forehead lines, white thobe collar.
+const FATHER_FACE=txt('tFace').replaceAll('url(#gHood)','#e6e1d6').replace('<!-- light layers -->',
+ `<path d="M226 566 C 222 524 234 492 252 476 C 250 510 254 540 258 566Z" fill="#6f6a64" opacity=".85"/><path d="M498 562 C 502 520 490 490 474 476 C 476 510 472 540 468 562Z" fill="#6f6a64" opacity=".85"/>
+  <path d="M258 590 C 254 712 300 806 362 812 C 424 806 470 712 466 590 C 452 676 426 724 398 736 Q362 746 326 736 C 298 724 272 676 258 590Z" fill="#2a2420"/><path d="M300 760 L 306 790 M340 770 L 342 800 M384 770 L 382 800 M424 760 L 418 790" stroke="#77716a" stroke-width="3" opacity=".7"/>
+  <path d="M318 694 Q362 676 406 694 Q362 704 318 694Z" fill="#1d1916"/>
+  <path d="M322 470 Q362 462 402 470 M330 490 Q362 484 394 490" stroke="#4a3428" stroke-width="3" fill="none" opacity=".55"/>
+  <path d="M300 880 C 330 940 394 940 424 880" stroke="#cfc9bc" stroke-width="6" fill="none"/>
+  <!-- light layers -->`);
+// Father full body: long white thobe, same head construction + beard
+const FATHER_BODY=txt('tBody').replace('fill="url(#gHood)"/>','fill="#e9e4da"/><path d="M-66 -240 L 66 -240 L 74 -8 L -74 -8Z" fill="#e2ddd2"/>')
+  .replaceAll('fill="#1a2128"','fill="#e2ddd2"').replace('<g class="bback"',
+  `<path d="M-40 -540 C -38 -488 38 -488 40 -540 C 30 -504 -30 -504 -40 -540Z" fill="#1d1916"/><path d="M-50 -556 C -52 -575 -48 -585 -44 -590 L -42 -556Z M50 -556 C 52 -575 48 -585 44 -590 L 42 -556Z" fill="#8f8a84"/></g><g class="bback"`)
+  .replace('<g class="bface">','<g class="bface"><g>');
+
+function inst(html,target){target.insertAdjacentHTML('beforeend',html)}
+// populate
+inst(txt('tFace'),$('#s_face .cam'));inst(txt('tRoom'),$('#s_face .bgRoom'));
+inst(txt('tFace'),$('#s_pcl .selfFace'));$$('#s_pcl .selfFace .blueAmb').forEach(e=>e.setAttribute('opacity',.15));
+inst(FATHER_FACE,$('#s_dad .cam'));
+$('#s_zero .zNav').innerHTML='<g class="nb"></g>';inst(txt('tBody'),$('#s_zero .zNav .nb'));
+$('#s_zero .zNav .nb').insertAdjacentHTML('beforeend','<g class="ghostHand"><path d="M-178 -760 L -140 -770 L -64 -504 L -104 -484Z" fill="url(#gSleeve)"/><path d="M-112 -476 C -104 -446 -76 -424 -44 -432 C -30 -452 -48 -474 -66 -500Z" fill="#6b4b38"/></g>');
+// emergency door at the end of floor zero (green glow over the far door)
+$('#s_zero .zFar').insertAdjacentHTML('beforeend','<rect class="exitSign" x="338" y="532" width="44" height="12" fill="#2bd46b" opacity="0"/><ellipse class="exitGlow" cx="360" cy="560" rx="70" ry="40" fill="#5fd38c" opacity="0" filter="url(#fBlur6)"/>');
+$('#s_exit .nv').innerHTML='<g class="nb"></g>';inst(txt('tBody'),$('#s_exit .nb'));
+$('#s_exit .nb').insertAdjacentHTML('beforeend','<g class="ghostHand"><path d="M-178 -760 L -140 -770 L -64 -504 L -104 -484Z" fill="url(#gSleeve)"/><path d="M-112 -476 C -104 -446 -76 -424 -44 -432 C -30 -452 -48 -474 -66 -500Z" fill="#6b4b38"/></g>');
+$('#s_stairs .nv').innerHTML='<g class="nb"></g>';inst(txt('tBody'),$('#s_stairs .nb'));
+(()=>{let h='';for(let i=0;i<7;i++){const y=1300-i*320,dir=i%2?1:-1;h+=`<polygon points="${dir>0?-100:820},${y} ${dir>0?820:-100},${y-260} ${dir>0?820:-100},${y-200} ${dir>0?-100:820},${y+60}" fill="#26302b"/>`;
+  for(let k=0;k<10;k++){const x=dir>0?-100+k*92:820-k*92;h+=`<line x1="${x}" y1="${y-k*26+30}" x2="${x}" y2="${y-k*26+60}" stroke="#1a201d" stroke-width="3"/>`}
+  h+=`<line x1="${dir>0?-100:820}" y1="${y-120}" x2="${dir>0?820:-100}" y2="${y-380}" stroke="#4f5a54" stroke-width="8"/>`}$('#s_stairs .flights').innerHTML=h})();
+$('#s_living .dad').innerHTML='<g class="db"></g>';inst(FATHER_BODY,$('#s_living .db'));
+$('#s_living .nav').innerHTML='<g class="nb"></g>';inst(txt('tBody'),$('#s_living .nb'));
+$('#s_final .fN').innerHTML='<g class="nb"></g>';inst(txt('tBody'),$('#s_final .nb'));
+$('#s_final .fD').innerHTML='<g class="db"></g>';inst(FATHER_BODY,$('#s_final .db'));
+// flashback: kid (15) in the hallway; father searching
+$('#s_hall .hNav').innerHTML='<g class="nb"></g><g class="db"></g>';inst(txt('tBody'),$('#s_hall .hNav .nb'));inst(FATHER_BODY,$('#s_hall .hNav .db'));
+// the two kids in the elevator (identical)
+inst(txt('tBody'),$('#s_elevOut .kid1'));inst(txt('tBody'),$('#s_elevOut .kid2'));
+// flashback exterior: smoke + emergency lights
+$('#s_ext .x2').insertAdjacentHTML('beforeend','<rect class="fire" x="325" y="500" width="70" height="90" fill="#ff8a2a" opacity="0"/><ellipse class="fireG" cx="360" cy="545" rx="120" ry="110" fill="#ff7a1a" opacity="0" filter="url(#fBlur14)"/>');
+$('#s_ext svg').insertAdjacentHTML('beforeend',`<g class="smoke" filter="url(#fBlur14)"></g><rect class="emR" width="720" height="1280" fill="#d0362a" opacity="0" style="mix-blend-mode:screen"/><rect class="emB" width="720" height="1280" fill="#2a6ad0" opacity="0" style="mix-blend-mode:screen"/>`);
+(()=>{let h='';for(let i=0;i<9;i++)h+=`<ellipse class="puff" data-i="${i}" cx="360" cy="520" rx="50" ry="40" fill="#5a5652" opacity=".5"/>`;$('#s_ext .smoke').innerHTML=h})();
+// side profile background = floor zero; hand on shoulder & presence (as in episode 4)
+$('#s_side .bgS').innerHTML='<rect x="0" y="0" width="720" height="1280" fill="#100d0a"/><ellipse cx="560" cy="220" rx="160" ry="60" fill="url(#gBulb)" opacity=".4"/><rect x="80" y="380" width="120" height="420" fill="#2a2116"/><rect x="560" y="0" width="200" height="1280" fill="#000" opacity=".6"/>';
+$('#s_side .cam').insertAdjacentHTML('beforeend',`<g class="shadowB" opacity="0" filter="url(#fBlur14)"><ellipse cx="690" cy="440" rx="70" ry="100" fill="#000"/><rect x="620" y="520" width="160" height="700" rx="60" fill="#000"/></g>
+  <g class="shHand"><path d="M860 760 C 800 800 740 850 690 900 L 730 950 C 790 890 850 850 900 820Z" fill="#e9e4da"/>
+  <path d="M690 905 C 650 920 610 940 590 966 C 582 980 596 992 616 984 L 634 976 C 630 996 642 1006 660 998 L 676 986 C 680 1004 698 1008 712 996 C 740 970 744 940 726 916Z" fill="#6b4b38"/></g>`);
+$('#s_face svg').insertAdjacentHTML('beforeend','<rect class="blk" width="720" height="1280" fill="#000" opacity="0"/>');
+$('#s_face .bgRoom').insertAdjacentHTML('afterend','<g class="bgHome" opacity="0"><rect width="720" height="1280" fill="#211b15"/><ellipse cx="80" cy="500" rx="320" ry="300" fill="url(#gBulb)" opacity=".45" filter="url(#fDof)"/><rect x="470" y="300" width="230" height="500" fill="#2a2016" filter="url(#fDof)"/></g>');
+
+// ---------- rigs ----------
+function faceRig(root,{open=1,lookX=0,lookY=0,brow=0,mouth=0,phone=0,turn=0,breath=0}){
+  root.querySelectorAll('.lidL,.lidR').forEach(l=>l.setAttribute('height',(1-open)*50));
+  root.querySelectorAll('.irisL,.irisR').forEach(g=>setT(g,`translate(${lookX*12} ${lookY*7})`));
+  root.querySelectorAll('.browL,.browR').forEach(g=>setT(g,`translate(0 ${-brow*10})`));
+  const m=root.querySelector('.mouth');if(m)m.setAttribute('ry',mouth*10);
+  const pl=root.querySelector('.phoneLight');if(pl)pl.setAttribute('opacity',phone);
+  setT(root.querySelector('.head'),`translate(${turn*14} ${breath*3}) rotate(${turn*2} 362 600)`);
+}
+function faceBg(which,{tint=0}={}){
+  ['bgRoom','bgElev','bgZero','bgHome'].forEach(c=>{const e=$('#s_face .'+c);if(e)e.setAttribute('opacity',0)});
+  $('#s_face .'+(which==='home'?'bgHome':'bgZero')).setAttribute('opacity',1);
+  $$('#s_face .blueAmb').forEach(e=>e.setAttribute('opacity',which==='home'?.12:.32));$('#s_face .tint').setAttribute('opacity',tint);$('#s_face .redLight').setAttribute('opacity',0);$('#s_face .blk').setAttribute('opacity',0)}
+function bodyRig(g,{run=0,phase=0,back=0,lookX=0,press=0,turn=0}){
+  const sw=Math.sin(phase)*run;
+  setT(g.querySelector('.legL'),`rotate(${sw*28} -25 -250)`);setT(g.querySelector('.legR'),`rotate(${-sw*28} 25 -250)`);
+  setT(g.querySelector('.armL'),`rotate(${-sw*30} -64 -440)`);setT(g.querySelector('.armR'),`rotate(${sw*30-press*120} 64 -440)`);
+  g.querySelector('.bback').setAttribute('opacity',back);g.querySelector('.bface').setAttribute('opacity',1-back);const ht=g.querySelector('.hoodTie');if(ht)ht.setAttribute('opacity',1-back);
+  g.querySelectorAll('.bi').forEach(e=>e.setAttribute('transform',`translate(${lookX*3} 0)`));setT(g.querySelector('.bhead'),`rotate(${turn*12} 0 -500)`);
+}
+function place(g,x,y,s,bob=0){setT(g,`translate(${x} ${y-bob}) scale(${s})`)}
+function zeroFlick(t){const f=flick(t,2.3);$$('#s_zero .zL1').forEach(e=>e.setAttribute('opacity',.6-f*.55));$$('#s_zero .zL2,#s_zero .zL3').forEach(e=>e.setAttribute('opacity',.5-flick(t,3.1)*.4));
+  $('#s_zero .zB1').setAttribute('opacity',.35-f*.3);$('#s_zero .zFlick').setAttribute('opacity',f*.25);}
+function zeroCam(depth,{x=0,y=0,s=1}={}){
+  setT($('#s_zero .zFar'),`translate(360 600) scale(${(1+depth*2.2)*s}) translate(${-360+x*.4} ${-600+y*.4})`);
+  setT($('#s_zero .zMid'),`translate(360 600) scale(${(1+depth*1.4)*s}) translate(${-360+x} ${-600+y})`);
+  setT($('#s_zero .zFog'),`translate(360 600) scale(${1+depth*1.9}) translate(-360 -600)`);}
+function sideRig({talk=0,lookX=0,blinkV=1,hand=1,shadow=0}){
+  $('#s_side .sMouth').setAttribute('d',`M300 676 Q 312 ${680+talk*10} 326 676`);
+  $('#s_side .sLid').setAttribute('height',(1-blinkV)*30);setT($('#s_side .sIris'),`translate(${lookX*5} 0)`);setT($('#s_side .sHand'),'');
+  $('#s_side .shHand').setAttribute('opacity',hand);$('#s_side .shadowB').setAttribute('opacity',shadow)}
+function screen(id){['sAct','sSelf','sGal'].forEach(s=>document.getElementById(s).style.opacity=s===id?1:0)}
+function pcam(s,x=0,y=0){$('#s_pcl .pcam').style.transform=`translate(${x}px,${y}px) scale(${s})`}
+function callTimer(t){const s=80+Math.floor(t-A(2));$('#callT').textContent=`${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`}
+function squeeze(t,a){const k=(t>a?Math.sin((t-a)*3)*.5+.5:0);setT($('#s_shoulder .hand'),`translate(${-130-k*6} ${30+k*8})`)}
+let KN=[];function knockAmt(t){let a=0;for(const k of KN){const d=t-k;if(d>=0&&d<.18)a=Math.max(a,1-d/.18)}return a}
+
+// ---------- timeline ----------
+const TL=[];const S=(id,a,b,fn)=>TL.push({id,a,b,fn});
+// 0–1 — the hand on his shoulder (straight from episode 4)
+S('s_shoulder',0,A(2),(l,t)=>{squeeze(t,99);cam($('#s_shoulder .cam'),{s:1.05+l*.02,oy:800})});
+// 2 — dad still on the phone
+S('s_pcl',A(2),A(3),(l,t)=>{screen('sAct');callTimer(t);pcam(1.2+l*.05,0,80)});
+// 3–4 — "don't turn around!" — his eyes
+S('s_face',A(3),A(5),(l,t)=>{faceBg('zero',{tint:.2});cam($('#s_face .cam'),{s:lerp(1.9,2.4,ease(ramp(l,0,A(5)-A(3)))),oy:568});faceRig($('#s_face'),{open:1,lookX:.9,brow:1.1,phone:.35})});
+// 5 — frozen; trembling fingers
+S('s_hands',A(5),A(6),(l,t)=>{const tr=Math.sin(t*45)*2.4+Math.sin(t*31)*1.4;setT($('#s_hands .hl'),`translate(${tr} 0)`);setT($('#s_hands .hr'),`translate(${-tr} 0)`);cam($('#s_hands .cam'),{s:1.15,oy:850})});
+// 6–7 — fingers pressing, his breath
+S('s_shoulder',A(6),A(8),(l,t)=>{squeeze(t,A(6)+.3);cam($('#s_shoulder .cam'),{s:1.2,ox:600,oy:880})});
+// 8–9 — an idea
+S('s_face',A(8),A(10),(l,t)=>{faceBg('zero',{tint:.15});cam($('#s_face .cam'),{s:1.7,oy:568});faceRig($('#s_face'),{open:1,lookY:t>A(9)?.7:0,lookX:t>A(9)?.2:.6,brow:.6,phone:.4})});
+// 10–11 — opens the front camera, tilts the phone to see behind him
+S('s_pcl',A(10),A(12),(l,t)=>{screen('sSelf');pcam(1.15,0,40);const k=ease(ramp(t,A(11),A(12)));setT($('#s_pcl .selfFace'),`translate(${360+k*120} 700) scale(.95) translate(-362 -600)`);setT($('#s_pcl .selfBg'),`translate(${-k*60} 0)`);
+  faceRig($('#s_pcl .selfFace').parentNode,{open:1,lookX:-.6,brow:1})});
+// 12–15 — …nobody behind him on the screen (no hand either)
+S('s_pcl',A(12),A(16),(l,t)=>{screen('sSelf');const k=ease(ramp(t,A(12),A(15)));pcam(lerp(1.15,1.9,k),0,lerp(40,160,k));setT($('#s_pcl .selfFace'),'translate(480 700) scale(.95) translate(-362 -600)');setT($('#s_pcl .selfBg'),'translate(-60 0)')});
+// 16 — outside: the hand is still there
+S('s_shoulder',A(16),A(17),(l,t)=>{squeeze(t,A(16));cam($('#s_shoulder .cam'),{s:1.1,ox:560,oy:860})});
+// 17–19 — dad on the phone: "listen"
+S('s_side',A(17),A(20),(l,t)=>{sideRig({blinkV:blink(t,3.1),lookX:-.3});cam($('#s_side .cam'),{s:1.1,ox:420,oy:640,x:-90,y:-60})});
+// 20–21 — the emergency stairs at the far end
+S('s_zero',A(20),A(22),(l,t)=>{zeroCam(lerp(.1,.55,ease(ramp(l,0,A(22)-A(20)))));zNav({op:0});zeroFlick(t);exitSign(1)});
+// 22–24 — walks, slowly, without turning; the hand rides on his shoulder (tracking)
+S('s_zero',A(22),A(25),(l,t)=>{const k=ease(ramp(t,A(22),A(25)));zeroCam(lerp(.05,.2,k));zNav({x:360,y:lerp(1420,1300,k),s:lerp(1.4,1.25,k),back:1,run:.25,phase:t*5,hand:1});zeroFlick(t);exitSign(1)});
+// 25–28 — the whisper behind his ear
+S('s_side',A(25),A(29),(l,t)=>{sideRig({blinkV:1,lookX:.5,shadow:ramp(t,A(26),A(26)+.6)*.85});cam($('#s_side .cam'),{s:1.25+ease(ramp(l,0,4))*.12,ox:420,oy:560})});
+// 29–31 — confusion
+S('s_face',A(29),A(32),(l,t)=>{faceBg('zero',{tint:.15});cam($('#s_face .cam'),{s:1.8,oy:568});faceRig($('#s_face'),{open:1,lookX:Math.sin(t*2)*.3,lookY:.2,brow:t>A(31)?.4:.9,phone:.35})});
+// 32–33 — reaches the stair door, opens it; the hand is gone; glance at the shoulder
+S('s_exit',A(32),A(34),(l,t)=>{const o=ease(ramp(t,A(32)+.6,A(33)));setT($('#s_exit .exitLeaf'),`translate(${-o*230} 0) scale(${1-o*.1} 1)`);$('#s_exit .stairPeek').setAttribute('opacity',o);
+  const g=$('#s_exit .nb');bodyRig(g,{back:1,turn:t>A(33)+.4&&t<A(33)+1.2?-1:0});place(g,360,1240,1.15);g.querySelector('.ghostHand').setAttribute('opacity',t<A(33)?1:0);
+  cam($('#s_exit .cam'),{s:1.0+l*.03,oy:700})});
+// 34 — runs up the stairs (two angles)
+S('s_stairs',A(34),A(35),(l,t)=>{const k=ramp(t,A(34),A(35));const g=$('#s_stairs .nb');bodyRig(g,{back:1,run:1,phase:t*13});
+  place(g,lerp(-40,760,(k*2)%1),lerp(1280,1020,(k*2)%1)-(k>.5?320:0),.6,Math.abs(Math.sin(t*13))*14);cam($('#s_stairs .cam'),{oy:640,y:k*420})});
+// 35 — fist on his own door
+S('s_knockOut',A(35),A(36),(l,t)=>{const hits=[.1,.38,.66,.94];const h=hits.some(x=>l>x&&l<x+.1);setT($('#s_knockOut .fist'),`translate(${h?-18:0} ${h?-6:0})`);cam($('#s_knockOut .cam'),{s:1.05,oy:640,x:h?3:0})});
+// 36 — dad pulls him in, shuts the door… locks
+S('s_living',A(36),A(36)+2.0,(l,t)=>{living({nx:lerp(560,330,ease(ramp(l,0,.8))),dx:lerp(540,420,ease(ramp(l,0,.6))),dback:1,nback:0,doorOpen:1-ease(ramp(l,.6,1.2))});cam($('#s_living .cam'),{s:1.2,ox:500,oy:640})});
+S('s_locks',A(36)+2.0,A(37),(l,t)=>{const b1=ease(ramp(l,.1,.5)),b2=ease(ramp(l,.6,1.0));setT($('#s_locks .b1'),`translate(${-b1*90} 0)`);setT($('#s_locks .b2'),`translate(${-b2*90} 0)`);
+  setT($('#s_locks .lhand'),`translate(0 ${l<.55?0:320})`);cam($('#s_locks .cam'),{s:1.0,oy:600})});
+// 37–38 — "Dad! what's going on?!" — he avoids his eyes
+S('s_living',A(37),A(39),(l,t)=>{living({nx:300,dx:470,dback:0,nback:0,dLook:1,nTalk:1});cam($('#s_living .cam'),{s:1.35,ox:400,oy:620})});
+// 39–40 — dad sits; camera moves to his face
+S('s_living',A(39),A(40)+.6,(l,t)=>{const k=ease(ramp(l,0,1.2));living({nx:420,dx:lerp(470,200,k),dy:lerp(800,760,k),dback:0,dSit:k});cam($('#s_living .cam'),{s:lerp(1.3,1.8,ease(ramp(l,0,2))),ox:lerp(400,200,ease(ramp(l,0,2))),oy:560})});
+S('s_dad',A(40)+.6,A(41),(l,t)=>{dad({open:1,lookX:-.5,brow:.6,s:1.5})});
+// 41–43 — shows him the photo on the phone (dad is in it)
+S('s_pcl',A(41),A(43)+.6,(l,t)=>{screen('sGal');pcam(lerp(1.1,1.5,ease(ramp(l,0,2.5))),0,lerp(0,180,ease(ramp(l,0,2.5))))});
+S('s_dad',A(43)+.6,A(44),(l,t)=>{dad({open:1,lookY:.8,brow:.2,s:2.6,oy:560})});
+// 44–47 — silence… "yes, Nawaf… I lied to you" (half his face lit)
+S('s_dad',A(44),A(48),(l,t)=>{const down=ease(ramp(t,A(45),A(47)));dad({open:lerp(1,.7,down),lookY:lerp(.3,1,down),brow:-.2,s:lerp(1.4,1.6,ease(ramp(l,0,4))),half:.9,talk:t>A(46)&&t<B(47),y:down*30})});
+// 48 — FLASHBACK: the fire, seven years ago
+S('s_ext',A(48),A(49),(l,t)=>{fb(1);const k=ease(ramp(l,0,A(49)-A(48)));setT($('#s_ext .x2'),`translate(360 700) scale(${1.05+k*.1}) translate(-360 -700)`);smoke(t);
+  const e=Math.floor(t*3)%2;$('#s_ext .emR').setAttribute('opacity',e?.32:.06);$('#s_ext .emB').setAttribute('opacity',e?.06:.26)});
+// 49–50 — the boy walks toward a dark door, looks back… and is gone
+S('s_hall',A(49),A(51),(l,t)=>{fb(1);hallFB(t);const k=ease(ramp(t,A(49),A(50)+.5));const g=$('#s_hall .hNav .nb');$('#s_hall .hNav .db').setAttribute('opacity',0);
+  g.setAttribute('opacity',1-ramp(t,B(50)-.3,B(50)+.1));bodyRig(g,{back:t>A(50)?0:1,run:.3*(1-ramp(t,A(50)-.2,A(50))),phase:t*6});place(g,lerp(330,360,k),lerp(1150,880,k),lerp(.95,.52,k));
+  cam($('#s_hall .cam'),{s:1.1,oy:700})});
+// 51–53 — "me?!"
+S('s_face',A(51),A(54),(l,t)=>{fb(0);faceBg('home');cam($('#s_face .cam'),{s:1.7,oy:568});faceRig($('#s_face'),{open:1,brow:1,mouth:(t>A(52)&&t<B(52))?.4:0,lookX:-.3})});
+// 54–55 — four hours: the clock; dad searching the halls, calling
+S('s_clock',A(54),A(55),(l,t)=>{fb(1);const k=ease(ramp(t,A(54),A(56)));const mins=17+k*240;clock(3+mins/60,mins%60);$('#s_clock .dayLight').setAttribute('opacity',k*.25)});
+S('s_hall',A(55),A(56),(l,t)=>{fb(1);hallFB(t);const g=$('#s_hall .hNav .db');g.setAttribute('opacity',1);$('#s_hall .hNav .nb').setAttribute('opacity',0);
+  const k=ramp(t,A(55),A(56));bodyRig(g,{back:0,run:.5,phase:t*7,turn:Math.sin(t*2)});place(g,lerp(420,300,k),lerp(1050,960,k),.8,Math.abs(Math.sin(t*7))*6);cam($('#s_hall .cam'),{s:1.1,oy:700})});
+// 56–57 — the elevator: 0, the doors open slowly, the boy inside
+S('s_elevOut',A(56),A(58),(l,t)=>{fb(1);elevOut({open:ease(ramp(t,A(57),A(58)+.4)),k1:1,k2:0,look:0});cam($('#s_elevOut .cam'),{s:1.0,oy:640})});
+// 58–62 — "you didn't come back alone": move in; someone behind him takes shape
+S('s_elevOut',A(58),A(63),(l,t)=>{fb(1);elevOut({open:1,k1:1,k2:ease(ramp(t,A(59),A(62)))*.85,look:0});cam($('#s_elevOut .cam'),{s:lerp(1.0,1.25,ease(ramp(l,0,A(63)-A(58)))),oy:700})});
+// 63–66 — side by side, identical; they look at us at the same time
+S('s_elevOut',A(63),A(67),(l,t)=>{fb(1);elevOut({open:1,k1:1,k2:1,side:ease(ramp(t,A(63),A(63)+.9)),look:t>A(64)?1:0});cam($('#s_elevOut .cam'),{s:1.15,oy:700})});
+// 67–68 — present: "so there were two of me?"
+S('s_face',A(67),A(69),(l,t)=>{fb(0);faceBg('home');cam($('#s_face .cam'),{s:1.75,oy:568});faceRig($('#s_face'),{open:1,lookY:t>A(68)?.9:.2,brow:.9,mouth:(t>A(67)&&t<B(68))?Math.abs(Math.sin(t*14))*.35:0})});
+// 69–71 — dad nods; raises his head and looks at him
+S('s_dad',A(69),A(72),(l,t)=>{const up=ease(ramp(t,A(71),A(72)));dad({open:1,lookY:lerp(.8,-.1,up),lookX:-.3,brow:.4,s:1.6,y:Math.sin(ramp(t,A(69),A(69)+1)*Math.PI*2)*12*(t<A(70)+.6?1:0),talk:t>A(70)&&t<B(70)})});
+// 72 — he looks at his own hands
+S('s_hands',A(72),A(73),(l,t)=>{const tr=Math.sin(t*20)*1;setT($('#s_hands .hl'),`translate(${tr} 0)`);setT($('#s_hands .hr'),`translate(${-tr} 0)`);cam($('#s_hands .cam'),{s:1.05+l*.05,oy:820})});
+// 73–77 — three knocks on the apartment door (static shot from inside)
+S('s_living',A(73),A(78),(l,t)=>{living({nx:280,dx:200,dSit:1,dback:0,nback:1,doorOpen:0});KN=[A(75)-.02,A(76)-.02,A(77)-.02];const a=knockAmt(t);setT($('#s_living .frontDoor'),`translate(${a*Math.sin(t*400)*4} 0)`);
+  cam($('#s_living .cam'),{s:1.6,ox:585,oy:560})});
+// 78–79 — the handle… dad's face… his face
+S('s_living',A(78),A(79)+.8,(l,t)=>{living({nx:280,dx:200,dSit:1});setT($('#s_living .frontDoor'),'');cam($('#s_living .cam'),{s:3.2+l*.1,ox:585,oy:400})});
+S('s_dad',A(79)+.8,A(81),(l,t)=>{dad({open:1,lookX:.9,brow:.9,s:1.7})});
+S('s_face',A(81),A(82),(l,t)=>{faceBg('home');cam($('#s_face .cam'),{s:1.9,oy:568});faceRig($('#s_face'),{open:1,lookX:.8,brow:1.1})});
+// 82–84 — wide: dad slowly backs away from him
+S('s_living',A(82),A(85),(l,t)=>{const k=ease(ramp(t,A(84),B(84)));living({nx:420,dx:lerp(250,140,k),dSit:0,dback:0,nback:0,nLook:-1,dLook:-1});cam($('#s_living .cam'),{s:1.0,ox:360,oy:600})});
+// 85–end — composite + the question
+S('s_final',A(85),ASK_END,(l,t)=>{const n=$('#s_final .nb'),d=$('#s_final .db');bodyRig(n,{lookX:1});place(n,150,1180,.95);bodyRig(d,{lookX:-1});place(d,330,1130,.85);
+  $('#s_final .fShadow').setAttribute('opacity',.7+.3*Math.sin(t*1.3));cam($('#s_final .cam'),{s:1.0+ease(ramp(l,0,8))*.05,oy:700})});
+
+// ---------- scene helpers ----------
+function zNav({x=360,y=1250,s=1.1,back=1,op=1,run=0,phase=0,hand=0}){const g=$('#s_zero .zNav .nb');g.setAttribute('opacity',op);bodyRig(g,{back,run,phase});place(g,x,y,s,Math.abs(Math.sin(phase))*run*8);g.querySelector('.ghostHand').setAttribute('opacity',hand)}
+function exitSign(on){$('#s_zero .exitSign').setAttribute('opacity',on);$('#s_zero .exitGlow').setAttribute('opacity',on*.6)}
+function living({nx=330,dx=470,dy=800,dback=0,nback=0,doorOpen=0,dSit=0,dLook=0,nLook=0,nTalk=0}){
+  const n=$('#s_living .nb'),d=$('#s_living .db');bodyRig(n,{back:nback,lookX:nLook});place(n,nx,820,.62);bodyRig(d,{back:dback,lookX:dLook});
+  place(d,dx,dy+dSit*-10,.66*(1-dSit*.05));setT(d.querySelector('.legL'),dSit?'rotate(-70 -25 -250) scale(1 .6)':'');setT(d.querySelector('.legR'),dSit?'rotate(-70 25 -250) scale(1 .6)':'');
+  $('#s_living .frontDoor').setAttribute('opacity',1-doorOpen*.9);$('#s_living .underDoor').setAttribute('opacity',.5)}
+function dad({open=1,lookX=0,lookY=0,brow=0,s=1.5,oy=580,half=0,talk=false,y=0}){faceRig($('#s_dad'),{open,lookX,lookY,brow,mouth:talk?Math.abs(Math.sin(CUR*13))*.35:0});
+  $$('#s_dad .blueAmb').forEach(e=>e.setAttribute('opacity',.12));cam($('#s_dad .cam'),{s,oy,y});$('#s_dad .halfShade').setAttribute('opacity',half)}
+function fb(on){$('#fbVig').style.opacity=on;$('#fbTag').style.opacity=0;$$('#s_ext svg,#s_hall svg,#s_clock svg,#s_elevOut svg').forEach(e=>e.classList.toggle('fb',!!on))}
+function smoke(t){$$('#s_ext .puff').forEach(p=>{const i=+p.dataset.i;const ph=((t*.25+i/9)%1);p.setAttribute('cy',520-ph*520);p.setAttribute('cx',360+Math.sin(ph*6+i)*40+ph*60);p.setAttribute('rx',40+ph*140);p.setAttribute('ry',30+ph*90);p.setAttribute('opacity',(1-ph)*.85)});const f=.55+.45*Math.abs(Math.sin(t*9)*Math.sin(t*3.3));$('#s_ext .fire').setAttribute('opacity',f);$('#s_ext .fireG').setAttribute('opacity',f*.7)}
+function hallFB(t){setT($('#s_hall .hDoorL'),'translate(-56 0)');setT($('#s_hall .hDoorR'),'translate(56 0)');$('#s_hall .hNum').textContent='0';$('#s_hall .hNum').setAttribute('fill','#d0362a');$('#s_hall .hLamp').setAttribute('opacity',.35-flick(t,2)*.3)}
+function clock(h,m){setT($('#s_clock .hh'),`rotate(${(h%12)*30+m*.5} 360 560)`);setT($('#s_clock .mh'),`rotate(${m*6} 360 560)`)}
+function elevOut({open=0,k1=1,k2=0,side=0,look=0}){setT($('#s_elevOut .eL'),`translate(${-open*190} 0)`);setT($('#s_elevOut .eR'),`translate(${open*190} 0)`);
+  const a=$('#s_elevOut .kid1'),b=$('#s_elevOut .kid2');bodyRig(a,{lookX:look?0:-.3});bodyRig(b,{lookX:look?0:.3});
+  place(a,lerp(360,290,side),1070,.95);place(b,lerp(360,430,side),lerp(1040,1070,side),lerp(.88,.95,side));b.setAttribute('opacity',k2);$('#s_elevOut .backDark').setAttribute('opacity',.55-k2*.25);
+  setT(a.querySelector('.bhead'),`rotate(${look?0:-6} 0 -500)`);setT(b.querySelector('.bhead'),`rotate(${look?0:6} 0 -500)`)}
+// ticks on the clock
+(()=>{let h='';for(let i=0;i<60;i++){const a=i*6*Math.PI/180,r1=i%5?225:210;h+=`<line x1="${360+Math.sin(a)*r1}" y1="${560-Math.cos(a)*r1}" x2="${360+Math.sin(a)*238}" y2="${560-Math.cos(a)*238}" stroke="#2a2016" stroke-width="${i%5?2:5}"/>`}$('#s_clock .ticks').innerHTML=h})();
+
+// ---------- captions ----------
+const HL={1:'r',15:'r',28:'y',30:'y',50:'r',57:'y',59:'r',66:'y',68:'r',72:'y',75:'y',76:'y',77:'y',80:'r',81:'r'};
+const POP=new Set([15,50,59,68]);
+const CAPS=[];
+SEG.forEach((s,i)=>{const words=s.text.split(' ');const cls=HL[i]||'';
+  const wrap=x=>cls?`<span class="${cls}">${x}</span>`:(x.startsWith('«')||x.endsWith('»')?`<span class="q">${x}</span>`:x);
+  const nextA=i+1<SEG.length?SEG[i+1].a:s.b+1.2;const end=Math.min(nextA-.05,s.b+.55);
+  if(words.length>6){let cut=words.findIndex(w=>w.endsWith('،')||w.endsWith('…')||w.endsWith(':')||w.endsWith('!'))+1;if(cut<=0||cut>=words.length)cut=Math.ceil(words.length/2);
+    const p1=words.slice(0,cut).join(' '),p2=words.slice(cut).join(' ');const mid=s.a+(s.b-s.a)*(p1.length/(p1.length+p2.length));
+    CAPS.push([s.a,mid,wrap(p1),i]);CAPS.push([mid,end,wrap(p2),i]);}else CAPS.push([s.a,end,wrap(s.text),i]);});
+let lastCap=-1;
+function caps(t){let k=-1;for(let j=0;j<CAPS.length;j++){if(t>=CAPS[j][0]&&t<CAPS[j][1])k=j}
+  const el=$('#caps');if(k!==lastCap){el.innerHTML=k>=0?CAPS[k][2]:'';lastCap=k}
+  if(k>=0){const e=eo(ramp(t,CAPS[k][0],CAPS[k][0]+.22));const pop=POP.has(CAPS[k][3]);el.style.opacity=e;el.style.transform=`scale(${pop?lerp(1.25,1.08,e):(.92+.08*e)})`}else el.style.opacity=0}
+
+const gc=$('#grain').getContext('2d');const NF=[];
+(()=>{let s=53;const r=()=>{s=(s*16807)%2147483647;return s/2147483647};for(let f=0;f<6;f++){const im=gc.createImageData(420,700);for(let i=0;i<im.data.length;i+=4){const v=r()*255|0;im.data[i]=im.data[i+1]=im.data[i+2]=v;im.data[i+3]=255}NF.push(im)}})();
+$('#grain').style.width='840px';$('#grain').style.height='1400px';
+
+let CUR=0;
+function seek(t){CUR=t;
+  let active=null;for(const s of TL){if(t>=s.a&&t<s.b)active=s}
+  $$('.scene').forEach(e=>e.style.opacity=0);fb(0);
+  if(active){document.getElementById(active.id).style.opacity=1;
+    if(active.id==='s_zero')exitSign(0);
+    if(active.id==='s_shoulder')setT($('#s_shoulder .hand'),'translate(-130 30)');
+    active.fn(t-active.a,t);}
+  $('#fbTag').style.opacity=(t>A(48)&&t<A(48)+2.2)?Math.min(ramp(t,A(48),A(48)+.4),1-ramp(t,A(48)+1.8,A(48)+2.2)):0;
+  const q=$('#ask'),fade=1-ramp(t,ASK_END-.4,ASK_END);
+  q.querySelector('.qq').style.opacity=ramp(t,A(85)+.3,A(85)+1.0)*fade;
+  q.querySelector('.op.a').style.opacity=ramp(t,A(87),A(87)+.5)*fade;q.querySelector('.op.a').style.transform=`translateY(${(1-eo(ramp(t,A(87),A(87)+.5)))*16}px)`;
+  q.querySelector('.op.b').style.opacity=ramp(t,A(88),A(88)+.5)*fade;q.querySelector('.op.b').style.transform=`translateY(${(1-eo(ramp(t,A(88),A(88)+.5)))*16}px)`;
+  q.querySelector('.cm').style.opacity=ramp(t,VO_END+.8,VO_END+1.4)*fade;
+  const blk=t>=ASK_END;$('#black').style.opacity=blk?1:0;
+  $('#title .a').style.opacity=Math.min(ramp(t,ASK_END+.8,ASK_END+1.5),1-ramp(t,DURATION-.7,DURATION-.1));
+  $('#title .b').style.opacity=Math.min(ramp(t,ASK_END+2.0,ASK_END+2.7),1-ramp(t,DURATION-.7,DURATION-.1));
+  caps(t);$('#caps').style.visibility=(blk||t>=A(85))?'hidden':'visible';
+  const f=Math.floor(t*30)%6;gc.putImageData(NF[f],0,0);$('#grain').style.transform=`translate(${(f*37)%60}px,${(f*53)%60}px)`;
+}
+window.seek=seek;window.DURATION=DURATION;
+if(!location.search.includes('render')){let t0=null;const loop=ts=>{if(t0===null)t0=ts;seek(((ts-t0)/1000)%DURATION);requestAnimationFrame(loop)};document.fonts.ready.then(()=>requestAnimationFrame(loop));}
+else seek(0);
+</script>
+</body>
+</html>
