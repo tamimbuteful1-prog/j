@@ -1,0 +1,425 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>الساكن الأخير 06</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@400;600;800;900&family=Tajawal:wght@300;400;500;700;800&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:#000;width:720px;height:1280px;overflow:hidden}
+  #stage{position:relative;width:720px;height:1280px;overflow:hidden;background:#000}
+  .scene{position:absolute;inset:0;opacity:0}
+  .scene>svg{position:absolute;inset:0;width:720px;height:1280px;overflow:hidden}
+  .vhs{filter:grayscale(.85) sepia(.3) contrast(1.15) brightness(.95) blur(.6px)}
+  .cctv{filter:grayscale(1) sepia(.35) hue-rotate(55deg) saturate(.9) contrast(1.15)}
+  #caps{position:absolute;left:34px;right:34px;bottom:250px;text-align:center;font-family:'Noto Kufi Arabic',sans-serif;font-weight:800;font-size:42px;line-height:1.55;color:#fff;text-shadow:0 3px 10px rgba(0,0,0,.95),0 0 26px rgba(0,0,0,.85)}
+  #caps .y{color:#f0d58c} #caps .r{color:#d0473d} #caps .q{color:#f4ead4;font-weight:600}
+  #grain{position:absolute;inset:-60px;opacity:.06;mix-blend-mode:screen;pointer-events:none}
+  #vig{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 85% 70% at center,transparent 45%,rgba(0,0,0,.78) 100%),linear-gradient(to top,rgba(0,0,0,.55) 0,transparent 380px)}
+  #black{position:absolute;inset:0;background:#000;opacity:0}
+  #title{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:'Noto Kufi Arabic'}
+  #title .a{font-size:74px;font-weight:900;color:#e8e8e8;opacity:0}
+  #title .b{font-size:32px;font-weight:600;color:#8a8a8a;margin-top:26px;opacity:0}
+  #ask{position:absolute;left:0;right:0;top:200px;display:flex;flex-direction:column;align-items:center;gap:24px;font-family:'Noto Kufi Arabic';pointer-events:none}
+  #ask .qq{font-size:70px;font-weight:900;color:#f2f2f2;text-shadow:0 0 30px #000,0 4px 12px #000;opacity:0}
+  #ask .op{width:560px;padding:18px 24px;border:2px solid rgba(240,213,140,.55);border-radius:18px;background:rgba(8,10,12,.75);color:#f4ead4;font-size:38px;font-weight:800;text-align:center;opacity:0;box-shadow:0 10px 40px rgba(0,0,0,.6)}
+  #ask .op.b{border-color:rgba(208,71,61,.6)}
+  #ask .cm{font-family:'Tajawal';font-size:30px;font-weight:700;color:#c9d1d5;opacity:0;margin-top:6px}
+  .osd{font-family:'IBM Plex Mono',monospace;fill:#e6f0e6}
+</style>
+</head>
+<body>
+<div id="stage">
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <radialGradient id="gBulb" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#ffd58a" stop-opacity=".9"/><stop offset=".35" stop-color="#e2a64e" stop-opacity=".35"/><stop offset="1" stop-color="#e2a64e" stop-opacity="0"/></radialGradient>
+    <radialGradient id="gSpill" cx="50%" cy="0%" r="100%"><stop offset="0" stop-color="#f3c068" stop-opacity=".75"/><stop offset=".5" stop-color="#b9873d" stop-opacity=".18"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>
+    <radialGradient id="gPhone" cx="50%" cy="100%" r="80%"><stop offset="0" stop-color="#cfe3f5" stop-opacity=".75"/><stop offset=".55" stop-color="#7fa6c8" stop-opacity=".22"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>
+    <linearGradient id="gWall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0b1015"/><stop offset="1" stop-color="#151c21"/></linearGradient>
+    <linearGradient id="gSideL" x1="0" x2="1"><stop offset="0" stop-color="#06090c"/><stop offset="1" stop-color="#10161b"/></linearGradient>
+    <linearGradient id="gSideR" x1="1" x2="0"><stop offset="0" stop-color="#070a0d"/><stop offset="1" stop-color="#11171c"/></linearGradient>
+    <linearGradient id="gFloor" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#16140f"/><stop offset="1" stop-color="#050505"/></linearGradient>
+    <linearGradient id="gWood" x1="0" x2="1"><stop offset="0" stop-color="#18130e"/><stop offset=".5" stop-color="#231c15"/><stop offset="1" stop-color="#16110c"/></linearGradient>
+    <linearGradient id="gHood" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1f272e"/><stop offset="1" stop-color="#0d1115"/></linearGradient>
+    <linearGradient id="gSkin" x1="0" x2="1"><stop offset="0" stop-color="#4a3428"/><stop offset=".55" stop-color="#7a5944"/><stop offset="1" stop-color="#8d6a52"/></linearGradient>
+    <radialGradient id="gLampFloor" cx="70%" cy="80%" r="75%"><stop offset="0" stop-color="#e7b25e" stop-opacity=".55"/><stop offset=".6" stop-color="#9c7339" stop-opacity=".18"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>
+    <linearGradient id="gMoon" x1="1" x2="0"><stop offset="0" stop-color="#5a7fa6" stop-opacity=".45"/><stop offset="1" stop-color="#5a7fa6" stop-opacity="0"/></linearGradient>
+    <linearGradient id="gSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#03060a"/><stop offset=".6" stop-color="#0b1621"/><stop offset="1" stop-color="#1a2532"/></linearGradient>
+    <linearGradient id="gCone" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffcf7a" stop-opacity=".35"/><stop offset="1" stop-color="#ffcf7a" stop-opacity="0"/></linearGradient>
+    <filter id="fBlur6"><feGaussianBlur stdDeviation="6"/></filter>
+    <filter id="fBlur14"><feGaussianBlur stdDeviation="14"/></filter>
+    <filter id="fBlur3"><feGaussianBlur stdDeviation="3"/></filter>
+    <filter id="fDof"><feGaussianBlur stdDeviation="5"/></filter>
+    <clipPath id="eyeL"><path d="M276 572 Q305 548 336 570 Q306 586 276 572Z"/></clipPath>
+    <clipPath id="eyeR"><path d="M390 570 Q420 548 450 572 Q420 586 390 570Z"/></clipPath>
+    <clipPath id="eyeP"><path d="M300 560 Q318 548 338 558 Q320 570 300 560Z"/></clipPath>
+  </defs>
+</svg>
+<svg width="0" height="0" style="position:absolute"><defs>
+  <linearGradient id="gCrt" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1c2420"/><stop offset="1" stop-color="#0a0e0c"/></linearGradient>
+  <radialGradient id="gScreenGlow" cx="50%" cy="50%" r="60%"><stop offset="0" stop-color="#a8d8b8" stop-opacity=".35"/><stop offset="1" stop-color="#a8d8b8" stop-opacity="0"/></radialGradient>
+  <pattern id="pScan" width="4" height="4" patternUnits="userSpaceOnUse"><rect width="4" height="2" fill="#000" opacity=".28"/></pattern>
+  <filter id="fSmoke"><feTurbulence type="fractalNoise" baseFrequency=".012" numOctaves="3" seed="7"/><feColorMatrix values="0 0 0 0 .55  0 0 0 0 .55  0 0 0 0 .55  0 0 0 1.4 -.45"/></filter>
+</defs></svg>
+
+<!-- every scene: <g class="cam"> with parallax layers L0 (far) · L1 · C (characters) · L2 (foreground) -->
+<div class="scene" id="s_living"><svg viewBox="0 0 720 1280"><g class="cam"><g class="L0"></g><g class="L1"></g><g class="C"></g><g class="L2"></g></g></svg></div>
+<div class="scene" id="s_face"><svg viewBox="0 0 720 1280"><g class="cam"><g class="L0"></g><g class="C"></g><g class="L2"></g></g></svg></div>
+<div class="scene" id="s_door"><svg viewBox="0 0 720 1280"><g class="cam"><g class="L0"></g><g class="L1"></g><g class="C"></g><g class="L2"></g></g></svg></div>
+<div class="scene" id="s_hall"><svg viewBox="0 0 720 1280"><g class="cam"><g class="L0"></g><g class="L1"></g><g class="C"></g><g class="L2"></g></g></svg></div>
+<div class="scene" id="s_gdoor"><svg viewBox="0 0 720 1280"><g class="cam"><g class="L0"></g><g class="L1"></g><g class="C"></g><g class="L2"></g></g></svg></div>
+<div class="scene" id="s_groom"><svg viewBox="0 0 720 1280"><g class="cam"><g class="L0"></g><g class="L1"></g><g class="C"></g><g class="L2"></g></g></svg></div>
+<div class="scene" id="s_hand"><svg viewBox="0 0 720 1280"><g class="cam"><g class="L0"></g><g class="C"></g></g></svg></div>
+<div class="scene" id="s_deck"><svg viewBox="0 0 720 1280"><g class="cam"><g class="L0"></g><g class="C"></g><g class="L2"></g></g></svg></div>
+<div class="scene" id="s_mon"><svg viewBox="0 0 720 1280"><g class="cam">
+  <rect x="-200" y="-200" width="1120" height="1700" fill="#0d0f0e"/>
+  <rect x="20" y="230" width="680" height="640" rx="40" fill="#24282a" stroke="#0a0b0b" stroke-width="8"/>
+  <rect x="58" y="268" width="604" height="530" rx="46" fill="#000"/>
+  <svg x="58" y="268" width="604" height="530" viewBox="0 0 720 632" preserveAspectRatio="xMidYMid slice"><g class="feed"></g>
+    <rect width="720" height="632" fill="url(#pScan)"/><g class="osdG"><text class="osd osdL" x="24" y="46" font-size="30">● CAM 03</text><text class="osd osdR" x="696" y="46" font-size="30" text-anchor="end">17-11-2019 03:19</text></g>
+    <rect class="feedBlank" width="720" height="632" fill="#000" opacity="0"/></svg>
+  <rect x="58" y="268" width="604" height="530" rx="46" fill="url(#gScreenGlow)" style="mix-blend-mode:screen"/>
+  <path d="M100 290 Q 360 270 620 290" stroke="#fff" stroke-opacity=".06" stroke-width="18" fill="none"/>
+  <rect x="80" y="820" width="60" height="20" rx="4" fill="#3a3f42"/><circle class="powerLed" cx="620" cy="830" r="7" fill="#4ad06a"/>
+</g></svg></div>
+<div class="scene" id="s_final"><svg viewBox="0 0 720 1280"><g class="cam"><g class="L0"></g><g class="L1"></g><g class="C"></g><g class="L2"></g></g></svg></div>
+
+<div id="black"></div>
+<div id="ask"><div class="qq">تفتحون الباب؟</div><div class="op a">نفتح ونواجهه 🚪</div><div class="op b">نقفل وننتظر 🔒</div><div class="cm">اكتب اختيارك بالتعليقات</div></div>
+<div id="title"><div class="a">الساكن الأخير</div><div class="b">الحلقة السادسة — الحارس</div></div>
+<canvas id="grain" width="420" height="700"></canvas>
+<div id="vig"></div>
+<div id="caps"></div>
+</div>
+
+<script src="timeline.js"></script>
+<script src="voice_env.js"></script>
+<script src="rig.js"></script>
+<script>
+const $=s=>document.querySelector(s), $$=s=>document.querySelectorAll(s);
+const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const ramp=(t,a,b)=>clamp((t-a)/(b-a));
+const ease=x=>x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;
+const eo=x=>1-Math.pow(1-x,3);
+const lerp=(a,b,k)=>a+(b-a)*k;
+const A=i=>SEG[i].a, B=i=>SEG[i].b;
+const VO_END=B(129), ASK_END=VO_END+5.0, DURATION=ASK_END+5.2;
+const T=(e,v)=>e&&e.setAttribute('transform',v);
+const flick=(t,seed=1)=>{const v=Math.sin(t*37*seed)*Math.sin(t*11.3+seed)*Math.sin(t*3.1);return v>.55?.75:(v>.4?.3:0)};
+let CUR=0;
+// lip sync: loudness of the recording at time t (only used while that character is speaking in-scene)
+const venv=t=>{const i=Math.floor(t*30);return VENV[i]||0};
+const inSeg=(t,list)=>list.some(([a,b])=>t>=A(a)-.02&&t<=B(b)+.02);
+const talk=(t,list)=>inSeg(t,list)?venv(t):0;
+// who speaks which quoted lines (segment index ranges, inclusive)
+const SPEAK={
+  father:[[6,6],[25,25],[74,75]],
+  nawaf:[[9,10],[43,44],[50,51],[71,72],[91,92],[97,98]],
+  guard:[[37,38],[47,49],[53,53],[57,57],[88,89],[94,95],[101,102]],
+  oldGuard:[[63,63],[66,66]], fireman:[[64,64]], double:[[118,119]],
+};
+
+// ---------------------------------------------------------------- camera with parallax
+function cam(sc,{x=0,y=0,s=1,r=0,shake=0}={}){
+  const root=$(`#${sc} .cam`);T(root,`translate(360 640) rotate(${r}) scale(${s}) translate(-360 -640)`);
+  const sx=shake?Math.sin(CUR*47)*shake:0, sy=shake?Math.cos(CUR*53)*shake:0;
+  [['L0',.55],['L1',.8],['C',1],['L2',1.25]].forEach(([k,f])=>{const g=$(`#${sc} .${k}`);if(g)T(g,`translate(${-x*f+sx} ${-y*f+sy})`)});
+}
+// ---------------------------------------------------------------- environments
+const BG={
+living:()=>`<rect x="-400" y="-300" width="1520" height="1900" fill="#211b15"/>
+  <rect x="-400" y="800" width="1520" height="800" fill="#15110d"/><rect x="-400" y="790" width="1520" height="14" fill="#2a2219"/>
+  <rect x="-260" y="250" width="220" height="320" fill="#0e1823"/><line x1="-150" y1="250" x2="-150" y2="570" stroke="#211b15" stroke-width="8"/>
+  <g class="frameW"><rect x="150" y="330" width="150" height="110" fill="#3a2b1b"/><rect x="160" y="340" width="130" height="90" fill="#6d6150" opacity=".6"/></g>`,
+livingMid:()=>`<g class="frontDoor"><rect x="470" y="290" width="240" height="510" fill="#000"/>
+    <g class="leaf"><rect x="470" y="290" width="240" height="510" fill="#2a2016" stroke="#0e0b08" stroke-width="6"/><rect x="490" y="312" width="200" height="210" fill="none" stroke="#1a130c" stroke-width="4"/>
+    <circle cx="590" cy="400" r="7" fill="#c9b27a"/><rect x="490" y="520" width="26" height="14" rx="3" fill="#b8a06a"/><rect x="490" y="580" width="26" height="14" rx="3" fill="#b8a06a"/><circle cx="500" cy="560" r="10" fill="#c9b27a"/></g></g>
+  <rect x="470" y="796" width="240" height="6" fill="#e7b25e" opacity=".55"/>
+  <rect x="20" y="520" width="12" height="280" fill="#2b241c"/><path d="M-10 520 L 62 520 L 46 460 L 6 460Z" fill="#d9b27a"/>
+  <ellipse class="lampG" cx="26" cy="520" rx="340" ry="320" fill="url(#gBulb)" opacity=".42"/>
+  <path d="M60 820 L 60 640 C 60 610 80 600 110 600 L 270 600 C 300 600 310 610 310 640 L 310 820Z" fill="#3a2a22"/><rect x="50" y="700" width="270" height="70" rx="20" fill="#4a362b"/>`,
+doorClose:()=>`<rect x="-300" y="-300" width="1320" height="1900" fill="#1a140f"/>
+  <rect x="60" y="-100" width="600" height="1260" fill="#000"/>
+  <g class="leaf"><rect x="60" y="-100" width="600" height="1260" fill="url(#gWood)" stroke="#0a0806" stroke-width="10"/>
+   <rect x="110" y="-40" width="500" height="520" fill="none" stroke="#120e0a" stroke-width="7"/><rect x="110" y="560" width="500" height="560" fill="none" stroke="#120e0a" stroke-width="7"/>
+   <rect x="96" y="560" width="26" height="90" rx="8" fill="#a8925f"/><circle cx="109" cy="604" r="18" fill="#c9b27a"/><rect x="96" y="680" width="40" height="22" rx="4" fill="#b8a06a"/></g>
+  <rect x="-300" y="1160" width="1320" height="400" fill="#100c09"/><rect x="60" y="1154" width="600" height="10" fill="#ffd27a" class="gap"/>`,
+hall:(w)=>{let s=`<rect x="-600" y="-300" width="${w+1200}" height="1900" fill="#151a1e"/><rect x="-600" y="880" width="${w+1200}" height="700" fill="#0f1215"/><rect x="-600" y="870" width="${w+1200}" height="12" fill="#22292e"/>`;
+  for(let i=0;i<w/420+2;i++){const x=i*420-200;s+=`<rect x="${x}" y="330" width="170" height="550" fill="#231c15" stroke="#0e0b08" stroke-width="5"/><circle cx="${x+20}" cy="620" r="6" fill="#b8a06a"/><text x="${x+85}" y="310" text-anchor="middle" font-family="IBM Plex Mono" font-size="26" fill="#8a7f6a" direction="ltr">${300+i}</text>`;
+   s+=`<rect x="${x+250}" y="120" width="40" height="10" fill="#2a2a24"/><ellipse cx="${x+270}" cy="132" rx="70" ry="26" fill="url(#gBulb)" opacity=".45"/>`}
+  s+=`<g class="stairs"><rect x="840" y="330" width="200" height="550" fill="#3c4a44"/><rect x="880" y="270" width="120" height="40" rx="5" fill="#0d3a22"/><text x="940" y="298" text-anchor="middle" font-family="Tajawal" font-weight="800" font-size="22" fill="#9ff0bd">درج</text></g>`;
+  s+=`<g class="lift"><rect x="1680" y="330" width="220" height="550" fill="#2c3237"/><rect x="1686" y="336" width="104" height="544" fill="#4a5157"/><rect x="1790" y="336" width="104" height="544" fill="#474e54"/><rect x="1750" y="290" width="80" height="30" fill="#050505"/><text x="1790" y="314" text-anchor="middle" font-family="IBM Plex Mono" font-size="22" fill="#f0a640" direction="ltr">3</text></g>`;
+  return s},
+gdoor:()=>`<rect x="-300" y="-300" width="1320" height="1900" fill="#12171a"/><rect x="-300" y="880" width="1320" height="700" fill="#0d1012"/>
+  <rect x="200" y="300" width="320" height="580" fill="#000"/>
+  <g class="leaf"><rect x="200" y="300" width="320" height="580" fill="#2f3a3a" stroke="#0a0c0c" stroke-width="6"/><rect x="240" y="340" width="240" height="140" fill="#1a2020"/><circle cx="230" cy="620" r="10" fill="#9aa0a5"/></g>
+  <rect x="260" y="250" width="200" height="40" rx="6" fill="#d8d0b8"/><text x="360" y="279" text-anchor="middle" font-family="Tajawal" font-weight="800" font-size="24" fill="#2a2016">غرفة الحارس</text>
+  <ellipse cx="360" cy="230" rx="160" ry="50" fill="url(#gBulb)" opacity=".35"/>
+  <g class="camBox"><rect x="560" y="200" width="60" height="18" rx="4" fill="#bfc3c6"/><path d="M566 218 C 566 252 614 252 614 218Z" fill="#d6dadd"/><circle cx="590" cy="234" r="9" fill="#07090b"/><circle cx="610" cy="222" r="3" fill="#ff3b30"/></g>`,
+groom:()=>{let s=`<rect x="-400" y="-300" width="1520" height="1900" fill="#171a17"/><rect x="-400" y="900" width="1520" height="700" fill="#100f0d"/>`;
+  // monitor wall
+  s+=`<rect x="-120" y="250" width="560" height="420" fill="#0b0d0c"/>`;
+  for(let r=0;r<2;r++)for(let c=0;c<3;c++){const x=-100+c*180,y=270+r*200;s+=`<rect x="${x}" y="${y}" width="164" height="180" rx="14" fill="#24282a"/><rect class="mini" x="${x+12}" y="${y+12}" width="140" height="120" rx="16" fill="#1b2a22"/><rect x="${x+12}" y="${y+12}" width="140" height="120" rx="16" fill="url(#pScan)"/>`}
+  // shelves with tapes
+  s+=`<g class="shelves">`;for(let r=0;r<4;r++){s+=`<rect x="480" y="${220+r*150}" width="300" height="12" fill="#3a2b1b"/>`;for(let k=0;k<11;k++)s+=`<rect x="${486+k*26}" y="${r*150+150}" width="22" height="70" fill="${['#1b1b1b','#262222','#1e1e24'][k%3]}"/><rect x="${489+k*26}" y="${r*150+165}" width="16" height="20" fill="#d9d2c4" opacity=".8"/>`}s+=`</g>`;
+  // desk + VHS + chair
+  s+=`<rect x="-160" y="740" width="640" height="30" fill="#3a2b1b"/><rect x="-140" y="770" width="20" height="140" fill="#2a1f14"/><rect x="430" y="770" width="20" height="140" fill="#2a1f14"/>
+   <g class="vcr"><rect x="60" y="690" width="230" height="50" rx="4" fill="#202224"/><rect x="80" y="704" width="110" height="10" fill="#050505"/><text class="vcrT" x="270" y="722" text-anchor="end" font-family="IBM Plex Mono" font-size="16" fill="#4ad06a" direction="ltr">--:--</text></g>
+   <rect x="320" y="640" width="100" height="100" rx="8" fill="#2b2d2e"/>`;
+  s+=`<rect x="-300" y="80" width="18" height="140" fill="#222"/><ellipse class="bulb" cx="200" cy="120" rx="260" ry="140" fill="url(#gBulb)" opacity=".45"/><rect x="190" y="60" width="20" height="40" fill="#333"/><circle cx="200" cy="110" r="14" fill="#ffd58a"/>`;
+  return s}
+};
+
+// ---------------------------------------------------------------- feeds (CCTV / VHS content), drawn in 720x632
+const FEED={
+fire:()=>`<rect width="720" height="632" fill="#2a2a28"/><polygon points="0,0 720,0 470,200 250,200" fill="#1e1e1c"/><polygon points="0,0 250,200 250,420 0,632" fill="#363632"/><polygon points="720,0 470,200 470,420 720,632" fill="#30302c"/>
+  <rect x="250" y="200" width="220" height="220" fill="#222"/><polygon points="250,420 470,420 720,632 0,632" fill="#3c3a34"/>
+  <g class="fC"></g><rect class="smokeL" x="-200" y="-100" width="1200" height="900" filter="url(#fSmoke)" opacity=".5"/>
+  <rect width="720" height="632" fill="#ff8a3a" opacity=".07"/>`,
+lift:()=>`<rect width="720" height="632" fill="#262a2c"/><rect x="200" y="60" width="320" height="520" fill="#1a1d1f"/>
+  <g class="lInside"><rect x="214" y="74" width="292" height="506" fill="#3a4147"/><rect x="214" y="74" width="292" height="20" fill="#e3eef2" opacity=".7"/></g>
+  <g class="lD1"><rect x="214" y="74" width="146" height="506" fill="#4a5157"/></g><g class="lD2"><rect x="360" y="74" width="146" height="506" fill="#474e54"/></g>
+  <rect x="300" y="20" width="120" height="34" fill="#050505"/><text x="360" y="47" text-anchor="middle" font-family="IBM Plex Mono" font-size="26" fill="#d0362a" direction="ltr">0</text>
+  <rect x="0" y="580" width="720" height="60" fill="#2e2b26"/><g class="fC"></g>`,
+live:()=>`<rect width="720" height="632" fill="#151a1e"/><polygon points="0,0 720,0 470,180 250,180" fill="#0e1215"/><polygon points="0,0 250,180 250,400 0,632" fill="#1c2228"/><polygon points="720,0 470,180 470,400 720,632" fill="#181d22"/>
+  <rect x="250" y="180" width="220" height="220" fill="#1a2025"/><rect class="aptDoor" x="300" y="230" width="110" height="170" fill="#000"/><g class="aptLeaf"><rect x="300" y="230" width="110" height="170" fill="#2a2016"/></g>
+  <text x="355" y="222" text-anchor="middle" font-family="IBM Plex Mono" font-size="20" fill="#9a8f78" direction="ltr">301</text>
+  <polygon points="250,400 470,400 720,632 0,632" fill="#121518"/><g class="fC"></g>`,
+};
+
+// ---------------------------------------------------------------- build scenes + characters
+function fill(sc,layer,html){$(`#${sc} .${layer}`).insertAdjacentHTML('beforeend',html)}
+function mk(sc,look,layer='C'){return RIG.mount(RIG.make(look),$(`#${sc} .${layer}`))}
+fill('s_living','L0',BG.living());fill('s_living','L1',BG.livingMid());
+const LV={dad:mk('s_living','father'),naw:mk('s_living','nawaf')};
+fill('s_face','L0','<rect class="fbg" x="-400" y="-300" width="1520" height="1900" fill="#1b1611"/><ellipse class="fglow" cx="60" cy="400" rx="420" ry="420" fill="url(#gBulb)" opacity=".35" filter="url(#fDof)"/><rect class="fdoor" x="470" y="200" width="300" height="700" fill="#2a2016" opacity=".7" filter="url(#fDof)"/>');
+const FC={naw:mk('s_face','nawaf'),dad:mk('s_face','father'),grd:mk('s_face','guard')};
+fill('s_door','L0',BG.doorClose());
+fill('s_hall','L0',BG.hall(2400));const HL={dad:mk('s_hall','father'),naw:mk('s_hall','nawaf')};
+fill('s_gdoor','L0',BG.gdoor());const GD={grd:mk('s_gdoor','guard','L1'),dad:mk('s_gdoor','father'),naw:mk('s_gdoor','nawaf')};
+fill('s_groom','L0',BG.groom());const GR={grd:mk('s_groom','guard'),dad:mk('s_groom','father'),naw:mk('s_groom','nawaf')};
+fill('s_groom','L2','<rect class="gDoorIn" x="-300" y="-300" width="1320" height="1900" fill="none"/>');
+fill('s_hand','L0','<rect x="-300" y="-300" width="1320" height="1900" fill="#1a1511"/><ellipse cx="200" cy="300" rx="420" ry="420" fill="url(#gBulb)" opacity=".25" filter="url(#fDof)"/>');
+const HD={dad:mk('s_hand','father'),grd:mk('s_hand','guard')};
+fill('s_deck','L0','<rect x="-300" y="-300" width="1320" height="1900" fill="#141614"/><rect x="-300" y="760" width="1320" height="700" fill="#3a2b1b"/><g class="bigVcr"><rect x="40" y="560" width="640" height="200" rx="10" fill="#1d1f21"/><rect x="100" y="600" width="330" height="40" rx="4" fill="#050505"/><rect class="flap" x="104" y="604" width="322" height="32" fill="#2a2c2e"/><text class="dT" x="640" y="660" text-anchor="end" font-family="IBM Plex Mono" font-size="40" fill="#4ad06a" direction="ltr">--:--</text><g fill="#3a3d40"><rect x="100" y="690" width="60" height="30" rx="4"/><rect x="180" y="690" width="60" height="30" rx="4"/><rect class="stopB" x="260" y="690" width="60" height="30" rx="4"/><rect x="340" y="690" width="60" height="30" rx="4"/></g><text x="290" y="712" text-anchor="middle" font-size="18" fill="#bbb" font-family="Tajawal">■</text></g>');
+const DK={grd:mk('s_deck','guard')};
+// feeds
+const FD={};
+function feed(kind){const g=$('#s_mon .feed');if(g.dataset.k!==kind){g.dataset.k=kind;g.innerHTML=FEED[kind]();
+  const C=g.querySelector('.fC');FD.a=FD.b=FD.c=FD.d=null;
+  if(kind==='fire'){FD.a=RIG.mount(RIG.make('fireman'),C);FD.b=RIG.mount(RIG.make('fireman'),C);FD.c=RIG.mount(RIG.make('guard',{top:'#6d6a64'}),C);FD.d=RIG.mount(RIG.make('nawaf',{age:'teen'}),C);}
+  if(kind==='lift'){FD.a=RIG.mount(RIG.make('nawaf'),C);FD.b=RIG.mount(RIG.make('nawaf'),C);}
+  if(kind==='live'){FD.a=RIG.mount(RIG.make('nawaf'),C);}
+  g.parentNode.setAttribute('class',kind==='fire'?'vhs':'cctv');}}
+fill('s_final','L0',BG.groom());fill('s_final','L1','<g class="exitDoor"><rect x="520" y="300" width="240" height="600" fill="#2f3a3a" stroke="#0a0c0c" stroke-width="6"/><circle cx="545" cy="620" r="10" fill="#9aa0a5"/><rect x="520" y="896" width="240" height="6" fill="#e7b25e" opacity=".5"/><g class="fsh" filter="url(#fBlur6)"><rect x="600" y="895" width="24" height="8" fill="#000"/><rect x="650" y="895" width="24" height="8" fill="#000"/></g></g>');
+const FN={naw:mk('s_final','nawaf'),dad:mk('s_final','father'),grd:mk('s_final','guard')};
+
+// ---------------------------------------------------------------- pose helpers
+const blink=(t,seed)=>RIG.blink(t,seed);
+function focusOn(sc,el,s=1.3,dx=0,dy=0){cam(sc,{s:1});const r=el.getBoundingClientRect();const cx=r.left+r.width/2,cy=r.top+r.height/2;cam(sc,{x:cx-360+dx,y:cy-640+dy,s})}
+function hide(...cs){cs.forEach(c=>c.el[c.id].setAttribute('opacity',0))}
+function show(...cs){cs.forEach(c=>c.el[c.id].setAttribute('opacity',1))}
+function pose(c,p){c.el[c.id].setAttribute('opacity',p.op??1);RIG.pose(c,Object.assign({t:CUR},p))}
+// close-up framing: head center at (cx,cy) with head scale s
+const closeUp=(s,cx=360,cy=600)=>({x:cx,y:cy+395*s,s});
+function idle(t,seed=0){return {head:{tilt:Math.sin(t*.7+seed)*1.2,nod:Math.sin(t*.9+seed)*.3},eyes:{blink:blink(t,seed)},armL:{sh:6+Math.sin(t*.8+seed)*1.5,el:-10,hand:'relaxed'},armR:{sh:-6-Math.sin(t*.8+seed)*1.5,el:10,hand:'relaxed'}}}
+function merge(...o){const r={};o.forEach(x=>{for(const k in x){r[k]=(typeof x[k]==='object'&&!Array.isArray(x[k])&&r[k]&&typeof r[k]==='object')?Object.assign({},r[k],x[k]):x[k]}});return r}
+function walkPose(t,{run=0,period=1.0}={}){const w=RIG.walk(t,{run,period});return {view:'side',legL:w.legL,legR:w.legR,armL:w.armL,armR:w.armR,lean:w.lean,_bob:w.bob,_dist:w.dist}}
+function faceScene(who,{s=4.2,cy=600,cx=360,bg='living'}={}){hide(FC.naw,FC.dad,FC.grd);const c=FC[who];show(c);
+  $('#s_face .fbg').setAttribute('fill',bg==='room'?'#151915':'#1b1611');$('#s_face .fglow').setAttribute('opacity',bg==='room'?.18:.35);$('#s_face .fdoor').setAttribute('opacity',bg==='room'?0:.7);return [c,closeUp(s,cx,cy)]}
+
+// ---------------------------------------------------------------- timeline
+const TL=[];const S=(id,a,b,fn)=>TL.push({id,a,b,fn});
+
+// 0 — the father's eyes, darting between his son and the door (extreme close-up)
+S('s_face',0,A(1),(l,t)=>{const [c,f]=faceScene('dad',{s:6.5,cy:640});const dart=Math.sin(t*2.6)>0?.95:-.95;
+  pose(c,merge(f,{brows:'fear',eyes:{x:dart,wide:.3,blink:blink(t,2)*.6},mouth:'tense',head:{turn:dart*.08}}));cam('s_face',{s:1+l*.02})});
+// 1 — the door
+S('s_door',A(1),A(2),(l,t)=>{T($('#s_door .leaf'),'');cam('s_door',{s:1.02+l*.02})});
+// 2 — Nawaf
+S('s_face',A(2),A(3),(l,t)=>{const [c,f]=faceScene('naw',{s:4.2});pose(c,merge(f,{brows:'fear',eyes:{x:.7,y:.1,blink:blink(t,1)},mouth:'tense',head:{turn:.15}}));cam('s_face',{s:1+l*.02})});
+// 3–4 — the handle; "Dad… don't believe him! I'm your son!" from behind the door
+S('s_door',A(3),A(5),(l,t)=>{cam('s_door',{s:lerp(1.4,1.9,ease(ramp(l,0,A(5)-A(3)))),x:-200,y:-30})});
+// 5–6 — the father raises his hand (shoulder → elbow → wrist) and speaks, voice shaking
+S('s_living',A(5),A(7),(l,t)=>{const k=ease(ramp(t,A(5)+.3,A(5)+1.3));
+  pose(LV.dad,merge(idle(t,2),{x:380,y:800-470*.6+0,s:.6,head:{turn:-.3,tilt:-2},brows:'fear',eyes:{x:-.6,blink:blink(t,2)},mouth:'tense',talk:talk(t,SPEAK.father),
+    armR:{sh:lerp(-8,-95,k),el:lerp(10,-35,k),wr:lerp(0,-20,k),hand:k>.5?'open':'relaxed'},armL:{sh:8,el:-14,hand:'nervous'}}));
+  pose(LV.naw,merge(idle(t,1),{x:170,y:800-470*.56,s:.56,head:{turn:.35},brows:'fear',eyes:{x:.8},mouth:'tense'}));
+  cam('s_living',{s:1.25,x:-20,y:-40})});
+// 7–10 — "but the shock… we both said, at the same moment: 'Dad… I'm not talking!'"
+S('s_face',A(7),A(9),(l,t)=>{const [c,f]=faceScene('naw',{s:4});pose(c,merge(f,{brows:'shock',eyes:{wide:.6,x:-.2,blink:blink(t,3)},mouth:'slight',head:{turn:-.1}}))});
+S('s_living',A(9),A(11),(l,t)=>{pose(LV.naw,merge(idle(t,1),{x:170,y:800-470*.56,s:.56,head:{turn:.3,tilt:3},brows:'fear',eyes:{x:.7},talk:talk(t,SPEAK.nawaf),armL:{sh:20,el:-40,hand:'open'},armR:{sh:-14,el:30,hand:'nervous'}}));
+  pose(LV.dad,merge(idle(t,2),{x:380,y:800-470*.6,s:.6,head:{turn:-.2},brows:'shock',eyes:{x:t<A(10)?-.9:.9,wide:.8},mouth:'shock',armR:{sh:-60,el:-30,hand:'open'}}));
+  cam('s_living',{s:1.1,x:30,y:-20})});
+// 11–13 — the father freezes, steps back, looks at him like a stranger
+S('s_living',A(11),A(13),(l,t)=>{const back=ease(ramp(t,A(12),B(12)));const st=Math.sin(ramp(t,A(12),B(12))*Math.PI);
+  pose(LV.dad,merge({x:lerp(380,450,back),y:800-470*.6-st*6,s:.6,head:{turn:-.4,tilt:-4},brows:'shock',eyes:{x:-.9,wide:1,tremble:.6},mouth:'shock',
+    legL:{hip:-st*14,knee:st*10},legR:{hip:st*8},armR:{sh:-30,el:-20,hand:'open'},armL:{sh:20,el:-30,hand:'nervous'}}));
+  pose(LV.naw,merge(idle(t,1),{x:170,y:800-470*.56,s:.56,head:{turn:.4},brows:'sad',eyes:{x:.9},mouth:'frown'}));cam('s_living',{s:1.15,x:20,y:-30})});
+S('s_face',A(13),A(14),(l,t)=>{const [c,f]=faceScene('dad',{s:4.4});pose(c,merge(f,{brows:'doubt',eyes:{squint:.6,x:-.5,blink:blink(t,4)},mouth:'frown',head:{turn:-.25,tilt:-3}}));cam('s_face',{s:1+l*.03})});
+// 14–15 — his trembling hand
+S('s_hand',A(14),A(16),(l,t)=>{hide(HD.grd);pose(HD.dad,{x:300,y:640+395*2.2-120,s:2.2,armR:{sh:-40,el:-60,wr:Math.sin(t*40)*3,hand:'nervous'},armL:{sh:8},head:{}});focusOn('s_hand',HD.dad.$('wrR'),1.5,0,40)});
+// 16–18 — three knocks (the camera reacts a little to each)
+S('s_door',A(16),A(19),(l,t)=>{const k=[A(16),A(17),A(18)].map(x=>t-x).filter(d=>d>=0&&d<.2).map(d=>1-d/.2)[0]||0;T($('#s_door .leaf'),`translate(${Math.sin(t*400)*k*4} 0)`);cam('s_door',{s:1.05,shake:k*3})});
+// 19–21 — the door opens by itself; Nawaf steps back fast
+S('s_door',A(19),A(21),(l,t)=>{const o=ease(ramp(t,A(20),A(20)+1.2));T($('#s_door .leaf'),`translate(${o*-40} 0) scale(${1-o*.25} 1)`);cam('s_door',{s:1.05})});
+S('s_living',A(21),A(22),(l,t)=>{const b=ease(ramp(t,A(21),A(21)+.5));T($('#s_living .leaf'),`translate(470 0) scale(.7 1) translate(-470 0)`);
+  pose(LV.naw,merge({x:lerp(170,110,b),y:800-470*.56,s:.56,head:{turn:.5,tilt:-6},brows:'shock',eyes:{x:1,wide:1},mouth:'shock',armL:{sh:30,el:-60,hand:'open'},armR:{sh:-40,el:60,hand:'open'},legR:{hip:-b*15,knee:b*8}}));
+  pose(LV.dad,merge(idle(t,2),{x:420,y:800-470*.6,s:.6,head:{turn:.8},brows:'shock',eyes:{x:1,wide:.8},mouth:'shock'}));cam('s_living',{s:1.0})});
+// 22 — the father runs and slams it shut (real run cycle), hand on the handle
+S('s_living',A(22),A(23),(l,t)=>{const k=ease(ramp(t,A(22),A(22)+1.0));const w=walkPose(t,{run:1});const close=ease(ramp(t,A(22)+.9,A(22)+1.3));
+  T($('#s_living .leaf'),`translate(470 0) scale(${lerp(.7,1,close)} 1) translate(-470 0)`);
+  pose(LV.dad,merge(k<1?w:{view:'side',armR:{sh:-80,el:-10,hand:'handle'}},{x:lerp(380,520,k),y:800-470*.6+(k<1?w._bob*.6:0),s:.6,brows:'anger',eyes:{x:1},mouth:'tense'}));
+  pose(LV.naw,merge({x:110,y:800-470*.56,s:.56,head:{turn:.5},brows:'fear',eyes:{x:1,wide:.8},mouth:'shock',armL:{sh:20,el:-50,hand:'nervous'}}));cam('s_living',{s:1.1,x:60})});
+S('s_hand',A(23),A(24),(l,t)=>{hide(HD.grd);pose(HD.dad,{x:300,y:640+395*2.4-60,s:2.4,armR:{sh:-95,el:-5,wr:Math.sin(t*35)*2,hand:'handle'}});focusOn('s_hand',HD.dad.$('wrR'),1.4,0,40)});
+// 24–25 — turns to him: "Come with me! Now!"
+S('s_living',A(24),A(26),(l,t)=>{T($('#s_living .leaf'),'');const turn=ease(ramp(t,A(24),A(24)+.6));
+  pose(LV.dad,merge(idle(t,2),{x:500,y:800-470*.6,s:.6,head:{turn:lerp(.8,-.6,turn),tilt:-3},brows:'anger',eyes:{x:lerp(1,-1,turn)},mouth:'tense',talk:talk(t,SPEAK.father),armR:{sh:lerp(-80,-40,turn),el:-40,hand:'point'}}));
+  pose(LV.naw,merge(idle(t,1),{x:150,y:800-470*.56,s:.56,head:{turn:.5},brows:'fear',eyes:{x:1},mouth:'tense'}));cam('s_living',{s:lerp(1.1,1.35,ease(ramp(l,0,2))),x:80,y:-60})});
+// 26–29 — pulled down the hallway (side tracking, both walking — no sliding)
+S('s_hall',A(26),A(31),(l,t)=>{const w1=walkPose(t,{run:0,period:.8}),w2=walkPose(t+.18,{run:0,period:.8});const d=w1._dist*.55;
+  pose(HL.dad,merge(w1,{x:300+d,y:880-470*.58+w1._bob*.58,s:.58,armR:{sh:60,el:-20,hand:'fist'},brows:'tense',mouth:'tense',eyes:{x:1}}));
+  pose(HL.naw,merge(w2,{x:150+d,y:880-470*.56+w2._bob*.56,s:.56,armR:{sh:-70,el:10,hand:'relaxed'},brows:'fear',eyes:{x:1,y:-.2},mouth:'tense'}));
+  cam('s_hall',{x:d-60,y:0,s:1.0})});
+// 31 — the guard's door
+S('s_gdoor',A(31),A(32),(l,t)=>{hide(GD.grd,GD.dad,GD.naw);T($('#s_gdoor .leaf'),'');cam('s_gdoor',{s:lerp(1.0,1.15,l/2),y:-40})});
+// 32 — the father pounds on it
+S('s_hand',A(32),A(33),(l,t)=>{hide(HD.grd);const hit=[.1,.4,.7].some(x=>l>x&&l<x+.12);pose(HD.dad,{x:280,y:640+395*2.2-80,s:2.2,armR:{sh:-120,el:-30-(hit?10:0),hand:'fist'}});focusOn('s_hand',HD.dad.$('wrR'),1.4,hit?Math.sin(t*90)*4:0,40)});
+// 33–35 — Abu Saleh opens; his face changes when he sees Nawaf
+S('s_gdoor',A(33),A(35),(l,t)=>{const o=ease(ramp(t,A(33),A(33)+.8));T($('#s_gdoor .leaf'),`translate(${o*-100} 0) scale(${1-o*.6} 1) translate(${o*120} 0)`);hide(GD.dad,GD.naw);
+  pose(GD.grd,merge(idle(t,5),{x:370,y:880-470*.55,s:.55,op:o,head:{turn:.2},brows:'neutral',eyes:{x:.4},mouth:'closed',armL:{sh:30,el:-70,hand:'handle'}}));cam('s_gdoor',{s:1.15,y:-40})});
+S('s_face',A(35),A(36),(l,t)=>{const [c,f]=faceScene('grd',{s:4.3,bg:'room'});const k=ease(ramp(l,0,.6));pose(c,merge(f,{brows:{L:{y:lerp(0,-9,k),rot:-4,in:0},R:{y:lerp(0,-9,k),rot:4,in:0}},eyes:{wide:k,x:-.3},mouth:{open:k*.4},head:{nod:-k*2}}))});
+// 36–38 — looks at the father: "don't tell me… they came back again?"
+S('s_face',A(36),A(39),(l,t)=>{const [c,f]=faceScene('grd',{s:4.0,bg:'room'});pose(c,merge(f,{brows:'doubt',eyes:{x:.9,squint:.5,blink:blink(t,5)},mouth:'frown',talk:talk(t,SPEAK.guard),head:{turn:.35,tilt:-3}}));cam('s_face',{s:1+l*.02})});
+// 39–41 — inside: slow camera through the room (monitors, VHS, shelves of tapes)
+S('s_groom',A(39),A(42),(l,t)=>{const k=ease(ramp(l,0,A(42)-A(39)));grPose(t,{gx:520,dx:240,nx:90,gTurn:-.3});cam('s_groom',{x:lerp(-120,140,k),y:-40,s:lerp(1.15,1.25,k)});groomFx(t)});
+// 42–44 — "Abu Saleh… what's going on?"
+S('s_groom',A(42),A(45),(l,t)=>{grPose(t,{gx:520,dx:240,nx:110,nTalk:talk(t,SPEAK.nawaf),nBrows:'fear',gTurn:-.4});cam('s_groom',{x:-80,y:-80,s:1.45});groomFx(t)});
+// 45–49 — he looks at him a moment: "seven years ago… there wasn't one Nawaf. There were two."
+S('s_face',A(45),A(50),(l,t)=>{const [c,f]=faceScene('grd',{s:4.4,bg:'room'});const down=ease(ramp(t,A(46),A(47)))*(1-ease(ramp(t,A(48),A(48)+.6)));
+  pose(c,merge(f,{brows:'sad',eyes:{x:-.6,y:down*.8,blink:blink(t,5)},mouth:'closed',talk:talk(t,SPEAK.guard),head:{turn:-.2,nod:down*3,tilt:-2}}));cam('s_face',{s:1+ease(ramp(l,0,4))*.08})});
+// 50–51 — Nawaf: eyes go wide before the head moves back
+S('s_face',A(50),A(52),(l,t)=>{const [c,f]=faceScene('naw',{s:4.3,bg:'room'});const back=ease(ramp(t,A(50)+.3,A(50)+.9));
+  pose(c,merge(f,{y:f.y-back*14,brows:'shock',eyes:{wide:ramp(t,A(50),A(50)+.25),x:.3},mouth:'shock',talk:talk(t,SPEAK.nawaf),head:{tilt:-back*3,nod:-back*2}}))});
+// 52–53 — "I was the first one who saw you."
+S('s_groom',A(52),A(54),(l,t)=>{grPose(t,{gx:500,dx:240,nx:110,gTalk:talk(t,SPEAK.guard),gTurn:-.6});cam('s_groom',{x:120,y:-80,s:1.5});groomFx(t)});
+// 54 — pulls a tape from the shelf (fingers around it)
+S('s_hand',A(54),A(55),(l,t)=>{hide(HD.dad);const k=ease(ramp(l,0,.8));pose(HD.grd,{x:300,y:640+395*2.2-60,s:2.2,armR:{sh:lerp(-120,-60,k),el:lerp(-10,-60,k),hand:k>.3?'tape':'reach'}});focusOn('s_hand',HD.grd.$('wrR'),1.4,0,40)});
+// 55 — into the deck
+S('s_deck',A(55),A(56),(l,t)=>{const k=ease(ramp(l,0,1));pose(DK.grd,{x:0,y:0,s:1.6,armR:{sh:-95,el:-10,hand:'tape'},armL:{sh:0},op:1});{const r=DK.grd.$('wrR').getBoundingClientRect();pose(DK.grd,{x:lerp(560,265,k)-(r.left+r.width/2),y:lerp(560,600,k)-(r.top+r.height/2),s:1.6,armR:{sh:-95,el:-10,hand:'tape'},armL:{sh:0},op:1});}
+  $('#s_deck .flap').setAttribute('opacity',k>.8?0:1);$('#s_deck .dT').textContent=k>.95?'00:00':'--:--';cam('s_deck',{s:1.0,y:20})});
+// 56–57 — "see for yourselves."
+S('s_groom',A(56),A(58),(l,t)=>{grPose(t,{gx:460,dx:240,nx:110,gTalk:talk(t,SPEAK.guard),gTurn:.3,gArm:'press'});cam('s_groom',{x:40,y:-40,s:1.3});groomFx(t)});
+// 58–66 — the VHS from the day of the fire
+S('s_mon',A(58),A(67),(l,t)=>{feed('fire');monOsd('PLAY ▶ 17-11-2019 03:19',t);const k=ramp(t,A(60),A(67));
+  const w=walkPose(t,{period:1.0});
+  pose(FD.a,merge(w,{x:lerp(140,420,k),y:520+w._bob*.3,s:.3}));pose(FD.b,merge(walkPose(t+.4,{period:1.0}),{x:lerp(60,340,k),y:530,s:.31}));
+  pose(FD.d,{x:lerp(110,390,k),y:560,s:.24,view:'side',head:{nod:2},armL:{sh:-20},legL:{hip:10},legR:{hip:-10}});
+  const shout=inSeg(t,SPEAK.oldGuard);pose(FD.c,merge(idle(t,6),{x:560,y:540,s:.32,head:{turn:-.6,tilt:-6},brows:'anger',eyes:{x:-1},talk:talk(t,SPEAK.oldGuard),mouth:shout?{open:.4}:'tense',armR:{sh:shout?-120:-30,el:-30,hand:shout?'open':'fist'}}));
+  $('#s_mon .smokeL').setAttribute('transform',`translate(${-t*20%200} 0)`);vhsJitter(t);cam('s_mon',{s:lerp(1.0,1.2,ease(ramp(t,A(62),A(66)))),y:-20})});
+// 67 — cold
+S('s_face',A(67),A(68),(l,t)=>{const [c,f]=faceScene('naw',{s:4.2,bg:'room'});pose(c,merge(f,{brows:'fear',eyes:{wide:.4,tremble:.8,x:.1},mouth:'tense',head:{shake:Math.sin(t*30)*1.5}}))});
+// 68–69 — the father, head down
+S('s_face',A(68),A(70),(l,t)=>{const [c,f]=faceScene('dad',{s:4.0,bg:'room'});const d=ease(ramp(t,A(68),A(69)));pose(c,merge(f,{brows:'sad',eyes:{y:.9,blink:d*.5},mouth:'frown',head:{nod:d*6,tilt:d*4}}))});
+// 70–72 — "so… you knew from the beginning?"
+S('s_face',A(70),A(73),(l,t)=>{const [c,f]=faceScene('naw',{s:4.0,bg:'room'});pose(c,merge(f,{brows:'anger',eyes:{x:.8,squint:.3,blink:blink(t,1)},talk:talk(t,SPEAK.nawaf),head:{turn:.3}}))});
+// 73–75 — calmly: "I knew one of you wasn't you… but I didn't know which."
+S('s_face',A(73),A(76),(l,t)=>{const [c,f]=faceScene('dad',{s:4.2,bg:'room'});const up=ease(ramp(t,A(73),A(74)));pose(c,merge(f,{brows:'sad',eyes:{x:-.7,y:lerp(.8,0,up),blink:blink(t,2)},talk:talk(t,SPEAK.father),head:{nod:lerp(5,0,up),turn:-.2}}))});
+// 76–85 — the elevator camera: one boy… then another, identical; one cries, one stares at the lens
+S('s_mon',A(76),A(86),(l,t)=>{feed('lift');monOsd('CAM 01 · LIFT · 17-11-2019 07:21',t);const o=ease(ramp(t,A(77)-.5,A(77)+.6));
+  T($('#s_mon .lD1'),`translate(${-o*140} 0)`);T($('#s_mon .lD2'),`translate(${o*140} 0)`);
+  const out1=ease(ramp(t,A(77),A(78)));const two=ease(ramp(t,A(78)+.3,A(80)));const cry=t>A(83);const stare=t>A(84);
+  pose(FD.a,{x:lerp(330,250,out1),y:lerp(500,560,out1),s:lerp(.3,.36,out1),head:{nod:cry?5:0,tilt:cry?Math.sin(t*9)*3:0},brows:'sad',eyes:{blink:cry?.8:0,y:.6},mouth:cry?{smile:-.8,open:.25}:'frown',
+    armL:cry?{sh:-150,el:-120,hand:'open'}:{sh:8},armR:cry?{sh:150,el:120,hand:'open'}:{sh:-8},op:o});
+  pose(FD.b,{x:lerp(370,450,two),y:lerp(480,560,two),s:lerp(.28,.36,two),op:two,head:{},eyes:{x:0,y:-.4},brows:'neutral',mouth:'closed'});
+  vhsJitter(t,.4);const z=stare?ease(ramp(t,A(84),A(85)+.6)):0;cam('s_mon',{s:lerp(1,1.6,z),x:lerp(0,60,z),y:lerp(0,-60,z)})});
+// 86–89 — he stops the tape: "and here… the problem began."
+S('s_deck',A(86),A(88),(l,t)=>{const pr=[.6,.75].some(x=>l>x)&&l<1.2;pose(DK.grd,{x:0,y:0,s:1.6,armR:{sh:-100,el:-20,hand:'press'}});{const r=DK.grd.$('wrR').getBoundingClientRect();pose(DK.grd,{x:290-(r.left+r.width/2),y:(pr?690:660)-(r.top+r.height/2),s:1.6,armR:{sh:-100,el:-20,hand:'press'}});}$('#s_deck .stopB').setAttribute('fill',pr?'#6a6d70':'#3a3d40');$('#s_deck .dT').textContent=l>.7?'07:22 ■':'07:22';cam('s_deck',{s:1.15,x:-60})});
+S('s_face',A(88),A(90),(l,t)=>{const [c,f]=faceScene('grd',{s:4.2,bg:'room'});pose(c,merge(f,{brows:'sad',eyes:{x:.4,y:.3,blink:blink(t,5)},talk:talk(t,SPEAK.guard),head:{nod:2}}))});
+// 90–92 — "then… why didn't you tell me?"
+S('s_groom',A(90),A(93),(l,t)=>{grPose(t,{gx:460,dx:240,nx:110,nTalk:talk(t,SPEAK.nawaf),nBrows:'anger',nArm:'open'});cam('s_groom',{x:-80,y:-60,s:1.45});groomFx(t)});
+// 93–95 — "because every time you get closer to the truth… he gets closer."
+S('s_face',A(93),A(96),(l,t)=>{const [c,f]=faceScene('grd',{s:4.4,bg:'room'});pose(c,merge(f,{brows:'tense',eyes:{x:-.5,squint:.3,blink:blink(t,5)},talk:talk(t,SPEAK.guard),head:{turn:-.2,nod:1}}));cam('s_face',{s:1+ease(ramp(l,0,3))*.1})});
+// 96–98 — "he? who is he?"
+S('s_face',A(96),A(99),(l,t)=>{const [c,f]=faceScene('naw',{s:4.2,bg:'room'});pose(c,merge(f,{brows:'doubt',eyes:{x:.6,squint:.2,blink:blink(t,1)},talk:talk(t,SPEAK.nawaf),head:{tilt:4}}))});
+// 99–102 — no answer; he walks to the monitors and points: "watch the live feed."
+S('s_groom',A(99),A(103),(l,t)=>{const k=ease(ramp(t,A(99),A(99)+1.6));const wk=k<1&&k>0;const w=walkPose(t,{period:1.2});
+  grPose(t,{gx:lerp(460,300,k),dx:240,nx:110,gTalk:talk(t,SPEAK.guard),gView:wk?'side':'front',gFlip:wk,gWalk:wk?w:null,gArm:k>=1?'point':null,gTurn:-.6});cam('s_groom',{x:-40,y:-40,s:1.25});groomFx(t)});
+// 103–106 — the live feed: our door… open
+S('s_mon',A(103),A(107),(l,t)=>{feed('live');monOsd('LIVE · CAM 03 · '+clock(t),t);T($('#s_mon .aptLeaf'),`translate(${-ease(ramp(t,A(105),A(106)))*90} 0)`);hide(FD.a);cam('s_mon',{s:lerp(1,1.15,ease(ramp(l,0,4)))})});
+// 107–111 — someone comes out, closer to the camera… it was me
+S('s_mon',A(107),A(110),(l,t)=>{feed('live');monOsd('LIVE · CAM 03 · '+clock(t),t);T($('#s_mon .aptLeaf'),'translate(-90 0)');const k=ease(ramp(t,A(107),A(109)));
+  pose(FD.a,{x:355,y:lerp(395,520,k),s:lerp(.17,.34,k),head:{},eyes:{y:-.2},brows:'neutral',mouth:'closed',op:1});cam('s_mon',{s:1.15})});
+S('s_face',A(110),A(111),(l,t)=>{const [c,f]=faceScene('naw',{s:4.4,bg:'room'});pose(c,merge(f,{brows:'shock',eyes:{wide:1,x:-.2},mouth:'shock',head:{nod:-2}}))});
+S('s_mon',A(111),A(112),(l,t)=>{feed('live');monOsd('LIVE · CAM 03 · '+clock(t),t);pose(FD.a,{x:355,y:640,s:.62,head:{},eyes:{y:-.4},brows:'neutral',mouth:'closed'});cam('s_mon',{s:1.5,y:-60})});
+// 112–115 — walks the hallway, stops under the camera at the guard's door, lifts his head… smiles
+S('s_mon',A(112),A(116),(l,t)=>{feed('live');monOsd('LIVE · CAM 03 · '+clock(t),t);const k=ease(ramp(t,A(112),A(113)+1));const w=walkPose(t,{period:1.0});const walking=k<1;
+  const up=ease(ramp(t,A(114),A(114)+1.2));const sm=ease(ramp(t,A(115)-.2,A(115)+1.6));
+  pose(FD.a,merge(walking?w:{},{x:355,y:lerp(560,700,k)+(walking?w._bob*.4:0),s:lerp(.4,.75,k),view:walking?'front':'front',head:{nod:lerp(4,-3,up)},eyes:{y:lerp(.6,-.8,up),x:0},brows:'neutral',mouth:{smile:sm*.9,width:sm*.5,tense:sm*.4},op:1}));
+  cam('s_mon',{s:lerp(1.1,1.9,ease(ramp(t,A(114),A(115)+1))),y:lerp(0,-150,ease(ramp(t,A(114),A(115)+1)))})});
+// 116–119 — in my voice: "if you're done watching… open the door."
+S('s_mon',A(116),A(120),(l,t)=>{feed('live');monOsd('LIVE · CAM 03 · '+clock(t),t);pose(FD.a,{x:355,y:700,s:.75,head:{nod:-3},eyes:{y:-.8},brows:'neutral',mouth:{smile:.9,width:.5,tense:.4},talk:talk(t,SPEAK.double)*.8});cam('s_mon',{s:1.9,y:-150})});
+// 120–125 — everyone turns to the door (eyes first, then heads); three knocks
+S('s_groom',A(120),A(122),(l,t)=>{const e=ramp(t,A(120),A(120)+.25),h=ease(ramp(t,A(120)+.2,A(120)+.8));
+  grPose(t,{gx:300,dx:240,nx:110,gEyes:lerp(-.5,1,e),gTurn:lerp(-.5,.9,h),dEyes:lerp(.5,1,e),dTurn:lerp(.2,.9,h),nEyes:lerp(.5,1,e),nTurn:lerp(.3,.9,h),allShock:1});cam('s_groom',{x:0,y:-20,s:1.1});groomFx(t)});
+S('s_gdoor',A(122),A(126),(l,t)=>{hide(GD.grd,GD.dad,GD.naw);T($('#s_gdoor .leaf'),'');$('#s_gdoor .camBox').setAttribute('opacity',0);
+  const k=[A(123),A(124),A(125)].map(x=>t-x).filter(d=>d>=0&&d<.2).map(d=>1-d/.2)[0]||0;T($('#s_gdoor .leaf'),`translate(${Math.sin(t*400)*k*3} 0)`);cam('s_gdoor',{s:1.25,y:-60,shake:k*2.5})});
+// 126–end — the three of them, the closed door, the question
+S('s_final',A(126),ASK_END,(l,t)=>{pose(FN.naw,merge(idle(t,1),{x:120,y:900-470*.5,s:.5,head:{turn:.7},brows:'fear',eyes:{x:1,blink:blink(t,1)},mouth:'tense'}));
+  pose(FN.dad,merge(idle(t,2),{x:260,y:900-470*.55,s:.55,head:{turn:.6},brows:'fear',eyes:{x:1,blink:blink(t,2)},mouth:'tense',armL:{sh:30,el:-40,hand:'nervous'}}));
+  pose(FN.grd,merge(idle(t,5),{x:400,y:900-470*.53,s:.53,head:{turn:.7},brows:'tense',eyes:{x:1,squint:.3,blink:blink(t,5)},mouth:'frown'}));
+  $('#s_final .fsh').setAttribute('opacity',.6+.4*Math.sin(t*1.3));cam('s_final',{x:60,y:20,s:lerp(1.0,1.06,ease(ramp(l,0,8)))})});
+
+// ---------------------------------------------------------------- helpers used by scenes
+function grPose(t,o){const G=GR;
+  pose(G.dad,merge(idle(t,2),{x:o.dx,y:900-470*.55,s:.55,head:{turn:o.dTurn??.4},brows:o.allShock?'shock':'fear',eyes:{x:o.dEyes??.6,blink:blink(t,2)},mouth:o.allShock?'shock':'tense'}));
+  pose(G.naw,merge(idle(t,1),{x:o.nx,y:900-470*.52,s:.52,head:{turn:o.nTurn??.5},brows:o.nBrows||(o.allShock?'shock':'fear'),eyes:{x:o.nEyes??.8,blink:blink(t,1)},mouth:o.allShock?'shock':'tense',talk:o.nTalk||0,armL:o.nArm?{sh:30,el:-50,hand:o.nArm}:{sh:8,el:-10,hand:'nervous'}}));
+  const gp=merge(o.gWalk?o.gWalk:idle(t,5),{x:o.gx,y:900-470*.53+(o.gWalk?o.gWalk._bob*.5:0),s:.53,view:o.gView||'front',flip:o.gFlip,head:{turn:o.gTurn??-.4},brows:o.allShock?'shock':'tense',eyes:{x:o.gEyes??-.6,blink:blink(t,5)},mouth:'frown',talk:o.gTalk||0});
+  if(o.gArm==='point')gp.armR={sh:-100,el:-10,hand:'point'};if(o.gArm==='press')gp.armR={sh:-70,el:-30,hand:'press'};
+  pose(G.grd,gp);}
+function groomFx(t){const f=flick(t,1.9);$$('#s_groom .bulb').forEach(e=>e.setAttribute('opacity',.45-f*.3));$$('#s_groom .mini').forEach((m,i)=>m.setAttribute('fill',['#1b2a22','#20302a','#182620','#1d2c24'][(i+Math.floor(t*3))%4]))}
+function monOsd(txt,t){$('#s_mon .osdR').textContent=txt;$('#s_mon .osdL').setAttribute('opacity',Math.floor(t*2)%2?1:.3)}
+function vhsJitter(t,a=1){const j=(Math.sin(t*13)*Math.sin(t*7.1)>.85)?Math.sin(t*90)*6*a:0;T($('#s_mon .feed'),`translate(${j} 0)`)}
+function clock(t){const s=Math.floor(t-A(103))+12;return `03:4${Math.floor(s/60)%10}:${String(s%60).padStart(2,'0')}`}
+
+// ---------------------------------------------------------------- captions
+const HL2={2:'y',10:'r',21:'y',38:'y',48:'r',49:'r',66:'r',82:'y',95:'r',111:'r',119:'r',122:'y',123:'y',124:'y',125:'y'};
+const POP=new Set([10,49,66,95,111,119]);
+const CAPS=[];
+SEG.forEach((s,i)=>{const words=s.text.split(' ');const cls=HL2[i]||'';
+  const wrap=x=>cls?`<span class="${cls}">${x}</span>`:(x.startsWith('«')||x.endsWith('»')?`<span class="q">${x}</span>`:x);
+  const nextA=i+1<SEG.length?SEG[i+1].a:s.b+1.2;const end=Math.min(nextA-.05,s.b+.55);
+  if(words.length>6){let cut=words.findIndex(w=>w.endsWith('،')||w.endsWith('…')||w.endsWith(':')||w.endsWith('!')||w.endsWith('؟'))+1;if(cut<=0||cut>=words.length)cut=Math.ceil(words.length/2);
+    const p1=words.slice(0,cut).join(' '),p2=words.slice(cut).join(' ');const mid=s.a+(s.b-s.a)*(p1.length/(p1.length+p2.length));
+    CAPS.push([s.a,mid,wrap(p1),i]);CAPS.push([mid,end,wrap(p2),i]);}else CAPS.push([s.a,end,wrap(s.text),i]);});
+let lastCap=-1;
+function caps(t){let k=-1;for(let j=0;j<CAPS.length;j++){if(t>=CAPS[j][0]&&t<CAPS[j][1])k=j}
+  const el=$('#caps');if(k!==lastCap){el.innerHTML=k>=0?CAPS[k][2]:'';lastCap=k}
+  if(k>=0){const e=eo(ramp(t,CAPS[k][0],CAPS[k][0]+.22));const pop=POP.has(CAPS[k][3]);el.style.opacity=e;el.style.transform=`scale(${pop?lerp(1.25,1.08,e):(.92+.08*e)})`}else el.style.opacity=0}
+
+const gc=$('#grain').getContext('2d');const NF=[];
+(()=>{let s=61;const r=()=>{s=(s*16807)%2147483647;return s/2147483647};for(let f=0;f<6;f++){const im=gc.createImageData(420,700);for(let i=0;i<im.data.length;i+=4){const v=r()*255|0;im.data[i]=im.data[i+1]=im.data[i+2]=v;im.data[i+3]=255}NF.push(im)}})();
+$('#grain').style.width='840px';$('#grain').style.height='1400px';
+
+function seek(t){CUR=t;
+  let active=null;for(const s of TL){if(t>=s.a&&t<s.b)active=s}
+  $$('.scene').forEach(e=>e.style.opacity=0);
+  if(active){document.getElementById(active.id).style.opacity=1;active.fn(t-active.a,t);}
+  const q=$('#ask'),fade=1-ramp(t,ASK_END-.4,ASK_END);
+  q.querySelector('.qq').style.opacity=ramp(t,A(126)+.3,A(126)+1.0)*fade;
+  q.querySelector('.op.a').style.opacity=ramp(t,A(128),A(128)+.5)*fade;q.querySelector('.op.a').style.transform=`translateY(${(1-eo(ramp(t,A(128),A(128)+.5)))*16}px)`;
+  q.querySelector('.op.b').style.opacity=ramp(t,A(129),A(129)+.5)*fade;q.querySelector('.op.b').style.transform=`translateY(${(1-eo(ramp(t,A(129),A(129)+.5)))*16}px)`;
+  q.querySelector('.cm').style.opacity=ramp(t,VO_END+.8,VO_END+1.4)*fade;
+  const blk=t>=ASK_END;$('#black').style.opacity=blk?1:0;
+  $('#title .a').style.opacity=Math.min(ramp(t,ASK_END+.8,ASK_END+1.5),1-ramp(t,DURATION-.7,DURATION-.1));
+  $('#title .b').style.opacity=Math.min(ramp(t,ASK_END+2.0,ASK_END+2.7),1-ramp(t,DURATION-.7,DURATION-.1));
+  caps(t);$('#caps').style.visibility=(blk||t>=A(126))?'hidden':'visible';
+  const f=Math.floor(t*30)%6;gc.putImageData(NF[f],0,0);$('#grain').style.transform=`translate(${(f*37)%60}px,${(f*53)%60}px)`;
+}
+window.seek=seek;window.DURATION=DURATION;
+if(!location.search.includes('render')){let t0=null;const loop=ts=>{if(t0===null)t0=ts;seek(((ts-t0)/1000)%DURATION);requestAnimationFrame(loop)};document.fonts.ready.then(()=>requestAnimationFrame(loop));}
+else seek(0);
+</script>
+</body>
+</html>

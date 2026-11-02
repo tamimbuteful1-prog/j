@@ -1,0 +1,17 @@
+<!doctype html><html><head><meta charset="utf-8"><style>body{margin:0;background:#1a1612}svg{display:block}</style></head><body>
+<svg id="sv" width="1440" height="1280" viewBox="0 0 1440 1280"><rect width="1440" height="1280" fill="#1f1a15"/></svg>
+<script src="rig.js"></script><script>
+const sv=document.getElementById('sv');
+const add=(look,pose)=>{const c=RIG.mount(RIG.make(look),sv);RIG.pose(c,pose);return c};
+// full bodies
+add('nawaf',{x:180,y:560,s:.5,brows:'fear',eyes:{x:.5,wide:.6},mouth:'shock',armR:{sh:-70,el:-60,hand:'phone'},armL:{sh:20,el:-20,hand:'nervous'}});
+add('father',{x:420,y:560,s:.5,head:{turn:-.5},brows:'anger',eyes:{x:-.8},mouth:'tense',armR:{sh:-150,el:-10,wr:0,hand:'open'}});
+add('guard',{x:660,y:560,s:.5,head:{turn:.4},brows:'doubt',eyes:{squint:.6,x:.6},mouth:'frown',armL:{sh:40,el:-80,hand:'tape'}});
+const w=RIG.walk(.3,{run:0});add('nawaf',Object.assign({x:900,y:560,s:.5,view:'side'},w,{y:560+w.bob*.5}));
+const r=RIG.walk(.2,{run:1});add('father',Object.assign({x:1120,y:560,s:.5,view:'side'},r,{y:560+r.bob*.5}));
+add('nawaf',{x:1320,y:560,s:.5,view:'back'});
+// face close-ups
+const faces=[['nawaf',{brows:'neutral',mouth:'closed'}],['nawaf',{brows:'shock',eyes:{wide:1},mouth:'shock'}],['nawaf',{brows:'doubt',eyes:{squint:.7,x:-.8}}],
+ ['father',{brows:'fear',eyes:{x:.9},mouth:'tense',head:{turn:.6}}],['guard',{brows:'tense',eyes:{squint:.5},mouth:{open:.5},head:{tilt:-6}}],['nawaf',{brows:'neutral',mouth:'creepy',eyes:{}}]];
+faces.forEach(([l,p],i)=>add(l,Object.assign({x:120+i*240,y:1580,s:1.15},p)));
+</script></body></html>
