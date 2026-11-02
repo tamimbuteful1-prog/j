@@ -4,6 +4,7 @@
 //   logs, error messages or the prompt). It disappears on reload.
 import { SYSTEM_PROMPT, RESULT_SCHEMA } from './prompt';
 import type { Usage } from './types';
+import type { PricedModel } from './cost';
 
 export type ProviderId = 'anthropic' | 'openai';
 
@@ -146,6 +147,7 @@ export async function callModel(
   maxTokens: number,
   structured: boolean,
   signal: AbortSignal,
+  effort?: string,
 ): Promise<CallResult> {
   if (!apiKey) throw new ProviderError('invalid_key');
   if (!/^[A-Za-z0-9._:-]{2,80}$/.test(model)) throw new ProviderError('model_unavailable');
@@ -156,7 +158,10 @@ export async function callModel(
       system: SYSTEM_PROMPT,
       messages: [{ role: 'user', content: userMessage }],
     };
-    if (structured) body.output_config = { format: { type: 'json_schema', schema: RESULT_SCHEMA } };
+    const outputConfig: Record<string, unknown> = {};
+    if (effort && /^(low|medium|high)$/.test(effort)) outputConfig.effort = effort;
+    if (structured) outputConfig.format = { type: 'json_schema', schema: RESULT_SCHEMA };
+    if (Object.keys(outputConfig).length) body.output_config = outputConfig;
     const data = (await send(provider, ENDPOINTS.anthropic.messages, {
       method: 'POST',
       headers: anthropicHeaders(),
@@ -221,8 +226,10 @@ export async function listModels(provider: ProviderId, signal: AbortSignal): Pro
 export interface ProviderCfg {
   verification: string;
   default: string | null;
-  models: { id: string; label: string; structured_output: boolean }[];
+  models: PricedModel[];
   max_output_tokens: number;
+  effort?: string;
+  pricing?: { source: string; checked_on: string | null; note: string };
 }
 
 // Variants that are not general text-analysis models, or that are unusually expensive.
@@ -234,9 +241,9 @@ export function pickOpenAIModel(ids: string[]): string | null {
   let best: { id: string; s: number } | null = null;
   for (const id of ids) {
     if (OPENAI_EXCLUDE.test(id)) continue;
-    const m = id.match(/^gpt-(\d+(?:\.\d+)?)(?:-(mini|chat-latest))?$/);
+    const m = id.match(/^gpt-(\d+(?:\.\d+)?)(?:-([a-z]+(?:-latest)?))?$/);
     if (!m) continue;
-    const s = parseFloat(m[1]) * 10 + (m[2] === undefined ? 3 : m[2] === 'chat-latest' ? 2 : 0);
+    const s = parseFloat(m[1]) * 10 + (m[2] === undefined ? 3 : m[2] === 'chat-latest' ? 2 : m[2] === 'mini' ? 0 : 1);
     if (!best || s > best.s) best = { id, s };
   }
   return best?.id ?? null;

@@ -13,8 +13,15 @@
     "test:e2e": "node tests/e2e.cjs"
   },
   "devDependencies": {
+    "@types/three": "^0.181.0",
+    "fflate": "^0.8.3",
     "typescript": "^5.9.3",
     "vite": "^6.4.5",
     "vitest": "^3.2.7"
+  },
+  "dependencies": {
+    "@fontsource-variable/alexandria": "^5.3.0",
+    "@fontsource/ibm-plex-sans-arabic": "^5.3.0",
+    "three": "^0.181.0"
   }
 }
