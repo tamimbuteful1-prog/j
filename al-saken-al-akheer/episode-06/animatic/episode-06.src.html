@@ -65,12 +65,13 @@
 
 <div id="black"></div>
 <div id="ask"><div class="qq">تفتحون الباب؟</div><div class="op a">نفتح ونواجهه 🚪</div><div class="op b">نقفل وننتظر 🔒</div><div class="cm">اكتب اختيارك بالتعليقات</div></div>
-<div id="title"><div class="a">الساكن الأخير</div><div class="b">الحلقة السادسة — الحارس</div></div>
+<div id="title"><div class="a">الساكن الأخير</div><div class="b" id="ttlB">الحلقة السادسة — الحارس</div></div>
 <canvas id="grain" width="420" height="700"></canvas>
 <div id="vig"></div>
 <div id="caps"></div>
 </div>
 
+<script>window.PART={{PART}};</script>
 <script src="timeline.js"></script>
 <script src="voice_env.js"></script>
 <script src="rig.js"></script>
@@ -82,7 +83,13 @@ const ease=x=>x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;
 const eo=x=>1-Math.pow(1-x,3);
 const lerp=(a,b,k)=>a+(b-a)*k;
 const A=i=>SEG[i].a, B=i=>SEG[i].b;
-const VO_END=B(129), ASK_END=VO_END+5.0, DURATION=ASK_END+5.2;
+const VO_END=B(129), ASK_END=VO_END+5.0, FULL_DUR=ASK_END+5.2;
+// Split for YouTube Shorts (≤ 2:55): part 1 = segments 0–66, part 2 = 67–129. Narration untouched.
+const PART=window.PART||0;
+const P1_END=B(66)+.25;                 // freeze on the fire recording here
+const P1_Q=P1_END+.3, P1_ASK_END=P1_Q+5.2;
+const OFF=PART===2?A(67)-.35:0;
+const DURATION=PART===1?P1_ASK_END+5.2:(PART===2?FULL_DUR-OFF:FULL_DUR);
 const T=(e,v)=>e&&e.setAttribute('transform',v);
 const flick=(t,seed=1)=>{const v=Math.sin(t*37*seed)*Math.sin(t*11.3+seed)*Math.sin(t*3.1);return v>.55?.75:(v>.4?.3:0)};
 let CUR=0;
@@ -410,7 +417,7 @@ SEG.forEach((s,i)=>{const words=s.text.split(' ');const cls=HL2[i]||'';
     const p1=words.slice(0,cut).join(' '),p2=words.slice(cut).join(' ');const mid=s.a+(s.b-s.a)*(p1.length/(p1.length+p2.length));
     CAPS.push([s.a,mid,wrap(p1),i]);CAPS.push([mid,end,wrap(p2),i]);}else CAPS.push([s.a,end,wrap(s.text),i]);});
 let lastCap=-1;
-function caps(t){let k=-1;for(let j=0;j<CAPS.length;j++){if(t>=CAPS[j][0]&&t<CAPS[j][1])k=j}
+function caps(t){let k=-1;for(let j=0;j<CAPS.length;j++){if(PART===2&&CAPS[j][3]<67)continue;if(PART===1&&CAPS[j][3]>66)continue;if(t>=CAPS[j][0]&&t<CAPS[j][1])k=j}
   const el=$('#caps');if(k!==lastCap){el.innerHTML=k>=0?CAPS[k][2]:'';lastCap=k}
   if(k>=0){const e=eo(ramp(t,CAPS[k][0],CAPS[k][0]+.22));const pop=POP.has(CAPS[k][3]);el.style.opacity=e;el.style.transform=`scale(${pop?lerp(1.25,1.08,e):(.92+.08*e)})`}else el.style.opacity=0}
 
@@ -418,21 +425,34 @@ const gc=$('#grain').getContext('2d');const NF=[];
 (()=>{let s=61;const r=()=>{s=(s*16807)%2147483647;return s/2147483647};for(let f=0;f<6;f++){const im=gc.createImageData(420,700);for(let i=0;i<im.data.length;i+=4){const v=r()*255|0;im.data[i]=im.data[i+1]=im.data[i+2]=v;im.data[i+3]=255}NF.push(im)}})();
 $('#grain').style.width='840px';$('#grain').style.height='1400px';
 
-function seek(t){CUR=t;
-  let active=null;for(const s of TL){if(t>=s.a&&t<s.b)active=s}
+function seek(tl){const t=tl+OFF;CUR=t;
+  const ts=(PART===1&&t>P1_END)?P1_END:(PART===2?Math.max(t,A(67)+.01):t);  // part 1 holds the last frame under its question
+  let active=null;for(const s of TL){if(ts>=s.a&&ts<s.b)active=s}
   $$('.scene').forEach(e=>e.style.opacity=0);
-  if(active){document.getElementById(active.id).style.opacity=1;active.fn(t-active.a,t);}
+  if(active){document.getElementById(active.id).style.opacity=1;CUR=ts;active.fn(ts-active.a,ts);CUR=t;}
+  if(PART===1){partOneEnd(t);caps(t);$('#caps').style.visibility=t>=P1_END+.3?'hidden':'visible';grainF(t);return}
   const q=$('#ask'),fade=1-ramp(t,ASK_END-.4,ASK_END);
   q.querySelector('.qq').style.opacity=ramp(t,A(126)+.3,A(126)+1.0)*fade;
   q.querySelector('.op.a').style.opacity=ramp(t,A(128),A(128)+.5)*fade;q.querySelector('.op.a').style.transform=`translateY(${(1-eo(ramp(t,A(128),A(128)+.5)))*16}px)`;
   q.querySelector('.op.b').style.opacity=ramp(t,A(129),A(129)+.5)*fade;q.querySelector('.op.b').style.transform=`translateY(${(1-eo(ramp(t,A(129),A(129)+.5)))*16}px)`;
   q.querySelector('.cm').style.opacity=ramp(t,VO_END+.8,VO_END+1.4)*fade;
-  const blk=t>=ASK_END;$('#black').style.opacity=blk?1:0;
-  $('#title .a').style.opacity=Math.min(ramp(t,ASK_END+.8,ASK_END+1.5),1-ramp(t,DURATION-.7,DURATION-.1));
-  $('#title .b').style.opacity=Math.min(ramp(t,ASK_END+2.0,ASK_END+2.7),1-ramp(t,DURATION-.7,DURATION-.1));
+  const blk=t>=ASK_END;$('#black').style.opacity=blk?1:0;if(PART===2)$('#ttlB').textContent='الحلقة السادسة — الحارس (الجزء الثاني)';
+  $('#title .a').style.opacity=Math.min(ramp(t,ASK_END+.8,ASK_END+1.5),1-ramp(t,FULL_DUR-.7,FULL_DUR-.1));
+  $('#title .b').style.opacity=Math.min(ramp(t,ASK_END+2.0,ASK_END+2.7),1-ramp(t,FULL_DUR-.7,FULL_DUR-.1));
   caps(t);$('#caps').style.visibility=(blk||t>=A(126))?'hidden':'visible';
-  const f=Math.floor(t*30)%6;gc.putImageData(NF[f],0,0);$('#grain').style.transform=`translate(${(f*37)%60}px,${(f*53)%60}px)`;
+  grainF(t);
 }
+function grainF(t){const f=Math.floor(t*30)%6;gc.putImageData(NF[f],0,0);$('#grain').style.transform=`translate(${(f*37)%60}px,${(f*53)%60}px)`;}
+function partOneEnd(t){const q=$('#ask'),fade=1-ramp(t,P1_ASK_END-.4,P1_ASK_END);
+  q.querySelector('.qq').innerHTML='الولد الحقيقي…';q.querySelector('.op.a').textContent='للحين في الدور صفر 🕳️';q.querySelector('.op.b').textContent='هو نواف اللي نعرفه 👤';
+  q.querySelector('.qq').style.opacity=ramp(t,P1_Q,P1_Q+.6)*fade;
+  q.querySelector('.op.a').style.opacity=ramp(t,P1_Q+1.0,P1_Q+1.5)*fade;q.querySelector('.op.b').style.opacity=ramp(t,P1_Q+1.8,P1_Q+2.3)*fade;
+  q.querySelector('.cm').style.opacity=ramp(t,P1_Q+2.8,P1_Q+3.3)*fade;
+  const blk=t>=P1_ASK_END;$('#black').style.opacity=blk?1:0;
+  $('#title .b').textContent='الحلقة السادسة — الحارس (الجزء الأول)';
+  $('#title .a').style.opacity=Math.min(ramp(t,P1_ASK_END+.8,P1_ASK_END+1.5),1-ramp(t,P1_ASK_END+4.5,P1_ASK_END+5.1));
+  $('#title .b').style.opacity=Math.min(ramp(t,P1_ASK_END+2.0,P1_ASK_END+2.7),1-ramp(t,P1_ASK_END+4.5,P1_ASK_END+5.1));}
+if(PART===2)document.addEventListener('DOMContentLoaded',()=>{});
 window.seek=seek;window.DURATION=DURATION;
 if(!location.search.includes('render')){let t0=null;const loop=ts=>{if(t0===null)t0=ts;seek(((ts-t0)/1000)%DURATION);requestAnimationFrame(loop)};document.fonts.ready.then(()=>requestAnimationFrame(loop));}
 else seek(0);
