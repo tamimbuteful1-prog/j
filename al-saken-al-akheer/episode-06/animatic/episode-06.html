@@ -56,6 +56,66 @@
     <clipPath id="eyeP"><path d="M300 560 Q318 548 338 558 Q320 570 300 560Z"/></clipPath>
   </defs>
 </svg>
+<script type="text/x-svg" id="tFace">
+  <g class="faceRoot">
+    <!-- hoodie & neck -->
+    <path d="M150 1300 C 160 980 230 900 300 880 L 420 880 C 500 900 570 980 580 1300Z" fill="url(#gHood)"/>
+    <path d="M300 880 C 320 930 400 930 420 880 L 410 820 L 310 820 Z" fill="#3c2a20"/>
+    <path d="M285 885 C 300 960 420 960 435 885 C 420 905 300 905 285 885Z" fill="#141a1f"/>
+    <g class="head">
+      <ellipse cx="236" cy="590" rx="18" ry="34" fill="#4a3428"/>
+      <ellipse cx="486" cy="590" rx="16" ry="32" fill="#6b4d3b"/>
+      <path d="M362 392 C 452 392 492 460 490 570 C 488 660 452 735 402 768 C 382 780 342 780 322 768 C 272 735 236 660 234 570 C 232 460 272 392 362 392Z" fill="url(#gSkin)"/>
+      <!-- shading side -->
+      <path d="M362 392 C 300 400 240 460 234 570 C 236 660 272 735 322 768 C 300 700 290 620 300 540 C 305 470 330 420 362 392Z" fill="#000" opacity=".28"/>
+      <!-- hair -->
+      <path d="M226 560 C 214 430 290 352 372 354 C 466 356 512 430 498 556 C 486 488 458 450 410 446 C 360 442 312 456 282 476 C 258 494 240 522 226 560Z" fill="#0a0908"/>
+      <path d="M300 430 C 340 400 420 398 460 430 C 430 420 360 418 300 430Z" fill="#1b1916"/>
+      <!-- brows -->
+      <path class="browL" d="M272 532 Q302 516 336 528" stroke="#0d0b09" stroke-width="9" fill="none" stroke-linecap="round"/>
+      <path class="browR" d="M392 528 Q424 516 452 532" stroke="#0d0b09" stroke-width="9" fill="none" stroke-linecap="round"/>
+      <!-- eyes -->
+      <g clip-path="url(#eyeL)"><rect x="270" y="540" width="70" height="50" fill="#d8d3cb"/><g class="irisL"><circle cx="306" cy="568" r="11" fill="#2a1c12"/><circle cx="306" cy="568" r="5" fill="#050302"/><circle cx="302" cy="564" r="2.5" fill="#fff" opacity=".8"/></g><rect class="lidL" x="270" y="540" width="70" height="0" fill="#5f4535"/></g>
+      <g clip-path="url(#eyeR)"><rect x="384" y="540" width="70" height="50" fill="#d8d3cb"/><g class="irisR"><circle cx="420" cy="568" r="11" fill="#2a1c12"/><circle cx="420" cy="568" r="5" fill="#050302"/><circle cx="416" cy="564" r="2.5" fill="#fff" opacity=".8"/></g><rect class="lidR" x="384" y="540" width="70" height="0" fill="#7a5944"/></g>
+      <path d="M276 572 Q305 548 336 570" stroke="#120c08" stroke-width="3" fill="none"/>
+      <path d="M390 570 Q420 548 450 572" stroke="#120c08" stroke-width="3" fill="none"/>
+      <!-- nose -->
+      <path d="M368 590 C 366 630 356 652 344 664 C 354 672 372 672 384 664" stroke="#3a281e" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <!-- mouth -->
+      <path class="mline" d="M328 716 Q362 709 396 716" stroke="#2b1a14" stroke-width="5" fill="none" stroke-linecap="round"/>
+      <ellipse class="mouth" cx="362" cy="716" rx="22" ry="0" fill="#1a0e0a"/>
+      <!-- stubble shadow -->
+      <path d="M300 720 C 320 770 400 770 424 720 C 410 760 320 760 300 720Z" fill="#000" opacity=".12"/>
+    </g>
+    <!-- light layers -->
+    <rect class="phoneLight" x="0" y="300" width="720" height="1000" fill="url(#gPhone)" opacity="0" style="mix-blend-mode:screen"/>
+    <rect class="blueAmb" x="0" y="0" width="720" height="1280" fill="#163049" opacity=".32" style="mix-blend-mode:multiply"/>
+  </g>
+</script>
+<script type="text/x-svg" id="tBody">
+  <g class="body">
+    <ellipse cx="0" cy="4" rx="80" ry="14" fill="#000" opacity=".45"/>
+    <g class="legL"><rect x="-44" y="-250" width="38" height="248" rx="10" fill="#14171b"/><ellipse cx="-26" cy="-4" rx="26" ry="10" fill="#0a0a0a"/></g>
+    <g class="legR"><rect x="6" y="-250" width="38" height="248" rx="10" fill="#121519"/><ellipse cx="26" cy="-4" rx="26" ry="10" fill="#0a0a0a"/></g>
+    <path d="M-70 -455 C -78 -380 -74 -300 -64 -230 L 64 -230 C 74 -300 78 -380 70 -455 C 40 -478 -40 -478 -70 -455Z" fill="url(#gHood)"/>
+    <path class="hoodTie" d="M-30 -470 C -20 -440 20 -440 30 -470" stroke="#0b0f13" stroke-width="8" fill="none"/>
+    <g class="armL"><path d="M-70 -450 C -92 -400 -98 -320 -92 -250 L -72 -250 C -70 -320 -64 -390 -56 -440Z" fill="#1a2128"/><ellipse cx="-82" cy="-242" rx="14" ry="18" fill="#5c4233"/></g>
+    <g class="armR"><path d="M70 -450 C 92 -400 98 -320 92 -250 L 72 -250 C 70 -320 64 -390 56 -440Z" fill="#1a2128"/><ellipse cx="82" cy="-242" rx="14" ry="18" fill="#5c4233"/></g>
+    <rect x="-14" y="-500" width="28" height="34" fill="#4a3428"/>
+    <g class="bhead">
+      <ellipse cx="0" cy="-548" rx="46" ry="58" fill="url(#gSkin)"/>
+      <g class="bface">
+        <path d="M-50 -556 C -54 -610 -20 -632 4 -630 C 34 -628 56 -604 50 -556 C 44 -584 26 -594 2 -594 C -22 -594 -40 -584 -50 -556Z" fill="#0a0908"/>
+        <ellipse cx="-17" cy="-548" rx="7" ry="4" fill="#d8d3cb"/><ellipse cx="17" cy="-548" rx="7" ry="4" fill="#d8d3cb"/>
+        <circle class="bi" cx="-17" cy="-548" r="3" fill="#120c08"/><circle class="bi" cx="17" cy="-548" r="3" fill="#120c08"/>
+        <path d="M-26 -560 Q-17 -566 -8 -561" stroke="#0d0b09" stroke-width="3" fill="none"/><path d="M8 -561 Q17 -566 26 -560" stroke="#0d0b09" stroke-width="3" fill="none"/>
+        <path d="M2 -540 L -4 -522 L 6 -522" stroke="#3a281e" stroke-width="2.5" fill="none"/>
+        <path d="M-12 -508 Q0 -510 12 -508" stroke="#2b1a14" stroke-width="3" fill="none" stroke-linecap="round"/>
+      </g>
+      <g class="bback" opacity="0"><path d="M-48 -540 C -54 -612 -20 -634 2 -632 C 30 -630 56 -606 48 -540 C 40 -500 -40 -500 -48 -540Z" fill="#0a0908"/><ellipse cx="-47" cy="-548" rx="7" ry="13" fill="#3e2b21"/><ellipse cx="47" cy="-548" rx="7" ry="13" fill="#3e2b21"/></g>
+    </g>
+  </g>
+</script>
 <svg width="0" height="0" style="position:absolute"><defs>
   <linearGradient id="gCrt" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1c2420"/><stop offset="1" stop-color="#0a0e0c"/></linearGradient>
   <radialGradient id="gScreenGlow" cx="50%" cy="50%" r="60%"><stop offset="0" stop-color="#a8d8b8" stop-opacity=".35"/><stop offset="1" stop-color="#a8d8b8" stop-opacity="0"/></radialGradient>
@@ -188,17 +248,54 @@ live:()=>`<rect width="720" height="632" fill="#151a1e"/><polygon points="0,0 72
   <polygon points="250,400 470,400 720,632 0,632" fill="#121518"/><g class="fC"></g>`,
 };
 
+// ---------------------------------------------------------------- Nawaf: the SAME drawings as episodes 1–5
+// (the new rig is kept for the father, Abu Saleh and the firemen; Nawaf uses his original face & body art)
+const SVGNS='http://www.w3.org/2000/svg';let OLDID=0;
+const txt=id=>document.getElementById(id).textContent;
+function mkOldBody(parent){const g=document.createElementNS(SVGNS,'g');const id='onb'+(OLDID++);g.setAttribute('id',id);g.innerHTML=txt('tBody');parent.appendChild(g);
+  g.querySelector('.bface').insertAdjacentHTML('beforeend','<path class="bsmile" d="M-14 -510 Q0 -500 14 -510" stroke="#2b1a14" stroke-width="3" fill="none" opacity="0"/>');
+  return {old:true,id,g,el:{[id]:g}}}
+function mkOldFace(parent){const g=document.createElementNS(SVGNS,'g');const id='onf'+(OLDID++);g.setAttribute('id',id);g.innerHTML=txt('tFace');parent.appendChild(g);
+  return {oldFace:true,id,g,el:{[id]:g}}}
+const BROW_V={neutral:0,fear:.7,shock:1.1,doubt:.3,anger:-.15,sad:.45,tense:.2};
+function oldFaceRig(root,{open=1,lookX=0,lookY=0,brow=0,mouth=0,turn=0,smile=0}){
+  root.querySelectorAll('.lidL,.lidR').forEach(l=>l.setAttribute('height',(1-open)*50));
+  root.querySelectorAll('.irisL,.irisR').forEach(g=>T(g,`translate(${lookX*12} ${lookY*7})`));
+  root.querySelectorAll('.browL,.browR').forEach(g=>T(g,`translate(0 ${-brow*10})`));
+  root.querySelector('.mouth').setAttribute('ry',mouth*10);
+  root.querySelector('.mline').setAttribute('d',`M${328-smile*10} ${716-smile*10} Q362 ${709+smile*18} ${396+smile*10} ${716-smile*10}`);
+  root.querySelector('.phoneLight').setAttribute('opacity',0);
+  T(root.querySelector('.head'),`translate(${turn*14} 0) rotate(${turn*2} 362 600)`);}
+function poseOldFace(c,p){const g=c.g;g.setAttribute('opacity',p.op??1);
+  const s=p.s||4,hx=p.x??360,hy=(p.y??0)-395*s,k=s/2.35;const H=Object.assign({tilt:0,turn:0,nod:0,shake:0},p.head);
+  T(g,`translate(${hx+H.shake} ${hy+H.nod*8}) rotate(${H.tilt}) scale(${k}) translate(-362 -590)`);
+  const E=Object.assign({x:0,y:0,wide:0,blink:0,squint:0,tremble:0},p.eyes);
+  const M=typeof p.mouth==='string'?p.mouth:'';const mo=typeof p.mouth==='object'?p.mouth:{};
+  const shockOpen=M==='shock'?.45:M==='slight'?.2:M==='wide'?.7:(mo.open||0);
+  const smile=M==='creepy'?.9:M==='smile'?.6:M==='frown'?-.4:(mo.smile||0);
+  const b=typeof p.brows==='string'?(BROW_V[p.brows]??0):0;
+  oldFaceRig(g,{open:clamp(1-E.blink-E.squint*.25,0,1),lookX:E.x+(E.tremble?Math.sin(CUR*90)*E.tremble*.08:0),lookY:E.y,brow:b+E.wide*.2,mouth:Math.max(shockOpen,(p.talk||0)*.75),turn:H.turn,smile});
+  g.querySelectorAll('.blueAmb').forEach(e=>e.setAttribute('opacity',.24));}
+function poseOldBody(c,p){const g=c.g;g.setAttribute('opacity',p.op??1);const s=p.s||.5,k=s*1.45;const feetY=(p.y??0)+470*s;
+  T(g,`translate(${p.x??0} ${feetY}) scale(${k*(p.flip?-1:1)} ${k})`);
+  const back=p.view==='back'?1:0;g.querySelector('.bback').setAttribute('opacity',back);g.querySelector('.bface').setAttribute('opacity',1-back);g.querySelector('.hoodTie').setAttribute('opacity',1-back);
+  const LL=p.legL||{},LR=p.legR||{};T(g.querySelector('.legL'),`rotate(${(LL.hip||0)*.9} -25 -250)`);T(g.querySelector('.legR'),`rotate(${(LR.hip||0)*.9} 25 -250)`);
+  const AL=p.armL||{},AR=p.armR||{};T(g.querySelector('.armL'),`rotate(${clamp(AL.sh??0,-160,160)} -64 -440)`);T(g.querySelector('.armR'),`rotate(${clamp(AR.sh??0,-160,160)} 64 -440)`);
+  const E=p.eyes||{};g.querySelectorAll('.bi').forEach(e=>T(e,`translate(${(E.x||0)*3} ${(E.y||0)*2})`));
+  const H=p.head||{};T(g.querySelector('.bhead'),`translate(0 ${(H.nod||0)*2}) rotate(${(H.turn||0)*8+(H.tilt||0)} 0 -500)`);
+  const mo=typeof p.mouth==='object'?p.mouth:{};const sm=p.mouth==='creepy'?1:(mo.smile||0);g.querySelector('.bsmile').setAttribute('opacity',clamp(sm,0,1));}
+
 // ---------------------------------------------------------------- build scenes + characters
 function fill(sc,layer,html){$(`#${sc} .${layer}`).insertAdjacentHTML('beforeend',html)}
 function mk(sc,look,layer='C'){return RIG.mount(RIG.make(look),$(`#${sc} .${layer}`))}
 fill('s_living','L0',BG.living());fill('s_living','L1',BG.livingMid());
-const LV={dad:mk('s_living','father'),naw:mk('s_living','nawaf')};
+const LV={dad:mk('s_living','father'),naw:mkOldBody($('#s_living .C'))};
 fill('s_face','L0','<rect class="fbg" x="-400" y="-300" width="1520" height="1900" fill="#1b1611"/><ellipse class="fglow" cx="60" cy="400" rx="420" ry="420" fill="url(#gBulb)" opacity=".35" filter="url(#fDof)"/><rect class="fdoor" x="470" y="200" width="300" height="700" fill="#2a2016" opacity=".7" filter="url(#fDof)"/>');
-const FC={naw:mk('s_face','nawaf'),dad:mk('s_face','father'),grd:mk('s_face','guard')};
+const FC={naw:mkOldFace($('#s_face .C')),dad:mk('s_face','father'),grd:mk('s_face','guard')};
 fill('s_door','L0',BG.doorClose());
-fill('s_hall','L0',BG.hall(2400));const HL={dad:mk('s_hall','father'),naw:mk('s_hall','nawaf')};
-fill('s_gdoor','L0',BG.gdoor());const GD={grd:mk('s_gdoor','guard','L1'),dad:mk('s_gdoor','father'),naw:mk('s_gdoor','nawaf')};
-fill('s_groom','L0',BG.groom());const GR={grd:mk('s_groom','guard'),dad:mk('s_groom','father'),naw:mk('s_groom','nawaf')};
+fill('s_hall','L0',BG.hall(2400));const HL={dad:mk('s_hall','father'),naw:mkOldBody($('#s_hall .C'))};
+fill('s_gdoor','L0',BG.gdoor());const GD={grd:mk('s_gdoor','guard','L1'),dad:mk('s_gdoor','father'),naw:mkOldBody($('#s_gdoor .C'))};
+fill('s_groom','L0',BG.groom());const GR={grd:mk('s_groom','guard'),dad:mk('s_groom','father'),naw:mkOldBody($('#s_groom .C'))};
 fill('s_groom','L2','<rect class="gDoorIn" x="-300" y="-300" width="1320" height="1900" fill="none"/>');
 fill('s_hand','L0','<rect x="-300" y="-300" width="1320" height="1900" fill="#1a1511"/><ellipse cx="200" cy="300" rx="420" ry="420" fill="url(#gBulb)" opacity=".25" filter="url(#fDof)"/>');
 const HD={dad:mk('s_hand','father'),grd:mk('s_hand','guard')};
@@ -208,19 +305,20 @@ const DK={grd:mk('s_deck','guard')};
 const FD={};
 function feed(kind){const g=$('#s_mon .feed');if(g.dataset.k!==kind){g.dataset.k=kind;g.innerHTML=FEED[kind]();
   const C=g.querySelector('.fC');FD.a=FD.b=FD.c=FD.d=null;
-  if(kind==='fire'){FD.a=RIG.mount(RIG.make('fireman'),C);FD.b=RIG.mount(RIG.make('fireman'),C);FD.c=RIG.mount(RIG.make('guard',{top:'#6d6a64'}),C);FD.d=RIG.mount(RIG.make('nawaf',{age:'teen'}),C);}
-  if(kind==='lift'){FD.a=RIG.mount(RIG.make('nawaf'),C);FD.b=RIG.mount(RIG.make('nawaf'),C);}
-  if(kind==='live'){FD.a=RIG.mount(RIG.make('nawaf'),C);}
+  if(kind==='fire'){FD.a=RIG.mount(RIG.make('fireman'),C);FD.b=RIG.mount(RIG.make('fireman'),C);FD.c=RIG.mount(RIG.make('guard',{top:'#6d6a64'}),C);FD.d=mkOldBody(C);}
+  if(kind==='lift'){FD.a=mkOldBody(C);FD.b=mkOldBody(C);}
+  if(kind==='live'){FD.a=mkOldBody(C);}
   g.parentNode.setAttribute('class',kind==='fire'?'vhs':'cctv');}}
 fill('s_final','L0',BG.groom());fill('s_final','L1','<g class="exitDoor"><rect x="520" y="300" width="240" height="600" fill="#2f3a3a" stroke="#0a0c0c" stroke-width="6"/><circle cx="545" cy="620" r="10" fill="#9aa0a5"/><rect x="520" y="896" width="240" height="6" fill="#e7b25e" opacity=".5"/><g class="fsh" filter="url(#fBlur6)"><rect x="600" y="895" width="24" height="8" fill="#000"/><rect x="650" y="895" width="24" height="8" fill="#000"/></g></g>');
-const FN={naw:mk('s_final','nawaf'),dad:mk('s_final','father'),grd:mk('s_final','guard')};
+const FN={naw:mkOldBody($('#s_final .C')),dad:mk('s_final','father'),grd:mk('s_final','guard')};
+
 
 // ---------------------------------------------------------------- pose helpers
 const blink=(t,seed)=>RIG.blink(t,seed);
 function focusOn(sc,el,s=1.3,dx=0,dy=0){cam(sc,{s:1});const r=el.getBoundingClientRect();const cx=r.left+r.width/2,cy=r.top+r.height/2;cam(sc,{x:cx-360+dx,y:cy-640+dy,s})}
 function hide(...cs){cs.forEach(c=>c.el[c.id].setAttribute('opacity',0))}
 function show(...cs){cs.forEach(c=>c.el[c.id].setAttribute('opacity',1))}
-function pose(c,p){c.el[c.id].setAttribute('opacity',p.op??1);RIG.pose(c,Object.assign({t:CUR},p))}
+function pose(c,p){if(c.oldFace)return poseOldFace(c,p);if(c.old)return poseOldBody(c,p);c.el[c.id].setAttribute('opacity',p.op??1);RIG.pose(c,Object.assign({t:CUR},p))}
 // close-up framing: head center at (cx,cy) with head scale s
 const closeUp=(s,cx=360,cy=600)=>({x:cx,y:cy+395*s,s});
 function idle(t,seed=0){return {head:{tilt:Math.sin(t*.7+seed)*1.2,nod:Math.sin(t*.9+seed)*.3},eyes:{blink:blink(t,seed)},armL:{sh:6+Math.sin(t*.8+seed)*1.5,el:-10,hand:'relaxed'},armR:{sh:-6-Math.sin(t*.8+seed)*1.5,el:10,hand:'relaxed'}}}
