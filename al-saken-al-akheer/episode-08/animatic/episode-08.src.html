@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<title>الساكن الأخير 08</title>
+{{HEAD}}
+</head>
+<body>
+<div id="stage">
+{{DEFS}}
+{{TFACE}}
+{{TBODY}}
+{{PHOTO_DEFS}}
+<svg width="0" height="0" style="position:absolute"><defs>
+  <pattern id="pScan" width="4" height="4" patternUnits="userSpaceOnUse"><rect width="4" height="2" fill="#000" opacity=".28"/></pattern>
+  <radialGradient id="gScreenGlow" cx="50%" cy="50%" r="60%"><stop offset="0" stop-color="#a8d8b8" stop-opacity=".35"/><stop offset="1" stop-color="#a8d8b8" stop-opacity="0"/></radialGradient>
+  <linearGradient id="gStairFade" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset=".55" stop-color="#000" stop-opacity=".2"/><stop offset="1" stop-color="#000" stop-opacity=".95"/></linearGradient>
+  <radialGradient id="gTorch" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#fff6dc" stop-opacity=".55"/><stop offset=".6" stop-color="#fff6dc" stop-opacity=".12"/><stop offset="1" stop-color="#fff6dc" stop-opacity="0"/></radialGradient>
+</defs></svg>
+
+<div class="scene" id="s_door"><svg viewBox="0 0 720 1280"><g class="cam"><g class="L0"></g><g class="C"></g><g class="L2"></g></g></svg></div>
+<div class="scene" id="s_room"><svg viewBox="0 0 720 1280"><g class="cam"><g class="L0"></g><g class="L1"></g><g class="C"></g><g class="L2"></g></g><rect class="dark" width="720" height="1280" fill="#000" opacity="0"/></svg></div>
+<div class="scene" id="s_face"><svg viewBox="0 0 720 1280"><g class="cam"><g class="L0"><rect class="fbg" x="-400" y="-300" width="1520" height="1900" fill="#151915"/><ellipse class="fglow" cx="60" cy="300" rx="420" ry="420" fill="url(#gBulb)" opacity=".2" filter="url(#fDof)"/></g><g class="C"></g></g><rect class="phoneLit" width="720" height="1280" fill="url(#gPhone)" opacity="0" style="mix-blend-mode:screen"/><rect class="dark" width="720" height="1280" fill="#000" opacity="0"/></svg></div>
+<div class="scene" id="s_phone"></div>
+<div class="scene" id="s_photo"><svg viewBox="0 0 720 1280"><rect width="720" height="1280" fill="#140f0b"/><g class="cam"><g class="C"><svg x="-240" y="300" width="1200" height="840" viewBox="0 0 600 420" class="sepia"><use href="#gpWith"/></svg><rect x="-240" y="300" width="1200" height="840" fill="#cbbfa6" opacity=".12"/></g></g></svg></div>
+<div class="scene" id="s_mon"><svg viewBox="0 0 720 1280"><g class="cam"><g class="C">
+  <rect x="-200" y="-200" width="1120" height="1700" fill="#0d0f0e"/><rect x="20" y="230" width="680" height="640" rx="40" fill="#24282a" stroke="#0a0b0b" stroke-width="8"/><rect x="58" y="268" width="604" height="530" rx="46" fill="#000"/>
+  <svg x="58" y="268" width="604" height="530" viewBox="0 0 720 632" preserveAspectRatio="xMidYMid slice" class="cctv"><g class="feed">
+    <rect width="720" height="632" fill="#151a1e"/><polygon points="0,0 720,0 470,180 250,180" fill="#0e1215"/><polygon points="0,0 250,180 250,400 0,632" fill="#1c2228"/><polygon points="720,0 470,180 470,400 720,632" fill="#181d22"/>
+    <rect x="250" y="180" width="220" height="220" fill="#1a2025"/><polygon points="250,400 470,400 720,632 0,632" fill="#121518"/>
+    <rect x="80" y="300" width="160" height="300" fill="#2f3a3a"/><text x="160" y="290" text-anchor="middle" font-family="Tajawal" font-size="22" fill="#aaa">غرفة الحارس</text><g class="fC"></g></g>
+    <rect width="720" height="632" fill="url(#pScan)"/><text x="24" y="46" font-family="IBM Plex Mono" font-size="30" fill="#e6f0e6" class="rec">● CAM 04</text><text class="osd" x="696" y="46" font-size="28" text-anchor="end" font-family="IBM Plex Mono" fill="#e6f0e6">LIVE 03:51</text></svg>
+  <rect x="58" y="268" width="604" height="530" rx="46" fill="url(#gScreenGlow)" style="mix-blend-mode:screen"/></g></g></svg></div>
+<div class="scene" id="s_bulb"><svg viewBox="0 0 720 1280"><g class="cam"><g class="C">
+  <rect x="-200" y="-200" width="1120" height="1700" fill="#121412"/><rect x="345" y="-200" width="30" height="620" fill="#2a2a2a"/><path d="M320 420 L 400 420 L 410 480 L 310 480Z" fill="#3a3a38"/>
+  <ellipse class="bglow" cx="360" cy="560" rx="380" ry="380" fill="url(#gBulb)" opacity=".8"/><circle class="bulbC" cx="360" cy="560" r="80" fill="#ffe0a0"/><path d="M330 560 Q345 520 360 560 Q375 600 390 560" stroke="#c98a2a" stroke-width="5" fill="none"/></g></g><rect class="dark" width="720" height="1280" fill="#000" opacity="0"/></svg></div>
+<div class="scene" id="s_secret"><svg viewBox="0 0 720 1280"><g class="cam"><g class="L0"></g><g class="L1"></g><g class="C"></g></g><rect class="torchMask" width="720" height="1280" fill="#000" opacity=".86" mask="url(#torchM)"/>
+  <defs><mask id="torchM"><rect width="720" height="1280" fill="#fff"/><ellipse class="torchHole" cx="360" cy="640" rx="260" ry="300" fill="#000" filter="url(#fBlur14)"/></mask></defs></svg></div>
+<div class="scene" id="s_stairs"><svg viewBox="0 0 720 1280"><g class="cam"><g class="L0"></g><g class="L1"></g><g class="C"></g><g class="L2"></g></g></svg></div>
+<div class="scene" id="s_final"><svg viewBox="0 0 720 1280"><g class="cam"><g class="L0"></g><g class="L1"></g><g class="C"></g><g class="L2"></g></g></svg></div>
+
+<div id="black"></div>
+<div id="ask"><div class="qq">مين تصدق؟</div><div class="op a">رسالة سالم 📱</div><div class="op b">الطفل اللي بالدرج 👤</div><div class="cm">اكتب اختيارك بالتعليقات</div></div>
+<div id="title"><div class="a">الساكن الأخير</div><div class="b">الحلقة الثامنة — رسالة من المفقود</div></div>
+<canvas id="grain" width="420" height="700"></canvas>
+<div id="vig"></div>
+<div id="caps"></div>
+<div id="est">معاينة بدون صوت الراوي — التوقيت تقديري</div>
+</div>
+
+<script src="timeline.js"></script>
+{{VENV}}
+<script src="rig.js"></script>
+<script src="engine.js"></script>
+<script>
+const {A,B,ramp,ease,eo,lerp,clamp,T,$,$$,cam,pose,merge,idle,closeUp,blink,talk,inSeg,flick,hide,show,fill,mk,mkOldBody,mkOldFace}=E;
+{{PEOPLE_JS}}
+$$('#gpBase .blueAmb,#gpBase .phoneLight').forEach(e=>e.setAttribute('opacity',0));
+
+const SPEAK={double:[[2,2]],guard:[[5,5],[17,18],[40,40]],nawaf:[[14,14],[61,61]],salem:[[54,55]],child:[[64,65]]};
+
+// ---------- sets
+fill('s_door','L0',E.BG.gdoorIn());
+fill('s_room','L0',E.BG.groom());
+const RM={grd:mk('s_room','guard'),dad:mk('s_room','father'),naw:mkOldBody('s_room')};
+fill('s_room','L1','<g class="secretDoor" opacity="0"><rect x="560" y="560" width="150" height="230" fill="#1d2320" stroke="#0a0c0b" stroke-width="5"/><rect x="580" y="580" width="110" height="190" fill="none" stroke="#2c3430" stroke-width="3"/><circle cx="590" cy="680" r="7" fill="#9aa39e"/></g><g class="box"><rect x="540" y="600" width="190" height="150" fill="#5a4630" stroke="#2a2016" stroke-width="4"/><path d="M540 640 L 730 640" stroke="#3a2b1b" stroke-width="4"/><text x="635" y="710" text-anchor="middle" font-family="Tajawal" font-weight="800" font-size="22" fill="#2a2016">أشرطة 2019</text></g>');
+const FC={naw:mkOldFace('s_face'),grd:mk('s_face','guard'),dad:mk('s_face','father')};
+document.getElementById('s_phone').innerHTML=E.phoneHTML('p1');
+fill('s_secret','L0',E.BG.groom());fill('s_secret','L1',$('#s_room .L1').innerHTML);
+const SC={grd:mk('s_secret','guard'),dad:mk('s_secret','father'),naw:mkOldBody('s_secret')};
+fill('s_stairs','L0',E.BG.stairs());
+const ST={naw:mkOldBody('s_stairs')};
+fill('s_stairs','L2','<g class="kidShadow" opacity="0" filter="url(#fBlur6)"><ellipse cx="560" cy="1290" rx="34" ry="40" fill="#000"/><path d="M520 1300 C 520 1340 600 1340 600 1300 L 610 1380 L 510 1380Z" fill="#000"/></g>');
+fill('s_final','L0',E.BG.stairs());const FN={naw:mkOldBody('s_final')};
+fill('s_final','L2','<g class="kidShadow" filter="url(#fBlur6)"><ellipse cx="560" cy="1290" rx="34" ry="40" fill="#000"/><path d="M520 1300 C 520 1340 600 1340 600 1300 L 610 1380 L 510 1380Z" fill="#000"/></g>');
+// live feed: the double outside the guard's door
+const FDN=E.oldBody($('#s_mon .fC'));
+
+// phone messages (appear on the narration line that reads them)
+const MSG=[{who:'in',text:'لا تفتحون… اللي برا مو جاي يدخل.',at:A(8)},{who:'in',text:'هو يبيكم تطلعون له!',at:A(10)},{who:'out',text:'مين أنت؟',at:A(11)+.6},
+  {who:'in',text:'اسمي سالم… وإذا تبي تعيش، اسمع كلامي!',at:A(13)},{who:'in',text:'بعد عشر ثواني… بتنقطع الكهرباء.',at:A(31)},
+  {who:'in',voice:true,at:A(51)+.3,playFrom:A(54),dur:B(55)-A(54)}];
+
+// ---------- helpers
+function faceScene(who,{s=4.2,cy=600,cx=360,dark=0,lit=0}={}){hide(FC.naw,FC.grd,FC.dad);const c=FC[who];show(c);$('#s_face .dark').setAttribute('opacity',dark);$('#s_face .phoneLit').setAttribute('opacity',lit);return [c,closeUp(s,cx,cy)]}
+function room(t,o={}){
+  pose(RM.dad,merge(idle(t,2),{x:o.dx??250,y:900-470*.55,s:.55,head:{turn:o.dTurn??.5},brows:o.dBrows||'fear',eyes:{x:o.dEyes??.8,blink:blink(t,2)},mouth:'tense'}));
+  pose(RM.naw,merge(idle(t,1),{x:o.nx??110,y:900-470*.52,s:.52,head:{turn:o.nTurn??.6},eyes:{x:o.nEyes??1},armR:o.nArmR||{sh:-6},armL:o.nArmL||{sh:6},legL:o.nLegL}));
+  const gp=merge(idle(t,5),{x:o.gx??440,y:900-470*.53,s:.53,head:{turn:o.gTurn??.5},brows:o.gBrows||'tense',eyes:{x:o.gEyes??.8,squint:.3,blink:blink(t,5)},mouth:'frown',talk:talk(t,SPEAK.guard)});
+  if(o.gArmL)gp.armL=o.gArmL;pose(RM.grd,gp);
+  $$('#s_room .bulb').forEach(e=>e.setAttribute('opacity',1-flick(t,1.9)*.3));$$('#s_room .mini').forEach((m,i)=>m.setAttribute('fill',['#1b2a22','#20302a','#182620','#1d2c24'][(i+Math.floor(t*3))%4]));}
+const knockAt=(t,ks)=>ks.map(x=>t-x).filter(d=>d>=0&&d<.2).map(d=>1-d/.2)[0]||0;
+
+// ---------- timeline
+const TL=[];const S=(id,a,b,fn)=>TL.push({id,a,b,fn});
+// 0 — three heavy knocks on the guard's door (extreme close), then toward Nawaf
+const K0=[A(0)+.05,A(0)+.6,A(0)+1.15];
+S('s_door',0,A(0)+1.8,(l,t)=>{const k=knockAt(t,K0);T($('#s_door .leaf'),`translate(${Math.sin(t*400)*k*4} 0)`);cam('s_door',{s:1.35+l*.04,x:60,y:-40,shake:k*2.5})});
+S('s_face',A(0)+1.8,A(1),(l,t)=>{const [c,f]=faceScene('naw',{s:4.2});pose(c,merge(f,{brows:'fear',eyes:{x:.9,blink:blink(t,1)},mouth:'tense'}))});
+// 1–2 — "open up… it's freezing out here" (my voice, from outside)
+S('s_room',A(1),A(3),(l,t)=>{room(t,{});cam('s_room',{s:1.15,x:20,y:-30})});
+// 3–5 — I step forward; Abu Saleh grabs my arm: "don't open! that's not you!"
+S('s_room',A(3),A(6),(l,t)=>{const st=ease(ramp(t,A(3),A(3)+.8));const grab=ease(ramp(t,A(4),A(4)+.6));
+  room(t,{nx:lerp(110,200,st),nLegL:{hip:-Math.sin(st*Math.PI)*14},gx:lerp(440,300,grab),gTurn:-.8,gEyes:-1,gBrows:'anger',gArmL:{sh:lerp(8,70,grab),el:lerp(-10,-30,grab),hand:grab>.6?'fist':'reach'},nTurn:.6});
+  cam('s_room',{s:1.45,x:-40,y:-40})});
+// 6–13 — the phone: unknown number; messages; Salem
+S('s_face',A(6),A(7),(l,t)=>{const [c,f]=faceScene('naw',{s:4.2,lit:.4});pose(c,merge(f,{brows:'fear',eyes:{y:.8,blink:blink(t,1)},phone:.6}))});
+S('s_phone',A(7),A(14),(l,t)=>{E.renderChat('p1',MSG.slice(0,4),t);E.pcam('s_phone',lerp(1.0,1.15,ease(ramp(l,0,6))),0,0,E.vib(t,A(6),.8)+E.vib(t,A(10)-.1,.6)+E.vib(t,A(13)-.1,.6))});
+// 14 — "Abu Saleh… who's Salem?"
+S('s_face',A(14),A(15),(l,t)=>{const [c,f]=faceScene('naw',{s:4.2});pose(c,merge(f,{brows:'doubt',eyes:{x:.8,blink:blink(t,1)},talk:talk(t,SPEAK.nawaf),head:{turn:.3}}))});
+// 15–18 — he freezes (eyes), then: "Salem… disappeared seven years ago"
+S('s_face',A(15),A(19),(l,t)=>{const [c,f]=faceScene('grd',{s:lerp(5.5,4.3,ease(ramp(t,A(16),A(17)))),cy:620});pose(c,merge(f,{brows:'sad',eyes:{x:-.3,wide:t<A(16)?.6:0,blink:t<A(16)?0:blink(t,5)},mouth:'frown',talk:talk(t,SPEAK.guard),head:{nod:t>A(17)?2:0}}))});
+// 19–20 — the group photo: the young man I didn't know
+S('s_photo',A(19),A(21),(l,t)=>{const k=ease(ramp(t,A(19),A(20)+.6));const X=-240+lerp(300,225,k)*2,Y=300+lerp(220,210,k)*2,s=lerp(1.2,2.6,k);T($('#s_photo .cam'),`translate(360 640) scale(${s}) translate(${-X} ${-Y})`)});
+// 21–24 — the camera: the other me at the door… then gone; the hallway empty
+S('s_mon',A(21),A(26),(l,t)=>{const gone=t>=A(23)+.6;E.pose(FDN,{x:150,y:430,s:.32,op:gone?0:1,eyes:{y:-.4},head:{}});$('#s_mon .rec').setAttribute('opacity',Math.floor(t*2)%2?1:.3);
+  const gl=(t>A(23)+.45&&t<A(23)+.7);$('#s_mon .feed').style.transform=gl?`translateX(${Math.sin(t*120)*12}px)`:'';cam('s_mon',{s:lerp(1,1.15,ease(ramp(l,0,5)))})});
+// 25–28 — but the knocks didn't stop
+S('s_door',A(26),A(29),(l,t)=>{const k=knockAt(t,[A(26),A(27),A(28)]);T($('#s_door .leaf'),`translate(${Math.sin(t*400)*k*4} 0)`);cam('s_door',{s:1.1,shake:k*3})});
+// 29 — he looks between the screen and the door
+S('s_face',A(29),A(30),(l,t)=>{const [c,f]=faceScene('naw',{s:4.0});pose(c,merge(f,{brows:'fear',eyes:{x:Math.sin(t*3)>0?.9:-.9},head:{turn:Math.sin(t*3)>0?.2:-.2}}))});
+// 30–31 — third message: the power will cut
+S('s_phone',A(30),A(32),(l,t)=>{E.renderChat('p1',MSG.slice(0,5),t);E.pcam('s_phone',1.25,0,-60,E.vib(t,A(30),.6))});
+// 32–35 — the bulb flickers… out; total dark, only breathing
+S('s_bulb',A(32),A(35)+1.2,(l,t)=>{const f=t<A(33)?0:(t<A(34)?flick(t,4):(t<A(34)+.15?1:0));const off=t>=A(34)+.15;
+  $('#s_bulb .bulbC').setAttribute('fill',off?'#3a352a':'#ffe0a0');$('#s_bulb .bglow').setAttribute('opacity',off?0:.8-f*.7);$('#s_bulb .dark').setAttribute('opacity',off?.94:f*.6);cam('s_bulb',{s:1+l*.04})});
+S('s_room',A(35)+1.2,A(36),(l,t)=>{room(t,{});$('#s_room .dark').setAttribute('opacity',.97)});
+// 36–39 — Abu Saleh's phone light; to the tape shelf; pulls an old box… a small iron door behind it
+S('s_secret',A(36),A(40),(l,t)=>{const walk=ease(ramp(t,A(36)+.5,A(37)+1.0));const pull=ease(ramp(t,A(38),A(38)+1.4));const w=E.walkPose(t,{period:1.1});const walking=walk>0&&walk<1;
+  pose(SC.grd,merge(walking?w:idle(t,5),{x:lerp(300,470,walk),y:900-470*.53+(walking?w._bob*.5:0),s:.53,view:walking?'side':'front',head:{turn:.6},brows:'tense',eyes:{x:.8},
+    armL:{sh:pull>0?lerp(30,70,pull):-60,el:pull>0?-20:-60,hand:pull>0?'handle':'phone'},armR:{sh:pull>0?lerp(-30,10,pull):-6,el:-30,hand:pull>0?'handle':'relaxed'}}));
+  pose(SC.dad,merge(idle(t,2),{x:180,y:900-470*.55,s:.55,head:{turn:.6},brows:'fear',eyes:{x:1}}));pose(SC.naw,merge(idle(t,1),{x:80,y:900-470*.52,s:.52,head:{turn:.6},eyes:{x:1}}));
+  T($('#s_secret .box'),`translate(${-pull*170} ${pull*8})`);$('#s_secret .secretDoor').setAttribute('opacity',1);
+  const hx=lerp(330,600,walk);$('#s_secret .torchHole').setAttribute('cx',hx);$('#s_secret .torchHole').setAttribute('cy',lerp(640,690,walk));cam('s_secret',{s:1.2,x:lerp(-20,90,walk),y:-20})});
+// 40 — "this is the emergency stair… nobody knows about it"
+S('s_face',A(40),A(41),(l,t)=>{const [c,f]=faceScene('grd',{s:4.2,dark:.55});pose(c,merge(f,{brows:'tense',eyes:{x:-.6,blink:blink(t,5)},talk:talk(t,SPEAK.guard)}))});
+// 41–44 — he opens it, dad goes through; I'm a second late, looking back… then it slams
+S('s_secret',A(41),A(44)+.6,(l,t)=>{const goD=ease(ramp(t,A(41)+.6,A(41)+1.8));const goN=ease(ramp(t,A(43),A(43)+1.0));
+  pose(SC.grd,merge(idle(t,5),{x:640,y:900-470*.53,s:.53,op:1-ramp(t,A(41)+.2,A(41)+.8),head:{turn:-.4}}));
+  pose(SC.dad,merge(idle(t,2),{x:lerp(180,640,goD),y:900-470*.55,s:.55,op:1-ramp(t,A(41)+1.4,A(41)+1.9),head:{turn:.6}}));
+  pose(SC.naw,merge(idle(t,1),{x:lerp(80,620,goN),y:900-470*.52,s:.52,view:t>A(42)&&t<A(43)?'front':'front',head:{turn:t>A(42)&&t<A(43)?-1:.6},eyes:{x:t>A(42)&&t<A(43)?-1:1},op:1-ramp(t,A(44)-.3,A(44))}));
+  const slam=t>=A(44);T($('#s_secret .secretDoor'),slam?'':`translate(0 0)`);$('#s_secret .torchHole').setAttribute('cx',600);cam('s_secret',{s:1.2,x:90,y:-20,shake:(t>A(44)&&t<A(44)+.25)?5:0})});
+// 44–48 — the other side: alone in the stairwell, pushing the door; dad's voice fading
+S('s_stairs',A(44)+.6,A(49),(l,t)=>{const push=Math.max(0,Math.sin(t*6))*ramp(t,A(47),B(47));
+  E.pose(ST.naw,{x:lerp(60,40,push),y:580-470*.5,s:.5,view:'back',armL:{sh:-70},armR:{sh:70},legL:{hip:-6*push},legR:{hip:6*push}});$('#s_stairs .kidShadow').setAttribute('opacity',0);cam('s_stairs',{s:1.6,x:-200,y:-280,shake:push*1.5})});
+// 49–50 — wide: alone; the stairs going down into the dark
+S('s_stairs',A(49),A(51),(l,t)=>{E.pose(ST.naw,merge(idle(t,1),{x:80,y:580-470*.42,s:.42,head:{turn:.6},eyes:{x:1,y:.6}}));cam('s_stairs',{s:lerp(1.0,.92,ease(ramp(l,0,4))),x:0,y:lerp(0,60,ease(ramp(l,0,4)))})});
+// 51–56 — a voice message from Salem (waveform; the sender stays unseen)
+S('s_phone',A(51),A(57),(l,t)=>{E.renderChat('p1',MSG,t);E.pcam('s_phone',lerp(1.15,1.6,ease(ramp(t,A(53),A(54)))),0,lerp(-60,-300,ease(ramp(t,A(53),A(54)))),E.vib(t,A(51),.6))});
+// 57–58 — a child crying… from below (static on the dark stairs)
+S('s_stairs',A(57),A(59),(l,t)=>{E.pose(ST.naw,merge(idle(t,1),{x:80,y:580-470*.42,s:.42,head:{turn:.6,nod:2},eyes:{x:1,y:1}}));cam('s_stairs',{s:1.05,x:40,y:200})});
+// 59–61 — one step down… stops; "who are you?"
+S('s_stairs',A(59),A(62),(l,t)=>{const st=ease(ramp(t,A(59),A(59)+.8));E.pose(ST.naw,merge(idle(t,1),{x:lerp(80,150,st),y:lerp(580,622,st)-470*.42,s:.42,head:{turn:.6,nod:2},eyes:{x:1,y:1},legR:{hip:-Math.sin(st*Math.PI)*16}}));
+  $('#s_stairs .kidShadow').setAttribute('opacity',ramp(t,A(61),A(61)+1.5)*.6);cam('s_stairs',{s:1.1,x:60,y:160})});
+// 62–65 — the crying stops… a small shadow on the landing; "I'm Salem… I'm fifteen… I waited seven years"
+S('s_stairs',A(62),A(66),(l,t)=>{E.pose(ST.naw,merge(idle(t,1),{x:150,y:622-470*.42,s:.42,head:{turn:.6,nod:2},eyes:{x:1,y:1,wide:.5}}));$('#s_stairs .kidShadow').setAttribute('opacity',.85);
+  const k=ease(ramp(t,A(63),B(65)));cam('s_stairs',{s:lerp(1.1,1.9,k),x:lerp(60,200,k),y:lerp(160,560,k)})});
+// 66–end — the composition + the question
+S('s_final',A(66),9999,(l,t)=>{E.pose(FN.naw,merge(idle(t,1),{x:120,y:580-470*.42,s:.42,head:{turn:.6},eyes:{x:1,y:.8,blink:blink(t,1)},armR:{sh:-40,el:-60}}));cam('s_final',{s:.95,x:0,y:120})});
+
+// ---------- run
+const caps=E.buildCaps({0:'y',5:'r',8:'r',13:'r',17:'r',31:'r',44:'y',55:'r',64:'r',65:'r'},new Set([5,13,44,64]));
+E.run({TL,caps,question:{at:A(66)+.2,a:A(68),b:A(69)}});
+</script>
+</body>
+</html>

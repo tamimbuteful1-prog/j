@@ -1,0 +1,25 @@
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <radialGradient id="gBulb" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#ffd58a" stop-opacity=".9"/><stop offset=".35" stop-color="#e2a64e" stop-opacity=".35"/><stop offset="1" stop-color="#e2a64e" stop-opacity="0"/></radialGradient>
+    <radialGradient id="gSpill" cx="50%" cy="0%" r="100%"><stop offset="0" stop-color="#f3c068" stop-opacity=".75"/><stop offset=".5" stop-color="#b9873d" stop-opacity=".18"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>
+    <radialGradient id="gPhone" cx="50%" cy="100%" r="80%"><stop offset="0" stop-color="#cfe3f5" stop-opacity=".75"/><stop offset=".55" stop-color="#7fa6c8" stop-opacity=".22"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>
+    <linearGradient id="gWall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0b1015"/><stop offset="1" stop-color="#151c21"/></linearGradient>
+    <linearGradient id="gSideL" x1="0" x2="1"><stop offset="0" stop-color="#06090c"/><stop offset="1" stop-color="#10161b"/></linearGradient>
+    <linearGradient id="gSideR" x1="1" x2="0"><stop offset="0" stop-color="#070a0d"/><stop offset="1" stop-color="#11171c"/></linearGradient>
+    <linearGradient id="gFloor" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#16140f"/><stop offset="1" stop-color="#050505"/></linearGradient>
+    <linearGradient id="gWood" x1="0" x2="1"><stop offset="0" stop-color="#18130e"/><stop offset=".5" stop-color="#231c15"/><stop offset="1" stop-color="#16110c"/></linearGradient>
+    <linearGradient id="gHood" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1f272e"/><stop offset="1" stop-color="#0d1115"/></linearGradient>
+    <linearGradient id="gSkin" x1="0" x2="1"><stop offset="0" stop-color="#4a3428"/><stop offset=".55" stop-color="#7a5944"/><stop offset="1" stop-color="#8d6a52"/></linearGradient>
+    <radialGradient id="gLampFloor" cx="70%" cy="80%" r="75%"><stop offset="0" stop-color="#e7b25e" stop-opacity=".55"/><stop offset=".6" stop-color="#9c7339" stop-opacity=".18"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>
+    <linearGradient id="gMoon" x1="1" x2="0"><stop offset="0" stop-color="#5a7fa6" stop-opacity=".45"/><stop offset="1" stop-color="#5a7fa6" stop-opacity="0"/></linearGradient>
+    <linearGradient id="gSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#03060a"/><stop offset=".6" stop-color="#0b1621"/><stop offset="1" stop-color="#1a2532"/></linearGradient>
+    <linearGradient id="gCone" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffcf7a" stop-opacity=".35"/><stop offset="1" stop-color="#ffcf7a" stop-opacity="0"/></linearGradient>
+    <filter id="fBlur6"><feGaussianBlur stdDeviation="6"/></filter>
+    <filter id="fBlur14"><feGaussianBlur stdDeviation="14"/></filter>
+    <filter id="fBlur3"><feGaussianBlur stdDeviation="3"/></filter>
+    <filter id="fDof"><feGaussianBlur stdDeviation="5"/></filter>
+    <clipPath id="eyeL"><path d="M276 572 Q305 548 336 570 Q306 586 276 572Z"/></clipPath>
+    <clipPath id="eyeR"><path d="M390 570 Q420 548 450 572 Q420 586 390 570Z"/></clipPath>
+    <clipPath id="eyeP"><path d="M300 560 Q318 548 338 558 Q320 570 300 560Z"/></clipPath>
+  </defs>
+</svg>
