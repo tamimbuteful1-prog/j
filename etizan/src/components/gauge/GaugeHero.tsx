@@ -19,10 +19,10 @@ export const MODES: { id: GaugeMode; label: string }[] = [
   { id: 'month', label: 'الشهر' },
 ];
 
-const MINT: [string, string] = ['#62d9b5', '#0b9470'];
-const SKY: [string, string] = ['#86c6f2', '#1f6fb8'];
-const AMBER: [string, string] = ['#f5c36e', '#d9761c'];
-const TEAL: [string, string] = ['#7fdfd0', '#16889a'];
+const MINT: [string, string] = ['#ffb36b', '#ff6a00']; // برتقالي مؤكسد
+const SKY: [string, string] = ['#f4dcae', '#cf9440']; // شمباني
+const AMBER: [string, string] = ['#ff9a7a', '#d23a1e']; // تجاوز
+const TEAL: [string, string] = ['#ffc994', '#d9702a']; // نحاسي
 
 interface ModeView {
   label: string;
@@ -117,21 +117,21 @@ function FallbackGauge({ progress, colors }: { progress: number; colors: [string
       <div
         className="relative h-[250px] w-[250px] rounded-full"
         style={{
-          background: '#fbfaf6',
+          background: 'linear-gradient(160deg,#e9ecee,#aeb4b9)',
           boxShadow: '0 30px 60px -25px rgba(20,60,45,.35), inset 0 -8px 20px rgba(0,0,0,.05), inset 0 6px 14px #fff',
         }}
       >
         <div
           className="absolute inset-[18px] rounded-full transition-all duration-700"
           style={{
-            background: `conic-gradient(from 0deg, ${colors[0]}, ${colors[1]} ${p}deg, #e7ebe8 ${p}deg)`,
+            background: `conic-gradient(from 0deg, ${colors[0]}, ${colors[1]} ${p}deg, #3a3f45 ${p}deg)`,
             WebkitMask: 'radial-gradient(circle, transparent 58%, #000 59%, #000 70%, transparent 71%)',
             mask: 'radial-gradient(circle, transparent 58%, #000 59%, #000 70%, transparent 71%)',
           }}
         />
         <div
           className="absolute inset-[52px] rounded-full"
-          style={{ background: 'radial-gradient(circle at 35% 30%, #fff, #f1f4f2 60%, #e2e9e5)', boxShadow: '0 14px 30px -12px rgba(0,0,0,.25)' }}
+          style={{ background: 'radial-gradient(circle at 35% 30%, #4a5157, #1b1f22 60%, #0f1113)', boxShadow: '0 14px 30px -12px rgba(0,0,0,.45)' }}
         />
       </div>
     </div>
@@ -171,11 +171,11 @@ export default function GaugeHero({ summary, mode, onMode }: { summary: MonthlyS
             <Gauge3D visual={visual} onReady={() => setReady(true)} />
           </motion.div>
         ) : null}
-        {!ready && gl !== false && <div className="absolute left-1/2 top-1/2 h-[190px] w-[190px] -translate-x-1/2 -translate-y-1/2 rounded-full skeleton" />}
+        {!ready && gl !== false && <div className="absolute left-1/2 top-1/2 h-[190px] w-[190px] -translate-x-1/2 -translate-y-1/2 animate-pulse rounded-full bg-[#1b1f22]" />}
 
         {/* القراءة فوق اللؤلؤة */}
         <div className="pointer-events-none absolute inset-0 grid place-items-center">
-          <div className="flex w-[170px] flex-col items-center text-center" aria-live="polite">
+          <div className="-mt-4 flex w-[150px] flex-col items-center text-center" aria-live="polite">
             <AnimatePresence mode="wait">
               <motion.div
                 key={mode + view.label}
@@ -183,20 +183,20 @@ export default function GaugeHero({ summary, mode, onMode }: { summary: MonthlyS
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -6 }}
                 transition={{ duration: 0.25 }}
-                className="text-[14px] font-medium text-ink-2"
+                className="text-[13px] font-medium tracking-wide text-white/70"
               >
                 {view.label}
               </motion.div>
             </AnimatePresence>
-            <div className={`tnum font-bold leading-none tracking-tight text-ink ${num(view.value).length > 4 ? 'text-[44px]' : 'text-[54px]'} mt-1`}>
-              {view.done && view.value === 0 ? <span className="text-mint-deep">✓</span> : <AnimatedNumber value={view.value} isPct={view.isPct} />}
+            <div className={`tnum mt-1 flex items-baseline gap-1 font-bold leading-none tracking-tight text-white ${num(view.value).length > 4 ? 'text-[38px]' : 'text-[48px]'}`}>
+              {view.done && view.value === 0 ? <span className="text-[#ff8a3d]">✓</span> : <AnimatedNumber value={view.value} isPct={view.isPct} />}
+              {!view.isPct && !(view.done && view.value === 0) && <span className="text-[13px] font-medium text-white/55">ريال</span>}
             </div>
-            {!view.isPct && !(view.done && view.value === 0) && <div className="text-[13px] font-medium text-muted -mt-0.5">ريال</div>}
-            <div className="mt-1 text-[13px] text-muted">{view.sub}</div>
           </div>
         </div>
       </div>
 
+      <div className="-mt-3 mb-3 text-center text-[14px] font-medium text-muted">{view.sub}</div>
       {/* أوضاع العداد */}
       <div ref={chips} role="tablist" aria-label="وضع العداد" className="no-scrollbar -mx-4 mt-1 flex gap-2 overflow-x-auto px-4 pb-1">
         {MODES.map((m) => {
@@ -213,7 +213,7 @@ export default function GaugeHero({ summary, mode, onMode }: { summary: MonthlyS
                 <motion.span
                   layoutId="mode-pill"
                   className="absolute inset-0 rounded-full"
-                  style={{ background: 'linear-gradient(135deg, #1aa985, #2a86c9)', boxShadow: '0 8px 20px -8px rgba(26,140,120,.6)' }}
+                  style={{ background: 'linear-gradient(145deg, #30363b, #15181b)', boxShadow: '0 8px 20px -8px rgba(20,24,28,.7), inset 0 1px 0 rgba(255,255,255,.12)' }}
                   transition={{ type: 'spring', stiffness: 400, damping: 34 }}
                 />
               )}

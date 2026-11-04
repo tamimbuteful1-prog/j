@@ -29,9 +29,9 @@ export default function BottomNav() {
             </div>
           ) : (
             <Link key={it.href} href={it.href} className="relative flex flex-1 flex-col items-center gap-0.5 py-1.5" aria-current={norm(path) === it.href ? 'page' : undefined}>
-              {norm(path) === it.href && <motion.span layoutId="nav-dot" className="absolute inset-x-2 inset-y-0 rounded-[20px] bg-mint-soft" transition={{ type: 'spring', stiffness: 400, damping: 34 }} />}
-              <it.Icon size={24} className={`relative ${norm(path) === it.href ? 'text-mint-deep' : 'text-ink-2'}`} strokeWidth={2.1} />
-              <span className={`relative text-[12.5px] font-medium ${norm(path) === it.href ? 'text-mint-deep' : 'text-muted'}`}>{it.label}</span>
+              {norm(path) === it.href && <motion.span layoutId="nav-dot" className="absolute inset-x-2 inset-y-0 rounded-[20px] bg-orange-soft" transition={{ type: 'spring', stiffness: 400, damping: 34 }} />}
+              <it.Icon size={24} className={`relative ${norm(path) === it.href ? 'text-orange-deep' : 'text-ink-2'}`} strokeWidth={2.1} />
+              <span className={`relative text-[12.5px] font-medium ${norm(path) === it.href ? 'text-orange-deep' : 'text-muted'}`}>{it.label}</span>
             </Link>
           ),
         )}

@@ -43,16 +43,16 @@ export function MicOrb({ listening, onClick, size = 72 }: { listening: boolean; 
       style={{
         width: size,
         height: size,
-        background: listening ? 'linear-gradient(145deg,#f08a6a,#d9534f)' : 'linear-gradient(145deg,#2fc79f 0%,#1795a0 55%,#2a78b8 100%)',
+        background: listening ? 'linear-gradient(145deg,#ff9a4d,#e2560a)' : 'radial-gradient(circle at 35% 25%,#5a6168 0%,#2a2f34 45%,#111416 100%)',
         boxShadow: listening
-          ? '0 14px 30px -10px rgba(217,83,79,.65), inset 0 2px 6px rgba(255,255,255,.4)'
-          : '0 14px 30px -10px rgba(23,140,130,.7), inset 0 2px 6px rgba(255,255,255,.45), inset 0 -6px 12px rgba(0,40,60,.25)',
+          ? '0 14px 30px -10px rgba(226,86,10,.65), inset 0 2px 6px rgba(255,255,255,.4)'
+          : '0 14px 30px -10px rgba(10,12,14,.65), 0 0 0 3px rgba(242,112,30,.9), inset 0 2px 4px rgba(255,255,255,.25), inset 0 -6px 12px rgba(0,0,0,.4)',
       }}
     >
       {listening && (
         <>
-          <span className="pulse-ring absolute inset-0 rounded-full bg-rose/40" />
-          <span className="pulse-ring absolute inset-0 rounded-full bg-rose/30 [animation-delay:.5s]" />
+          <span className="pulse-ring absolute inset-0 rounded-full bg-orange/40" />
+          <span className="pulse-ring absolute inset-0 rounded-full bg-orange/30 [animation-delay:.5s]" />
         </>
       )}
       <span className="absolute inset-[3px] rounded-full bg-gradient-to-b from-white/25 to-transparent" />
@@ -75,7 +75,7 @@ function Bubble({ role, text, ts, undoable, onUndo, suggestions, onSuggest }: {
     <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className={`flex flex-col ${me ? 'items-start' : 'items-end'}`}>
       <div
         className={`max-w-[88%] rounded-[22px] px-4 py-3 text-[17px] leading-relaxed ${
-          me ? 'rounded-ss-md bg-white text-ink shadow-soft' : 'rounded-se-md bg-gradient-to-l from-mint-soft to-sky-soft text-ink'
+          me ? 'rounded-ss-md bg-white text-ink shadow-soft' : 'rounded-se-md bg-[#f0eee9] border-s-[3px] border-orange text-ink'
         }`}
       >
         {text}
@@ -217,7 +217,7 @@ export function AssistantPanel() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
             onClick={() => openAssistant(false)}
-            className="mb-3 block w-full rounded-[20px] bg-gradient-to-l from-mint-soft to-sky-soft px-4 py-3 text-start"
+            className="mb-3 block w-full rounded-[20px] bg-[#f0eee9] border-s-[3px] border-orange px-4 py-3 text-start"
           >
             {lastUser && <div className="mb-1 truncate text-[13px] text-muted">«{lastUser.text}»</div>}
             <div className="text-[17px] font-medium leading-relaxed text-ink">{last.text}</div>
@@ -242,7 +242,6 @@ export function AssistantPanel() {
             <ArrowUp size={20} />
           </button>
         </div>
-        <MicOrb listening={false} onClick={() => openAssistant(true)} size={52} />
       </form>
     </section>
   );
