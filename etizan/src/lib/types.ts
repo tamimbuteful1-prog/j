@@ -84,6 +84,8 @@ export interface Settings {
   defaultUberDaily: number;
   digits: 'latin' | 'arabic';
   speakReplies: boolean;
+  /** هدف يومي ثابت يدوي لأيام العمل (null/غائب = يُحسب تلقائيًا) */
+  fixedDailyTarget?: number | null;
 }
 
 export interface AppData {
@@ -97,6 +99,8 @@ export interface AppData {
   assistantMessages: AssistantMessage[];
   /** الالتزامات المعلَّمة كمدفوعة لكل شهر */
   obligationPayments: Record<MonthKey, string[]>;
+  /** أهداف يدوية لأيام محددة (تتقدم على الهدف الثابت والتلقائي) */
+  dailyTargets?: Record<ISODate, number>;
 }
 
 /** يوم محسوب ضمن إعادة تشغيل الشهر */
@@ -107,6 +111,8 @@ export interface DayPlan {
   spend: number; // مصاريف معيشة
   bills: number; // فواتير محجوزة (كهرباء)
   target: number; // المطلوب تقفيله في ذلك اليوم
+  auto: number; // الهدف التلقائي المحسوب
+  manual: 'fixed' | 'today' | null;
   toNeed: number; // ما ذهب من دخل اليوم للتقفيل
   walletEnd: number; // المتاح بنهاية اليوم (قد يكون سالبًا = تجاوز)
   closedEnd: number; // المغطّى من عجز الشهر بنهاية اليوم
@@ -134,6 +140,8 @@ export interface MonthlySummary {
 
   // اليوم
   todayTarget: number; // المطلوب تقفيله اليوم
+  targetSource: 'auto' | 'fixed' | 'today'; // مصدر هدف اليوم
+  autoTarget: number; // ما كان سيحسبه المحرك تلقائيًا لليوم
   todayUber: number;
   todayRemaining: number; // المتبقي من هدف اليوم
   todaySpend: number; // المصروف الفعلي اليوم (معيشة + فواتير)

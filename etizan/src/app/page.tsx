@@ -3,7 +3,7 @@ import { AppLink as Link } from '@/lib/nav';
 import dynamic from 'next/dynamic';
 import { AnimatePresence, motion } from 'motion/react';
 import { useEffect, useState } from 'react';
-import { BarChart3, CarFront, ChevronLeft, Landmark, Settings2, Wallet } from 'lucide-react';
+import { BarChart3, CarFront, ChevronLeft, Landmark, Settings2, SlidersHorizontal, Wallet } from 'lucide-react';
 import GaugeHero, { type GaugeMode } from '@/components/gauge/GaugeHero';
 import { AssistantPanel } from '@/components/Assistant';
 import TxList, { useOps } from '@/components/TxList';
@@ -84,6 +84,8 @@ export default function Home() {
   const data = useStore((st) => st.data);
   const [mode, setMode] = useState<GaugeMode>('spend');
   const setSettings = useUI((u) => u.setSettings);
+  const setTargets = useUI((u) => u.setTargets);
+  const manualTag = s.targetSource === 'today' ? ' (يدوي)' : s.targetSource === 'fixed' ? ' (ثابت)' : '';
   const ops = useOps();
   const up = upcomingObligations(data, today, 14).slice(0, 3);
   const st = statusLine(s);
@@ -129,13 +131,18 @@ export default function Home() {
         object={<CountingMachine3D amount={s.todayUber} />}
         stats={[
           { label: 'دخل اليوم', value: num(s.todayUber) },
-          { label: 'هدف اليوم', value: num(s.todayTarget) },
+          { label: 'هدف اليوم' + manualTag, value: num(s.todayTarget) },
           { label: 'المتبقي', value: num(s.todayRemaining), accent: s.todayRemaining > 0 },
         ]}
         action={
-          <Link href="/uber/" className="flex h-14 items-center justify-center gap-2 rounded-2xl bg-ink text-[17px] font-semibold text-white shadow-lift">
-            <CarFront size={20} /> سجّل دخل أوبر
-          </Link>
+          <div className="flex gap-2">
+            <Link href="/uber/" className="flex h-14 flex-1 items-center justify-center gap-2 rounded-2xl bg-ink text-[17px] font-semibold text-white shadow-lift">
+              <CarFront size={20} /> سجّل دخل أوبر
+            </Link>
+            <button onClick={() => setTargets(true)} aria-label="تعديل دخل اليوم والهدف" className="grid h-14 w-14 place-items-center rounded-2xl border border-line bg-white text-ink-2">
+              <SlidersHorizontal size={21} />
+            </button>
+          </div>
         }
       />
 
@@ -153,10 +160,15 @@ export default function Home() {
         }
         object={<VaultLock3D progress={closeProgress} />}
         stats={[
-          { label: 'المطلوب', value: num(s.todayTarget) },
+          { label: 'المطلوب' + manualTag, value: num(s.todayTarget) },
           { label: 'أُقفل', value: `${localizeDigits(String(Math.round(Math.min(1, closeProgress) * 100)))}٪` },
           { label: 'أيام عمل باقية', value: localizeDigits(String(s.workDaysLeft)) },
         ]}
+        action={
+          <button onClick={() => setTargets(true)} className="flex h-14 w-full items-center justify-center gap-2 rounded-2xl border border-line bg-white text-[17px] font-semibold">
+            <SlidersHorizontal size={20} /> حدّد هدف اليوم
+          </button>
+        }
       />
 
       {/* النتائج */}

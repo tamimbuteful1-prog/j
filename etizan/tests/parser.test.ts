@@ -45,3 +45,26 @@ describe('actions', () => {
     expect(r.data.uberEntries).toHaveLength(1);
   });
 });
+
+describe('manual targets', () => {
+  const cases: [string, any][] = [
+    ['هدفي اليوم 200', { type: 'set_target', amount: 200, scope: 'today' }],
+    ['خل الهدف اليومي 150', { type: 'set_target', amount: 150, scope: 'daily' }],
+    ['ابي اقفل اليوم 180', { type: 'set_target', amount: 180, scope: 'today' }],
+    ['رجع الهدف تلقائي', { type: 'clear_target', scope: 'today' }],
+    ['دخلت حتى الآن 120', { type: 'set_uber_total', amount: 120 }],
+    ['صار دخلي اليوم 300', { type: 'set_uber_total', amount: 300 }],
+    ['كم الهدف اليوم؟', { type: 'query', topic: 'close' }],
+  ];
+  for (const [text, expected] of cases) it(text, () => expect(parse(text)).toMatchObject(expected));
+
+  it('manual target drives remaining, and total sets income', () => {
+    let d = createSeed('2026-11');
+    d = runIntent(parse('هدفي اليوم 200'), d, '2026-11-04', 1).data;
+    d = runIntent(parse('دخلت حتى الآن 120'), d, '2026-11-04', 2).data;
+    const r = runIntent(parse('كم باقي علي اليوم؟'), d, '2026-11-04', 3);
+    expect(r.reply).toContain('80');
+    d = runIntent(parse('دخلت حتى الآن 90'), d, '2026-11-04', 4).data;
+    expect(d.uberEntries.reduce((a, e) => a + e.amount, 0)).toBe(90);
+  });
+});

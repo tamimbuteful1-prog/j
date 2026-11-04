@@ -33,6 +33,9 @@ export type Intent =
   | { type: 'undo' }
   | { type: 'query'; topic: QueryTopic; period?: Period; category?: ExpenseCategory; loan?: 'mortgage' | 'personal' | 'all' }
   | { type: 'clarify'; amount: number }
+  | { type: 'set_target'; amount: number; scope: 'today' | 'daily' }
+  | { type: 'clear_target'; scope: 'today' | 'daily' }
+  | { type: 'set_uber_total'; amount: number }
   | { type: 'unknown' };
 
 const CATEGORY_WORDS: [ExpenseCategory, string[]][] = [
@@ -87,6 +90,20 @@ export function parse(raw: string): Intent {
   const cat = categoryOf(tokens);
   const uberish = hasAny(tokens, UBER_WORDS);
 
+  // الأهداف اليدوية: «هدفي اليوم 200»، «خل الهدف اليومي 150»، «رجع الهدف تلقائي»
+  const daily = /(كل يوم|يوميا|اليومي|دايم|دائم|ثابت)/.test(t) && !/(هدفي اليوم|هدف اليوم|اليوم بس)( |$)/.test(t);
+  if (/هدف/.test(t)) {
+    if (/(تلقائي|اوتوماتيك|الغ|الغي|امسح|احذف|شيل|رجع)/.test(t) && !nums.length) return { type: 'clear_target', scope: daily ? 'daily' : 'today' };
+    if (nums.length && !isQuestionText(raw, t, tokens)) return { type: 'set_target', amount: nums[nums.length - 1].value, scope: daily ? 'daily' : 'today' };
+  }
+  if (/(اقفل|اسكر|اقفال|تقفيل)/.test(t) && nums.length && /(ابي|ابغي|ابغا|لازم|احتاج|خل|خلي|حط|ودي)/.test(t) && !isQuestionText(raw, t, tokens)) {
+    return { type: 'set_target', amount: nums[nums.length - 1].value, scope: daily ? 'daily' : 'today' };
+  }
+  // المجموع حتى الآن: «دخلت حتى الآن 120»، «صار دخلي اليوم 300»
+  if (nums.length && /(حتي الان|حتي اللحين|لين الحين|لين الان|الي الان|لحد الحين|لحد الان|للحين|اجمالي|مجموع|صار دخلي|صار الدخل|دخلي اليوم صار)/.test(t)) {
+    return { type: 'set_uber_total', amount: nums[nums.length - 1].value };
+  }
+
   // تراجع
   if (/^(تراجع|رجعها|رجع اخر|الغ اخر امر)/.test(t) || tokens.includes('تراجع')) return { type: 'undo' };
 
@@ -139,6 +156,10 @@ export function parse(raw: string): Intent {
   }
 
   return { type: 'clarify', amount: nums[0].value };
+}
+
+function isQuestionText(raw: string, t: string, tokens: string[]) {
+  return /[?؟]/.test(raw) || ['كم', 'وش', 'ايش', 'هل', 'كيف'].some((q) => tokens.includes(q)) || /^(كم|وش|ايش)/.test(t);
 }
 
 function noteFrom(tokens: string[]): string | undefined {

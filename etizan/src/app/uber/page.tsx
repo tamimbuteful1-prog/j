@@ -17,6 +17,7 @@ export default function UberPage() {
   const entries = useStore((st) => st.data.uberEntries);
   const addUber = useStore((st) => st.addUber);
   const showToast = useUI((u) => u.showToast);
+  const setTargets = useUI((u) => u.setTargets);
   const ops = useOps((o) => o.kind === 'uber');
   const [open, setOpen] = useState(false);
   const [amount, setAmount] = useState('');
@@ -46,11 +47,17 @@ export default function UberPage() {
           <div className="h-full rounded-full bg-gradient-to-l from-mint-deep to-mint transition-all duration-700" style={{ width: `${progress * 100}%` }} />
         </div>
         <div className="mt-2 flex justify-between text-[14px]">
-          <span className="text-muted">الهدف {num(s.todayTarget)}</span>
+          <button onClick={() => setTargets(true)} className="flex items-center gap-1.5 text-muted underline decoration-dotted underline-offset-4">
+            الهدف {num(s.todayTarget)}
+            {s.targetSource !== 'auto' && <span className="rounded-full bg-orange-soft px-2 text-[12px] text-orange-deep no-underline">{s.targetSource === 'today' ? 'يدوي' : 'ثابت'}</span>}
+          </button>
           <span className="font-semibold text-mint-deep">{s.todayTarget ? (s.todayRemaining ? `باقي ${num(s.todayRemaining)}` : 'قفلت ✓') : '—'}</span>
         </div>
         <button onClick={() => setOpen(true)} className="mt-5 flex h-16 w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-l from-mint-deep to-sky-deep text-[19px] font-semibold text-white shadow-lift active:scale-[.98] transition">
           <Plus size={24} /> سجّل دخل أوبر
+        </button>
+        <button onClick={() => setTargets(true)} className="mt-2 h-12 w-full rounded-2xl border border-line bg-white text-[16px] font-medium text-ink-2">
+          تعديل الهدف أو المجموع
         </button>
       </section>
 

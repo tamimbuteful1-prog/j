@@ -5,6 +5,8 @@ interface UI {
   assistantOpen: boolean;
   autoListen: boolean;
   settingsOpen: boolean;
+  targetsOpen: boolean;
+  setTargets(open: boolean): void;
   openAssistant(listen?: boolean): void;
   closeAssistant(): void;
   consumeAutoListen(): boolean;
@@ -17,6 +19,8 @@ export const useUI = create<UI>((set, get) => ({
   assistantOpen: false,
   autoListen: false,
   settingsOpen: false,
+  targetsOpen: false,
+  setTargets: (open) => set({ targetsOpen: open }),
   openAssistant: (listen = false) => set({ assistantOpen: true, autoListen: listen }),
   closeAssistant: () => set({ assistantOpen: false, autoListen: false }),
   consumeAutoListen: () => {

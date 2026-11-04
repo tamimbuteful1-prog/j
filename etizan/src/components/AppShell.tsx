@@ -5,6 +5,7 @@ import { useHydrated, useStore } from '@/lib/store';
 import BottomNav from './BottomNav';
 import { AssistantSheet } from './Assistant';
 import SettingsSheet from './SettingsSheet';
+import TargetSheet from './TargetSheet';
 import { useUI } from './ui-store';
 import { createDemo } from '@/lib/demo';
 import { todayISO } from '@/lib/dates';
@@ -95,6 +96,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       <BottomNav />
       <AssistantSheet />
       <SettingsSheet />
+      <TargetSheet />
       <Toast />
     </>
   );

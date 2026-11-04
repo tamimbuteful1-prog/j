@@ -5,6 +5,7 @@
 import { CATEGORY_LABEL } from '../categories';
 import { computeMonth, remainingMonthsAt, upcomingObligations } from '../finance/engine';
 import { weekStart } from '../dates';
+import { withDailyTarget, withFixedDailyTarget, withUberTotal } from '../finance/manual';
 import { dayLabel, monthsLabel, num, pct } from '../format';
 import type { AppData, DailyTransaction, ISODate, MonthlySummary, UberEntry } from '../types';
 import type { EditTarget, Intent } from './parser';
@@ -102,6 +103,22 @@ export function runIntent(intent: Intent, data: AppData, today: ISODate, now = D
       const op = lastOp(data, intent.type === 'delete_target' ? intent.target : undefined);
       if (!op) return say('ما فيه عملية أحذفها');
       return done(removeOp(data, op), (n) => `حذفت ${opLabel(op)}. ${afterLine(n)}`);
+    }
+    case 'set_target': {
+      const next = intent.scope === 'daily' ? withFixedDailyTarget(data, intent.amount) : withDailyTarget(data, today, intent.amount);
+      return done(next, (n) =>
+        intent.scope === 'daily'
+          ? `صار هدفك اليومي ${R(intent.amount)}. ${n.todayRemaining > 0 ? `باقي اليوم ${R(n.todayRemaining)}` : 'قفلت اليوم ✓'}`
+          : `صار هدفك اليوم ${R(intent.amount)}. ${n.todayRemaining > 0 ? `باقي ${R(n.todayRemaining)} وتقفل` : 'وقفلته ✓'}`,
+      );
+    }
+    case 'clear_target': {
+      const next = intent.scope === 'daily' ? withFixedDailyTarget(data, null) : withDailyTarget(data, today, null);
+      return done(next, (n) => `رجعت الهدف تلقائي: المطلوب اليوم ${R(n.todayTarget)}`);
+    }
+    case 'set_uber_total': {
+      const next = withUberTotal(data, today, intent.amount, () => uid('u'), now);
+      return done(next, (n) => `صار دخل اليوم ${R(n.todayUber)}. ${afterLine(n)}`);
     }
     case 'undo':
       return say('تمام'); // يُنفَّذ في المخزن (سجل الحالات)

@@ -109,16 +109,21 @@ export function computeMonth(data: AppData, today: ISODate): MonthlySummary {
     const d = dates[i];
     const uber = uberBy.get(d) ?? 0;
     const spend = spendBy.get(d) ?? 0;
-    const isWorkDay = scheduled[i] || uber > 0;
+    const dayOverride = data.dailyTargets?.[d];
+    const fixed = data.settings.fixedDailyTarget;
+    const isWorkDay = scheduled[i] || uber > 0 || dayOverride !== undefined;
 
     wallet += dailyAllowance;
     const ws = wallet;
     const need = Math.max(0, monthlyDeficit - closed) + Math.max(0, -ws);
     // أيام العمل المتبقية تشمل اليوم (حتى لو كان يوم راحة واشتغل فيه)
     const left = scheduled.slice(i + 1).filter(Boolean).length + (isWorkDay ? 1 : 0);
-    const base = isWorkDay && left > 0 ? Math.ceil(need / left) : 0;
-    // مصروف اليوم الذي لا يغطيه المتاح يُضاف على مطلوب اليوم
-    const target = base + Math.max(0, Math.ceil(spend - Math.max(0, ws)));
+    const auto = isWorkDay && left > 0 ? Math.ceil(need / left) : 0;
+    // الهدف اليدوي: هدف اليوم المحدد، ثم الهدف الثابت لأيام العمل، وإلا التلقائي
+    const manual: DayPlan['manual'] = dayOverride !== undefined ? 'today' : fixed != null && fixed > 0 && isWorkDay ? 'fixed' : null;
+    const base = manual === 'today' ? Math.max(0, dayOverride!) : manual === 'fixed' ? fixed! : auto;
+    // مصروف اليوم الذي لا يغطيه المتاح يُضاف على مطلوب اليوم (في الهدف التلقائي فقط؛ اليدوي يبقى كما حدده)
+    const target = manual ? base : base + Math.max(0, Math.ceil(spend - Math.max(0, ws)));
 
     const toNeed = Math.min(uber, base);
     const cover = Math.min(toNeed, Math.max(0, -ws));
@@ -126,13 +131,13 @@ export function computeMonth(data: AppData, today: ISODate): MonthlySummary {
     closed += toNeed - cover;
     wallet += uber - toNeed - spend;
 
-    days.push({ date: d, isWorkDay, uber, spend, bills: billsBy.get(d) ?? 0, target, toNeed, walletEnd: wallet, closedEnd: closed });
+    days.push({ date: d, isWorkDay, uber, spend, bills: billsBy.get(d) ?? 0, target, auto, manual, toNeed, walletEnd: wallet, closedEnd: closed });
   }
 
   const t = days[days.length - 1];
   const todayUber = t.uber;
   const todayTarget = t.target;
-  const isTodayWorkDay = scheduled[dayOfMonth - 1];
+  const isTodayWorkDay = scheduled[dayOfMonth - 1] || data.dailyTargets?.[today] !== undefined;
   const workDaysLeft = scheduled.slice(dayOfMonth - 1).filter(Boolean).length + (!isTodayWorkDay && todayUber > 0 ? 1 : 0);
 
   const uberMonth = sum([...uberBy.values()]);
@@ -170,8 +175,10 @@ export function computeMonth(data: AppData, today: ISODate): MonthlySummary {
     workDaysTotal,
     workDaysLeft,
     avgUberDaily: avg,
-    dailyGoalPlan: workDaysTotal ? Math.ceil(monthlyDeficit / workDaysTotal) : 0,
+    dailyGoalPlan: data.settings.fixedDailyTarget ? data.settings.fixedDailyTarget : workDaysTotal ? Math.ceil(monthlyDeficit / workDaysTotal) : 0,
     todayTarget,
+    targetSource: t.manual ?? 'auto',
+    autoTarget: t.auto,
     todayUber,
     todayRemaining: Math.max(0, todayTarget - todayUber),
     todaySpend: t.spend + t.bills,

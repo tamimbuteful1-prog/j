@@ -10,6 +10,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { createSeed } from './seed';
 import { monthKey, todayISO } from './dates';
 import { computeMonth } from './finance/engine';
+import { withDailyTarget, withFixedDailyTarget, withUberTotal } from './finance/manual';
 import { runIntent, uid } from './assistant/actions';
 import { ruleBasedBrain, type AssistantBrain } from './assistant/brain';
 import type { AppData, AssistantMessage, DailyTransaction, ExpenseCategory, FixedObligation, MonthlySummary, Settings, UberEntry } from './types';
@@ -30,6 +31,9 @@ interface Store {
   removeUber(id: string): void;
   removeTx(id: string): void;
   undo(): boolean;
+  setDailyTarget(amount: number | null, date?: string): void;
+  setFixedDailyTarget(amount: number | null): void;
+  setUberTotal(total: number, date?: string): void;
   togglePaid(obligationId: string): void;
   upsertObligation(o: FixedObligation): void;
   removeObligation(id: string): void;
@@ -62,6 +66,9 @@ export const useStore = create<Store>()(
         updateTx: (id, patch) => commit({ ...d(), dailyTransactions: d().dailyTransactions.map((e) => (e.id === id ? { ...e, ...patch } : e)) }),
         removeUber: (id) => commit({ ...d(), uberEntries: d().uberEntries.filter((e) => e.id !== id) }),
         removeTx: (id) => commit({ ...d(), dailyTransactions: d().dailyTransactions.filter((e) => e.id !== id) }),
+        setDailyTarget: (amount, date = todayISO()) => commit(withDailyTarget(d(), date, amount)),
+        setFixedDailyTarget: (amount) => commit(withFixedDailyTarget(d(), amount)),
+        setUberTotal: (total, date = todayISO()) => commit(withUberTotal(d(), date, total, () => uid('u'))),
         undo: () => {
           const h = get().history;
           if (!h.length) return false;
