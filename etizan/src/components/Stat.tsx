@@ -1,6 +1,6 @@
 'use client';
 import { motion } from 'motion/react';
-import Link from 'next/link';
+import { AppLink as Link } from '@/lib/nav';
 import { num } from '@/lib/format';
 
 export function Stat({

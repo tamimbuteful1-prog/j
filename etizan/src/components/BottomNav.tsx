@@ -1,6 +1,6 @@
 'use client';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { AppLink as Link } from '@/lib/nav';
+import { useAppPath } from '@/lib/nav';
 import { motion } from 'motion/react';
 import { BarChart3, CarFront, House, Wallet } from 'lucide-react';
 import { useUI } from './ui-store';
@@ -15,9 +15,9 @@ const ITEMS = [
 ] as const;
 
 export default function BottomNav() {
-  const path = usePathname();
+  const path = useAppPath();
   const openAssistant = useUI((s) => s.openAssistant);
-  const norm = (p: string) => (p.endsWith('/') ? p : p + '/');
+  const norm = (p: string) => p;
   return (
     <nav aria-label="التنقل" className="fixed inset-x-0 bottom-0 z-40 mx-auto max-w-[560px] px-3 pb-[calc(10px+var(--safe-bottom))]">
       <div className="relative flex items-end justify-between rounded-[28px] border border-white/80 bg-white/85 px-2 pb-2 pt-2 shadow-[0_10px_40px_-12px_rgba(20,50,40,.28)] backdrop-blur-xl">

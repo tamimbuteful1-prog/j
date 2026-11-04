@@ -1,4 +1,5 @@
 'use client';
+import { confirmAction } from '@/lib/nav';
 import { motion } from 'motion/react';
 import { useState } from 'react';
 import { Check, Plus, StickyNote } from 'lucide-react';
@@ -255,7 +256,7 @@ function ObligationForm({ o, onClose }: { o: FixedObligation; onClose: () => voi
         {exists && (
           <button
             onClick={() => {
-              if (confirm('حذف هذا الالتزام؟')) {
+              if (confirmAction('حذف هذا الالتزام؟')) {
                 removeObligation(o.id);
                 onClose();
               }

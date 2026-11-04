@@ -1,6 +1,6 @@
 'use client';
 import { AnimatePresence, motion } from 'motion/react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useHydrated, useStore } from '@/lib/store';
 import BottomNav from './BottomNav';
 import { AssistantSheet } from './Assistant';
@@ -8,6 +8,20 @@ import SettingsSheet from './SettingsSheet';
 import { useUI } from './ui-store';
 import { createDemo } from '@/lib/demo';
 import { todayISO } from '@/lib/dates';
+import { SPA, useAppPath } from '@/lib/nav';
+import Home from '@/app/page';
+import UberPage from '@/app/uber/page';
+import ExpensesPage from '@/app/expenses/page';
+import ObligationsPage from '@/app/obligations/page';
+import AnalysisPage from '@/app/analysis/page';
+
+const SPA_PAGES: Record<string, () => React.ReactNode> = {
+  '/': Home,
+  '/uber/': UberPage,
+  '/expenses/': ExpensesPage,
+  '/obligations/': ObligationsPage,
+  '/analysis/': AnalysisPage,
+};
 
 function Toast() {
   const toast = useUI((s) => s.toast);
@@ -31,9 +45,26 @@ function Toast() {
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const hydrated = useHydrated();
+  const path = useAppPath();
+  const Page = SPA_PAGES[path] ?? Home;
+  const [demo, setDemo] = useState(false);
+
+  // نسخة المعاينة: أول فتح يبدأ ببيانات تجريبية واضحة
+  useEffect(() => {
+    if (!SPA || !hydrated) return;
+    try {
+      const flag = localStorage.getItem('etizan:demo');
+      const empty = !useStore.getState().data.uberEntries.length && !useStore.getState().data.dailyTransactions.length;
+      if (flag === null && empty) {
+        useStore.getState().replaceData(createDemo(todayISO()));
+        localStorage.setItem('etizan:demo', '1');
+        setDemo(true);
+      } else setDemo(flag === '1');
+    } catch {}
+  }, [hydrated]);
 
   useEffect(() => {
-    if ('serviceWorker' in navigator && process.env.NODE_ENV === 'production') {
+    if (!SPA && 'serviceWorker' in navigator && process.env.NODE_ENV === 'production') {
       navigator.serviceWorker.register('/sw.js').catch(() => {});
     }
     if (process.env.NODE_ENV !== 'production') {
@@ -44,7 +75,22 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   return (
     <>
       <main className="mx-auto min-h-dvh w-full max-w-[560px] px-4 pb-[calc(120px+var(--safe-bottom))]">
-        {hydrated ? children : <Loading />}
+        {demo && (
+          <div className="mt-[calc(10px+env(safe-area-inset-top))] flex items-center gap-3 rounded-2xl bg-amber-soft px-4 py-2.5 text-[14px] text-ink-2">
+            <span className="flex-1">هذه بيانات تجريبية للعرض</span>
+            <button
+              onClick={() => {
+                useStore.getState().reset();
+                try { localStorage.setItem('etizan:demo', '0'); } catch {}
+                setDemo(false);
+              }}
+              className="rounded-full bg-white px-3 py-1.5 font-medium"
+            >
+              ابدأ ببياناتي
+            </button>
+          </div>
+        )}
+        {hydrated ? SPA ? <Page key={path} /> : children : <Loading />}
       </main>
       <BottomNav />
       <AssistantSheet />

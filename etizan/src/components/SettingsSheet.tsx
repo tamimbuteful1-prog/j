@@ -1,4 +1,5 @@
 'use client';
+import { confirmAction } from '@/lib/nav';
 import { useStore } from '@/lib/store';
 import { WEEKDAYS_AR, todayISO } from '@/lib/dates';
 import { createDemo } from '@/lib/demo';
@@ -72,10 +73,10 @@ export default function SettingsSheet() {
               استرجاع نسخة
               <input type="file" accept="application/json" className="hidden" onChange={(e) => e.target.files?.[0] && importJSON(e.target.files[0])} />
             </label>
-            <button onClick={() => confirm('تحميل بيانات تجريبية؟ ستستبدل بياناتك الحالية') && replaceData(createDemo(todayISO()))} className="rounded-2xl border border-line bg-white py-3 text-[15px] font-medium">
+            <button onClick={() => confirmAction('تحميل بيانات تجريبية؟ ستستبدل بياناتك الحالية') && replaceData(createDemo(todayISO()))} className="rounded-2xl border border-line bg-white py-3 text-[15px] font-medium">
               بيانات تجريبية
             </button>
-            <button onClick={() => confirm('مسح كل العمليات والرجوع للبيانات الأولية؟') && reset()} className="rounded-2xl bg-rose-soft py-3 text-[15px] font-medium text-rose">
+            <button onClick={() => confirmAction('مسح كل العمليات والرجوع للبيانات الأولية؟') && reset()} className="rounded-2xl bg-rose-soft py-3 text-[15px] font-medium text-rose">
               مسح البيانات
             </button>
           </div>

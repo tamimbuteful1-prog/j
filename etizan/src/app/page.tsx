@@ -1,5 +1,5 @@
 'use client';
-import Link from 'next/link';
+import { AppLink as Link } from '@/lib/nav';
 import { motion } from 'motion/react';
 import { useState } from 'react';
 import { BarChart3, CalendarClock, CarFront, ChevronLeft, Landmark, Settings2, Target, Wallet } from 'lucide-react';
