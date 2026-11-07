@@ -1,11 +1,12 @@
 # تصميم صوتي مُولَّد بالكامل (بلا موسيقى جاهزة) — 48kHz ستيريو
 import numpy as np, wave
-SR=48000; DUR=58.0;
-SEG=[(0,6,0,7),(6,14,7,15),(14,22,15,25),(22,31,25,35),(31,40,35,52),(40,45,52,58)]
+SR=48000; DUR=60.0
+# (بداية زمن المشهد، نهايته) → (بداية الإخراج، نهايته) — بترتيب النص الجديد
+SEG=[(0,6,0,7),(6,14,7,15),(22,29.2,15,23),(14,22,23,33),(31,40,33,44),(40,45,54,60)]
 def M(t):
     for a,b,c,d in SEG:
-        if t<b: return c+(t-a)*(d-c)/(b-a)
-    return 58.0
+        if a<=t<b: return c+(t-a)*(d-c)/(b-a)
+    return None
 N=int(SR*DUR)
 L=np.zeros(N); R=np.zeros(N)
 rng=np.random.default_rng(5)
@@ -22,7 +23,9 @@ def hpf(x,c):
     X=np.fft.rfft(x); f=np.fft.rfftfreq(len(x),1/SR); X*=1/np.sqrt(1+(c/np.maximum(f,1))**4); return np.fft.irfft(X,len(x))
 def bpf(x,lo,hi): return hpf(lpf(x,hi),lo)
 def add(t,sig,g=1.0,pan=0.0,raw=False):
-    i=int((t if raw else M(t))*SR); 
+    o=t if raw else M(t)
+    if o is None: return
+    i=int(o*SR); 
     if i>=N: return
     s=sig[:N-i]*g; L[i:i+len(s)]+=s*np.sqrt((1-pan)/2); R[i:i+len(s)]+=s*np.sqrt((1+pan)/2)
 def noise(d): return rng.standard_normal(int(d*SR))
@@ -83,9 +86,9 @@ def crackle(d,dens=60):
 # جوّ الغرفة
 room=lpf(noise(DUR),220)*.25; hum=(tone(50,DUR)*.6+tone(100,DUR)*.3+tone(150,DUR)*.12)*.06
 tt=np.arange(N)/SR
-lampA=np.clip((tt-M(1.33))*20,0,1)*(tt<7)+((tt>=25)&(tt<35))*1.0+((tt>=52)&(tt<M(44.3)))*1.0
-add(0,room*(1-.6*((tt>7)&(tt<15))) ,.7)
-add(0,hum*lampA,1)
+lampA=np.clip((tt-M(1.33))*20,0,1)*(tt<7)+((tt>=15)&(tt<23))*1.0+((tt>=44)&(tt<M(44.3)))*1.0
+add(0,room*(1-.6*((tt>7)&(tt<15))) ,.7,raw=True)
+add(0,hum*lampA,1,raw=True)
 
 # ١: الغرفة
 for tc,g in [(1.0,1),(1.06,.5),(1.12,.8),(1.19,.4),(1.33,1)]: add(tc,click(g,2500)+click(g*.5,800),.9,.2)
@@ -131,21 +134,21 @@ add(21.27,ping(1568,.6)+ping(2093,.6),.08,-.2)  # مصدر
 add(21.45,whoosh(.6,200,5000,rev=True),.6)
 
 # ٤: لوحة الأدلة
-add(22.0,drone(10.0,36.7,.6)*np.minimum(1,T(10)/1.5)*np.minimum(1,(10-T(10))/.5),.9)
-add(22.0,crackle(10,25),.06)
+add(22.0,drone(8.0,36.7,.6)*np.minimum(1,T(8)/1.5)*np.minimum(1,(8-T(8))/.4),.9)
+add(22.0,crackle(8,25),.06)
 add(23.4,click(1.2,1800),.8); add(23.42,tone(60,2.6)*.2*np.minimum(1,T(2.6)*10),.4)
 add(23.45,bpf(noise(2.6),3000,9000)*.05,1)  # أزيز الكشاف
 add(26.0,boom(1.6,150,50),.5); add(26.0,whoosh(.9,1000,9000),.6); add(26.0,chime([370,392,554],2.0),.18)
-add(26.1,riser(2.7,45,260),.35)
+add(26.1,riser(2.6,45,260),.35)
 add(28.5,boom(3.0,70,28),1.0); add(28.5,lpf(noise(2.5),120)*env(int(2.5*SR),.01,1.2,3),.9); add(28.5,glitchs(.12,285),.4)
 add(28.52,tone(lambda t:180+40*np.sin(t*30),1.0)*env(int(SR),.005,.4,4),.15)  # شدّ الخيوط
-add(30.45,glitchs(.12,304),.35)
+add(29.0,glitchs(.14,290),.4); add(29.0,boom(1.2,90,40),.5)
 add(30.55,snap(),.6,-.3); add(30.56,snap(),.5,.3); add(30.55,boom(1.2,200,60),.4)
 
 # ٥: الحدود
-pad=np.zeros(int(17.4*SR)); tp=T(17.4)
+pad=np.zeros(int(11*SR)); tp=T(11)
 for f in (110,164.8,220,329.6,440): pad+=np.sin(2*np.pi*f*tp+np.sin(2*np.pi*.2*tp)*2)*.12
-pad=lpf(pad,1400)*np.minimum(1,tp/1.0)*np.minimum(1,(17.4-tp)/.4); add(30.6,pad,.55)
+pad=lpf(pad,1400)*np.minimum(1,tp/1.0)*np.minimum(1,(11-tp)/.4); add(33.0,pad,.55,raw=True)
 k=0;b=M(31.2)
 while b<M(39.6): add(b,heartbeat(),.55,raw=True); b+=.85
 HITS=[(33+k*.24+.08*np.sin(k*12.9),k%5==3,k) for k in range(14)]+[(37.7+(k-14)*.45,True,k) for k in range(14,18)]
@@ -155,14 +158,25 @@ for th,ps,k in HITS:
     if ps: add(th,chime([1046.5,1568],.9),.12,pan); add(th,bpf(noise(.3),2000,8000)*env(int(.3*SR),.005,.1,5),.08,pan)
     else: add(th,crackle(.35,120)+bpf(noise(.35),500,5000)*env(int(.35*SR),.001,.08,6),.35,pan); add(th,boom(.6,110,60),.25,pan)
 add(36.4,boom(3.2,60,30),1.0); add(36.4,whoosh(1.5,100,9000),.6); add(36.42,chime([220,330,440,660],3.0),.25)
-add(38.0,riser(3.6,200,1600),.18)
+add(38.0,riser(2.3,200,1600),.18)
+
+# ٧: الجوال يتصفح معيار + الشهادة
+B7=44.0
+for tp in (.75,7.55,9.45): add(B7+tp,click(.7,2600)+click(.35,900),.55,.1,raw=True); add(B7+tp+.01,ping(1975,.18),.04,.1,raw=True)
+for a,b in ((1.0,2.4),(6.4,7.3)): d=b-a; add(B7+a,bpf(noise(d),900,5000)*np.sin(np.pi*T(d)/d)**2,.12,.2,raw=True)
+for k in range(17): add(B7+7.8+k*.085+.02*hsh(k),click(.35,3500+800*hsh(k+3)),.35,.15,raw=True)
+add(B7+2.55,whoosh(1.0,250,3500),.35,-.4,raw=True)
+add(B7+3.5,riser(.9,120,500),.12,raw=True); add(B7+3.5,bpf(noise(.9),1500,6000)*np.linspace(0,1,int(.9*SR))**2*.4,.25,raw=True)
+add(B7+4.4,chime([392,493.9,587.3,784],2.4),.22,raw=True)
+add(B7+5.45,whoosh(1.0,250,3500),.35,.4,raw=True)
+add(B7+9.4,whoosh(.6,200,6000,rev=True),.45,raw=True)
 
 # ٦: الشعار
 add(39.4,whoosh(.8,500,9000,rev=True),.5)
 add(40.1,bpf(noise(1.2),2000,7000)*np.linspace(.2,1,int(1.2*SR))**2*.4,.3)   # رسم الخط
 add(41.2,boom(3.5,55,26),1.0); add(41.2,chime([146.8,220,293.7,440,587.3],3.5),.3)
 add(41.45,ping(1760,.8),.06); add(41.7,ping(2349,.9),.05)
-add(42.2,whoosh(.8,2000,10000),.25,.0)
+add(42.2,whoosh(.8,2000,10000),.25,.0); add(41.55,chime([293.7,440,587.3,880],2.5),.2)
 add(44.3,click(1.4,2200)+click(.7,700),.9,.2)  # إطفاء المصباح
 add(44.3,lpf(noise(.3),2000)*env(int(.3*SR),.001,.04,6),.2)
 

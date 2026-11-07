@@ -53,15 +53,13 @@ function s1(t){
  m.setTransform(1,0,0,1,0,0);beginMask(.95);m.save();camT(m,cx+sx,cy+sy,z,rot);
  mLight(600,1520,600,.97*L,1,.5);mLight(820,1060,380,.55*L);mLight(470,560,520,.42*L);
  // ضوء القمر عبر الستائر
- m.fillStyle='rgba(0,0,0,.4)';blindsPath(m,0,-260,13,74,36,.42,-400,900);m.fill();
+ mLight(250,350,700,.3);
  // سيارة مارّة: شرائح تمر عبر الجدار
- const car=bell(1.8,4.4,t);if(car>0){m.fillStyle=`rgba(0,0,0,${.55*car})`;blindsPath(m,lerp(-900,900,inv(1.8,4.4,t)),100,10,80,40,-.18,-200,500);m.fill();}
+ const car=0;
  m.restore();applyMask();
  // صبغات ضوئية مضافة
  ctx.globalCompositeOperation='lighter';
  radial(ctx,600,1520,560,C.AMB,.16*L);
- ctx.fillStyle=`rgba(${C.COLD},.045)`;blindsPath(ctx,0,-260,13,74,36,.42,-400,900);ctx.fill();
- if(car>0){ctx.fillStyle=`rgba(255,210,160,${.08*car})`;blindsPath(ctx,lerp(-900,900,inv(1.8,4.4,t)),100,10,80,40,-.18,-200,500);ctx.fill();}
  // مخروط الضوء
  const cg=ctx.createLinearGradient(840,980,600,1550);cg.addColorStop(0,`rgba(${C.AMB},${.2*L})`);cg.addColorStop(1,`rgba(${C.AMB},0)`);
  ctx.fillStyle=cg;ctx.beginPath();ctx.moveTo(800,1000);ctx.lineTo(900,1010);ctx.lineTo(1120,1600);ctx.lineTo(80,1600);ctx.closePath();ctx.fill();

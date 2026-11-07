@@ -91,7 +91,7 @@ function s5(t){
  // ظل الجندي الطويل نحو الكاميرا
  ctx.save();ctx.translate(540,YB);ctx.transform(1,0,-.12,-1.9,0,0);ctx.fillStyle='rgba(0,0,0,.85)';figureFill(ctx,0,0,760);ctx.restore();
  // القبة والدرع
- const hb=Math.max(0,Math.sin(((t-31.2)/(.85*9/17))*Math.PI*2))**8*.5;
+ const hb=Math.max(0,Math.sin(((t-31.2)/(.85*9/11))*Math.PI*2))**8*.5;
  ctx.save();ctx.beginPath();ctx.ellipse(540,YB,DRX,DRY,0,Math.PI,2*Math.PI);ctx.closePath();ctx.clip();
  ctx.globalCompositeOperation='lighter';const dg=ctx.createRadialGradient(540,YB,DRY*.3,540,YB,DRY);dg.addColorStop(0,`rgba(${C.GRN},0)`);dg.addColorStop(1,`rgba(${C.GRN},${.05+hb*.06+pulse*.15})`);ctx.fillStyle=dg;ctx.fillRect(-300,YB-DRY,1700,DRY);
  // خلايا سداسية
@@ -140,10 +140,11 @@ function emblem(c,t,a){const cx=540,cy=880,w=560,h=680;const u=inv(40.1,41.3,t);
  // قوس الدرع الماسح
  const ar=eo(inv(41.45,41.9,t))*(1-eo(inv(41.55,42.25,t)));if(ar>0){c.lineWidth=6;c.beginPath();c.ellipse(cx,ly,190,230,0,Math.PI,Math.PI+Math.PI*ar);c.stroke();}
  c.restore();
- // صورة صاحب المبادرة داخل الدرع
- const ph=eo(inv(41.55,42.25,t));if(ph>0){const im=img('tamim');c.save();shieldPath(c,cx,cy,w-24,h-24);c.clip();c.globalAlpha=ph;
-  const s2=Math.max((w)/im.width,(h)/im.height)*1.12*lerp(1.12,1,ph);const iw=im.width*s2,ih=im.height*s2;c.drawImage(im,cx-iw/2,cy-h/2-ih*.02,iw,ih);
-  const gg=c.createLinearGradient(0,cy+h*.1,0,cy+h/2);gg.addColorStop(0,'rgba(2,10,8,0)');gg.addColorStop(1,'rgba(2,10,8,.85)');c.fillStyle=gg;c.fillRect(cx-w/2,cy-h/2,w,h);c.restore();}
+ // صورة صاحب المبادرة (مفرّغة) داخل الدرع
+ const ph=eo(inv(41.55,42.3,t));const im=img('tamim');if(ph>0&&im){c.save();shieldPath(c,cx,cy,w-24,h-24);c.clip();
+  const g0=c.createLinearGradient(0,cy-h/2,0,cy+h/2);g0.addColorStop(0,`rgba(12,40,32,${ph})`);g0.addColorStop(1,`rgba(3,10,9,${ph})`);c.fillStyle=g0;c.fillRect(cx-w/2,cy-h/2,w,h);
+  const iw=w*1.18,ih=iw*im.height/im.width;c.globalAlpha=ph;c.drawImage(im,cx-iw/2,cy-h/2+lerp(70,40,ph),iw,ih);
+  const gg=c.createLinearGradient(0,cy+h*.15,0,cy+h/2);gg.addColorStop(0,'rgba(3,10,9,0)');gg.addColorStop(1,'rgba(3,10,9,.8)');c.fillStyle=gg;c.fillRect(cx-w/2,cy-h/2,w,h);c.restore();}
  // الجندي
  const fg=eo(inv(41.25,41.7,t))*(1-ph);if(fg>0){c.save();c.beginPath();c.rect(0,ly-300*fg,W,300*fg);c.clip();c.fillStyle=`rgba(${C.GRN},.5)`;figureFill(c,cx,ly-2,270);c.restore();
   c.fillStyle='#020605';c.save();c.beginPath();c.rect(0,ly-300*fg,W,300*fg);c.clip();figureFill(c,cx,ly-1,266);c.restore();}
@@ -158,7 +159,6 @@ function s6(t){const z=lerp(1.08,1.0,eo(inv(40,45,t)));const off=t>=44.3?(t<44.3
  // غبار أخضر
  ctx.globalCompositeOperation='lighter';for(let i=0;i<60;i++){const x=hash(i)*1080,y=(hash(i+7)*1900-(t-40)*30*(.5+hash(i+3)))%1900;ctx.fillStyle=`rgba(${C.GRN},${.35*hash(i+11)})`;ctx.beginPath();ctx.arc(x,(y+1900)%1900,1+hash(i+5)*2.5,0,7);ctx.fill();}ctx.globalCompositeOperation='source-over';
  // ظلال الستائر تمرّ فوق الشعار
- ctx.fillStyle='rgba(0,0,0,.42)';blindsPath(ctx,lerp(-300,200,inv(40,45,t)),-300+(t-40)*40,26,95,42,.3,-600,1700);ctx.fill();
  ctx.restore();
  const fi=1-inv(40,40.4,t);if(fi>0){ctx.globalCompositeOperation='lighter';ctx.fillStyle=`rgba(200,255,230,${fi})`;ctx.fillRect(0,0,W,H);ctx.globalCompositeOperation='source-over';}
  if(off>0){ctx.fillStyle=`rgba(0,0,0,${off*.88+.12*inv(44.5,44.97,t)})`;ctx.fillRect(0,0,W,H);

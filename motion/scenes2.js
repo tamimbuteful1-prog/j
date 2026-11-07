@@ -66,6 +66,6 @@ function s3(t){
  else s3scene(t,s3cx(t));
  const fi=1-inv(14,14.45,t);if(fi>0){ctx.fillStyle=`rgba(0,0,0,${fi})`;ctx.fillRect(0,0,W,H);}
  // انتقال القزحية عبر العدسة
- if(t>21.45){const r=lerp(90,1250,ei(inv(21.45,22,t)));ctx.save();ctx.beginPath();ctx.arc(W/2,H/2,r,0,7);ctx.clip();ctx.fillStyle='#000';ctx.fillRect(0,0,W,H);s4(22.001);ctx.restore();
+ if(t>21.45){const r=lerp(90,1250,ei(inv(21.45,22,t)));ctx.save();ctx.beginPath();ctx.arc(W/2,H/2,r,0,7);ctx.clip();ctx.fillStyle='#000';ctx.fillRect(0,0,W,H);s5(31.001);ctx.restore();
   ctx.save();ctx.strokeStyle=`rgb(${C.GRN})`;ctx.lineWidth=22;ctx.shadowColor=`rgb(${C.GRN})`;ctx.shadowBlur=60;ctx.beginPath();ctx.arc(W/2,H/2,r,0,7);ctx.stroke();ctx.restore();}
 }
