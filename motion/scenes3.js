@@ -91,7 +91,7 @@ function s5(t){
  // ظل الجندي الطويل نحو الكاميرا
  ctx.save();ctx.translate(540,YB);ctx.transform(1,0,-.12,-1.9,0,0);ctx.fillStyle='rgba(0,0,0,.85)';figureFill(ctx,0,0,760);ctx.restore();
  // القبة والدرع
- const hb=Math.max(0,Math.sin(((t-31.2)/.85)*Math.PI*2))**8*.5;
+ const hb=Math.max(0,Math.sin(((t-31.2)/(.85*9/17))*Math.PI*2))**8*.5;
  ctx.save();ctx.beginPath();ctx.ellipse(540,YB,DRX,DRY,0,Math.PI,2*Math.PI);ctx.closePath();ctx.clip();
  ctx.globalCompositeOperation='lighter';const dg=ctx.createRadialGradient(540,YB,DRY*.3,540,YB,DRY);dg.addColorStop(0,`rgba(${C.GRN},0)`);dg.addColorStop(1,`rgba(${C.GRN},${.10+hb*.15+pulse*.4})`);ctx.fillStyle=dg;ctx.fillRect(-300,YB-DRY,1700,DRY);
  // خلايا سداسية
@@ -133,15 +133,19 @@ function s5(t){
 function emblem(c,t,a){const cx=540,cy=880,w=560,h=680;const u=inv(40.1,41.3,t);c.save();c.globalAlpha=a;
  // تعبئة
  const f=inv(41.2,41.6,t);if(f>0){shieldPath(c,cx,cy,w,h);const g=c.createLinearGradient(0,cy-h/2,0,cy+h/2);g.addColorStop(0,`rgba(10,40,32,${.9*f})`);g.addColorStop(1,`rgba(3,10,9,${.9*f})`);c.fillStyle=g;c.fill();}
- c.save();c.globalCompositeOperation='lighter';c.strokeStyle=`rgb(${C.GRN})`;c.lineWidth=12;c.lineJoin='round';c.shadowColor=`rgb(${C.GRN})`;c.shadowBlur=40;
+ c.save();c.globalCompositeOperation='lighter';c.strokeStyle=`rgb(${C.GRN})`;c.lineWidth=12;/*rim*/c.lineJoin='round';c.shadowColor=`rgb(${C.GRN})`;c.shadowBlur=40;
  const L=2300;c.setLineDash([L*u,L]);shieldPath(c,cx,cy,w,h);c.stroke();c.setLineDash([]);
  // الخط الحدودي داخل الدرع
- const bl=eo(inv(41.0,41.45,t));const ly=cy+110;if(bl>0){c.fillRect(cx-(w/2-10)*bl,ly-4,(w-20)*bl,8);}
+ const bl=eo(inv(41.0,41.45,t))*(1-eo(inv(41.55,42.25,t)));const ly=cy+110;if(bl>0){c.fillRect(cx-(w/2-10)*bl,ly-4,(w-20)*bl,8);}
  // قوس الدرع الماسح
- const ar=eo(inv(41.45,41.9,t));if(ar>0){c.lineWidth=6;c.beginPath();c.ellipse(cx,ly,190,230,0,Math.PI,Math.PI+Math.PI*ar);c.stroke();}
+ const ar=eo(inv(41.45,41.9,t))*(1-eo(inv(41.55,42.25,t)));if(ar>0){c.lineWidth=6;c.beginPath();c.ellipse(cx,ly,190,230,0,Math.PI,Math.PI+Math.PI*ar);c.stroke();}
  c.restore();
+ // صورة صاحب المبادرة داخل الدرع
+ const ph=eo(inv(41.55,42.25,t));if(ph>0){const im=img('tamim');c.save();shieldPath(c,cx,cy,w-24,h-24);c.clip();c.globalAlpha=ph;
+  const s2=Math.max((w)/im.width,(h)/im.height)*1.12*lerp(1.12,1,ph);const iw=im.width*s2,ih=im.height*s2;c.drawImage(im,cx-iw/2,cy-h/2-ih*.02,iw,ih);
+  const gg=c.createLinearGradient(0,cy+h*.1,0,cy+h/2);gg.addColorStop(0,'rgba(2,10,8,0)');gg.addColorStop(1,'rgba(2,10,8,.85)');c.fillStyle=gg;c.fillRect(cx-w/2,cy-h/2,w,h);c.restore();}
  // الجندي
- const fg=eo(inv(41.25,41.7,t));if(fg>0){c.save();c.beginPath();c.rect(0,ly-300*fg,W,300*fg);c.clip();c.shadowColor=`rgb(${C.GRN})`;c.shadowBlur=25;c.fillStyle=`rgba(${C.GRN},.9)`;figureFill(c,cx,ly-4,272);c.restore();
+ const fg=eo(inv(41.25,41.7,t))*(1-ph);if(fg>0){c.save();c.beginPath();c.rect(0,ly-300*fg,W,300*fg);c.clip();c.shadowColor=`rgb(${C.GRN})`;c.shadowBlur=25;c.fillStyle=`rgba(${C.GRN},.9)`;figureFill(c,cx,ly-4,272);c.restore();
   c.fillStyle='#020605';c.save();c.beginPath();c.rect(0,ly-300*fg,W,300*fg);c.clip();figureFill(c,cx,ly-1,266);c.restore();}
  // لمعة
  const sw=inv(42.2,43.0,t);if(sw>0&&sw<1){c.save();shieldPath(c,cx,cy,w,h);c.clip();c.globalCompositeOperation='lighter';const x0=lerp(-400,1400,eio(sw));const g=c.createLinearGradient(x0-150,0,x0+150,0);g.addColorStop(0,'rgba(255,255,255,0)');g.addColorStop(.5,'rgba(220,255,240,.45)');g.addColorStop(1,'rgba(255,255,255,0)');c.fillStyle=g;c.translate(x0,cy);c.rotate(.35);c.translate(-x0,-cy);c.fillRect(x0-150,cy-900,300,1800);c.restore();}

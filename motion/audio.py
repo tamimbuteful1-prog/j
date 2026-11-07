@@ -1,6 +1,12 @@
 # تصميم صوتي مُولَّد بالكامل (بلا موسيقى جاهزة) — 48kHz ستيريو
 import numpy as np, wave
-SR=48000; DUR=45.0; N=int(SR*DUR)
+SR=48000; DUR=58.0;
+SEG=[(0,6,0,7),(6,14,7,15),(14,22,15,25),(22,31,25,35),(31,40,35,52),(40,45,52,58)]
+def M(t):
+    for a,b,c,d in SEG:
+        if t<b: return c+(t-a)*(d-c)/(b-a)
+    return 58.0
+N=int(SR*DUR)
 L=np.zeros(N); R=np.zeros(N)
 rng=np.random.default_rng(5)
 def hsh(n): x=np.sin(n*127.1+311.7)*43758.5453; return x-np.floor(x)
@@ -15,8 +21,8 @@ def lpf(x,c):  # سريع عبر FFT
 def hpf(x,c):
     X=np.fft.rfft(x); f=np.fft.rfftfreq(len(x),1/SR); X*=1/np.sqrt(1+(c/np.maximum(f,1))**4); return np.fft.irfft(X,len(x))
 def bpf(x,lo,hi): return hpf(lpf(x,hi),lo)
-def add(t,sig,g=1.0,pan=0.0):
-    i=int(t*SR); 
+def add(t,sig,g=1.0,pan=0.0,raw=False):
+    i=int((t if raw else M(t))*SR); 
     if i>=N: return
     s=sig[:N-i]*g; L[i:i+len(s)]+=s*np.sqrt((1-pan)/2); R[i:i+len(s)]+=s*np.sqrt((1+pan)/2)
 def noise(d): return rng.standard_normal(int(d*SR))
@@ -77,8 +83,8 @@ def crackle(d,dens=60):
 # جوّ الغرفة
 room=lpf(noise(DUR),220)*.25; hum=(tone(50,DUR)*.6+tone(100,DUR)*.3+tone(150,DUR)*.12)*.06
 tt=np.arange(N)/SR
-lampA=np.clip((tt-1.33)*20,0,1)*(tt<6)+((tt>=22)&(tt<31))*1.0+((tt>=40)&(tt<44.3))*1.0
-add(0,room*(1-.6*((tt>6)&(tt<14))) ,.7)
+lampA=np.clip((tt-M(1.33))*20,0,1)*(tt<7)+((tt>=25)&(tt<35))*1.0+((tt>=52)&(tt<M(44.3)))*1.0
+add(0,room*(1-.6*((tt>7)&(tt<15))) ,.7)
 add(0,hum*lampA,1)
 
 # ١: الغرفة
@@ -105,7 +111,7 @@ for g0,d,i in [(10.5,.15,.6),(12.0,.13,.8),(13.55,.38,1)]: add(g0,glitchs(d,int(
 add(11.5,drone(2.4,55),.6)
 
 # ٣: ردود الفعل
-add(14.0,lpf(noise(8),300)*.3,.5)
+add(14.0,lpf(noise(10),300)*.3,.5)
 for w in (15.7,17.7,19.7): add(w,whoosh(.6,300,6000),.7,.3)
 add(14.4,ping(523,.4)+ping(659,.4),.15,.1)
 add(14.4,bpf(noise(.15),400,3000)*env(int(.15*SR),.002,.05,5),.3,.2)  # فقاعة
@@ -125,23 +131,23 @@ add(21.27,ping(1568,.6)+ping(2093,.6),.08,-.2)  # مصدر
 add(21.45,whoosh(.6,200,5000,rev=True),.6)
 
 # ٤: لوحة الأدلة
-add(22.0,drone(9.0,36.7,.6)*np.minimum(1,T(9)/1.5)*np.minimum(1,(9-T(9))/.5),.9)
-add(22.0,crackle(9,25),.06)
+add(22.0,drone(10.0,36.7,.6)*np.minimum(1,T(10)/1.5)*np.minimum(1,(10-T(10))/.5),.9)
+add(22.0,crackle(10,25),.06)
 add(23.4,click(1.2,1800),.8); add(23.42,tone(60,2.6)*.2*np.minimum(1,T(2.6)*10),.4)
 add(23.45,bpf(noise(2.6),3000,9000)*.05,1)  # أزيز الكشاف
 add(26.0,boom(1.6,150,50),.5); add(26.0,whoosh(.9,1000,9000),.6); add(26.0,chime([370,392,554],2.0),.18)
-add(26.1,riser(2.4,45,260),.35)
+add(26.1,riser(2.7,45,260),.35)
 add(28.5,boom(3.0,70,28),1.0); add(28.5,lpf(noise(2.5),120)*env(int(2.5*SR),.01,1.2,3),.9); add(28.5,glitchs(.12,285),.4)
 add(28.52,tone(lambda t:180+40*np.sin(t*30),1.0)*env(int(SR),.005,.4,4),.15)  # شدّ الخيوط
 add(30.45,glitchs(.12,304),.35)
 add(30.55,snap(),.6,-.3); add(30.56,snap(),.5,.3); add(30.55,boom(1.2,200,60),.4)
 
 # ٥: الحدود
-pad=np.zeros(int(9.4*SR)); tp=T(9.4)
+pad=np.zeros(int(17.4*SR)); tp=T(17.4)
 for f in (110,164.8,220,329.6,440): pad+=np.sin(2*np.pi*f*tp+np.sin(2*np.pi*.2*tp)*2)*.12
-pad=lpf(pad,1400)*np.minimum(1,tp/1.0)*np.minimum(1,(9.4-tp)/.4); add(30.6,pad,.55)
-k=0;b=31.2
-while b<39.6: add(b,heartbeat(),.55); b+=.85
+pad=lpf(pad,1400)*np.minimum(1,tp/1.0)*np.minimum(1,(17.4-tp)/.4); add(30.6,pad,.55)
+k=0;b=M(31.2)
+while b<M(39.6): add(b,heartbeat(),.55,raw=True); b+=.85
 HITS=[(33+k*.24+.08*np.sin(k*12.9),k%5==3,k) for k in range(14)]+[(37.7+(k-14)*.45,True,k) for k in range(14,18)]
 for th,ps,k in HITS:
     pan=(hsh(k*3.7)-.5)*1.4
@@ -149,7 +155,7 @@ for th,ps,k in HITS:
     if ps: add(th,chime([1046.5,1568],.9),.12,pan); add(th,bpf(noise(.3),2000,8000)*env(int(.3*SR),.005,.1,5),.08,pan)
     else: add(th,crackle(.35,120)+bpf(noise(.35),500,5000)*env(int(.35*SR),.001,.08,6),.35,pan); add(th,boom(.6,110,60),.25,pan)
 add(36.4,boom(3.2,60,30),1.0); add(36.4,whoosh(1.5,100,9000),.6); add(36.42,chime([220,330,440,660],3.0),.25)
-add(38.0,riser(1.9,200,1600),.18)
+add(38.0,riser(3.6,200,1600),.18)
 
 # ٦: الشعار
 add(39.4,whoosh(.8,500,9000,rev=True),.5)
