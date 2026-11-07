@@ -1,0 +1,8 @@
+<!doctype html><html lang="ar"><head><meta charset="utf-8"><title>الجندي الرقمي v2</title>
+<style>@font-face{font-family:Tj;font-weight:800;src:url(fonts/tajawal-arabic-800-normal.woff2)}@font-face{font-family:Tj;font-weight:900;src:url(fonts/tajawal-arabic-900-normal.woff2)}
+html,body{margin:0;background:#000}canvas{height:100vh;display:block;margin:auto}</style></head>
+<body><canvas id="c"></canvas>
+<script src="../lib.js"></script><script src="layers/meta.js"></script><script src="v2.js"></script>
+<script>setup(document.getElementById('c'));window.frameAt=async t=>{render(t);return cv.toDataURL('image/jpeg',.93);};
+assetsReady.then(()=>{if(!location.search.includes('render')){let t0=performance.now();(function f(){const t=(performance.now()-t0)/1000%44;render(t);requestAnimationFrame(f);})();}});</script>
+</body></html>
