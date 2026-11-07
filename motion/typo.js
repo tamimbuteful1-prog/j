@@ -42,7 +42,7 @@ function typoLayer(T){
     if(st=='tag'){ctx.save();ctx.globalAlpha=a;ctx.strokeStyle=col;ctx.lineWidth=3;ctx.beginPath();rr(ctx,it.x-it.w,y-z*.85,it.w,z*1.6,z*.8);ctx.stroke();ctx.restore();}
     if(bl>.4)ctx.filter=`blur(${bl.toFixed(1)}px)`;
     ctx.globalAlpha=a;ctx.shadowColor='rgba(0,0,0,.9)';ctx.shadowBlur=28;ctx.fillStyle=c;ctx.fillText(it.g,it.x-pad,ty);ctx.shadowBlur=0;
-    if(it.a&&st!='tag'){ctx.save();ctx.globalCompositeOperation='lighter';ctx.globalAlpha=a*.45;ctx.shadowColor=col;ctx.shadowBlur=40;ctx.fillText(it.g,it.x-pad,ty);ctx.restore();}
+    
     if(ghost>0){ctx.save();ctx.globalCompositeOperation='lighter';ctx.globalAlpha=ghost*.55*a;ctx.fillStyle=`rgb(${C.RED})`;ctx.fillText(it.g,it.x-pad+10*ghost,ty);ctx.fillStyle='rgb(60,200,255)';ctx.fillText(it.g,it.x-pad-10*ghost,ty);ctx.restore();}
     ctx.filter='none';});
    ctx.restore();

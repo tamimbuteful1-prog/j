@@ -110,7 +110,7 @@ function s2(t){const u=t-6;
   const sc=kf(u,[[0,3200],[1.35,0]],eo);
   for(let i=-2;i<16;i++){const y=H/2-165+(i-5)*370+sc;if(y<-400||y>H+40)continue;const hl=i==5&&u>1.25;
    if(i==5){const cs=lerp(1,0,ei(inv(2.4,2.85,u)));ctx.save();ctx.translate(W/2,y+165);ctx.rotate(inv(2.4,2.85,u)*.4);ctx.scale(cs*lerp(1,1.05,inv(1.3,1.6,u)),cs);ctx.translate(-W/2,-(y+165));
-    if(hl){ctx.save();ctx.globalCompositeOperation='lighter';radial(ctx,W/2,y+165,700,C.RED,.25);ctx.restore();}
+    
     cardDraw(ctx,i,y,hl,u);ctx.restore();}
    else{ctx.save();ctx.globalAlpha=fa*(u>1.25?lerp(1,.25,inv(1.25,1.6,u)):1);cardDraw(ctx,i,y,false,u);ctx.restore();}}
   // تفاعلات تتطاير

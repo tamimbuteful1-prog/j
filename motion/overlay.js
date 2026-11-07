@@ -36,5 +36,5 @@ function certLayer(T){if(T<CERT0||T>CERT1)return;const u=T-CERT0,D=CERT1-CERT0;c
  const sw=inv(.8,1.5,u),sw2=inv(2.5,3.2,u);for(const k of[sw,sw2]){if(k<=0||k>=1)continue;ctx.save();ctx.translate(cx,cy);ctx.rotate(rz);ctx.beginPath();ctx.rect(-cw*Math.cos(ry)/2,-ch/2,cw*Math.cos(ry),ch);ctx.clip();
   ctx.globalCompositeOperation='lighter';const x0=lerp(-cw,cw,eio(k));const g=ctx.createLinearGradient(x0-160,0,x0+160,0);g.addColorStop(0,'rgba(255,255,255,0)');g.addColorStop(.5,`rgba(255,255,255,${.35*a})`);g.addColorStop(1,'rgba(255,255,255,0)');ctx.fillStyle=g;ctx.rotate(.3);ctx.fillRect(x0-160,-ch*1.5,320,ch*3);ctx.restore();}
  // إطار ضوئي عند التكبير
- const hl=bell(2.2,3.7,u);if(hl>0){ctx.save();ctx.globalCompositeOperation='lighter';radial(ctx,W/2,H/2,700,C.GRN,.10*hl);ctx.restore();}
+ 
 }

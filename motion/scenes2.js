@@ -15,9 +15,9 @@ function person(i,t){const x=XS[i],l=t-(14+2*i);const by=1920;
  for(let k=0;k<shN;k++){const sg=(i==2?lerp(1.75,2.5,inv(0,1.9,l)):i==3?lerp(1.75,1.95,inv(0,1.5,l)):1.75)*(1+k*.14);
   const jx=i==2?(hash(k+Math.floor(l*12))-.5)*60*k:0;
   ctx.fillStyle=`rgba(0,0,0,${(i==2?.42:.6)*Math.min(1,g)})`;bustPath(ctx,x+40+jx+(k-1)*(i==2?160:0),by+120+head*2,1.5*sg);ctx.fill();}
- if(i==3&&l>.9){ctx.save();ctx.globalCompositeOperation='lighter';ctx.strokeStyle=`rgba(${C.GRN},${.25*inv(.9,1.6,l)})`;ctx.lineWidth=10;ctx.shadowColor=`rgba(${C.GRN},.9)`;ctx.shadowBlur=60;bustPath(ctx,x+40,by+120,1.5*1.95);ctx.stroke();ctx.restore();}
+ if(false){ctx.save();ctx.globalCompositeOperation='lighter';ctx.strokeStyle=`rgba(${C.GRN},${.25*inv(.9,1.6,l)})`;ctx.lineWidth=10;ctx.shadowColor=`rgba(${C.GRN},.9)`;ctx.shadowBlur=60;bustPath(ctx,x+40,by+120,1.5*1.95);ctx.stroke();ctx.restore();}
  // حافة ضوئية + الجسد
- ctx.save();ctx.shadowColor=`rgba(${col},${.9*Math.min(1,g)})`;ctx.shadowBlur=45;ctx.fillStyle=`rgba(${col},${.85*Math.min(1,g)})`;bustPath(ctx,x,by+head-5,1.5);ctx.fill();ctx.restore();
+ ctx.save();ctx.fillStyle=`rgba(${col},${.5*Math.min(1,g)})`;bustPath(ctx,x,by+head-5,1.5);ctx.fill();ctx.restore();
  ctx.fillStyle='#030406';bustPath(ctx,x,by+head+6,1.49);ctx.fill();
  ctx.save();bustPath(ctx,x,by+head+6,1.49);ctx.clip();ctx.globalCompositeOperation='lighter';radial(ctx,ph[0],ph[1]-120,560,col,.13*g);ctx.restore();
  // يدان والهاتف

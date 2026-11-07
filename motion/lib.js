@@ -1,5 +1,7 @@
 // ===== أدوات عامة =====
 const W=1080,H=1920,FPS=30,DUR=45;
+(()=>{const P=CanvasRenderingContext2D.prototype,d=Object.getOwnPropertyDescriptor(P,'shadowBlur');
+ Object.defineProperty(P,'shadowBlur',{get(){return d.get.call(this);},set(v){const c=this.shadowColor;d.set.call(this,(c=='#000000'||c.startsWith('rgba(0, 0, 0'))?v:0);}});})();
 const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
 const lerp=(a,b,t)=>a+(b-a)*t;
 const inv=(a,b,x)=>clamp((x-a)/(b-a));

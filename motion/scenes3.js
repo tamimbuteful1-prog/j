@@ -47,7 +47,7 @@ function s4board(t){const sh=shake(t,7,.8);const boom=t>28.5?Math.max(0,1-(t-28.
  ctx.globalCompositeOperation='lighter';radial(ctx,540,1150,800,C.AMB,.08);
  if(uvOn){radial(ctx,uv[0],uv[1],300,C.UV,.35);}
  if(R>0){ctx.fillStyle=`rgba(${C.UV},${.10*R+.5*bell(26,26.4,t)})`;ctx.fillRect(-1500,-3500,4100,6500);}
- if(boom>0)radial(ctx,BAR.x,BAR.y,1000,C.RED,.55*boom);
+ 
  ctx.globalCompositeOperation='source-over';
  // الطبقة الخفية: داخل دائرة الضوء البنفسجي أو بعد الكشف الكامل
  if(t<30.55){if(uvOn&&R<1){ctx.save();ctx.beginPath();ctx.arc(uv[0],uv[1],290,0,7);ctx.clip();hiddenLayer(t,1);ctx.restore();}
@@ -64,7 +64,7 @@ function s4(t){
   ctx.globalAlpha=1;}
  // خط الحدود الأخضر يشقّ الإطار
  if(t>30.5){const w=eo(inv(30.5,30.66,t))*W;ctx.save();ctx.globalCompositeOperation='lighter';ctx.fillStyle=`rgb(${C.GRN})`;ctx.shadowColor=`rgb(${C.GRN})`;ctx.shadowBlur=50;ctx.fillRect(W/2-w/2,H/2-4,w,8);
-  radial(ctx,W/2,H/2,700,C.GRN,.5*bell(30.5,30.9,t));ctx.restore();}
+  ctx.restore();}
 }
 
 // ===================== المشهد ٥: الجندي على الحدود (31–40) =====================
@@ -93,7 +93,7 @@ function s5(t){
  // القبة والدرع
  const hb=Math.max(0,Math.sin(((t-31.2)/(.85*9/17))*Math.PI*2))**8*.5;
  ctx.save();ctx.beginPath();ctx.ellipse(540,YB,DRX,DRY,0,Math.PI,2*Math.PI);ctx.closePath();ctx.clip();
- ctx.globalCompositeOperation='lighter';const dg=ctx.createRadialGradient(540,YB,DRY*.3,540,YB,DRY);dg.addColorStop(0,`rgba(${C.GRN},0)`);dg.addColorStop(1,`rgba(${C.GRN},${.10+hb*.15+pulse*.4})`);ctx.fillStyle=dg;ctx.fillRect(-300,YB-DRY,1700,DRY);
+ ctx.globalCompositeOperation='lighter';const dg=ctx.createRadialGradient(540,YB,DRY*.3,540,YB,DRY);dg.addColorStop(0,`rgba(${C.GRN},0)`);dg.addColorStop(1,`rgba(${C.GRN},${.05+hb*.06+pulse*.15})`);ctx.fillStyle=dg;ctx.fillRect(-300,YB-DRY,1700,DRY);
  // خلايا سداسية
  const scanY=YB-((t*420)%DRY);const hr=46;ctx.lineWidth=1.5;
  for(let r=0;r<22;r++)for(let q=-11;q<12;q++){const hx=540+q*hr*1.73+(r%2)*hr*.865,hy=YB-r*hr*1.5;const ex=(hx-540)/DRX,ey=(YB-hy)/DRY;const e=ex*ex+ey*ey;if(e>1)continue;
@@ -112,17 +112,17 @@ function s5(t){
  for(const h of HITS){const d=t-h.t;
   if(d<-1.8)continue;
   if(d<0){const k=1+d/1.8;incoming(lerp(h.sx,h.hx,k),lerp(-700,h.hy,k),.9+k*.5,h.type,`rgb(${C.RED})`,Math.min(1,k*3));}
-  else if(!h.pass&&d<.6){for(let s=0;s<16;s++){const an=hash(h.k*20+s)*Math.PI*2,sp=150+hash(h.k*30+s)*500;ctx.fillStyle=`rgba(${s%3?C.RED:C.AMB},${1-d/.6})`;ctx.beginPath();ctx.arc(h.hx+Math.cos(an)*sp*d,h.hy+Math.sin(an)*sp*d+300*d*d,5*(1-d/.6)+1,0,7);ctx.fill();}radial(ctx,h.hx,h.hy,200,C.RED,.5*(1-d/.6));}
+  else if(!h.pass&&d<.6){for(let s=0;s<16;s++){const an=hash(h.k*20+s)*Math.PI*2,sp=150+hash(h.k*30+s)*500;ctx.fillStyle=`rgba(${s%3?C.RED:C.AMB},${1-d/.6})`;ctx.beginPath();ctx.arc(h.hx+Math.cos(an)*sp*d,h.hy+Math.sin(an)*sp*d+300*d*d,5*(1-d/.6)+1,0,7);ctx.fill();}}
   else if(h.pass&&d<2.2){const k=inv(.25,2.2,d);const col=d<.25?`rgb(${C.WHT})`:`rgb(${C.GRN})`;const px=lerp(h.hx,540+(h.hx-540)*1.7,ei(k)),py=lerp(h.hy,YB+1100,ei(k));
    if(d<.35){ctx.strokeStyle=`rgba(${C.GRN},${1-d/.35})`;ctx.lineWidth=4;ctx.beginPath();ctx.arc(h.hx,h.hy,30+d*200,0,7);ctx.stroke();}
-   incoming(px,py,1.3*(1-k*.5),0,col,1-k);if(d>.2&&d<.7)checkIcon(ctx,h.hx+60,h.hy-60,60,eo(inv(.2,.45,d)),`rgba(${C.GRN},${1-inv(.5,.7,d)})`);radial(ctx,px,py,120,C.GRN,.4*(1-k));}}
+   incoming(px,py,1.3*(1-k*.5),0,col,1-k);if(d>.2&&d<.7)checkIcon(ctx,h.hx+60,h.hy-60,60,eo(inv(.2,.45,d)),`rgba(${C.GRN},${1-inv(.5,.7,d)})`);}}
  ctx.restore();
  // خط الحدود
  ctx.save();ctx.globalCompositeOperation='lighter';ctx.fillStyle=`rgb(${C.GRN})`;ctx.shadowColor=`rgb(${C.GRN})`;ctx.shadowBlur=40;ctx.fillRect(-1500,YB-4,4100,8);
- const cg=ctx.createLinearGradient(0,YB-260,0,YB);cg.addColorStop(0,`rgba(${C.GRN},0)`);cg.addColorStop(1,`rgba(${C.GRN},.22)`);ctx.shadowBlur=0;ctx.fillStyle=cg;ctx.fillRect(-1500,YB-260,4100,260);
+ 
  for(let k=-8;k<=10;k++){ctx.fillStyle=`rgba(${C.GRN},.5)`;ctx.fillRect(540+k*170-2,YB-26,4,26);}ctx.restore();
  // الجندي: حافة ضوء خضراء ثم جسد أسود
- ctx.save();ctx.shadowColor=`rgba(${C.GRN},1)`;ctx.shadowBlur=40+pulse*60;ctx.fillStyle=`rgba(${C.GRN},.95)`;figureFill(ctx,540,YB-6,764);ctx.restore();
+ ctx.save();ctx.fillStyle=`rgba(${C.GRN},.5)`;figureFill(ctx,540,YB-3,758);ctx.restore();
  ctx.fillStyle='#010203';figureFill(ctx,540,YB+2,752);
  ctx.restore();
  const fi=1-inv(31,31.3,t);if(fi>0){ctx.globalCompositeOperation='lighter';ctx.fillStyle=`rgba(${C.GRN},${fi*.6})`;ctx.fillRect(0,0,W,H);ctx.globalCompositeOperation='source-over';}
@@ -145,7 +145,7 @@ function emblem(c,t,a){const cx=540,cy=880,w=560,h=680;const u=inv(40.1,41.3,t);
   const s2=Math.max((w)/im.width,(h)/im.height)*1.12*lerp(1.12,1,ph);const iw=im.width*s2,ih=im.height*s2;c.drawImage(im,cx-iw/2,cy-h/2-ih*.02,iw,ih);
   const gg=c.createLinearGradient(0,cy+h*.1,0,cy+h/2);gg.addColorStop(0,'rgba(2,10,8,0)');gg.addColorStop(1,'rgba(2,10,8,.85)');c.fillStyle=gg;c.fillRect(cx-w/2,cy-h/2,w,h);c.restore();}
  // الجندي
- const fg=eo(inv(41.25,41.7,t))*(1-ph);if(fg>0){c.save();c.beginPath();c.rect(0,ly-300*fg,W,300*fg);c.clip();c.shadowColor=`rgb(${C.GRN})`;c.shadowBlur=25;c.fillStyle=`rgba(${C.GRN},.9)`;figureFill(c,cx,ly-4,272);c.restore();
+ const fg=eo(inv(41.25,41.7,t))*(1-ph);if(fg>0){c.save();c.beginPath();c.rect(0,ly-300*fg,W,300*fg);c.clip();c.fillStyle=`rgba(${C.GRN},.5)`;figureFill(c,cx,ly-2,270);c.restore();
   c.fillStyle='#020605';c.save();c.beginPath();c.rect(0,ly-300*fg,W,300*fg);c.clip();figureFill(c,cx,ly-1,266);c.restore();}
  // لمعة
  const sw=inv(42.2,43.0,t);if(sw>0&&sw<1){c.save();shieldPath(c,cx,cy,w,h);c.clip();c.globalCompositeOperation='lighter';const x0=lerp(-400,1400,eio(sw));const g=c.createLinearGradient(x0-150,0,x0+150,0);g.addColorStop(0,'rgba(255,255,255,0)');g.addColorStop(.5,'rgba(220,255,240,.45)');g.addColorStop(1,'rgba(255,255,255,0)');c.fillStyle=g;c.translate(x0,cy);c.rotate(.35);c.translate(-x0,-cy);c.fillRect(x0-150,cy-900,300,1800);c.restore();}
@@ -153,7 +153,7 @@ function emblem(c,t,a){const cx=540,cy=880,w=560,h=680;const u=inv(40.1,41.3,t);
 function s6(t){const z=lerp(1.08,1.0,eo(inv(40,45,t)));const off=t>=44.3?(t<44.36?.3:t<44.42?.85:t<44.47?.5:1):0;
  ctx.save();camT(ctx,540,920,z,0);
  ctx.fillStyle='#07090d';ctx.fillRect(-500,-500,2100,2900);
- ctx.globalCompositeOperation='lighter';radial(ctx,540,880,900,C.GRN,.12*(1+bell(41.2,42,t)));radial(ctx,700,300,700,C.AMB,.08);ctx.globalCompositeOperation='source-over';
+ ctx.globalCompositeOperation='lighter';radial(ctx,700,300,700,C.AMB,.08);ctx.globalCompositeOperation='source-over';
  emblem(ctx,t,1);
  // غبار أخضر
  ctx.globalCompositeOperation='lighter';for(let i=0;i<60;i++){const x=hash(i)*1080,y=(hash(i+7)*1900-(t-40)*30*(.5+hash(i+3)))%1900;ctx.fillStyle=`rgba(${C.GRN},${.35*hash(i+11)})`;ctx.beginPath();ctx.arc(x,(y+1900)%1900,1+hash(i+5)*2.5,0,7);ctx.fill();}ctx.globalCompositeOperation='source-over';

@@ -14,8 +14,6 @@ function glitch(t){let I=0,seed=0;for(const g of GLITCH){if(t>=g[0]&&t<g[0]+g[1]
  ctx.restore();}
 function post(t,T){ctx=MAIN;ctx.setTransform(1,0,0,1,0,0);ctx.globalAlpha=1;ctx.globalCompositeOperation='source-over';ctx.filter='none';
  // توهّج
- b1c.clearRect(0,0,BW,BH);b1c.drawImage(cv,0,0,BW,BH);b2c.clearRect(0,0,BW,BH);b2c.filter='contrast(1.9) brightness(.75) blur(7px)';b2c.drawImage(b1,0,0);b2c.filter='none';
- const cb=1-.85*Math.min(inv(CERT0,CERT0+.4,T),1-inv(CERT1-.4,CERT1,T));ctx.globalCompositeOperation='lighter';ctx.globalAlpha=.55*cb;ctx.drawImage(b2,0,0,W,H);ctx.globalAlpha=.25*cb;b2c.filter='blur(18px)';b2c.drawImage(b1,0,0);b2c.filter='none';ctx.drawImage(b2,0,0,W,H);
  ctx.globalAlpha=1;ctx.globalCompositeOperation='source-over';
  glitch(t);
  // تظليل الحواف
