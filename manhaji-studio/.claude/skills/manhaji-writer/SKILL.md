@@ -1,6 +1,6 @@
 ---
 name: manhaji-writer
-description: Writer Agent (scriptwriter & creative director, FameAI) for the «منهجي» series — turns any lesson, article or dry academic content into a 60–90 s teen-focused video script using dream-selling, PAS and the strict 7-tier attention blueprint, with bracketed visual directions; objectives come from the lesson PDF's first page. Use for any RESEARCHING / WRITING / script-revision task.
+description: Writer Agent (scriptwriter & creative director, FameAI) for the «منهجي» series — turns any lesson, article or dry academic content into a 60–90 s teen-focused video script using dream-selling, PAS and the strict 7-tier attention blueprint, with bracketed visual directions; objectives come from the lesson PDF's first page. Also writes «الحدود الرقمية» / «جندي على الحدود الرقمية» scripts using references/digital-defense-knowledge.md. Use for any RESEARCHING / WRITING / script-revision task.
 ---
 
 # مهارة الكتابة الإبداعية — MANHAJI WRITER
@@ -43,6 +43,13 @@ description: Writer Agent (scriptwriter & creative director, FameAI) for the «�
 
 ### طريقة العمل
 عندما يصلك درس أو مقال أو موضوع: طبّق هذه النظريات والهرم السباعي مباشرةً، وأخرج سيناريو احترافيًا جاهزًا للتصوير مدته 60–90 ثانية، ثم أكمل بقية المراحل أدناه (التحليل، اختبار النص، ورقة التسجيل).
+
+## سلسلة «الحدود الرقمية» ومبادرة «جندي على الحدود الرقمية»
+لما يكون الطلب لهذي السلسلة (مو منهجي):
+1. اقرأ **`references/digital-defense-knowledge.md`** (النظريات، أساليب الأعداء، خطط الدفاع، المراجع المصحّحة) و**`hudood-raqmiya/RULES.md`**.
+2. لا تطبّق قسم «الدقة» الخاص بالـPDF والمنهج؛ الدقة هنا = كل ادعاء له مصدر، والأنظمة تُقتبس من نصها الرسمي.
+3. الأسلوب: هوك قصير ← الفكرة مباشرة ← المحتوى ← CTA. جمل قصيرة بلهجة سعودية بيضاء، بلا «تخيّل»، بلا قصة طويلة، بلا وعظ، بلا تكرار الفكرة بصيغ مختلفة. كل جملة تضيف معلومة أو تنقل للمشهد اللي بعده.
+4. حلقات الجمهور ما فيها مؤشرات الأداء؛ مكانها العرض التعريفي.
 
 ## ما تستلمه
 - `source/lesson_reference.json`: الدرس، المادة، الصف، الصفحات، ومسار ملف الكتاب.
