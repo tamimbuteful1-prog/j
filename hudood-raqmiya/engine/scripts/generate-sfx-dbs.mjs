@@ -173,4 +173,11 @@ W('map_draw', ...stereo(verb(mk(1.6, (t) => (Math.sin(TAU * (300 + 400 * t) * t)
   W('folder', ...stereo(verb(mk(1.0, (t) => f(noise(), 1400, 0.6).bp * Math.sin(Math.PI * Math.min(1, t / 0.6)) * 0.6 + (t > 0.6 ? Math.sin(TAU * (80 + 40 * Math.exp(-(t - 0.6) * 30)) * t) * env(t - 0.6, 0.002, 0.08) + noise() * env(t - 0.6, 0.001, 0.02) * 0.5 : 0)), 0.3)));
 }
 W('lamp_click', ...stereo(verb(mk(0.5, (t) => click(t, 0, 0.004, 1) + Math.sin(TAU * 2400 * t) * env(t, 0.0005, 0.015) * 0.4 + click(t, 0.012, 0.003, 0.5)), 0.3)));
+// metal ID tag + ball chain landing on wood
+W('tag', ...stereo(verb(mk(1.4, (t) => {
+  const hit = (a, g) => (t > a ? (Math.sin(TAU * 2830 * (t - a)) * 0.5 + Math.sin(TAU * 4170 * (t - a)) * 0.35 + Math.sin(TAU * 6020 * (t - a)) * 0.2) * env(t - a, 0.0005, 0.12) * g + noise() * env(t - a, 0.0003, 0.004) * g : 0);
+  let chain = 0;
+  for (let i = 0; i < 14; i++) chain += t > 0.06 + i * 0.018 ? noise() * env(t - 0.06 - i * 0.018, 0.0002, 0.003) * 0.35 : 0;
+  return hit(0, 1) + hit(0.11, 0.45) + hit(0.19, 0.2) + chain + (t > 0 ? Math.sin(TAU * 140 * t) * env(t, 0.001, 0.03) * 0.5 : 0);
+}), 0.25), 0.15));
 console.log('done');
