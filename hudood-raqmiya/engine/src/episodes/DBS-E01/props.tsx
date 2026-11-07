@@ -162,32 +162,62 @@ export const YouPolaroid: React.FC<{circle: number; word: number}> = ({circle, w
   </div>
 );
 
-/** ruled index card with a handwritten title */
+/** ruled index card: an episode's file, its tactic still redacted */
 export const IndexCard: React.FC<{title: string}> = ({title}) => (
   <div style={{position: 'absolute', inset: 0, background: '#fbfaf5', backgroundImage: 'repeating-linear-gradient(180deg, transparent 0 46px, rgba(70,120,190,0.35) 46px 48px)', boxShadow: 'inset 0 0 30px rgba(0,0,0,0.06)'}}>
     <div style={{position: 'absolute', left: 0, right: 0, top: 70, height: 3, background: 'rgba(200,40,50,0.55)'}} />
-    <div style={{...ink(58, 700, '#13306b', RUQAA), position: 'absolute', top: 70, width: '100%', textAlign: 'center'}}>{title}</div>
+    <div style={{...ink(52, 700, '#13306b', RUQAA), position: 'absolute', top: 60, width: '100%', textAlign: 'center'}}>{title}</div>
+    <div style={{position: 'absolute', right: 60, left: 60, top: 220, height: 56, background: '#111', transform: 'rotate(-1deg)'}} />
+    <div style={{position: 'absolute', right: 60, left: 200, top: 310, height: 44, background: '#111', transform: 'rotate(0.6deg)'}} />
   </div>
 );
 
-/** typed defense plan with ink check marks */
+/** handwritten scribble line (unreadable at this distance, like real handwriting out of focus) */
+const Scribble: React.FC<{w: number; seed: number}> = ({w, seed}) => {
+  let d = 'M 600 20';
+  for (let x = 600; x > 600 - w * 6; x -= 9) {
+    const r = Math.sin(x * 0.37 + seed) * 7 + Math.sin(x * 0.11 + seed * 2) * 5;
+    d += ` L ${x} ${20 + r}`;
+  }
+  return (
+    <svg viewBox="0 0 600 40" style={{width: '100%', height: 34, display: 'block', filter: 'blur(0.8px)'}}>
+      <path d={d} fill="none" stroke="#1d3fa0" strokeWidth={4} strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+};
+
+/** a case sheet per episode: the tactic, how it works, the right response — filled in by hand */
 export const DefensePlan: React.FC<{checks: number[]}> = ({checks}) => {
-  const items = ['لا تتفاعل مع المحتوى المهاجم أو المضلل', 'احظر', 'بلّغ', 'أخفِ', 'تحقّق من المصدر قبل ما تنشر', 'ادعم الحسابات الرسمية والموثوقة'];
+  const f = (i: number) => checks[i] ?? 0;
+  const Field: React.FC<{label: string; i: number; children: React.ReactNode}> = ({label, i, children}) => (
+    <div style={{marginBottom: 34}}>
+      <div style={ink(34, 700)}>{label}</div>
+      <div style={{position: 'relative', minHeight: 70, borderBottom: `2px dashed ${INK}`, opacity: 0.95}}>
+        <div style={{clipPath: `inset(0 0 0 ${(1 - f(i)) * 100}%)`}}>{children}</div>
+      </div>
+    </div>
+  );
   return (
     <Paper>
       <div style={{position: 'absolute', inset: '60px 70px'}}>
-        <div style={{...ink(56, 700), textAlign: 'center'}}>خطة الدفاع</div>
-        <div style={{height: 3, background: INK, margin: '10px 0 30px'}} />
-        {items.map((it, i) => (
-          <div key={i} style={{display: 'flex', alignItems: 'center', gap: 24, marginBottom: 26}}>
-            <div style={{position: 'relative', width: 46, height: 46, border: `3px solid ${INK}`, flex: 'none'}}>
-              <svg viewBox="0 0 40 40" style={{position: 'absolute', left: -6, top: -14, width: 60, height: 60, overflow: 'visible'}}>
-                <path d="M 6 22 L 16 33 L 40 4" fill="none" stroke="#1d3fa0" strokeWidth={6} strokeLinecap="round" strokeLinejoin="round" strokeDasharray={60} strokeDashoffset={60 * (1 - (checks[i] ?? 0))} />
-              </svg>
-            </div>
-            <div style={ink(38, i === 0 ? 700 : 400)}>{it}</div>
+        <div style={{...ink(56, 700), textAlign: 'center'}}>ملف الحلقة</div>
+        <div style={{height: 3, background: INK, margin: '10px 0 34px'}} />
+        <Field label="الأسلوب:" i={0}>
+          <div style={{paddingTop: 18}}>
+            <Scribble w={100} seed={1} />
+            <Scribble w={68} seed={4} />
           </div>
-        ))}
+        </Field>
+        <Field label="التصرف الأنسب للدفاع:" i={2}>
+          <div style={{paddingTop: 18}}>
+            <Scribble w={94} seed={7} />
+            <Scribble w={52} seed={9} />
+          </div>
+        </Field>
+        <svg viewBox="0 0 120 120" style={{position: 'absolute', left: 0, bottom: 0, width: 150, height: 150}}>
+          <circle cx={60} cy={60} r={50} fill="none" stroke={RED_INK} strokeWidth={6} strokeDasharray={320} strokeDashoffset={320 * (1 - f(3))} />
+          <path d="M 36 62 L 54 80 L 86 40" fill="none" stroke={RED_INK} strokeWidth={9} strokeLinecap="round" strokeLinejoin="round" strokeDasharray={90} strokeDashoffset={90 * (1 - f(3))} />
+        </svg>
       </div>
     </Paper>
   );

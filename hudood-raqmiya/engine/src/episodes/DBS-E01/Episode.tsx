@@ -151,7 +151,7 @@ const POSTS: [number, number, number, string, number][] = [
 ];
 const YOU = {x: 1200, y: 1080};
 const TACTICS: [number, number, number, string][] = [
-  [470, 2280, -4, 'الشيطنة'], [1930, 2260, 5, 'صناعة اليأس'], [440, 2760, 3, 'هندسة الانقسام'], [1960, 2780, -3, 'الذباب الإلكتروني'], [520, 3200, -2, 'السم في العسل'], [1880, 3220, 4, 'الاستفزاز'],
+  [470, 2280, -4, 'الحلقة ١'], [1930, 2260, 5, 'الحلقة ٢'], [440, 2760, 3, 'الحلقة ٣'], [1960, 2780, -3, 'الحلقة ٤'], [520, 3200, -2, 'الحلقة ٥'], [1880, 3220, 4, 'الحلقة ٦'],
 ];
 const PLAN = {x: 1200, y: 2760};
 const wallShots = (): Shot[] => [
@@ -210,7 +210,7 @@ const Wall: React.FC = () => {
           );
         })}
         <Obj x={PLAN.x} y={PLAN.y} w={760} h={1000} r={1} shadow={0.9}>
-          <DefensePlan checks={[0, 1, 2, 3, 4, 5].map((i) => k(t, L('L09').start + 0.1 + i * 0.32, L('L09').start + 0.35 + i * 0.32))} />
+          <DefensePlan checks={[k(t, L('L08').end - 1.2, L('L08').end - 0.4, EASE.inOut), 0, k(t, L('L09').start + 0.2, L('L09').start + 1.2, EASE.inOut), k(t, L('L09').end - 0.6, L('L09').end - 0.2)]} />
         </Obj>
         <Pin x={PLAN.x} y={PLAN.y - 470} />
       </Stage>
@@ -265,7 +265,7 @@ const cues = (): Cue[] => [
   [L('L07').start + 0.3, 'folder', 0.6], [L('L07').end - 0.9, 'stamp', 0.75], [L('L07').end - 0.8, 'boom_soft', 0.35],
   [L('L08').start - 0.4, 'whoosh_fast', 0.45],
   ...TACTICS.map((_, i): Cue => [beat('L08', i + 0.6, 7) - 0.25, 'pin', 0.45]),
-  ...[0, 1, 2, 3, 4, 5].map((i): Cue => [L('L09').start + 0.1 + i * 0.32, 'tick', 0.35]),
+  [L('L08').end - 1.2, 'marker', 0.4], [L('L09').start + 0.2, 'marker', 0.45], [L('L09').end - 0.6, 'stamp', 0.45],
   [L('L10').start - 0.35, 'whoosh_fast', 0.45], [L('L10').start - 0.1, 'card_slide', 0.45], [L('L10').start + 0.2, 'unlock', 0.4],
   [L('L11').start + 1.0, 'scanner', 0.5], [L('L11').start + 1.6, 'beep', 0.3], [L('L11').start + 2.6, 'beep', 0.3],
   [L('L12').start, 'page_turn', 0.35], [L('L12').end - 1.0, 'warm_swell', 0.4], [L('L12').end - 0.95, 'lock_on', 0.3],
