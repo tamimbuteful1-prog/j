@@ -81,7 +81,7 @@ const stereo = (m, w = 0.15) => {
 };
 
 import {copyFileSync} from 'node:fs';
-for (const n of ['whoosh_air', 'whoosh_fast', 'sub_hit', 'boom_soft', 'lock_on', 'stamp', 'card_slide', 'unlock', 'riser', 'glitch', 'warm_swell', 'end_hit']) {
+for (const n of ['whoosh_air', 'whoosh_fast', 'sub_hit', 'boom_soft', 'lock_on', 'stamp', 'card_slide', 'unlock', 'riser', 'glitch', 'warm_swell', 'end_hit', 'tick']) {
   mkdirSync(join(ROOT, 'sfx/dbs'), {recursive: true});
   copyFileSync(join(ROOT, `sfx/${n}.wav`), join(ROOT, `sfx/dbs/${n}.wav`));
 }
