@@ -20,6 +20,8 @@ function s7(u){
  const sh=shake(u+44,5,.6);cx+=sh[0];cy+=sh[1];
  ctx.save();camT(ctx,cx,cy,z,rot);
  // سطح المكتب
+ if(window.S7_ADULT){const sl=window.SLATE;ctx.fillStyle=sl?ctx.createPattern(sl,'repeat'):'#111419';ctx.fillRect(-1600,-1600,4800,4800);}
+ else{
  ctx.fillStyle='#3a291e';ctx.fillRect(-1600,-1600,4800,4800);ctx.strokeStyle='rgba(0,0,0,.2)';ctx.lineWidth=3;
  for(let i=0;i<46;i++){ctx.beginPath();const y=-1400+i*95;ctx.moveTo(-1600,y);ctx.bezierCurveTo(-200,y+30*Math.sin(i),1200,y-25*Math.cos(i*1.3),3200,y+10);ctx.stroke();}
  // أوراق منقّحة ومكبّر (من نفس الغرفة)
@@ -27,6 +29,7 @@ function s7(u){
   ctx.fillStyle='#111';for(let k=0;k<8;k++)ctx.fillRect(-o[3]/2+50,-o[4]/2+70+k*80,(o[3]-100)*(.45+hash(k+o[0])*.55),30);ctx.restore();}
  ctx.save();ctx.translate(980,1720);ctx.rotate(.5);ctx.strokeStyle='rgba(0,0,0,.45)';ctx.lineWidth=26;ctx.beginPath();ctx.arc(30,30,120,0,7);ctx.stroke();
  ctx.strokeStyle='#8d939b';ctx.lineWidth=24;ctx.beginPath();ctx.arc(0,0,120,0,7);ctx.stroke();ctx.strokeStyle='#241e1a';ctx.lineWidth=46;ctx.beginPath();ctx.moveTo(120,0);ctx.lineTo(360,0);ctx.stroke();ctx.restore();
+ }
  // الشهادة: حواف مقوّسة، ظل، وتدرّج لوني دافئ يطابق الغرفة
  const cert=img('cert');ctx.save();ctx.translate(CE.x,CE.y);ctx.rotate(CE.r);
  ctx.fillStyle='rgba(0,0,0,.55)';ctx.beginPath();rr(ctx,-CE.w/2+34,-CE.h/2+40,CE.w,CE.h,44);ctx.fill();
@@ -40,7 +43,7 @@ function s7(u){
  ctx.fillStyle='#0c0e12';ctx.beginPath();rr(ctx,-PH.sw/2-18,-PH.sh/2-50,PH.sw+36,PH.sh+100,70);ctx.fill();ctx.strokeStyle='#3c424c';ctx.lineWidth=4;ctx.stroke();ctx.restore();
  // الإضاءة: نفس قناع الغرفة (مصباح + ظلام)
  m.setTransform(1,0,0,1,0,0);beginMask(.93);m.save();camT(m,cx,cy,z,rot);mLight(1000,850,1500,.95,1,.8);mLight(PH.x,PH.y,700,.35);m.restore();applyMask();
- ctx.globalCompositeOperation='lighter';radial(ctx,1000,850,1300,C.AMB,.07);ctx.globalCompositeOperation='source-over';
+ if(!window.S7_ADULT){ctx.globalCompositeOperation='lighter';radial(ctx,1000,850,1300,C.AMB,.07);}ctx.globalCompositeOperation='source-over';
  // الشاشة (مضيئة بذاتها)
  ctx.save();ctx.translate(PH.x,PH.y);ctx.rotate(PH.r);ctx.beginPath();rr(ctx,-PH.sw/2,-PH.sh/2,PH.sw,PH.sh,44);ctx.clip();
  if(VID.readyState>=2)ctx.drawImage(VID,-PH.sw/2,-PH.sh/2,PH.sw,PH.sh);else{ctx.fillStyle='#f1ede6';ctx.fillRect(-PH.sw/2,-PH.sh/2,PH.sw,PH.sh);}
@@ -48,6 +51,6 @@ function s7(u){
  for(const tp of TAPS.taps){const a=u-tp.t;if(a>=0&&a<.5){const[x,y]=tapScreen(tp);ctx.fillStyle=`rgba(255,255,255,${.35*(1-a/.5)})`;ctx.beginPath();ctx.arc(x,y,20+a*160,0,7);ctx.fill();}}
  ctx.restore();
  ctx.restore();
- const fi=1-inv(0,.4,u);if(fi>0){ctx.globalCompositeOperation='lighter';ctx.fillStyle=`rgba(200,255,230,${fi})`;ctx.fillRect(0,0,W,H);ctx.globalCompositeOperation='source-over';}
- const fo=Math.pow(inv(9.5,10,u),2);if(fo>0){ctx.globalCompositeOperation='lighter';ctx.fillStyle=`rgba(200,255,230,${fo})`;ctx.fillRect(0,0,W,H);ctx.globalCompositeOperation='source-over';}
+ const fi=window.S7_ADULT?0:1-inv(0,.4,u);if(fi>0){ctx.globalCompositeOperation='lighter';ctx.fillStyle=`rgba(200,255,230,${fi})`;ctx.fillRect(0,0,W,H);ctx.globalCompositeOperation='source-over';}
+ const fo=window.S7_ADULT?0:Math.pow(inv(9.5,10,u),2);if(fo>0){ctx.globalCompositeOperation='lighter';ctx.fillStyle=`rgba(200,255,230,${fo})`;ctx.fillRect(0,0,W,H);ctx.globalCompositeOperation='source-over';}
 }
