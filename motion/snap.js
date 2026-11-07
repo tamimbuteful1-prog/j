@@ -1,5 +1,5 @@
 const {chromium}=require('playwright');const fs=require('fs');const path=require('path');
-(async()=>{const b=await chromium.launch({args:['--use-gl=swiftshader','--enable-unsafe-swiftshader']});const p=await b.newPage();
+(async()=>{const b=await chromium.launch({args:['--allow-file-access-from-files']});const p=await b.newPage();
  const errs=[];p.on('pageerror',e=>errs.push(e.message));p.on('console',m=>{if(m.type()=='error')errs.push(m.text())});
  await p.goto('file://'+path.resolve(__dirname,'index.html')+'?render');await p.evaluate(()=>fontsReady);
  const out=process.argv[2];const ts=process.argv.slice(3).map(Number);
