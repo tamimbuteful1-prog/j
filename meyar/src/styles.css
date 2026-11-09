@@ -1,26 +1,35 @@
-/* معيار — visual system
-   Ivory paper, charcoal ink, a restrained orange for emphasis, green/red only
-   inside the gauge and verdicts. Arabic text is never letter-spaced. */
+/* معيار — visual system: «لوحة التحقيق»
+   A dark navy felt evidence board under a single lamp, aged cream paper,
+   silver pins and red investigation thread. Text on the board is cream;
+   text on paper surfaces is charcoal (see the paper scope below). Green/red
+   only inside the gauge and verdicts. Arabic text is never letter-spaced. */
 
 :root {
-  --ivory: #f3eee5;
-  --paper: #faf7f1;
-  --sheet: #fffdf9;
-  --ink: #1c1a17;
-  --ink-2: #48433c;
-  --muted: #776f65;
-  --line: rgba(28, 26, 23, 0.11);
-  --line-2: rgba(28, 26, 23, 0.2);
-  --orange: #e45c28;
-  --orange-ink: #b8461b; /* orange that passes contrast on ivory */
+  --board: #161c23; /* felt, sampled from the reference film */
+  --ivory: #141920; /* page ground (used as the inverse of --ink) */
+  --paper: #ddd6c4;
+  --sheet: #e8e2d3;
+  --paper-ink: #1d1e20;
+  --ink: #ebe5d8;
+  --ink-2: #c4beb1;
+  --ink-hover: #fffaf0;
+  --muted: #918c83;
+  --line: rgba(235, 229, 216, 0.13);
+  --line-2: rgba(235, 229, 216, 0.24);
+  --tint: rgba(235, 229, 216, 0.08);
+  --tint-2: rgba(235, 229, 216, 0.15);
+  --orange: #b83a3c; /* red investigation thread */
+  --orange-ink: #e2675f; /* thread red that passes contrast on the board */
+  --hl: rgba(226, 196, 92, 0.5); /* marker highlight, as on the film's documents */
+  --text-shadow: 0 1px 2px rgba(0, 0, 0, 0.55), 0 0 18px rgba(8, 10, 14, 0.55);
   --green: #2c8a57;
   --green-soft: #e3f1e8;
   --red: #c23d2e;
   --red-soft: #f7e3df;
   --sand: #a88e62;
-  --sand-soft: #f1ead9;
-  --stage: #15120f;
-  --stage-ink: #f4ece0;
+  --sand-soft: #e8dfc8;
+  --stage: #0b0e12;
+  --stage-ink: #efe8da;
   --radius: 22px;
   --display: 'Alexandria Variable', 'IBM Plex Sans Arabic', 'Noto Sans Arabic', system-ui, sans-serif;
   --body: 'IBM Plex Sans Arabic', 'Noto Sans Arabic', 'Segoe UI', system-ui, sans-serif;
@@ -49,7 +58,8 @@ html {
 
 body {
   margin: 0;
-  background: var(--ivory);
+  background: var(--board) url('./board/felt.webp') repeat;
+  background-size: 384px 384px;
   color: var(--ink);
   font-family: var(--body);
   font-size: 1.0625rem;
@@ -59,16 +69,15 @@ body {
   overflow-x: hidden;
 }
 
-/* grain: keeps large ivory areas from looking flat */
+/* lamp light and vignette on the felt (the board layer paints its own over this) */
 body::before {
   content: '';
   position: fixed;
   inset: 0;
   pointer-events: none;
   z-index: 0;
-  opacity: 0.35;
-  background-image: radial-gradient(rgba(60, 40, 20, 0.05) 1px, transparent 1px);
-  background-size: 3px 3px;
+  background: radial-gradient(70% 60% at 50% 38%, rgba(150, 168, 190, 0.1), transparent 70%),
+    radial-gradient(130% 100% at 50% 45%, transparent 45%, rgba(4, 6, 9, 0.7) 100%);
 }
 
 h1,
@@ -134,14 +143,14 @@ textarea {
   transition: background 0.5s var(--ease), color 0.5s var(--ease), box-shadow 0.5s var(--ease);
 }
 .nav.scrolled {
-  background: rgba(243, 238, 229, 0.78);
+  background: rgba(14, 18, 23, 0.72);
   backdrop-filter: blur(14px) saturate(1.2);
   -webkit-backdrop-filter: blur(14px) saturate(1.2);
   box-shadow: 0 1px 0 var(--line);
 }
 .nav.on-dark {
   color: var(--stage-ink);
-  background: rgba(21, 18, 15, 0.55);
+  background: rgba(8, 10, 13, 0.55);
   box-shadow: none;
 }
 .brand {
@@ -197,7 +206,7 @@ textarea {
   width: 100%;
   height: 100%;
   object-fit: contain;
-  filter: drop-shadow(0 30px 40px rgba(60, 38, 18, 0.18));
+  filter: drop-shadow(0 30px 40px rgba(0, 0, 0, 0.5));
   transition: opacity 0.8s var(--ease);
 }
 .gl-ready .gauge-slot .poster {
@@ -233,7 +242,7 @@ textarea {
   transform: translateY(1px) scale(0.99);
 }
 .btn-primary {
-  box-shadow: 0 10px 24px -12px rgba(28, 26, 23, 0.55);
+  box-shadow: 0 10px 24px -12px rgba(0, 0, 0, 0.8);
 }
 .btn-primary::before {
   content: '';
@@ -244,17 +253,17 @@ textarea {
   transition: transform 0.35s var(--ease);
 }
 .btn-primary:hover {
-  --bg: #2a2621;
+  --bg: var(--ink-hover);
 }
 .btn-primary:hover::before {
   transform: scale(1.35);
 }
 .btn-quiet {
-  --bg: rgba(28, 26, 23, 0.065);
+  --bg: var(--tint);
   --fg: var(--ink);
 }
 .btn-quiet:hover {
-  --bg: rgba(28, 26, 23, 0.11);
+  --bg: var(--tint-2);
 }
 .btn[disabled] {
   opacity: 0.55;
@@ -277,12 +286,12 @@ textarea {
   flex: none;
   border: 0;
   border-radius: 14px;
-  background: rgba(28, 26, 23, 0.06);
+  background: var(--tint);
   cursor: pointer;
   transition: background 0.3s;
 }
 .icon-btn:hover {
-  background: rgba(28, 26, 23, 0.11);
+  background: var(--tint-2);
 }
 .icon-btn svg {
   width: 1.2rem;
@@ -399,7 +408,8 @@ textarea {
 /* ------------------------------------------------------------------ stage (dark) */
 .stage {
   position: relative;
-  background: var(--stage);
+  /* the board stays visible behind the pinned gauge, dimmed like a darkened room */
+  background: linear-gradient(rgba(11, 14, 18, 0) 0, rgba(11, 14, 18, 0.66) 22vh, rgba(11, 14, 18, 0.66) calc(100% - 22vh), rgba(11, 14, 18, 0));
   color: var(--stage-ink);
   padding: 7rem var(--gutter);
 }
@@ -413,11 +423,11 @@ textarea {
 }
 .stage::before {
   top: 0;
-  background: linear-gradient(var(--ivory), rgba(21, 18, 15, 0));
+  background: none;
 }
 .stage::after {
   bottom: 0;
-  background: linear-gradient(rgba(21, 18, 15, 0), var(--ivory));
+  background: none;
 }
 .stage-pin {
   display: grid;
@@ -430,8 +440,8 @@ textarea {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(48% 46% at 32% 52%, rgba(236, 106, 46, 0.2), rgba(236, 106, 46, 0) 70%),
-    radial-gradient(30% 30% at 70% 30%, rgba(255, 220, 180, 0.07), transparent 70%);
+  background: radial-gradient(48% 46% at 32% 52%, rgba(226, 170, 120, 0.17), rgba(226, 170, 120, 0) 70%),
+    radial-gradient(30% 30% at 70% 30%, rgba(190, 205, 225, 0.07), transparent 70%);
   pointer-events: none;
 }
 .stage-copy {
@@ -582,7 +592,7 @@ textarea {
   grid-auto-columns: 1fr;
   padding: 0.3rem;
   border-radius: 999px;
-  background: rgba(28, 26, 23, 0.065);
+  background: var(--tint);
 }
 .seg button {
   border: 0;
@@ -597,12 +607,12 @@ textarea {
 .seg button[aria-checked='true'] {
   background: var(--ink);
   color: var(--ivory);
-  box-shadow: 0 6px 16px -10px rgba(28, 26, 23, 0.7);
+  box-shadow: 0 6px 16px -10px rgba(0, 0, 0, 0.9);
 }
 .seg-provider button[aria-checked='true'] {
-  background: var(--sheet);
-  color: var(--ink);
-  box-shadow: 0 1px 2px rgba(28, 26, 23, 0.1), 0 6px 16px -10px rgba(28, 26, 23, 0.4);
+  background: var(--sheet) url('./board/paper.webp');
+  color: var(--paper-ink);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 6px 16px -10px rgba(0, 0, 0, 0.8);
 }
 .field label,
 .sheet-label {
@@ -622,14 +632,15 @@ textarea {
   padding: 0 0.9rem;
   border-radius: 14px;
   border: 1px solid var(--line-2);
-  background: var(--sheet);
+  background: var(--sheet) url('./board/paper.webp');
+  color: var(--paper-ink);
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 0.92rem;
 }
 .key-row input:focus {
   border-color: var(--ink);
   outline: none;
-  box-shadow: 0 0 0 3px rgba(228, 92, 40, 0.22);
+  box-shadow: 0 0 0 3px rgba(184, 58, 60, 0.45);
 }
 .key-field .hint {
   margin: 0.55rem 0 0.2rem;
@@ -658,7 +669,7 @@ details.more > summary::before,
   width: 1.25rem;
   height: 1.25rem;
   border-radius: 50%;
-  background: rgba(28, 26, 23, 0.07);
+  background: var(--tint);
   font-family: var(--body);
   font-size: 0.95rem;
   font-weight: 500;
@@ -670,7 +681,7 @@ details.more[open] > summary::before,
 .coverage .doc[open] > summary .doc-title::before,
 .finding[open] > summary::after {
   content: '−';
-  background: rgba(228, 92, 40, 0.16);
+  background: rgba(184, 58, 60, 0.28);
 }
 .coverage .doc > summary .doc-title::before {
   float: inline-start;
@@ -698,7 +709,7 @@ details.more[open] .more-body {
   background: var(--sheet);
   border-radius: calc(var(--radius) + 6px);
   padding: clamp(1.2rem, 2.6vw, 2.2rem);
-  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.8) inset, 0 1px 2px rgba(60, 40, 20, 0.06), 0 40px 80px -40px rgba(60, 40, 20, 0.28);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5) inset, 0 2px 4px rgba(0, 0, 0, 0.45), 0 40px 80px -30px rgba(0, 0, 0, 0.85);
 }
 .sheet-label {
   font-family: var(--display);
@@ -847,7 +858,7 @@ select {
   border-radius: var(--radius);
   padding: 1rem 1.25rem;
   background: var(--sheet);
-  box-shadow: 0 1px 2px rgba(60, 40, 20, 0.06);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.45), 0 24px 50px -24px rgba(0, 0, 0, 0.8);
   border-inline-start: 4px solid var(--sand);
 }
 .notice.bad {
@@ -901,7 +912,7 @@ select {
   background: var(--sheet);
   border-radius: calc(var(--radius) + 6px);
   padding: clamp(1.3rem, 3vw, 2.4rem);
-  box-shadow: 0 1px 2px rgba(60, 40, 20, 0.06), 0 40px 80px -50px rgba(60, 40, 20, 0.3);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.45), 0 40px 80px -30px rgba(0, 0, 0, 0.85);
 }
 .verdict {
   display: flex;
@@ -980,7 +991,7 @@ select {
   margin-bottom: 0.15rem;
 }
 .excerpt {
-  background: linear-gradient(transparent 55%, rgba(228, 92, 40, 0.18) 55%);
+  background: linear-gradient(transparent 52%, var(--hl) 52%);
   padding: 0 0.15rem;
 }
 .citation {
@@ -1016,7 +1027,7 @@ blockquote.source {
   font-weight: 600;
   padding: 0.05rem 0.6rem;
   border-radius: 999px;
-  background: rgba(28, 26, 23, 0.07);
+  background: var(--tint);
   color: var(--ink-2);
   margin-inline-start: 0.5rem;
   vertical-align: middle;
@@ -1195,7 +1206,8 @@ blockquote.source {
   margin: 0;
   aspect-ratio: 4 / 5;
   border-radius: 40% 40% var(--radius) var(--radius);
-  background: radial-gradient(80% 70% at 50% 35%, #fbf4e8 0%, #ebe1d1 60%, #e1d4bf 100%);
+  background: radial-gradient(80% 70% at 50% 35%, rgba(255, 250, 238, 0.55) 0%, rgba(232, 224, 205, 0) 60%), var(--sheet) url('./board/paper.webp');
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.45), 0 40px 70px -30px rgba(0, 0, 0, 0.85);
   overflow: hidden;
 }
 .portrait img {
@@ -1342,7 +1354,7 @@ blockquote.source {
 .fame .fame-links a[aria-label] {
   width: 2.6rem;
   height: 2.6rem;
-  background: rgba(28, 26, 23, 0.07);
+  background: var(--tint);
   color: var(--ink);
 }
 .fame .fame-links a[aria-label]:hover {
@@ -1366,6 +1378,7 @@ blockquote.source {
   text-align: center;
   padding: 1rem;
   background: var(--sand-soft);
+  color: var(--paper-ink);
 }
 
 /* ------------------------------------------------------------------ reveal */
@@ -1505,4 +1518,443 @@ blockquote.source {
 
 .ltr-r {
   text-align: right;
+}
+
+/* ================================================================== «لوحة التحقيق» */
+/* Paper surfaces: charcoal ink on aged cream, like the film's documents. */
+.sheet,
+.result,
+.notice,
+.prompt-view pre,
+.portrait {
+  --ink: #1d1e20;
+  --ink-2: #46474a;
+  --ink-hover: #2e3033;
+  --muted: #6d6a63;
+  --line: rgba(28, 26, 23, 0.13);
+  --line-2: rgba(28, 26, 23, 0.24);
+  --tint: rgba(28, 26, 23, 0.07);
+  --tint-2: rgba(28, 26, 23, 0.12);
+  --orange: #b23638;
+  --orange-ink: #a3302f;
+  --ivory: #ddd5c2;
+  --paper: #dfd8c6;
+  --sheet: #e8e2d3;
+  color: var(--ink);
+  text-shadow: none;
+}
+.sheet,
+.result,
+.notice,
+.prompt-view pre {
+  position: relative;
+  background-color: var(--sheet);
+  /* lamp falloff + the film's soft fold creases + paper fibres */
+  background-image: linear-gradient(160deg, rgba(255, 252, 244, 0.35), rgba(255, 252, 244, 0) 40%, rgba(60, 50, 30, 0.08)),
+    linear-gradient(28deg, transparent 49.7%, rgba(70, 60, 40, 0.07) 49.9%, rgba(255, 255, 250, 0.35) 50.1%, transparent 50.5%),
+    linear-gradient(-28deg, transparent 49.7%, rgba(70, 60, 40, 0.05) 49.9%, rgba(255, 255, 250, 0.3) 50.1%, transparent 50.5%),
+    url('./board/paper.webp');
+}
+.runbar {
+  background-image: url('./board/paper.webp');
+  background-blend-mode: multiply;
+}
+.citation {
+  background-image: url('./board/paper.webp');
+  background-blend-mode: multiply;
+}
+/* a silver pin holding the main sheets to the board */
+.sheet::before,
+.result::before {
+  content: '';
+  position: absolute;
+  top: 0.75rem;
+  inset-inline-start: 50%;
+  width: 15px;
+  height: 15px;
+  margin-inline-start: -7.5px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 34% 30%, #fff 0, #e3e6ea 16%, #9aa1a9 52%, #444a52 100%);
+  box-shadow: 2px 5px 5px rgba(0, 0, 0, 0.45);
+  pointer-events: none;
+}
+
+/* text resting directly on the felt keeps a soft shadow for legibility */
+.hero-copy,
+.caption,
+.stage-copy,
+.section-head,
+.setup .hint,
+.setup .field label,
+.setup details.more,
+.files .step,
+.prompt-view > summary,
+.coverage,
+.excluded,
+.about-copy,
+.fame,
+.foot,
+.reflist {
+  text-shadow: var(--text-shadow);
+}
+.hero h1 {
+  text-shadow: 0 2px 3px rgba(0, 0, 0, 0.6), 0 0 40px rgba(8, 10, 14, 0.7);
+}
+
+/* ------------------------------------------------------------------ board layer */
+.board {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  contain: layout paint;
+  direction: ltr;
+}
+.b-layer {
+  position: absolute;
+  inset: 0;
+}
+.b-far,
+.b-near {
+  will-change: transform;
+}
+.b-strings {
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: visible;
+}
+.b-strings path {
+  fill: none;
+  stroke-linecap: round;
+}
+.b-strings .s-shadow {
+  stroke: rgba(0, 0, 0, 0.5);
+  stroke-width: 2.4;
+  transform: translate(3px, 6px);
+}
+.b-strings .s-thread {
+  stroke: #9b2f33;
+  stroke-width: 1.9;
+}
+.b-strings .s-sheen {
+  stroke: rgba(255, 150, 140, 0.35);
+  stroke-width: 0.6;
+  transform: translate(-0.4px, -0.5px);
+}
+/* the mid papers sit above the strings' paper ends; strings above far layer */
+.b-mid .bi {
+  z-index: 0;
+}
+.b-mid .b-strings {
+  z-index: 1;
+}
+.b-mid .pin {
+  z-index: 2;
+}
+
+.bi {
+  position: absolute;
+  direction: rtl;
+  transform-origin: 50% 50%;
+  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.5)) drop-shadow(0 14px 18px rgba(0, 0, 0, 0.45));
+  font-family: var(--body);
+  color: #1d1e20;
+  line-height: 1.35;
+}
+.bi .face {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+.bi .paper,
+.bi .under {
+  background: #ddd8ca url('./board/paper.webp');
+  background-size: 300px;
+}
+.bi .paper::after {
+  /* lamp falloff and a soft fold across the sheet */
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(150deg, rgba(255, 255, 250, 0.22), transparent 45%, rgba(20, 24, 30, 0.22)),
+    linear-gradient(32deg, transparent 49.6%, rgba(60, 55, 40, 0.1) 49.9%, rgba(255, 255, 255, 0.25) 50.2%, transparent 50.6%);
+  pointer-events: none;
+}
+.bi img {
+  display: block;
+  object-fit: cover;
+}
+.bi small {
+  display: block;
+  color: #a3302f;
+  font-weight: 600;
+  font-size: 11px;
+}
+.bi b {
+  display: block;
+  font-family: var(--display);
+  font-weight: 700;
+}
+
+/* stacked reference document */
+.bi-doc .under {
+  position: absolute;
+  inset: 0;
+}
+.bi-doc .u1 {
+  transform: translate(-7px, 9px) rotate(-2.4deg);
+  filter: brightness(0.86);
+}
+.bi-doc .u2 {
+  transform: translate(8px, 5px) rotate(1.8deg);
+  filter: brightness(0.93);
+}
+.bi-doc .face {
+  padding: 13% 9% 0;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 4%;
+}
+.bi-doc b {
+  font-size: 19px;
+  line-height: 1.35;
+}
+.bi-doc .sub {
+  font-size: 11px;
+  color: #55524c;
+}
+.bi-doc .hl {
+  align-self: flex-start;
+  font-size: 12.5px;
+  font-weight: 600;
+  background: linear-gradient(transparent 40%, rgba(226, 196, 92, 0.75) 40%, rgba(226, 196, 92, 0.75) 92%, transparent 92%);
+  padding: 0 2px;
+}
+.bi-doc .rule {
+  height: 54px;
+  background: repeating-linear-gradient(transparent 0 9px, rgba(40, 40, 40, 0.2) 9px 10px, transparent 10px 15px);
+  -webkit-mask: linear-gradient(to left, #000 85%, transparent);
+  mask: linear-gradient(to left, #000 85%, transparent);
+}
+.bi-doc .face img {
+  width: 36%;
+  aspect-ratio: 4 / 3;
+  border: 3px solid #f1eee6;
+  margin-top: auto;
+  margin-bottom: 9%;
+  align-self: flex-end;
+}
+
+/* torn newspaper clipping */
+.bi-clip .face {
+  display: flex;
+  align-items: center;
+  gap: 5%;
+  padding: 0 7%;
+}
+.bi-clip .face img {
+  width: 40%;
+  height: 74%;
+  flex: none;
+  border-radius: 2px;
+}
+.bi-clip .tx {
+  flex: 1;
+}
+.bi-clip b {
+  font-size: 15px;
+  line-height: 1.4;
+}
+
+/* handwritten sticky note */
+.bi-note .face {
+  display: grid;
+  place-items: center;
+  padding: 10%;
+  text-align: center;
+  background: #d9d2a6 url('./board/paper.webp');
+  background-blend-mode: multiply;
+}
+.bi-note .face::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(150deg, rgba(255, 255, 230, 0.2), transparent 50%, rgba(20, 24, 30, 0.25));
+}
+.bi-note span {
+  font-family: 'Aref Ruqaa', var(--display);
+  font-size: 22px;
+  line-height: 1.5;
+  color: #2a3a63;
+}
+
+/* polaroid */
+.bi-polaroid .face {
+  background: #ecebe4;
+  padding: 7% 7% 0;
+}
+.bi-polaroid .face img {
+  width: 100%;
+  height: 74%;
+  filter: contrast(1.05) brightness(0.95);
+}
+.bi-polaroid .face span {
+  display: block;
+  text-align: center;
+  font-family: 'Aref Ruqaa', var(--display);
+  font-size: 15px;
+  color: #2a3a63;
+  margin-top: 2%;
+}
+
+/* evidence tag with a red stamp */
+.bi-tag .face {
+  padding: 9% 10%;
+  border: 1px solid rgba(40, 40, 40, 0.25);
+  outline: 4px solid #e6e1d4;
+  outline-offset: -9px;
+}
+.bi-tag b {
+  font-size: 19px;
+}
+.bi-tag span {
+  font-size: 12px;
+  color: #4a4842;
+}
+.bi-tag .stamp {
+  position: absolute;
+  inset-inline-start: 8%;
+  bottom: 12%;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 12px;
+  color: #b0302f;
+  border: 1.8px solid #b0302f;
+  border-radius: 3px;
+  padding: 0 6px;
+  transform: rotate(-9deg);
+  opacity: 0.85;
+}
+
+/* fingerprint card */
+.bi-print .face img {
+  width: 100%;
+  height: 100%;
+  mix-blend-mode: multiply;
+}
+
+/* identity card with the red edge strip */
+.bi-card .face {
+  padding: 9% 10%;
+  border-inline-end: 7px solid #a5383b;
+}
+.bi-card b {
+  font-size: 21px;
+  margin: 3% 0 2%;
+}
+.bi-card span {
+  font-size: 13px;
+  color: #4a4842;
+}
+
+/* small torn scrap */
+.bi-scrap .face {
+  display: grid;
+  place-items: center;
+}
+.bi-scrap b {
+  font-size: 17px;
+}
+
+/* translucent tape */
+.tape {
+  position: absolute;
+  top: -11px;
+  left: 50%;
+  width: 82px;
+  height: 24px;
+  margin-left: -41px;
+  transform: rotate(var(--tr, 0deg));
+  background: linear-gradient(rgba(235, 233, 220, 0.42), rgba(210, 208, 195, 0.32));
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+  clip-path: polygon(0 8%, 6% 0, 12% 10%, 20% 0, 80% 0, 88% 8%, 94% 0, 100% 10%, 100% 92%, 94% 100%, 86% 90%, 78% 100%, 22% 100%, 14% 92%, 6% 100%, 0 90%);
+}
+
+/* silver ball pin */
+.pin {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 34% 30%, #fff 0, #e3e6ea 16%, #9aa1a9 52%, #444a52 100%);
+  box-shadow: 2px 5px 4px rgba(0, 0, 0, 0.55);
+}
+
+/* depth of field */
+.bi.is-far {
+  filter: blur(4px) brightness(0.34) saturate(0.8);
+  opacity: 0.8;
+}
+.bi.is-far .pin,
+.bi.is-far .tape {
+  display: none;
+}
+.bi.is-near {
+  filter: blur(9px) brightness(0.5);
+  opacity: 0.92;
+}
+.bi.is-near .pin,
+.bi.is-near .tape {
+  display: none;
+}
+
+/* the single lamp: bright pool up top, the board falls off into darkness */
+.b-light {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(75% 55% at 50% 30%, rgba(170, 186, 205, 0.09), transparent 70%),
+    radial-gradient(130% 105% at 50% 42%, transparent 42%, rgba(3, 5, 8, 0.78) 100%);
+  animation: lamp 9s ease-in-out infinite alternate;
+}
+@keyframes lamp {
+  from {
+    opacity: 0.93;
+  }
+  to {
+    opacity: 1;
+  }
+}
+/* film grain */
+.b-grain {
+  position: fixed;
+  inset: -50px;
+  pointer-events: none;
+  background: url('./board/grain.png');
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  animation: grain 1.2s steps(6) infinite;
+}
+@keyframes grain {
+  0% { transform: translate(0, 0); }
+  20% { transform: translate(-18px, 12px); }
+  40% { transform: translate(14px, -20px); }
+  60% { transform: translate(-10px, 22px); }
+  80% { transform: translate(22px, 6px); }
+  100% { transform: translate(0, 0); }
+}
+.reduced .b-grain,
+.reduced .b-light {
+  animation: none;
+}
+
+@media (max-width: 760px) {
+  .bi {
+    filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.5)) drop-shadow(0 10px 12px rgba(0, 0, 0, 0.4));
+  }
 }

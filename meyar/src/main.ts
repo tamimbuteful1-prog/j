@@ -2,8 +2,10 @@ import '@fontsource/ibm-plex-sans-arabic/400.css';
 import '@fontsource/ibm-plex-sans-arabic/500.css';
 import '@fontsource/ibm-plex-sans-arabic/600.css';
 import '@fontsource-variable/alexandria/wght.css';
+import '@fontsource/aref-ruqaa/arabic-400.css';
 import './styles.css';
 import { SearchIndex, sourceLabel } from './search';
+import { mountBoard } from './board';
 import { buildPayload, SYSTEM_PROMPT } from './prompt';
 import { buildAssistantPrompt } from './assistantPrompt';
 import {
@@ -175,10 +177,12 @@ function initChrome() {
 
   // portrait: if the photo is missing, show the monogram instead of a broken image
   const photo = $<HTMLImageElement>('tamim-photo');
-  const fig = photo.closest('figure')!;
-  const fail = () => fig.classList.add('no-photo');
-  photo.addEventListener('error', fail);
-  if (photo.complete && photo.naturalWidth === 0) fail();
+  if (photo) {
+    const fig = photo.closest('figure')!;
+    const fail = () => fig.classList.add('no-photo');
+    photo.addEventListener('error', fail);
+    if (photo.complete && photo.naturalWidth === 0) fail();
+  }
 }
 
 // ------------------------------------------------------------------ 3D gauge (lazy, optional)
@@ -216,6 +220,7 @@ async function initGauge() {
 // ------------------------------------------------------------------ data
 async function init() {
   initChrome();
+  mountBoard(reduced);
   bindStaticTools();
   const idle = (cb: () => void) =>
     'requestIdleCallback' in window ? (window as Window).requestIdleCallback(cb, { timeout: 1200 }) : setTimeout(cb, 300);
@@ -816,6 +821,7 @@ function renderResult(
 
 function renderCoverage() {
   const box = $('coverage');
+  if (!box) return;
   const docs = corpus.documents.map((d) =>
     h(
       'details',
