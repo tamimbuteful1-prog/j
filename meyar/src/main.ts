@@ -6,6 +6,7 @@ import '@fontsource/aref-ruqaa/arabic-400.css';
 import './styles.css';
 import { SearchIndex, sourceLabel } from './search';
 import { mountBoard } from './board';
+import { initVideos } from './videos';
 import { buildPayload, SYSTEM_PROMPT } from './prompt';
 import { buildAssistantPrompt } from './assistantPrompt';
 import {
@@ -221,6 +222,7 @@ async function initGauge() {
 async function init() {
   initChrome();
   mountBoard(reduced);
+  initVideos();
   bindStaticTools();
   const idle = (cb: () => void) =>
     'requestIdleCallback' in window ? (window as Window).requestIdleCallback(cb, { timeout: 1200 }) : setTimeout(cb, 300);

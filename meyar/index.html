@@ -102,7 +102,22 @@
           <p class="kicker">المسار الأول</p>
           <h2 id="api-h">افحص نصك عبر API</h2>
           <p>بمفتاحك لدى OpenAI أو Claude. يبحث معيار في المراجع داخل متصفحك، ثم يرسل المقاطع ذات الصلة فقط.</p>
+          <p class="cost-note"><b>يتطلب دفع مبلغ مالي</b> لمنصة الذكاء الاصطناعي التي تختارها: Anthropic (Claude) أو OpenAI. أقل مبلغ للشحن ٥ دولارات.</p>
+          <div class="videos">
+            <p class="videos-label">شاهد الشرح: كيف تحصل على مفتاح API وتشحن رصيدك</p>
+            <ul class="video-list">
+              <li><button type="button" class="video-btn" data-yt="FQ5cHaWpWGE"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg><span>Claude<small>على الكمبيوتر</small></span></button></li>
+              <li><button type="button" class="video-btn" data-yt="qNOqywVLiVU" data-short=""><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg><span>Claude<small>على الجوال</small></span></button></li>
+              <li><button type="button" class="video-btn" data-yt="2EH_Sw4FNG0"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg><span>OpenAI<small>على الكمبيوتر</small></span></button></li>
+              <li><button type="button" class="video-btn" data-yt="qNOqywVLiVU" data-short=""><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg><span>OpenAI<small>على الجوال</small></span></button></li>
+            </ul>
+          </div>
         </header>
+
+        <dialog class="video-modal" id="video-modal" aria-label="فيديو الشرح">
+          <div class="video-frame" id="video-frame"></div>
+          <button type="button" class="video-close" id="video-close" aria-label="إغلاق الفيديو"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+        </dialog>
 
         <div class="bench reveal">
           <div class="setup">

@@ -85,7 +85,7 @@ export const CSP = [
   "img-src 'self' data: blob:",
   "font-src 'self'",
   "connect-src 'self' https://api.anthropic.com https://api.openai.com",
-  "frame-src 'self'",
+  "frame-src 'self' https://www.youtube-nocookie.com",
   "object-src 'none'",
   "base-uri 'none'",
   "form-action 'none'",
