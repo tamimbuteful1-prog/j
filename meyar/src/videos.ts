@@ -1,17 +1,21 @@
-// In-page YouTube player: the explainer videos open in a dialog on the
-// platform itself (privacy-enhanced youtube-nocookie embed), never on YouTube.
+// In-page player for the explainer videos. The files are hosted on the
+// platform itself (./media/videos/), so viewers never leave the page.
 export function initVideos() {
   const modal = document.getElementById('video-modal') as HTMLDialogElement | null;
   const frame = document.getElementById('video-frame');
   if (!modal || !frame || typeof modal.showModal !== 'function') return;
   let opener: HTMLElement | null = null;
 
+  const stop = () => {
+    frame.querySelector('video')?.pause();
+    frame.replaceChildren();
+  };
   const close = () => {
-    frame.replaceChildren(); // stops playback
+    stop();
     if (modal.open) modal.close();
   };
   modal.addEventListener('close', () => {
-    frame.replaceChildren();
+    stop();
     opener?.focus();
   });
   modal.addEventListener('click', (e) => {
@@ -19,20 +23,23 @@ export function initVideos() {
   });
   document.getElementById('video-close')?.addEventListener('click', close);
 
-  document.querySelectorAll<HTMLButtonElement>('.video-btn[data-yt]').forEach((btn) =>
+  document.querySelectorAll<HTMLButtonElement>('.video-btn[data-video]').forEach((btn) =>
     btn.addEventListener('click', () => {
-      const id = btn.dataset.yt!;
+      const name = btn.dataset.video!;
       opener = btn;
-      const iframe = document.createElement('iframe');
-      iframe.src = `https://www.youtube-nocookie.com/embed/${encodeURIComponent(id)}?autoplay=1&rel=0&playsinline=1&modestbranding=1`;
-      iframe.title = btn.textContent?.trim() || 'فيديو الشرح';
-      iframe.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
-      iframe.allowFullscreen = true;
-      // the page sends no referrer; YouTube's player needs the origin to play embeds
-      iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+      const video = document.createElement('video');
+      video.src = `./media/videos/${name}.mp4`;
+      video.poster = `./media/videos/${name}-poster.webp`;
+      video.controls = true;
+      video.autoplay = true;
+      video.playsInline = true;
+      video.preload = 'auto';
+      video.setAttribute('controlsList', 'nodownload');
+      video.title = btn.textContent?.trim() || 'فيديو الشرح';
       frame.classList.toggle('is-short', btn.hasAttribute('data-short'));
-      frame.replaceChildren(iframe);
+      frame.replaceChildren(video);
       modal.showModal();
+      video.play().catch(() => {}); // autoplay may need a tap on some phones
     }),
   );
 }
