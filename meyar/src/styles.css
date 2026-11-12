@@ -2104,3 +2104,187 @@ blockquote.source {
     inset-inline-end: 0;
   }
 }
+
+/* ================================================================== concise report + meter */
+.report-head {
+  display: grid;
+  grid-template-columns: minmax(220px, 300px) 1fr;
+  align-items: center;
+  gap: clamp(1rem, 3vw, 2.4rem);
+}
+.report-head.is-question {
+  grid-template-columns: 1fr;
+}
+.report-verdict h2 {
+  margin: 0 0 0.4rem;
+  font-family: var(--display);
+  font-size: clamp(1.9rem, 3.6vw, 2.8rem);
+  line-height: 1.2;
+}
+.report-verdict p {
+  margin: 0;
+  font-size: 1.1rem;
+  color: var(--ink-2);
+}
+.tone-ok .report-verdict h2 {
+  color: #237a4b;
+}
+.tone-mid .report-verdict h2 {
+  color: #a46f08;
+}
+.tone-bad .report-verdict h2 {
+  color: #b02e2b;
+}
+.tone-none .report-verdict h2 {
+  color: #5e5b55;
+}
+.is-question .report-verdict p {
+  font-size: 1.15rem;
+  line-height: 1.9;
+  color: var(--ink);
+  white-space: pre-line;
+}
+
+.meter svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 14px 22px rgba(0, 0, 0, 0.35));
+}
+.m-face {
+  fill: #14171c;
+}
+.m-rim {
+  fill: none;
+  stroke: #9ea4ab;
+  stroke-width: 5;
+}
+.m-track path {
+  fill: none;
+  stroke-width: 15;
+}
+.m-ticks line {
+  stroke: #ece7dc;
+}
+.m-ticks line.minor {
+  stroke-width: 1;
+  opacity: 0.45;
+}
+.m-ticks line.major {
+  stroke-width: 2.4;
+}
+.m-num {
+  fill: #ece7dc;
+  font-family: var(--display);
+  font-size: 13px;
+  font-weight: 600;
+  text-anchor: middle;
+  direction: ltr;
+}
+.m-needle-body {
+  fill: #e8452f;
+  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.6));
+}
+.m-hub {
+  fill: #c9ced4;
+  stroke: #6d737a;
+  stroke-width: 1.5;
+}
+.m-hub-dot {
+  fill: #3a3f46;
+}
+.m-value {
+  fill: #fffaf0;
+  font-family: var(--display);
+  font-size: 34px;
+  font-weight: 700;
+  text-anchor: middle;
+  direction: ltr;
+}
+.m-caption {
+  fill: #a5a9ae;
+  font-family: var(--body);
+  font-size: 12px;
+  text-anchor: middle;
+}
+.meter.is-dim .m-value {
+  fill: #8d9095;
+}
+
+.fixes {
+  list-style: none;
+  margin: 1.8rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 1rem;
+}
+.fix {
+  border: 1px solid var(--line-2);
+  border-radius: 16px;
+  padding: 1rem 1.1rem 1.1rem;
+  background: rgba(255, 255, 255, 0.25);
+}
+.fix-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7rem;
+  margin-bottom: 0.75rem;
+}
+.fix-head .fnum {
+  flex: none;
+}
+.fix-why {
+  margin: 0;
+  font-weight: 600;
+  line-height: 1.6;
+}
+.fix-row {
+  border-radius: 10px;
+  padding: 0.65rem 0.9rem;
+  border-inline-start: 4px solid;
+}
+.fix-row + .fix-row {
+  margin-top: 0.55rem;
+}
+.fix-row b {
+  display: block;
+  font-size: 0.8rem;
+  margin-bottom: 0.2rem;
+}
+.fix-row p {
+  margin: 0;
+  line-height: 1.8;
+  font-size: 1.05rem;
+}
+.fix-row.now {
+  background: rgba(200, 50, 45, 0.09);
+  border-color: #c3372f;
+}
+.fix-row.now b {
+  color: #a8302b;
+}
+.fix-row.alt {
+  background: rgba(44, 138, 87, 0.11);
+  border-color: #2c8a57;
+}
+.fix-row.alt b {
+  color: #237a4b;
+}
+.fix-row.alt .btn {
+  margin-top: 0.6rem;
+}
+.report-note {
+  margin: 1.4rem 0 0.4rem;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+@media (max-width: 700px) {
+  .report-head {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    text-align: center;
+  }
+  .report-head .meter {
+    width: min(100%, 280px);
+  }
+}

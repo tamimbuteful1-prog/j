@@ -87,6 +87,8 @@ export interface Finding {
 
 export interface ModelResult {
   classification: Classification;
+  /** 0–100 violation indicator from the model (optional for older outputs). */
+  risk_percent?: number | null;
   summary: string;
   direct_answer: string | null;
   findings: Finding[];

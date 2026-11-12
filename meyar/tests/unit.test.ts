@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { SearchIndex } from '../src/search';
 import { findInSource, normalizeArabic, tokenize } from '../src/text';
 import { extractJson, parseResult, verifyResult, InvalidOutputError } from '../src/verify';
+import { riskPercent } from '../src/meter';
 import { buildManualPackage, buildPayload, RESULT_SCHEMA } from '../src/prompt';
 import { pickAnthropicModel, pickOpenAIModel } from '../src/providers';
 import type { Corpus } from '../src/types';
@@ -126,8 +127,20 @@ describe('output parsing', () => {
     expect(() => parseResult(extractJson('ليس JSON'))).toThrow(InvalidOutputError);
     expect(() => parseResult({ ...sample([]), classification: 'compliant_100' })).toThrow(InvalidOutputError);
   });
-  it('schema has no percentage/score fields', () => {
-    expect(JSON.stringify(RESULT_SCHEMA)).not.toMatch(/score|percent|confidence/);
+  it('schema has a single risk_percent and no other score fields', () => {
+    const j = JSON.stringify(RESULT_SCHEMA);
+    expect(j).toMatch(/"risk_percent":\{"type":"integer"\}/);
+    expect(j.replaceAll('risk_percent', '')).not.toMatch(/score|percent|confidence/);
+  });
+  it('risk percent always stays inside the verified classification band', () => {
+    const v = (p: number | null) => ({ raw: { risk_percent: p }, findings: [] }) as unknown as Parameters<typeof riskPercent>[1];
+    expect(riskPercent('no_conflict_found', v(95))).toBe(30);
+    expect(riskPercent('no_conflict_found', v(8))).toBe(8);
+    expect(riskPercent('needs_more_info', v(5))).toBe(31);
+    expect(riskPercent('conflict_indicators', v(20))).toBe(61);
+    expect(riskPercent('conflict_indicators', v(84))).toBe(84);
+    expect(riskPercent('conflict_indicators', v(null))).toBeGreaterThanOrEqual(61);
+    expect(riskPercent('no_conflict_found', null)).toBeLessThanOrEqual(30);
   });
 });
 

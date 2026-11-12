@@ -7,6 +7,7 @@ import './styles.css';
 import { SearchIndex, sourceLabel } from './search';
 import { mountBoard } from './board';
 import { initVideos } from './videos';
+import { meter, riskPercent, VERDICT } from './meter';
 import { buildPayload, SYSTEM_PROMPT } from './prompt';
 import { buildAssistantPrompt } from './assistantPrompt';
 import {
@@ -24,7 +25,7 @@ import {
 } from './providers';
 import { estimateCost, formatSar, formatTokens, type EstimateCfg, type PricedModel } from './cost';
 import { extractJson, InvalidOutputError, parseResult, verifyResult } from './verify';
-import type { Classification, Corpus, Retrieval, Task, UserContext, VerifiedCitation, VerifiedResult } from './types';
+import type { Classification, Corpus, Retrieval, Task, UserContext, VerifiedResult } from './types';
 
 // ------------------------------------------------------------------ helpers
 type Child = Node | string | null | undefined | false;
@@ -85,8 +86,6 @@ const CATEGORY_LABELS: Record<string, string> = {
   report: 'تقرير قطاعي',
   lecture: 'محاضرة أو مادة تعليمية',
 };
-
-const PROVIDER_NAMES: Record<ProviderId, string> = { anthropic: 'Anthropic (Claude)', openai: 'OpenAI' };
 
 // ------------------------------------------------------------------ state
 interface ModelsConfig {
@@ -580,16 +579,6 @@ function pdfLink(segDoc: string, page: number, label = 'فتح الصفحة في
   return h('a', { href: `./${d.file}#page=${page}`, target: '_blank', rel: 'noopener' }, label);
 }
 
-function citationBlock(c: VerifiedCitation): HTMLElement {
-  const s2 = c.segment;
-  return h(
-    'div',
-    { class: 'citation' },
-    h('div', { class: 'cite-meta' }, sourceLabel(s2, docTitle(s2.doc)), ' · ', pdfLink(s2.doc, s2.page_start)),
-    h('blockquote', { class: 'source' }, c.quote),
-  );
-}
-
 function referencesBlock(r: Retrieval, title = 'المراجع التي أُرسلت مع الطلب'): HTMLElement {
   const reasons: Record<string, string> = {
     match: 'مطابقة بحثية',
@@ -621,29 +610,6 @@ function referencesBlock(r: Retrieval, title = 'المراجع التي أُرس
   );
 }
 
-/** Small 2D gauge for a verdict. It reflects the verified classification only. */
-function verdictGauge(cls: Classification): SVGElement {
-  const P = (a: number, r: number) => [50 + Math.cos((a * Math.PI) / 180) * r, 54 - Math.sin((a * Math.PI) / 180) * r];
-  const arc = (a0: number, a1: number, color: string) => {
-    const [x0, y0] = P(a0, 38);
-    const [x1, y1] = P(a1, 38);
-    return s('path', { d: `M${x0} ${y0} A38 38 0 0 0 ${x1} ${y1}`, stroke: color, 'stroke-width': 7, fill: 'none', 'stroke-linecap': 'round' });
-  };
-  const angle = { no_conflict_found: 9, needs_more_info: 90, insufficient_references: 90, conflict_indicators: 171 }[cls];
-  const [nx, ny] = P(angle, 30);
-  const dim = cls === 'insufficient_references';
-  return s(
-    'svg',
-    { viewBox: '0 0 100 100', 'aria-hidden': 'true' },
-    s('circle', { cx: 50, cy: 54, r: 46, fill: '#221f1c' }),
-    arc(-24, 44, dim ? '#5b554d' : '#2f9e62'),
-    arc(56, 124, dim ? '#5b554d' : '#c8b48e'),
-    arc(136, 204, dim ? '#5b554d' : '#d4483a'),
-    s('line', { x1: 50, y1: 54, x2: nx, y2: ny, stroke: '#ec6a2e', 'stroke-width': 3.5, 'stroke-linecap': 'round' }),
-    s('circle', { cx: 50, cy: 54, r: 5, fill: '#efe9df' }),
-  );
-}
-
 function renderNoCoverage(text: string, ctx: UserContext, r: Retrieval) {
   const out = $('output');
   const send = h('button', { type: 'button', class: 'btn btn-quiet small' }, 'أرسل إلى المزود رغم ذلك');
@@ -651,59 +617,44 @@ function renderNoCoverage(text: string, ctx: UserContext, r: Retrieval) {
   out.replaceChildren(
     h(
       'div',
-      { class: 'result' },
+      { class: 'result report' },
       h(
         'div',
-        { class: 'verdict insufficient_references' },
-        verdictGauge('insufficient_references') as unknown as Node,
-        h('div', {}, h('h2', {}, CLASS_LABELS.insufficient_references), h('p', { class: 'sub' }, 'نتيجة البحث المحلي في معيار، وليست تحليلًا من نموذج.')),
+        { class: 'report-head tone-none' },
+        meter(null, { reduced, dim: true }),
+        h('div', { class: 'report-verdict' }, h('h2', { tabindex: '-1', id: 'result-h' }, VERDICT.insufficient_references.title), h('p', {}, 'لم يُعثر في المراجع على ما يرتبط بنصك، ولم يُرسل أي طلب مدفوع.')),
       ),
-      h('p', {}, 'لم يعثر البحث المحلي على مقاطع ذات صلة كافية في المراجع المتاحة، لذلك لم يُرسل أي طلب مدفوع.'),
-      h('p', { class: 'hint' }, 'عدم العثور على نص لا يعني أن التصرف مسموح أو متوافق؛ قد يكون الموضوع خارج نطاق المراجع الست، أو يحتاج صياغة مختلفة للسؤال.'),
       h('div', { class: 'result-actions' }, send),
     ),
   );
 }
 
-function reportText(task: Task, userText: string, v: VerifiedResult, model: string): string {
-  const L: string[] = [];
-  const cls = v.classificationSupported ? v.raw.classification : 'needs_more_info';
-  L.push('تقرير معيار — تقييم مساعد وفق المراجع المعروضة، وليس حكمًا قانونيًا نهائيًا');
-  L.push(`النموذج: ${model}`);
-  L.push(`النتيجة: ${CLASS_LABELS[cls]}`);
-  L.push('');
-  L.push(task === 'check' ? 'النص المفحوص:' : 'السؤال:');
-  L.push(userText);
-  L.push('');
-  L.push('الخلاصة: ' + v.raw.summary);
-  if (task === 'question' && v.raw.direct_answer) L.push('الإجابة: ' + v.raw.direct_answer);
-  const cite = (c: VerifiedCitation) => `  - ${sourceLabel(c.segment, docTitle(c.segment.doc))}\n    «${c.quote}»`;
-  v.findings.forEach((f, i) => {
-    L.push('');
-    L.push(`ملاحظة ${i + 1}${f.citations.length ? '' : ' (غير مستندة إلى استشهاد صالح)'}`);
-    if (f.user_excerpt) L.push('العبارة: ' + f.user_excerpt);
-    L.push('السبب: ' + f.issue);
-    f.citations.forEach((c) => L.push(cite(c)));
-    L.push('تفسير الارتباط: ' + f.interpretation);
-    if (f.suggested_rewrite) L.push('صياغة بديلة مقترحة: ' + f.suggested_rewrite);
-  });
-  if (v.conditions.length) {
-    L.push('');
-    L.push('الشروط والاستثناءات:');
-    v.conditions.forEach((c) => {
-      L.push('- ' + c.text);
-      c.citations.forEach((x) => L.push(cite(x)));
-    });
-  }
-  if (v.raw.unresolved.length) L.push('', 'ما لم يمكن حسمه:', ...v.raw.unresolved.map((x) => '- ' + x));
-  if (v.raw.missing_information.length) L.push('', 'معلومات ناقصة:', ...v.raw.missing_information.map((x) => '- ' + x));
-  L.push('', 'حدود التقييم: ' + v.raw.limitations);
-  L.push('المراجع: نسخ لم تتحقق حداثتها؛ البحث قد لا يسترجع كل مادة ذات صلة.');
-  return L.join('\n');
+function verdictOf(v: VerifiedResult): Classification {
+  return v.classificationSupported ? v.raw.classification : 'needs_more_info';
 }
 
-function block(title: string, ...children: Child[]) {
-  return h('div', { class: 'block' }, h('h3', {}, title), ...children);
+function reportText(task: Task, userText: string, v: VerifiedResult, model: string): string {
+  const cls = verdictOf(v);
+  const L: string[] = [];
+  L.push('تقرير معيار');
+  if (task === 'check') {
+    L.push(`النتيجة: ${VERDICT[cls].title} — مؤشر المخالفة ${riskPercent(cls, v)}%`);
+  } else {
+    L.push(`السؤال: ${userText}`);
+    if (v.raw.direct_answer) L.push('', 'الإجابة: ' + v.raw.direct_answer);
+  }
+  const fixes = v.findings.filter((f) => f.user_excerpt || f.suggested_rewrite);
+  if (task === 'check') {
+    L.push('');
+    if (!fixes.length) L.push(cls === 'no_conflict_found' ? 'لا يحتاج النص إلى تعديل.' : v.raw.summary);
+    fixes.forEach((f, i) => {
+      L.push(`${i + 1}. ${f.issue}`);
+      if (f.user_excerpt) L.push(`   النص الحالي: ${f.user_excerpt}`);
+      if (f.suggested_rewrite) L.push(`   البديل: ${f.suggested_rewrite}`);
+    });
+  }
+  L.push('', `معيار تقييم مساعد وليس حكمًا قانونيًا نهائيًا · ${model}`);
+  return L.join('\n');
 }
 
 function renderResult(
@@ -714,109 +665,71 @@ function renderResult(
   usage: { input_tokens?: number; output_tokens?: number },
   model: string,
 ) {
+  void r;
+  void usage;
   const out = $('output');
   const res = v.raw;
-  const cls: Classification = v.classificationSupported ? res.classification : 'needs_more_info';
+  const cls = verdictOf(v);
+  const verdict = VERDICT[cls];
   const parts: Child[] = [];
-  parts.push(
-    h(
-      'div',
-      { class: `verdict ${cls}` },
-      verdictGauge(cls) as unknown as Node,
-      h('div', {}, h('h2', { tabindex: '-1', id: 'result-h' }, CLASS_LABELS[cls]), h('p', { class: 'sub' }, `${PROVIDER_NAMES[state.provider]} · ${model}`)),
-    ),
-  );
-  if (!v.classificationSupported)
-    parts.push(notice('bad', 'أعاد النموذج تصنيف «توجد مؤشرات تعارض» دون أي استشهاد صالح من المراجع المرسلة، فلا يُعرض بوصفه مستندًا إلى مرجع.'));
-  if (v.invalidCount)
-    parts.push(
-      notice('warn', `استُبعد ${v.invalidCount.toLocaleString('ar-SA')} استشهادًا غير صالح (معرّف غير موجود في المقاطع المرسلة أو مقتطف لا يطابق نص المصدر).`),
-    );
-  parts.push(block('الخلاصة', h('p', {}, res.summary)));
-  if (task === 'question' && res.direct_answer) parts.push(block('الإجابة المباشرة', h('p', {}, res.direct_answer)));
+  const fixes = v.findings.filter((f) => f.user_excerpt || f.suggested_rewrite);
 
-  if (v.findings.length) {
-    const list = h('div', {});
-    v.findings.forEach((f, i) => {
-      const supported = f.citations.length > 0;
-      list.append(
+  if (task === 'check') {
+    const pct = cls === 'insufficient_references' ? null : riskPercent(cls, v);
+    const line =
+      cls === 'no_conflict_found'
+        ? 'لا يحتاج النص إلى تعديل.'
+        : fixes.length
+          ? `${fixes.length.toLocaleString('ar-SA')} ${fixes.length === 1 ? 'عبارة تحتاج' : fixes.length === 2 ? 'عبارتان تحتاجان' : 'عبارات تحتاج'} إلى تعديل.`
+          : res.summary;
+    parts.push(
+      h(
+        'div',
+        { class: `report-head tone-${verdict.tone}` },
+        meter(pct, { reduced, dim: pct === null }),
+        h('div', { class: 'report-verdict' }, h('h2', { tabindex: '-1', id: 'result-h' }, verdict.title), h('p', {}, line)),
+      ),
+    );
+    if (fixes.length) {
+      parts.push(
         h(
-          'details',
-          { class: 'finding' + (supported ? '' : ' unsupported'), ...(i < 3 ? { open: '' } : {}) },
-          h(
-            'summary',
-            {},
-            h('span', { class: 'fnum' }, (i + 1).toLocaleString('ar-SA')),
-            h('span', {}, f.issue, supported ? null : h('span', { class: 'tag bad' }, 'دون استشهاد صالح')),
-          ),
-          h(
-            'div',
-            { class: 'fbody' },
-            f.user_excerpt
-              ? h(
-                  'div',
-                  { class: 'kv' },
-                  h('b', {}, 'العبارة محل الملاحظة'),
-                  h('span', { class: 'excerpt' }, f.user_excerpt),
-                  f.excerpt_found ? null : h('span', { class: 'tag bad' }, 'لم تُعثر عليها حرفيًا في نصك'),
-                )
-              : null,
-            supported ? h('div', { class: 'kv' }, h('b', {}, 'المصدر والاقتباس الأصلي'), ...f.citations.map(citationBlock)) : null,
-            h('div', { class: 'kv' }, h('b', {}, supported ? 'تفسير العلاقة (تفسير النموذج)' : 'رأي النموذج (دون سند صالح)'), h('p', {}, f.interpretation)),
-            f.suggested_rewrite
-              ? h(
-                  'div',
-                  { class: 'kv' },
-                  h('b', {}, 'صياغة بديلة مقترحة'),
-                  h('div', { class: 'rewrite' }, f.suggested_rewrite),
-                  copyButton(() => f.suggested_rewrite || '', 'نسخ الصياغة البديلة'),
-                )
-              : null,
+          'ol',
+          { class: 'fixes' },
+          ...fixes.map((f, i) =>
+            h(
+              'li',
+              { class: 'fix' },
+              h('div', { class: 'fix-head' }, h('span', { class: 'fnum' }, (i + 1).toLocaleString('ar-SA')), h('p', { class: 'fix-why' }, f.issue)),
+              f.user_excerpt ? h('div', { class: 'fix-row now' }, h('b', {}, 'النص الحالي'), h('p', {}, f.user_excerpt)) : null,
+              f.suggested_rewrite
+                ? h(
+                    'div',
+                    { class: 'fix-row alt' },
+                    h('b', {}, 'البديل'),
+                    h('p', {}, f.suggested_rewrite),
+                    copyButton(() => f.suggested_rewrite || '', 'نسخ البديل', 'btn btn-quiet small'),
+                  )
+                : null,
+            ),
           ),
         ),
       );
-    });
-    parts.push(block(task === 'check' ? 'الملاحظات' : 'الأدلة', list));
-  }
-  if (v.conditions.length)
+    }
+  } else {
     parts.push(
-      block(
-        'الشروط والاستثناءات',
-        ...v.conditions.map((c) =>
-          h(
-            'div',
-            { class: 'finding' + (c.citations.length ? '' : ' unsupported') },
-            h('p', {}, c.text, c.citations.length ? null : h('span', { class: 'tag bad' }, 'دون استشهاد صالح')),
-            ...c.citations.map(citationBlock),
-          ),
-        ),
+      h(
+        'div',
+        { class: `report-head tone-${verdict.tone} is-question` },
+        h('div', { class: 'report-verdict' }, h('h2', { tabindex: '-1', id: 'result-h' }, 'إجابة معيار'), h('p', {}, res.direct_answer || res.summary)),
       ),
     );
-  if (res.unresolved.length) parts.push(block('ما لم يمكن حسمه', h('ul', {}, ...res.unresolved.map((x) => h('li', {}, x)))));
-  if (res.missing_information.length) parts.push(block('معلومات ناقصة', h('ul', {}, ...res.missing_information.map((x) => h('li', {}, x)))));
-  parts.push(block('حدود التقييم', h('p', {}, res.limitations)));
+  }
+
+  parts.push(h('p', { class: 'report-note' }, 'معيار تقييم مساعد وليس حكمًا قانونيًا نهائيًا.'));
   parts.push(
-    h(
-      'p',
-      { class: 'hint' },
-      'تحقق معيار آليًا من أن كل استشهاد يشير إلى مقطع أُرسل فعلًا، وأن الاقتباس موجود حرفيًا فيه، وأن رقم المادة والصفحة مأخوذان من قاعدة المراجع. هذا لا يثبت صحة تفسير النموذج.',
-    ),
+    h('div', { class: 'result-actions' }, copyButton(() => reportText(task, userText, v, model), 'نسخ التقرير', 'btn btn-primary small')),
   );
-  if (r.weak) parts.push(notice('warn', 'تطابق البحث المحلي مع المراجع كان ضعيفًا لهذا المدخل؛ قد تكون المراجع المرسلة غير كافية.'));
-  const u: string[] = [];
-  if (usage.input_tokens !== undefined) u.push(`إدخال ${usage.input_tokens.toLocaleString('ar-SA')}`);
-  if (usage.output_tokens !== undefined) u.push(`إخراج ${usage.output_tokens.toLocaleString('ar-SA')}`);
-  if (u.length) parts.push(h('p', { class: 'usage' }, `التوكنز كما أعادها المزود: ${u.join('، ')}.`));
-  const rewrites = v.findings.map((f) => f.suggested_rewrite).filter(Boolean) as string[];
-  parts.push(
-    h(
-      'div',
-      { class: 'result-actions' },
-      copyButton(() => reportText(task, userText, v, model), 'نسخ التقرير', 'btn btn-primary small'),
-      rewrites.length ? copyButton(() => rewrites.join('\n\n'), rewrites.length > 1 ? 'نسخ الصياغات البديلة' : 'نسخ الصياغة البديلة') : null,
-    ),
-  );
-  out.replaceChildren(h('article', { class: 'result' }, ...parts), referencesBlock(r));
+  out.replaceChildren(h('article', { class: 'result report' }, ...parts));
   $('result-h').focus({ preventScroll: true });
   out.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' });
 }

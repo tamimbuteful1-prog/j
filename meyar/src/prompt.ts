@@ -23,6 +23,8 @@ export const OUTPUT_RULES_JSON = `قواعد الإخراج:
 - في مهمة "question" ضع الإجابة في direct_answer، والشروط والاستثناءات في conditions_and_exceptions، وما لم يمكن حسمه في unresolved.
 - في مهمة "check" اجعل direct_answer قيمة null.
 - لا تستخدم "no_conflict_found" إلا إذا راجعت المقاطع المرفقة ولم تجد ما يتعارض، واذكر في limitations أن ذلك في حدود المقاطع المرسلة فقط.
+- risk_percent: عدد صحيح من 0 إلى 100 يعبّر عن درجة مؤشرات المخالفة في النص وفق المقاطع المرفقة، ويجب أن يتسق مع classification: من 0 إلى 30 مع "no_conflict_found"، ومن 31 إلى 60 مع "needs_more_info" أو "insufficient_references"، ومن 61 إلى 100 مع "conflict_indicators" بحسب عدد المؤشرات وخطورتها.
+- اكتب issue في جملة قصيرة واحدة مباشرة، واجعل suggested_rewrite صياغة جاهزة للاستخدام مكان العبارة نفسها.
 - اكتب بالعربية الفصحى الواضحة.`;
 
 const CITATIONS_SCHEMA = {
@@ -40,6 +42,7 @@ export const RESULT_SCHEMA = {
   additionalProperties: false,
   required: [
     'classification',
+    'risk_percent',
     'summary',
     'direct_answer',
     'findings',
@@ -53,6 +56,7 @@ export const RESULT_SCHEMA = {
       type: 'string',
       enum: ['no_conflict_found', 'conflict_indicators', 'needs_more_info', 'insufficient_references'],
     },
+    risk_percent: { type: 'integer' },
     summary: { type: 'string' },
     direct_answer: { type: ['string', 'null'] },
     findings: {

@@ -60,6 +60,7 @@ export function parseResult(obj: unknown): ModelResult {
   if (!Array.isArray(o.findings) || !Array.isArray(o.conditions_and_exceptions)) throw new InvalidOutputError('arrays');
   return {
     classification: o.classification as Classification,
+    risk_percent: typeof o.risk_percent === 'number' && Number.isFinite(o.risk_percent) ? o.risk_percent : null,
     summary: o.summary,
     direct_answer: strOrNull(o.direct_answer),
     findings: o.findings.map((f) => {
