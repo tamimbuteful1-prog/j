@@ -119,14 +119,26 @@ export function meter(percent: number | null, opts: { reduced: boolean; dim?: bo
   setNeedle(0);
   const start = performance.now() + 250;
   const D = 1600;
+  let done = false;
   const step = (now: number) => {
+    if (done) return;
     const t = Math.min(1, Math.max(0, (now - start) / D));
     // ease-out with a small overshoot, like a real instrument settling
     const e = t < 1 ? 1 - Math.pow(1 - t, 3) + Math.sin(t * Math.PI) * 0.04 : 1;
     setNeedle(Math.min(100, percent * e));
     if (t < 1) requestAnimationFrame(step);
-    else setNeedle(percent);
+    else {
+      done = true;
+      setNeedle(percent);
+    }
   };
   requestAnimationFrame(step);
+  // if frames are paused (background tab), still show the final reading
+  window.setTimeout(() => {
+    if (!done) {
+      done = true;
+      setNeedle(percent);
+    }
+  }, D + 900);
   return wrap;
 }
