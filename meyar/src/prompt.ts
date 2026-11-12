@@ -23,8 +23,12 @@ export const OUTPUT_RULES_JSON = `قواعد الإخراج:
 - في مهمة "question" ضع الإجابة في direct_answer، والشروط والاستثناءات في conditions_and_exceptions، وما لم يمكن حسمه في unresolved.
 - في مهمة "check" اجعل direct_answer قيمة null.
 - لا تستخدم "no_conflict_found" إلا إذا راجعت المقاطع المرفقة ولم تجد ما يتعارض، واذكر في limitations أن ذلك في حدود المقاطع المرسلة فقط.
-- risk_percent: عدد صحيح من 0 إلى 100 يعبّر عن درجة مؤشرات المخالفة في النص وفق المقاطع المرفقة، ويجب أن يتسق مع classification: من 0 إلى 30 مع "no_conflict_found"، ومن 31 إلى 60 مع "needs_more_info" أو "insufficient_references"، ومن 61 إلى 100 مع "conflict_indicators" بحسب عدد المؤشرات وخطورتها.
-- اكتب issue في جملة قصيرة واحدة مباشرة، واجعل suggested_rewrite صياغة جاهزة للاستخدام مكان العبارة نفسها.
+- risk_percent: عدد صحيح من 0 إلى 100 يقيس درجة المخالفة الفعلية في النص كله، ويجب أن يتسق مع classification: من 0 إلى 30 مع "no_conflict_found"، ومن 31 إلى 60 مع "needs_more_info" أو "insufficient_references"، ومن 61 إلى 100 مع "conflict_indicators". لا تضع قيمة وسطى احتياطًا؛ احسبها من أعلى severity بين الملاحظات مع زيادة بسيطة عند تعددها.
+- severity لكل ملاحظة عدد صحيح من 0 إلى 100: 90–100 لمخالفة صريحة لا لبس فيها (سبّ أو شتم أو لعن شخص، قذف أو تشهير، إساءة دينية، تحريض على العنف أو الكراهية، محتوى إباحي، ترويج تبغ أو مخدرات أو مسكرات)؛ 70–89 لمخالفة واضحة تحتاج تعديلًا (ادعاء مضلل، إعلان غير مفصح عنه، مساس بالخصوصية)؛ 40–69 لعبارة قد تخالف بحسب السياق؛ أقل من 40 لملاحظة تحسينية طفيفة.
+- السبّ والشتم واللعن والألفاظ المبتذلة الموجهة لأي شخص (مثل «يا كلب»، «ملعون») مخالفة صريحة لضوابط عدم المساس بكرامة الأشخاص وعدم استخدام اللغة المبتذلة: صنّفها "conflict_indicators" مع severity بين 90 و100، ولا تصنّفها "needs_more_info" بحجة نقص السياق.
+- violation_type: تسمية قصيرة لنوع المخالفة (مثل: إساءة وسبّ لشخص، ادعاء مضلل، ترويج منتج محظور، مساس بالخصوصية).
+- issue جملة قصيرة واحدة. interpretation شرح واضح للقارئ غير المتخصص في جملتين أو ثلاث: لماذا تُعد العبارة مخالفة وما الضابط الذي تمسّه، دون ذكر أرقام صفحات.
+- suggested_rewrite صياغة جاهزة للاستخدام مكان العبارة نفسها تحافظ على مقصد المستخدم المشروع.
 - اكتب بالعربية الفصحى الواضحة.`;
 
 const CITATIONS_SCHEMA = {
@@ -64,10 +68,12 @@ export const RESULT_SCHEMA = {
       items: {
         type: 'object',
         additionalProperties: false,
-        required: ['user_excerpt', 'issue', 'citations', 'interpretation', 'suggested_rewrite'],
+        required: ['user_excerpt', 'issue', 'violation_type', 'severity', 'citations', 'interpretation', 'suggested_rewrite'],
         properties: {
           user_excerpt: { type: ['string', 'null'] },
           issue: { type: 'string' },
+          violation_type: { type: 'string' },
+          severity: { type: 'integer' },
           citations: CITATIONS_SCHEMA,
           interpretation: { type: 'string' },
           suggested_rewrite: { type: ['string', 'null'] },

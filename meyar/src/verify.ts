@@ -70,6 +70,8 @@ export function parseResult(obj: unknown): ModelResult {
       return {
         user_excerpt: strOrNull(r.user_excerpt),
         issue: r.issue,
+        violation_type: strOrNull(r.violation_type),
+        severity: typeof r.severity === 'number' && Number.isFinite(r.severity) ? Math.max(0, Math.min(100, r.severity)) : null,
         citations: citations(r.citations),
         interpretation: r.interpretation,
         suggested_rewrite: strOrNull(r.suggested_rewrite),

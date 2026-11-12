@@ -214,3 +214,30 @@ describe('assistant prompt (files path)', () => {
     expect(p).toContain('ليس حكمًا قانونيًا نهائيًا');
   });
 });
+
+import { applyAbuseRule, detectAbuse } from '../src/rules';
+import { SearchIndex as _SI } from '../src/search';
+describe('verbal abuse safety net', () => {
+  it('detects direct insults and curses, not ordinary words', () => {
+    expect(detectAbuse('يا كلب يا ملعون').map((h) => h.excerpt)).toEqual(['يا كلب', 'يا ملعون']);
+    expect(detectAbuse('ياحمار انت').map((h) => h.direct)).toEqual([true]);
+    expect(detectAbuse('الله يلعنك').length).toBe(1);
+    expect(detectAbuse('اشتريت طعام كلب لحيواني الأليف')).toEqual([]);
+    expect(detectAbuse('فيلم عن حياة الحيوان في الصحراء')).toEqual([]);
+  });
+  it('turns a hedged model answer into a referenced 100% violation', async () => {
+    const { readFileSync } = await import('node:fs');
+    const corpus = JSON.parse(readFileSync(new URL('../public/data/corpus.json', import.meta.url), 'utf8'));
+    const idx = new _SI(corpus);
+    const hedged = {
+      raw: { classification: 'needs_more_info', risk_percent: 50, summary: 's', direct_answer: null, findings: [], conditions_and_exceptions: [], unresolved: [], missing_information: [], limitations: 'l' },
+      findings: [], conditions: [], invalidCount: 0, classificationSupported: true,
+    } as unknown as Parameters<typeof applyAbuseRule>[0];
+    const v = applyAbuseRule(hedged, 'يا كلب يا ملعون', (id) => idx.get(id));
+    expect(v.raw.classification).toBe('conflict_indicators');
+    expect(v.findings.length).toBe(1);
+    expect(v.findings[0].user_excerpt).toBe('يا كلب، يا ملعون');
+    expect(v.findings[0].citations[0].quote).toContain('عدم المساس بكرامة الأشخاص');
+    expect(riskPercent('conflict_indicators', v)).toBe(100);
+  });
+});

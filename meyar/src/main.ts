@@ -7,7 +7,8 @@ import './styles.css';
 import { SearchIndex, sourceLabel } from './search';
 import { mountBoard } from './board';
 import { initVideos } from './videos';
-import { meter, riskPercent, VERDICT } from './meter';
+import { meter, riskPercent, severityLabel, VERDICT } from './meter';
+import { applyAbuseRule } from './rules';
 import { buildPayload, SYSTEM_PROMPT } from './prompt';
 import { buildAssistantPrompt } from './assistantPrompt';
 import {
@@ -560,7 +561,7 @@ async function sendToModel(text: string, ctx: UserContext, r: Retrieval, approve
     const res = await callModel(provider, model, payload, pc.max_output_tokens, structured, state.controller.signal, pc.effort);
     if (res.truncated) throw new ProviderError('unreadable');
     const parsed = parseResult(extractJson(res.text));
-    const verified = verifyResult(parsed, r.items.map((i) => i.segment), text);
+    const verified = state.task === 'check' ? applyAbuseRule(verifyResult(parsed, r.items.map((i) => i.segment), text), text, (id) => index.get(id)) : verifyResult(parsed, r.items.map((i) => i.segment), text);
     renderResult(task, text, verified, r, res.usage, model);
   } catch (e) {
     out.replaceChildren(errorBox(e), referencesBlock(r, 'المراجع التي جُهّزت لهذا الطلب'));
@@ -571,6 +572,24 @@ async function sendToModel(text: string, ctx: UserContext, r: Retrieval, approve
 }
 
 // ------------------------------------------------------------------ rendering
+/** Article + document name only (no pages or quotes), for the concise report. */
+function basisLabel(f: VerifiedResult['findings'][number]): string | null {
+  const seen = new Set<string>();
+  const out: string[] = [];
+  for (const c of f.citations) {
+    const seg = c.segment;
+    const art = seg.article !== null ? seg.label : seg.title || 'قسم';
+    const m = c.quote.match(/^\s*(\d+)\s*[-)]/) || seg.text.split('\n').find((l) => l.includes(c.quote.slice(0, 25)))?.match(/^\s*(\d+)\s*[-)]/);
+    const item = m ? `، البند ${Number(m[1]).toLocaleString('ar-SA')}` : '';
+    const label = `${art}${item} — ${docTitle(seg.doc)}`;
+    if (!seen.has(label)) {
+      seen.add(label);
+      out.push(label);
+    }
+  }
+  return out.length ? out.join('؛ ') : null;
+}
+
 function docTitle(id: string) {
   return corpus.documents.find((d) => d.id === id)?.title || id;
 }
@@ -636,9 +655,12 @@ function verdictOf(v: VerifiedResult): Classification {
 function reportText(task: Task, userText: string, v: VerifiedResult, model: string): string {
   const cls = verdictOf(v);
   const L: string[] = [];
-  L.push('تقرير معيار');
+  L.push('تقرير معيار — مراجعة المحتوى قبل النشر');
+  L.push('');
   if (task === 'check') {
-    L.push(`النتيجة: ${VERDICT[cls].title} — مؤشر المخالفة ${riskPercent(cls, v)}%`);
+    L.push(`الحكم: ${VERDICT[cls].title}`);
+    L.push(`مؤشر المخالفة: ${riskPercent(cls, v)}%`);
+    L.push(`الخلاصة: ${v.raw.summary}`);
   } else {
     L.push(`السؤال: ${userText}`);
     if (v.raw.direct_answer) L.push('', 'الإجابة: ' + v.raw.direct_answer);
@@ -646,14 +668,19 @@ function reportText(task: Task, userText: string, v: VerifiedResult, model: stri
   const fixes = v.findings.filter((f) => f.user_excerpt || f.suggested_rewrite);
   if (task === 'check') {
     L.push('');
-    if (!fixes.length) L.push(cls === 'no_conflict_found' ? 'لا يحتاج النص إلى تعديل.' : v.raw.summary);
+    if (!fixes.length) L.push(cls === 'no_conflict_found' ? 'لا يحتاج النص إلى تعديل.' : 'لا توجد عبارة محددة للتعديل.');
     fixes.forEach((f, i) => {
-      L.push(`${i + 1}. ${f.issue}`);
-      if (f.user_excerpt) L.push(`   النص الحالي: ${f.user_excerpt}`);
-      if (f.suggested_rewrite) L.push(`   البديل: ${f.suggested_rewrite}`);
+      const sv = typeof f.severity === 'number' ? ` — ${severityLabel(f.severity).text} (${Math.round(f.severity)}%)` : '';
+      L.push(`المخالفة ${i + 1}: ${f.violation_type || f.issue}${sv}`);
+      if (f.user_excerpt) L.push(`النص المخالف: ${f.user_excerpt}`);
+      L.push(`السبب: ${f.interpretation || f.issue}`);
+      const basis = basisLabel(f);
+      if (basis) L.push(`الأساس النظامي: ${basis}`);
+      if (f.suggested_rewrite) L.push(`البديل المقترح: ${f.suggested_rewrite}`);
+      L.push('');
     });
   }
-  L.push('', `معيار تقييم مساعد وليس حكمًا قانونيًا نهائيًا · ${model}`);
+  L.push(`معيار تقييم مساعد وفق المراجع المعروضة، وليس حكمًا قانونيًا نهائيًا · ${model}`);
   return L.join('\n');
 }
 
@@ -687,7 +714,13 @@ function renderResult(
         'div',
         { class: `report-head tone-${verdict.tone}` },
         meter(pct, { reduced, dim: pct === null }),
-        h('div', { class: 'report-verdict' }, h('h2', { tabindex: '-1', id: 'result-h' }, verdict.title), h('p', {}, line)),
+        h(
+          'div',
+          { class: 'report-verdict' },
+          h('h2', { tabindex: '-1', id: 'result-h' }, verdict.title),
+          h('p', { class: 'report-line' }, line),
+          cls !== 'no_conflict_found' && res.summary && fixes.length ? h('p', { class: 'report-summary' }, res.summary) : null,
+        ),
       ),
     );
     if (fixes.length) {
@@ -695,23 +728,32 @@ function renderResult(
         h(
           'ol',
           { class: 'fixes' },
-          ...fixes.map((f, i) =>
-            h(
+          ...fixes.map((f, i) => {
+            const sv = typeof f.severity === 'number' ? severityLabel(f.severity) : null;
+            const basis = basisLabel(f);
+            return h(
               'li',
               { class: 'fix' },
-              h('div', { class: 'fix-head' }, h('span', { class: 'fnum' }, (i + 1).toLocaleString('ar-SA')), h('p', { class: 'fix-why' }, f.issue)),
-              f.user_excerpt ? h('div', { class: 'fix-row now' }, h('b', {}, 'النص الحالي'), h('p', {}, f.user_excerpt)) : null,
+              h(
+                'div',
+                { class: 'fix-head' },
+                h('span', { class: 'fnum' }, (i + 1).toLocaleString('ar-SA')),
+                h('div', { class: 'fix-title' }, h('b', {}, f.violation_type || f.issue), sv ? h('span', { class: `sev sev-${sv.tone}` }, `${sv.text} · ${Math.round(f.severity as number)}%`) : null),
+              ),
+              f.user_excerpt ? h('div', { class: 'fix-row now' }, h('b', {}, 'النص المخالف'), h('p', {}, f.user_excerpt)) : null,
+              h('div', { class: 'fix-row why' }, h('b', {}, 'لماذا يُعد مخالفة؟'), h('p', {}, f.interpretation || f.issue)),
+              basis ? h('p', { class: 'fix-basis' }, h('b', {}, 'الأساس النظامي: '), basis) : null,
               f.suggested_rewrite
                 ? h(
                     'div',
                     { class: 'fix-row alt' },
-                    h('b', {}, 'البديل'),
+                    h('b', {}, 'البديل المقترح'),
                     h('p', {}, f.suggested_rewrite),
                     copyButton(() => f.suggested_rewrite || '', 'نسخ البديل', 'btn btn-quiet small'),
                   )
                 : null,
-            ),
-          ),
+            );
+          }),
         ),
       );
     }

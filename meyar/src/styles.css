@@ -2288,3 +2288,63 @@ blockquote.source {
     width: min(100%, 280px);
   }
 }
+
+/* professional finding cards */
+.report-line {
+  font-weight: 600;
+}
+.report-summary {
+  margin-top: 0.6rem !important;
+  font-size: 1rem !important;
+  line-height: 1.8;
+  color: var(--ink-2);
+}
+.fix-title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.8rem;
+}
+.fix-title b {
+  font-family: var(--display);
+  font-size: 1.15rem;
+}
+.sev {
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.sev-crit {
+  background: #b02e2b;
+  color: #fff6f0;
+}
+.sev-high {
+  background: #d4642a;
+  color: #fff8f0;
+}
+.sev-mid {
+  background: #e3b341;
+  color: #2a2208;
+}
+.sev-low {
+  background: #6f9b6a;
+  color: #f4faf2;
+}
+.fix-row.why {
+  background: rgba(40, 40, 40, 0.05);
+  border-color: #8a857b;
+}
+.fix-row.why b {
+  color: #55524c;
+}
+.fix-basis {
+  margin: 0.55rem 0 0;
+  font-size: 0.85rem;
+  color: var(--ink-2);
+  line-height: 1.7;
+}
+.fix-basis b {
+  color: var(--ink);
+}

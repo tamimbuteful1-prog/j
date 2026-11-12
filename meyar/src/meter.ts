@@ -12,14 +12,36 @@ const BANDS: Record<Classification, [number, number]> = {
   conflict_indicators: [61, 100],
 };
 
+/**
+ * The reading is computed from the findings themselves: the most severe
+ * referenced finding sets the level, each further finding adds a little, and
+ * the model's overall estimate can only raise it. Always kept inside the
+ * verified classification's band.
+ */
 export function riskPercent(cls: Classification, v: VerifiedResult | null): number {
   const [lo, hi] = BANDS[cls];
+  const clamp = (x: number) => Math.round(Math.min(hi, Math.max(lo, x)));
   const raw = v?.raw.risk_percent;
-  if (typeof raw === 'number' && Number.isFinite(raw)) return Math.round(Math.min(hi, Math.max(lo, raw)));
-  const supported = v ? v.findings.filter((f) => f.citations.length > 0).length : 0;
-  if (cls === 'conflict_indicators') return Math.min(95, 66 + supported * 7);
-  if (cls === 'no_conflict_found') return 12;
+  const model = typeof raw === 'number' && Number.isFinite(raw) ? raw : null;
+  const sev = (v?.findings ?? [])
+    .filter((f) => f.citations.length > 0)
+    .map((f) => (typeof f.severity === 'number' ? f.severity : 75))
+    .sort((a, b) => b - a);
+  if (cls === 'conflict_indicators' && sev.length) {
+    const fromFindings = sev[0] + sev.slice(1).reduce((a, x) => a + x * 0.08, 0);
+    return clamp(Math.max(fromFindings, model ?? 0));
+  }
+  if (model !== null) return clamp(model);
+  if (cls === 'conflict_indicators') return 75;
+  if (cls === 'no_conflict_found') return 8;
   return 45;
+}
+
+export function severityLabel(p: number): { text: string; tone: string } {
+  if (p >= 90) return { text: 'خطورة عالية جدًا', tone: 'crit' };
+  if (p >= 70) return { text: 'خطورة عالية', tone: 'high' };
+  if (p >= 40) return { text: 'خطورة متوسطة', tone: 'mid' };
+  return { text: 'خطورة منخفضة', tone: 'low' };
 }
 
 export const VERDICT: Record<Classification, { title: string; tone: string }> = {

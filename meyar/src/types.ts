@@ -80,6 +80,10 @@ export interface Citation {
 export interface Finding {
   user_excerpt: string | null;
   issue: string;
+  /** short category label, e.g. «إساءة لفظية» (optional for older outputs) */
+  violation_type?: string | null;
+  /** 0–100 severity of this single finding (optional for older outputs) */
+  severity?: number | null;
   citations: Citation[];
   interpretation: string;
   suggested_rewrite: string | null;
